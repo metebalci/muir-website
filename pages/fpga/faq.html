@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muir-fpga &mdash; FAQ</title>
+<meta name="description" content="Questions this project is asked, answered from the files that settle them: the disk multiplexor, the reference, the tick, the screen, the debug cable, the boards and the checks.">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../drawings.css">
+</head>
+<body class="fpga">
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX MOVING FORWARD.</span><nav aria-label="The projects"><a href="../simulator/">Simulator</a><a href="../fpga/" aria-current="page">FPGA</a><a href="../system/">System</a><a href="../ozd/">ozd</a><a class="github" href="https://github.com/metebalci/muir-fpga">GitHub <span>&#8599;</span></a></nav></header>
+<nav class="subnav wrap" aria-label="muir-fpga&rsquo;s pages"><b>muir-fpga</b><a href="./">The boards</a><a href="arty-z7-20.html">Arty Z7-20</a><a href="cora-z7-07s.html">Cora Z7-07S</a><a href="de25-nano.html">DE25-Nano</a><a href="booting.html">Booting</a><a href="debugging.html">Debugging</a><span aria-current="page">Questions</span><a href="cadr.html">The CADR</a></nav>
+<main id="main">
+<!-- EVERY ANSWER HERE RESTS ON A FILE, and the line under it names that file.
+     That is the whole shape of the page: a question somebody actually asks,
+     an answer of a few sentences, and the source it was read from.  Where the
+     material does not settle something, the answer says so rather than
+     filling the gap, which is why the first one ends the way it does.
+     A question with no source does not go on the page. -->
+<section class="page-hero wrap solo">
+<div>
+<p class="eyebrow"><span class="dot"></span>muir-fpga &middot; questions</p>
+<h1>Questions</h1>
+<p class="intro lede">Questions this project is asked, each answered from the file that settles it.</p>
+<p class="hero-description">Each answer here is a sentence or two; the whole of each is in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md">docs/faq.md</a>. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir">muir-sim</a> gives them, and the rest are files here.</p>
+</div>
+</section>
+<section class="section wrap" aria-label="The machine">
+<div class="section-heading"><div><p class="eyebrow">01 / ASK</p><h2>The machine</h2></div></div>
+<div class="qa">
+<h3>Why is there no disk multiplexor block?</h3>
+<p>MIT built one, board type LG684, and its work is electrical: it fans the controller&rsquo;s one read and write path out to eight drives. Here a drive is a file on the card, so there is nothing for such a board to do, and the controller selects among eight units by <code>DA&lt;30:28&gt;</code> as MIT&rsquo;s does.</p>
+<p class="src">Rests on MIT&rsquo;s <code>mit/cadrdc/dm.txt</code>, <code>dm.wls</code>, <code>dm.eco</code> and <code>disk.hand</code>; muir&rsquo;s <code>src/cable.rs</code> and <code>src/disk_controller.rs</code>; <code>docs/disk-controller.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-there-no-disk-multiplexor-block">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Why is muir the reference, and what does &ldquo;held tick for tick&rdquo; mean?</h3>
+<p>A machine with no reference is a machine nobody can check. Each file in <code>rtl/machine/</code> is compared against a muir type over a recorded trace, cycle for cycle, and <code>muir.commit</code> names the muir the traces were taken from.</p>
+<p class="src">Rests on <code>README.md</code>; the header of <code>mutations/list.txt</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-muir-the-reference-and-what-does-held-tick-for-tick-mean">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Why is a tick ten nanoseconds?</h3>
+<p>Because the design does not meet its timing with a 5&nbsp;ns clock. The CADR placed its clock edges with delay lines, and here each of MIT&rsquo;s instants goes to the first 10&nbsp;ns tick at or after it, so some edges fall up to 7&nbsp;ns later, and the processor and its clocks run within about 5% of the original speed. muir&rsquo;s fpga timing model rounds the same way.</p>
+<p class="src">Rests on <code>docs/timing.md</code>; the header of <code>rtl/machine/cadr_tick_pkg.sv</code>; <code>README.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-a-tick-ten-nanoseconds">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Does the machine&rsquo;s own clock agree with the wall?</h3>
+<p>Yes, while the grid and the tick are the same number: the microsecond clock counts 100 ticks, one real microsecond, and the vertical interrupt arrives at the display board&rsquo;s own 64.70 Hz.</p>
+<p class="src">Rests on <code>docs/io-board.md</code>, <code>docs/tv.md</code>, <code>docs/board.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#does-the-machines-own-clock-agree-with-the-wall">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Is the color TV four bits a pixel or eight?</h3>
+<p>Four, and nothing here implements eight: a pixel is a four-bit address into a map of sixteen colors, each of three eight-bit channels.</p>
+<p class="src">Rests on <code>docs/tv.md</code>; muir&rsquo;s <code>src/tv.rs</code>; MIT&rsquo;s <code>sys/window/color.lisp</code>, <code>sys/ucadr/uc-hacks.lisp</code> and <code>cadrtv/lmtv.order</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#is-the-color-tv-four-bits-a-pixel-or-eight">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Why does the screen keep the previous boot&rsquo;s picture?</h3>
+<p>Because the real machine did: no reset clears the frame buffer, and MIT wrote the clear in software, which runs when the band comes up.</p>
+<p class="src">Rests on <code>docs/tv.md</code>; MIT&rsquo;s <code>sys/sys/ltop.lisp</code> in the System 100 release. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-does-the-screen-keep-the-previous-boots-picture">The whole answer</a>.</p>
+</div>
+</section>
+<section class="section wrap" aria-label="The boards, and the way they are checked">
+<div class="section-heading"><div><p class="eyebrow">02 / ASK</p><h2>The boards, and the way they are checked</h2></div></div>
+<div class="qa">
+<h3>Why is the debug cable on one Pmod connector?</h3>
+<p>A board is a debugger or a debuggee and never both at once, and neither group of four pins is ever driven from both ends, so one connector carries the whole link both ways.</p>
+<p class="src">Rests on <code>docs/debug-cable.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-the-debug-cable-on-one-pmod-connector">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>How does a board become the debugger?</h3>
+<p>With <code>--debug-cable-connect</code> in <code>fpgarc</code> at boot, or <code>cadr-console debug-cable-connect</code> at any time. With nothing said, a board is a debuggee.</p>
+<p class="src">Rests on <code>docs/debug-cable.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#how-does-a-board-become-the-debugger">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Why are the checks themselves mutation-tested?</h3>
+<p><code>make check</code> says the checks pass. <code>make mutants</code> says the checks can still fail.</p>
+<p class="src">Rests on <code>docs/mutations.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-are-the-checks-themselves-mutation-tested">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>Why is there no ILA or other Vivado debug core?</h3>
+<p>The free BASIC tier refuses <code>create_debug_core</code>, so the probe is a <code>BSCANE2</code> and a shift register, which fills from reset and freezes with nobody at the board.</p>
+<p class="src">Rests on the header of <code>rtl/plumbing/cadr_probe.sv</code>; <code>docs/toolchain.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-there-no-ila-or-other-vivado-debug-core">The whole answer</a>.</p>
+</div>
+<div class="qa">
+<h3>What license is this under, and what in it is not this project&rsquo;s work?</h3>
+<p>The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on the <a href="index.html#license">front page</a>.</p>
+<p class="src">Rests on <code>docs/license.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#what-license-is-this-under-and-what-in-it-is-not-this-projects-work">The whole answer</a>.</p>
+</div>
+</section>
+</main>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX moving forward.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><span>IN MEMORY OF ROBERT REDFORD.</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+</body>
+</html>

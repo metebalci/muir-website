@@ -1,0 +1,65 @@
+# Checks the site and publishes pages/ to GitHub Pages.
+#
+# The repository's Pages source must be "GitHub Actions" (Settings -> Pages ->
+# Build and deployment), with the custom domain muir.metebalci.com set there.
+# Nothing is built here: pages/ is committed as gen/build.py wrote it, and
+# checks/generated.py holds it to that.
+#
+# The checks run on every push, and weekly, because the projects' own
+# repositories move under the site's links to them; the weekly run deploys
+# nothing.
+
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * 1'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and let a running one finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clone the four projects, for the links into them
+        run: |
+          mkdir -p "$RUNNER_TEMP/repos"
+          for r in muir muir-sys muir-fpga ozd; do
+            git clone --quiet --no-checkout "https://github.com/metebalci/$r.git" "$RUNNER_TEMP/repos/$r"
+          done
+      - name: pages/ is what gen/build.py writes
+        run: python3 checks/generated.py
+      - name: Every link and anchor resolves
+        run: python3 checks/links.py --repos "$RUNNER_TEMP/repos"
+      - name: Nothing local in the public tree
+        run: python3 checks/public.py
+      - name: Each check fails on its planted faults
+        run: python3 checks/test_checks.py --repos "$RUNNER_TEMP/repos"
+
+  deploy:
+    needs: check
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+      - id: deployment
+        uses: actions/deploy-pages@v4

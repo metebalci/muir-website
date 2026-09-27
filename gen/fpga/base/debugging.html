@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muir-fpga &mdash; debugging</title>
+<meta name="description" content="How one CADR debugs another over MIT's debug cable, and how a board here does it: the debuggee's end in the fabric, a register window for a debugger on the board's own Arm cores, and a ribbon between two boards on one Pmod connector.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="debugging.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="band">
+    <a class="home" href="index.html"><b>muir-fpga</b></a>
+    <nav>
+      <a href="arty-z7-20.html">Arty Z7-20</a>
+      <a href="cora-z7-07s.html">Cora Z7-07S</a>
+      <a href="booting.html">Booting</a>
+      <a href="debugging.html">Debugging</a>
+      <a href="faq.html">FAQ</a>
+      <a href="cadr.html">the CADR</a>
+    </nav>
+  </div>
+</header>
+
+<!-- THESE FIGURES CARRY NO BLOCK COLOR, which is the rule `cadr.css` and
+     `booting.html` already state.  A board drawing colors a block by whose
+     work it is.  These say what the cable IS and what crosses it, so they are
+     drawn in `currentColor` alone.  What has run on a board is the table at
+     the foot, in words. -->
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>Debugging a Lisp machine</h2>
+      <p class="lede">A CADR is debugged by another CADR. This page is how MIT
+      did that, and how a board here does it.</p>
+
+      <p>The debugger is not a program on a host. It is a second Lisp machine,
+      reaching the first over a cable of twenty-one wires and running bus cycles
+      on it as though it were that machine&rsquo;s own processor. The program
+      that drives the cable is CC, and it is Lisp software on the debugging
+      machine. Every board here is a debuggee the moment it is powered, which is
+      what a CADR is with nothing set, and one of them can be told to be the
+      debugger instead.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>How MIT debugged a CADR</h2>
+      <p>The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s
+      DBGIN connector on its bus interface board. Four wires go one way, sixteen
+      are data lines that either end may drive, and one comes back. The four
+      carry a request, a write line and two address bits, and those two bits are
+      bits 3 and 2 of the debugger&rsquo;s own Unibus cycle into
+      <code>0o766100</code> through <code>0o766137</code>. So a debugger works
+      the cable by writing four registers of its own.</p>
+
+      <p>At the far end a 74S139 turns the two bits into four strobes. One
+      latches sixteen bits of address, one latches three modifier bits, one
+      drives the debuggee&rsquo;s error status onto the low byte, and one runs a
+      cycle on the debuggee&rsquo;s Unibus at the address last latched. That
+      last strobe is the whole instrument: everything on that machine&rsquo;s
+      Unibus is then reachable, main memory included, through its own Unibus
+      map.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 650" role="img" aria-label="One CADR debugging another. On the left the debugger, a CADR running CC, whose own Unibus cycle into octal 766100 through 766137 is what goes out on the cable through its DBGOUT connector. Between them MIT's debug cable, twenty-one wires: four out, which are the request, the write line and two address bits; sixteen data lines, an open-collector bus either end may drive; and one acknowledgment back. On the right the debuggee, whose DBGIN connector decodes the two address bits into four strobes with a 74S139, one of which makes the debugger a master on that machine's Unibus. Under the debuggee, that Unibus with three things on it: the sixteen diagnostic registers at octal 766000, the I/O board at octal 764000, and the window at octal 140000 to 177777 that the Unibus map translates into Xbus main memory. At the foot, what CC does over the cable: stop the machine with a write of zero to octal 766006, read any diagnostic register, force a microinstruction into the instruction register to read a scratchpad, read main memory through map entry 17, reset the debuggee with the modifier register's bit 1, and boot it with bit 7 of a mode-register write, which is the line called PROG.BOOT.">
+          <defs>
+            <marker id="dbg1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <text class="d-t" x="10" y="18">one CADR debugging another</text>
+
+          <rect class="d-box" x="30" y="44" width="250" height="170"/>
+          <text class="d-t" x="155" y="70" text-anchor="middle">the debugger</text>
+          <text class="d-s" x="155" y="92" text-anchor="middle">a CADR, running CC</text>
+          <text class="d-s" x="155" y="108" text-anchor="middle">CC is Lisp software, and it</text>
+          <text class="d-s" x="155" y="124" text-anchor="middle">runs on this machine</text>
+          <text class="d-s" x="155" y="150" text-anchor="middle">its own Unibus cycle at</text>
+          <text class="d-n" x="155" y="168" text-anchor="middle">0o766100 - 0o766137</text>
+          <text class="d-s" x="155" y="186" text-anchor="middle">is what goes out on the cable</text>
+          <text class="d-m" x="155" y="208" text-anchor="middle">DBGOUT</text>
+
+          <line class="d-line" x1="280" y1="92" x2="700" y2="92" marker-end="url(#dbg1)"/>
+          <text class="d-s" x="490" y="86" text-anchor="middle">4 wires out: -DEBUG IN REQ, DEBUG IN WR, DEBUG IN A&lt;1:0&gt;</text>
+          <line class="d-line" x1="280" y1="128" x2="700" y2="128" marker-start="url(#dbg1)" marker-end="url(#dbg1)"/>
+          <text class="d-s" x="490" y="122" text-anchor="middle">16 data lines: DBD&lt;15:0&gt;, and either end may drive them</text>
+          <line class="d-line" x1="700" y1="164" x2="280" y2="164" marker-end="url(#dbg1)"/>
+          <text class="d-s" x="490" y="158" text-anchor="middle">1 wire back: DEBUG IN ACK</text>
+          <text class="d-t" x="490" y="192" text-anchor="middle">MIT&rsquo;s debug cable, 21 wires</text>
+          <text class="d-s" x="490" y="210" text-anchor="middle">every one of them held for the whole of a request</text>
+
+          <rect class="d-box" x="700" y="44" width="330" height="170"/>
+          <text class="d-t" x="865" y="70" text-anchor="middle">the debuggee</text>
+          <text class="d-m" x="865" y="92" text-anchor="middle">DBGIN</text>
+          <text class="d-s" x="865" y="116" text-anchor="middle">a 74S139 turns the two address bits</text>
+          <text class="d-s" x="865" y="132" text-anchor="middle">into four strobes, and one of them</text>
+          <text class="d-s" x="865" y="148" text-anchor="middle">makes the debugger a master on</text>
+          <text class="d-s" x="865" y="164" text-anchor="middle">this machine&rsquo;s own Unibus</text>
+          <text class="d-s" x="865" y="190" text-anchor="middle">another latches three modifier bits,</text>
+          <text class="d-s" x="865" y="206" text-anchor="middle">one of which resets this machine</text>
+
+          <line class="d-line" x1="865" y1="214" x2="865" y2="274"/>
+          <path class="d-bus" d="M80,274 H1030"/>
+          <text class="d-t" x="80" y="266">the debuggee&rsquo;s own Unibus, reached from the far side</text>
+
+          <line class="d-line" x1="205" y1="274" x2="205" y2="304"/>
+          <rect class="d-box" x="80" y="304" width="250" height="92"/>
+          <text class="d-m" x="205" y="326" text-anchor="middle">0o766000</text>
+          <text class="d-s" x="205" y="346" text-anchor="middle">the sixteen diagnostic registers:</text>
+          <text class="d-s" x="205" y="362" text-anchor="middle">PC, OPC, IR, the flag words,</text>
+          <text class="d-s" x="205" y="378" text-anchor="middle">and the clock that halts it</text>
+
+          <line class="d-line" x1="480" y1="274" x2="480" y2="304"/>
+          <rect class="d-box" x="380" y="304" width="200" height="92"/>
+          <text class="d-m" x="480" y="326" text-anchor="middle">0o764000</text>
+          <text class="d-s" x="480" y="346" text-anchor="middle">the I/O board:</text>
+          <text class="d-s" x="480" y="362" text-anchor="middle">the keyboard, the mouse,</text>
+          <text class="d-s" x="480" y="378" text-anchor="middle">the clocks, the serial line</text>
+
+          <line class="d-line" x1="765" y1="274" x2="765" y2="304"/>
+          <rect class="d-box" x="640" y="304" width="250" height="92"/>
+          <text class="d-m" x="765" y="326" text-anchor="middle">0o140000 - 0o177777</text>
+          <text class="d-s" x="765" y="346" text-anchor="middle">the window that the sixteen</text>
+          <text class="d-s" x="765" y="362" text-anchor="middle">Unibus map registers</text>
+          <text class="d-s" x="765" y="378" text-anchor="middle">translate into Xbus memory</text>
+
+          <line class="d-line" x1="765" y1="396" x2="765" y2="428" marker-end="url(#dbg1)"/>
+          <rect class="d-box" x="640" y="428" width="250" height="40"/>
+          <text class="d-s" x="765" y="453" text-anchor="middle">main memory, on the Xbus</text>
+
+          <text class="d-t" x="30" y="506">what CC does over it, and every one of them is a bus cycle on the other machine</text>
+          <text class="d-n" x="30" y="532">CC-STOP-MACH</text>
+          <text class="d-s" x="250" y="532">one write of 0 to 0o766006, and the machine halts where it stands</text>
+          <text class="d-n" x="30" y="552">SPY-READ</text>
+          <text class="d-s" x="250" y="552">any of the sixteen diagnostic registers, which is the machine&rsquo;s whole state as the console sees it</text>
+          <text class="d-n" x="30" y="572">CC-EXECUTE</text>
+          <text class="d-s" x="250" y="572">forces a microinstruction into the instruction register, which is how a scratchpad is read</text>
+          <text class="d-n" x="30" y="592">DBG-READ-XBUS</text>
+          <text class="d-s" x="250" y="592">writes Unibus map entry 17 and reads main memory through the window above</text>
+          <text class="d-n" x="30" y="612">DBG-RESET</text>
+          <text class="d-s" x="250" y="612">the modifier register&rsquo;s bit 1, which resets the debuggee&rsquo;s Unibus and bus interface, and halts it</text>
+          <text class="d-n" x="30" y="632">PROG.BOOT</text>
+          <text class="d-s" x="250" y="632">bit 7 of a write to the mode register, and one of the three ways a CADR can be told to boot</text>
+        </svg>
+      </div>
+      <figcaption>Nothing here carries meaning by an edge alone: every wire is
+      held for the whole of a request, and the latches take the data at the
+      trailing edge of their strobe, which is when the request lifts. The
+      <a href="cadr.html">page on the real machine</a> has the four strobes and
+      the connector they arrive on.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>How the fabric does it</h2>
+      <p>MIT&rsquo;s DBGIN logic is in the machine here, and so are the four
+      DBGOUT registers CC writes, so a board can be either end of the cable.
+      With nothing set it is a debuggee, and it answers a debugger exactly as
+      MIT&rsquo;s board answers one.</p>
+
+      <p>There are two ways in and one DBGIN page behind both. The first is a
+      register window on one of the processing system&rsquo;s general-purpose
+      ports: muir, on the board&rsquo;s own Arm cores, is a CADR that runs CC,
+      and it puts a whole request into one word and loads the answer back. The
+      second is a ribbon to another board. A board is told which end it is by
+      the console, or by a line in the card&rsquo;s file of flags.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 640" role="img" aria-label="The same cable in the fabric, drawn as two boards side by side. Inside each board the CADR is in the fabric, with two pages of MIT's bus interface in it: the DBGIN page, which is the debuggee's end and is always live, and the DBGOUT page, which is the four registers CC writes on this machine's own Unibus. Under them a join, because one DBGIN page has two ways in. One is a register window at 0x80001000 on a general-purpose port, which muir on the board's own Arm cores reaches with ordinary loads and stores; muir is a CADR that runs CC. The other is the board's Pmod connector, eight pins, and a ribbon between the two boards joins them. The left board has been told to be the debugger; the right board has nothing set and is a debuggee. At the foot, the console's four words: debug-cable-connect asks to be the debugger, debug-cable-disconnect gives the role back, debug-cable-wiring says which way round the ribbon was made, and debug-cable reads back the role this board has, what is on the connector, and the frame counters.">
+          <text class="d-t" x="10" y="18">the same cable in the fabric: two ways in, one DBGIN page</text>
+
+          <rect class="d-box" x="30" y="44" width="450" height="420"/>
+          <text class="d-t" x="255" y="68" text-anchor="middle">a board told to be the debugger</text>
+          <rect class="d-box" x="48" y="82" width="414" height="160"/>
+          <text class="d-t" x="255" y="104" text-anchor="middle">the CADR, in the fabric</text>
+          <rect class="d-box" x="62" y="118" width="190" height="110"/>
+          <text class="d-m" x="157" y="142" text-anchor="middle">DBGIN</text>
+          <text class="d-s" x="157" y="164" text-anchor="middle">the debuggee&rsquo;s end,</text>
+          <text class="d-s" x="157" y="180" text-anchor="middle">MIT&rsquo;s own logic, and</text>
+          <text class="d-s" x="157" y="196" text-anchor="middle">never switched off</text>
+          <rect class="d-box" x="272" y="118" width="190" height="110"/>
+          <text class="d-m" x="367" y="142" text-anchor="middle">DBGOUT</text>
+          <text class="d-s" x="367" y="164" text-anchor="middle">the four registers CC</text>
+          <text class="d-s" x="367" y="180" text-anchor="middle">writes, on this machine&rsquo;s</text>
+          <text class="d-s" x="367" y="196" text-anchor="middle">own Unibus</text>
+          <rect class="d-box" x="48" y="254" width="414" height="34"/>
+          <text class="d-s" x="255" y="275" text-anchor="middle">the join: one DBGIN page, and two masters that can reach it</text>
+          <line class="d-line" x1="157" y1="228" x2="157" y2="254"/>
+          <line class="d-line" x1="367" y1="228" x2="367" y2="254"/>
+          <line class="d-line" x1="143" y1="288" x2="143" y2="306"/>
+          <rect class="d-box" x="48" y="306" width="190" height="86"/>
+          <text class="d-t" x="143" y="328" text-anchor="middle">the register window</text>
+          <text class="d-n" x="143" y="348" text-anchor="middle">0x8000_1000</text>
+          <text class="d-s" x="143" y="368" text-anchor="middle">sixteen words on a</text>
+          <text class="d-s" x="143" y="384" text-anchor="middle">general-purpose port</text>
+          <line class="d-line" x1="238" y1="349" x2="262" y2="349"/>
+          <rect class="d-box" x="262" y="306" width="178" height="86"/>
+          <text class="d-t" x="351" y="328" text-anchor="middle">muir, on the Arm cores</text>
+          <text class="d-s" x="351" y="348" text-anchor="middle">a CADR that runs CC,</text>
+          <text class="d-s" x="351" y="364" text-anchor="middle">reaching the window with</text>
+          <text class="d-n" x="351" y="384" text-anchor="middle">--debug-cable-connect</text>
+          <line class="d-line" x1="455" y1="288" x2="455" y2="410"/>
+          <rect class="d-box" x="370" y="410" width="110" height="44"/>
+          <text class="d-m" x="425" y="432" text-anchor="middle">Pmod JA</text>
+          <text class="d-s" x="425" y="448" text-anchor="middle">eight pins</text>
+
+          <path class="d-bus" d="M480,432 H580"/>
+          <text class="d-s" x="530" y="422" text-anchor="middle">the ribbon</text>
+
+          <rect class="d-box" x="580" y="44" width="450" height="420"/>
+          <text class="d-t" x="805" y="68" text-anchor="middle">a board with nothing set: a debuggee</text>
+          <rect class="d-box" x="598" y="82" width="414" height="160"/>
+          <text class="d-t" x="805" y="104" text-anchor="middle">the CADR, in the fabric</text>
+          <rect class="d-box" x="612" y="118" width="190" height="110"/>
+          <text class="d-m" x="707" y="142" text-anchor="middle">DBGIN</text>
+          <text class="d-s" x="707" y="164" text-anchor="middle">answering the board at</text>
+          <text class="d-s" x="707" y="180" text-anchor="middle">the other end of the</text>
+          <text class="d-s" x="707" y="196" text-anchor="middle">ribbon</text>
+          <rect class="d-box" x="822" y="118" width="190" height="110"/>
+          <text class="d-m" x="917" y="142" text-anchor="middle">DBGOUT</text>
+          <text class="d-s" x="917" y="164" text-anchor="middle">built here too, and this</text>
+          <text class="d-s" x="917" y="180" text-anchor="middle">board could be told to</text>
+          <text class="d-s" x="917" y="196" text-anchor="middle">be the debugger instead</text>
+          <rect class="d-box" x="598" y="254" width="414" height="34"/>
+          <text class="d-s" x="805" y="275" text-anchor="middle">the join: one DBGIN page, and two masters that can reach it</text>
+          <line class="d-line" x1="707" y1="228" x2="707" y2="254"/>
+          <line class="d-line" x1="917" y1="228" x2="917" y2="254"/>
+          <line class="d-line" x1="605" y1="288" x2="605" y2="410"/>
+          <rect class="d-box" x="580" y="410" width="110" height="44"/>
+          <text class="d-m" x="635" y="432" text-anchor="middle">Pmod JA</text>
+          <text class="d-s" x="635" y="448" text-anchor="middle">eight pins</text>
+          <line class="d-line" x1="798" y1="349" x2="822" y2="349"/>
+          <rect class="d-box" x="620" y="306" width="178" height="86"/>
+          <text class="d-t" x="709" y="328" text-anchor="middle">muir, on the Arm cores</text>
+          <text class="d-s" x="709" y="348" text-anchor="middle">this board stays</text>
+          <text class="d-s" x="709" y="364" text-anchor="middle">debuggable from here</text>
+          <text class="d-s" x="709" y="384" text-anchor="middle">whatever the ribbon does</text>
+          <rect class="d-box" x="822" y="306" width="190" height="86"/>
+          <text class="d-t" x="917" y="328" text-anchor="middle">the register window</text>
+          <text class="d-n" x="917" y="348" text-anchor="middle">0x8000_1000</text>
+          <text class="d-s" x="917" y="368" text-anchor="middle">sixteen words on a</text>
+          <text class="d-s" x="917" y="384" text-anchor="middle">general-purpose port</text>
+          <line class="d-line" x1="917" y1="288" x2="917" y2="306"/>
+
+          <text class="d-t" x="30" y="504">and a board is told which end of the cable it is</text>
+          <text class="d-n" x="30" y="530">debug-cable-connect</text>
+          <text class="d-s" x="280" y="530">ask to be the debugger on the connector. The first board told is the one that has it</text>
+          <text class="d-n" x="30" y="550">debug-cable-disconnect</text>
+          <text class="d-s" x="280" y="550">give the role back. A board with nothing set is a debuggee, which is what a CADR is</text>
+          <text class="d-n" x="30" y="570">debug-cable-wiring</text>
+          <text class="d-s" x="280" y="570">auto, straight or crossover: which way round the ribbon was made</text>
+          <text class="d-n" x="30" y="590">debug-cable</text>
+          <text class="d-s" x="280" y="590">read it back: the role this board has, what is on the connector, and the frame counters</text>
+          <text class="d-s" x="30" y="618">The console&rsquo;s own words. The card&rsquo;s file of flags carries the same one, and the start-up script applies it at boot.</text>
+        </svg>
+      </div>
+      <figcaption>Only the connector changes hands. A board&rsquo;s own DBGIN
+      page is never switched off, so a debugger board stays debuggable through
+      its window while it is debugging somebody else, which is what a real CADR
+      is with both of its connectors live.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>The cable</h2>
+      <p>A Pmod header has twelve pins: eight signals in two rows of four, a
+      ground in each row and 3.3 V in each row. A cable for this link joins the
+      eight signals and the two grounds and leaves the supply pins open at both
+      ends. The grounds must be joined; the supplies must not, because two
+      boards&rsquo; regulators tied together is not something either of them is
+      built for.</p>
+
+      <p>A ribbon between two host sockets can also be made the wrong way up,
+      and one was. The header&rsquo;s two rows are exchanged by it, so each
+      board&rsquo;s pins 1 to 4 land on the other&rsquo;s pins 7 to 10. The
+      fabric looks for that rather than trusting the cable: a board told to be
+      the debugger drives nothing at first, listens on both groups of pins, and
+      compensates if it must.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 504" role="img" aria-label="The cable, drawn as two Pmod headers and the ribbon between them. Each header is twelve pins in two rows: pins 1 to 6 above and 7 to 12 below. Pins 1 to 4 and 7 to 10 are signals, pins 5 and 11 are ground, and pins 6 and 12 are 3.3 V and are crossed off, because a cable for this link leaves them open at both ends. The ribbon joins pin 1 to pin 1 and so on. Pins 1 to 4 are one group and 7 to 10 the other: whichever board is the debugger drives one group and the debuggee drives the other, and neither is ever driven from both ends. Below, the same two headers drawn again to show what a connector pressed on the other way up does: each board's pins 1 to 4 land on the other's pins 7 to 10, in order. A board told to be the debugger drives nothing at first, listens on both groups and compensates; only the debugger compensates, because two ends compensating would cross the cable again.">
+          <text class="d-t" x="10" y="18">the cable</text>
+          <text class="d-s" x="10" y="36">Pmod JA on both boards</text>
+
+          <text class="d-t" x="248" y="70" text-anchor="middle">this board&rsquo;s header</text>
+          <rect class="d-box" x="80" y="82" width="56" height="40"/>
+          <text class="d-n" x="108" y="107" text-anchor="middle">1</text>
+          <rect class="d-box" x="136" y="82" width="56" height="40"/>
+          <text class="d-n" x="164" y="107" text-anchor="middle">2</text>
+          <rect class="d-box" x="192" y="82" width="56" height="40"/>
+          <text class="d-n" x="220" y="107" text-anchor="middle">3</text>
+          <rect class="d-box" x="248" y="82" width="56" height="40"/>
+          <text class="d-n" x="276" y="107" text-anchor="middle">4</text>
+          <rect class="d-tint" x="304" y="82" width="56" height="40"/>
+          <rect class="d-box" x="304" y="82" width="56" height="40"/>
+          <text class="d-n" x="332" y="107" text-anchor="middle">5</text>
+          <rect class="d-absent" x="360" y="82" width="56" height="40"/>
+          <path class="d-absent-x" d="M364,86 L412,118 M412,86 L364,118"/>
+          <text class="d-n" x="388" y="107" text-anchor="middle">6</text>
+          <rect class="d-box" x="80" y="132" width="56" height="40"/>
+          <text class="d-n" x="108" y="157" text-anchor="middle">7</text>
+          <rect class="d-box" x="136" y="132" width="56" height="40"/>
+          <text class="d-n" x="164" y="157" text-anchor="middle">8</text>
+          <rect class="d-box" x="192" y="132" width="56" height="40"/>
+          <text class="d-n" x="220" y="157" text-anchor="middle">9</text>
+          <rect class="d-box" x="248" y="132" width="56" height="40"/>
+          <text class="d-n" x="276" y="157" text-anchor="middle">10</text>
+          <rect class="d-tint" x="304" y="132" width="56" height="40"/>
+          <rect class="d-box" x="304" y="132" width="56" height="40"/>
+          <text class="d-n" x="332" y="157" text-anchor="middle">11</text>
+          <rect class="d-absent" x="360" y="132" width="56" height="40"/>
+          <path class="d-absent-x" d="M364,136 L412,168 M412,136 L364,168"/>
+          <text class="d-n" x="388" y="157" text-anchor="middle">12</text>
+          <text class="d-t" x="812" y="70" text-anchor="middle">the other board&rsquo;s header</text>
+          <rect class="d-box" x="644" y="82" width="56" height="40"/>
+          <text class="d-n" x="672" y="107" text-anchor="middle">1</text>
+          <rect class="d-box" x="700" y="82" width="56" height="40"/>
+          <text class="d-n" x="728" y="107" text-anchor="middle">2</text>
+          <rect class="d-box" x="756" y="82" width="56" height="40"/>
+          <text class="d-n" x="784" y="107" text-anchor="middle">3</text>
+          <rect class="d-box" x="812" y="82" width="56" height="40"/>
+          <text class="d-n" x="840" y="107" text-anchor="middle">4</text>
+          <rect class="d-tint" x="868" y="82" width="56" height="40"/>
+          <rect class="d-box" x="868" y="82" width="56" height="40"/>
+          <text class="d-n" x="896" y="107" text-anchor="middle">5</text>
+          <rect class="d-absent" x="924" y="82" width="56" height="40"/>
+          <path class="d-absent-x" d="M928,86 L976,118 M976,86 L928,118"/>
+          <text class="d-n" x="952" y="107" text-anchor="middle">6</text>
+          <rect class="d-box" x="644" y="132" width="56" height="40"/>
+          <text class="d-n" x="672" y="157" text-anchor="middle">7</text>
+          <rect class="d-box" x="700" y="132" width="56" height="40"/>
+          <text class="d-n" x="728" y="157" text-anchor="middle">8</text>
+          <rect class="d-box" x="756" y="132" width="56" height="40"/>
+          <text class="d-n" x="784" y="157" text-anchor="middle">9</text>
+          <rect class="d-box" x="812" y="132" width="56" height="40"/>
+          <text class="d-n" x="840" y="157" text-anchor="middle">10</text>
+          <rect class="d-tint" x="868" y="132" width="56" height="40"/>
+          <rect class="d-box" x="868" y="132" width="56" height="40"/>
+          <text class="d-n" x="896" y="157" text-anchor="middle">11</text>
+          <rect class="d-absent" x="924" y="132" width="56" height="40"/>
+          <path class="d-absent-x" d="M928,136 L976,168 M976,136 L928,168"/>
+          <text class="d-n" x="952" y="157" text-anchor="middle">12</text>
+
+          <path class="d-bus" d="M416,102 H644"/>
+          <path class="d-bus" d="M416,152 H644"/>
+          <text class="d-s" x="530" y="122" text-anchor="middle">the ribbon</text>
+          <text class="d-s" x="530" y="140" text-anchor="middle">pin 1 to pin 1, and so on</text>
+
+          <text class="d-x" x="108" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="164" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="220" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="276" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="332" y="194" text-anchor="middle">ground</text>
+          <text class="d-x" x="332" y="208" text-anchor="middle">joined</text>
+          <text class="d-x" x="388" y="194" text-anchor="middle">3.3 V</text>
+          <text class="d-x d-warn" x="388" y="208" text-anchor="middle">OPEN</text>
+          <text class="d-x" x="672" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="728" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="784" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="840" y="194" text-anchor="middle">signal</text>
+          <text class="d-x" x="896" y="194" text-anchor="middle">ground</text>
+          <text class="d-x" x="896" y="208" text-anchor="middle">joined</text>
+          <text class="d-x" x="952" y="194" text-anchor="middle">3.3 V</text>
+          <text class="d-x d-warn" x="952" y="208" text-anchor="middle">OPEN</text>
+
+          <text class="d-s" x="80" y="236">Pins 1 to 4 are one group and pins 7 to 10 the other. Whichever board is the debugger drives one group and the debuggee drives the other,</text>
+          <text class="d-s" x="80" y="252">and neither group is ever driven from both ends, which is what makes this full duplex with nothing to turn around.</text>
+          <text class="d-s" x="80" y="276">Pins 5 and 11 are ground and pins 6 and 12 are 3.3 V. A cable for this link joins the eight signal pins and the two grounds and</text>
+          <text class="d-s" x="80" y="292">leaves the two supply pins open, because a ribbon that joined them would tie two boards&rsquo; regulators together.</text>
+
+          <text class="d-t" x="10" y="332">and a ribbon between two host sockets exchanges the header&rsquo;s two rows</text>
+          <rect class="d-box" x="120" y="354" width="160" height="38"/>
+          <text class="d-s" x="200" y="378" text-anchor="middle">pins 1 to 4</text>
+          <rect class="d-box" x="120" y="412" width="160" height="38"/>
+          <text class="d-s" x="200" y="436" text-anchor="middle">pins 7 to 10</text>
+          <rect class="d-box" x="780" y="354" width="160" height="38"/>
+          <text class="d-s" x="860" y="378" text-anchor="middle">pins 1 to 4</text>
+          <rect class="d-box" x="780" y="412" width="160" height="38"/>
+          <text class="d-s" x="860" y="436" text-anchor="middle">pins 7 to 10</text>
+          <line class="d-line" x1="280" y1="373" x2="780" y2="431"/>
+          <line class="d-line" x1="280" y1="431" x2="780" y2="373"/>
+          <text class="d-s" x="530" y="366" text-anchor="middle">each board&rsquo;s pins 1 to 4 land on the other&rsquo;s 7 to 10, in order</text>
+          <text class="d-s" x="530" y="446" text-anchor="middle">a connector pressed on the other way up does this, and one was</text>
+
+          <text class="d-s" x="80" y="480">Only the DEBUGGER compensates for it. A debuggee drives the high four pins and listens on the low four whatever it is told, because one</text>
+          <text class="d-s" x="80" y="496">end compensating is what straightens a mirrored ribbon and two ends compensating would cross it again.</text>
+        </svg>
+      </div>
+      <figcaption>The connector is Pmod JA on both boards. Every board indexes
+      a header's eight signals in the same order, so a straight ribbon maps each
+      pin to its counterpart whichever headers the two ends are.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- The same cable on the DE25-Nano, which has no Pmod.  This board's end is
+     eight pins of a 2x20 GPIO header, so the figure has to do three things a
+     Pmod figure does not: say WHICH of the board's two headers, say WHICH END
+     of it, and say which pins must never be joined.  The board is drawn as a
+     draft rather than a plan; its connectors are there to say which way up it
+     is, and they are the ones the manual's own figure names. -->
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>The cable on the DE25-Nano</h2>
+      <p>That board has no Pmod. Its two headers are 2x20 GPIO connectors, so
+      a cable between it and a Zynq board is an adapter rather than a ribbon,
+      and the eight signals take JP1 pins 31 to 38 with the header&rsquo;s own
+      ground on pin 30.</p>
+
+      <p>Two of that header&rsquo;s pins carry supplies, and a cable joins
+      neither. Pin 11 is 5 V and pin 29 is 3.3 V, and neither of them is a
+      fabric pin at all, so nothing in the design can drive one. The guards
+      beside each signal are carried across from the Zynq boards as a
+      decision, not as a measurement of this board.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 944" role="img" aria-label="The debug cable on the DE25-Nano, in three parts. First, the board from above, drawn roughly: a landscape board with a mounting hole at each corner, the Agilex 5 in the middle, the DC 5 V power jack and the HDMI socket on the left edge, two USB Type-C sockets and the Ethernet socket on the right edge, and the switches, buttons and LEDs along the bottom. The board carries two 2x20 headers, one along the top edge and one along the bottom. JP1, the one this cable uses, is the top one, on the edge between the power jack and the USB sockets; the bottom one is JP2 and nothing here uses it. JP1 is drawn as its twenty pin-pairs, with pin 1 at the power-jack end and the four pairs carrying pins 31 to 38 marked near the other end, with pins 39 and 40 the last pair beyond them. Second, the twelve pins at that end at a readable size, as six pin-pairs: pin 29 is 3.3 V and is crossed off, pin 30 is the ground the cable joins, pins 31, 33, 35 and 37 are the debugger strobe, the debugger data, the debuggee strobe and the debuggee data, pins 32, 34, 36 and 38 are each a guard driven low beside the signal before it, and pins 39 and 40 are unused. Each pin is labeled with what it answers at the far end: Pmod 1, 3, 7 and 9 for the signals, Pmod 2, 4, 8 and 10 for the guards, and the Pmod's ground for pin 30. Third, the warnings. Pin 11 is 5 V and pin 29 is 3.3 V and neither is ever joined to anything: only the ground on pin 30 is joined, and a manufactured ribbon joins every conductor unless it is stopped. The guards are a decision rather than a measurement: on the Zynq boards the maker's schematics show those pins routed as coupled pairs, no schematic is published for this board, and the arrangement was carried across for consistency. And no such cable exists: the far end is a Pmod, this end is a 2x20 header, nobody has made the adapter, and nothing of this connector has run on hardware.">
+          <text class="d-t" x="10" y="18">the debug cable on the DE25-Nano</text>
+          <text class="d-s" x="10" y="36">JP1 pins 31 to 38, with the header&rsquo;s ground on pin 30 &mdash; the same eight signals the Zynq boards put on one Pmod</text>
+          <text class="d-t" x="10" y="66">the board from above, roughly</text>
+          <!-- A draft and not a plan: the outline, the four mounting holes, the
+          part in the middle, and the connectors that say which way up the
+          board is.  Figure 2-1 of the manual names every one of them. -->
+          <rect class="d-box" x="10" y="84" width="680" height="430"/>
+          <circle class="d-box" cx="36" cy="110" r="9"/>
+          <circle class="d-box" cx="664" cy="110" r="9"/>
+          <circle class="d-box" cx="36" cy="488" r="9"/>
+          <circle class="d-box" cx="664" cy="488" r="9"/>
+          <rect class="d-fill" x="10" y="130" width="48" height="38"/>
+          <text class="d-x" x="34.0" y="152.0" text-anchor="middle">DC 5 V</text>
+          <rect class="d-fill" x="10" y="194" width="42" height="52"/>
+          <text class="d-x" x="31.0" y="223.0" text-anchor="middle">HDMI</text>
+          <rect class="d-fill" x="10" y="372" width="22" height="62"/>
+          <text class="d-x" x="21.0" y="406.0" text-anchor="middle">MIPI</text>
+          <rect class="d-fill" x="648" y="132" width="42" height="32"/>
+          <text class="d-x" x="669.0" y="151.0" text-anchor="middle">USB-C</text>
+          <rect class="d-fill" x="648" y="172" width="42" height="32"/>
+          <text class="d-x" x="669.0" y="191.0" text-anchor="middle">USB-C</text>
+          <rect class="d-fill" x="618" y="224" width="72" height="74"/>
+          <text class="d-x" x="654.0" y="264.0" text-anchor="middle">Ethernet</text>
+          <rect class="d-fill" x="538" y="422" width="98" height="32"/>
+          <text class="d-x" x="587.0" y="441.0" text-anchor="middle">SW x4</text>
+          <rect class="d-fill" x="428" y="422" width="96" height="32"/>
+          <text class="d-x" x="476.0" y="441.0" text-anchor="middle">KEY, LED</text>
+          <rect class="d-fill" x="258" y="242" width="116" height="116"/>
+          <text class="d-x" x="316.0" y="303.0" text-anchor="middle">Agilex 5</text>
+          <!-- JP1, drawn as its twenty pin-pairs.  The eight this cable uses are
+          pairs 16 to 19, so they are FOUR PAIRS IN FROM THE FAR END and not
+          at the end itself: pins 39 and 40 are the last pair.  That is the
+          one thing a person counting pins gets wrong. -->
+          <rect class="d-fill" x="150" y="90" width="410" height="26"/>
+          <path class="d-line" d="M170.5,90 L170.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M191,90 L191,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M211.5,90 L211.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M232,90 L232,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M252.5,90 L252.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M273,90 L273,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M293.5,90 L293.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M314,90 L314,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M334.5,90 L334.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M355,90 L355,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M375.5,90 L375.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M396,90 L396,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M416.5,90 L416.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M437,90 L437,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M457.5,90 L457.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M478,90 L478,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M498.5,90 L498.5,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M519,90 L519,116" stroke-opacity="0.3"/>
+          <path class="d-line" d="M539.5,90 L539.5,116" stroke-opacity="0.3"/>
+          <rect class="d-tint" x="457.5" y="90" width="82" height="26"/>
+          <rect class="d-box" x="457.5" y="90" width="82" height="26"/>
+          <path class="d-line" d="M498.5,116 L498.5,122"/>
+          <text class="d-t" x="498.5" y="134" text-anchor="middle">pins 31&ndash;38</text>
+          <path class="d-absent-x" d="M262.8,116 L262.8,124"/>
+          <text class="d-x d-warn" x="262.75" y="134" text-anchor="middle">pin 11 &mdash; 5 V</text>
+          <text class="d-x" x="151" y="132">pin 1</text>
+          <text class="d-x" x="151" y="148">JP1 &mdash; the manual&rsquo;s GPIO 0, forty pins</text>
+          <text class="d-x" x="560" y="148" text-anchor="end">pins 39, 40 &mdash; the last pair</text>
+          <rect class="d-fill" x="150" y="482" width="410" height="26"/>
+          <text class="d-x" x="151" y="474">JP2 &mdash; the manual&rsquo;s GPIO 1; nothing here uses it</text>
+          <text class="d-t" x="726" y="162">finding it</text>
+          <text class="d-s" x="726" y="190">JP1 is the header on the edge between the power jack</text>
+          <text class="d-s" x="726" y="208">and the USB sockets. The other edge, with the switches,</text>
+          <text class="d-s" x="726" y="226">the buttons and the LEDs along it, carries JP2.</text>
+          <text class="d-s" x="726" y="262">Pin 1 is at the power-jack end.</text>
+          <text class="d-s" x="726" y="298">Pins 31 to 38 are not at the far end. Pins 39 and 40 are</text>
+          <text class="d-s" x="726" y="316">the last pair, so the eight are the four pairs before</text>
+          <text class="d-s" x="726" y="334">them: count four pairs back from the end.</text>
+          <text class="d-s" x="726" y="370">Pin 30, the ground this cable joins, is the pair before</text>
+          <text class="d-s" x="726" y="388">pin 31.</text>
+          <text class="d-s" x="726" y="424">The two supply pins are pin 11 and pin 29, and a cable</text>
+          <text class="d-s" x="726" y="442">joins neither of them.</text>
+          <text class="d-t" x="10" y="560">the twelve pins at that end, at a size that can be read</text>
+          <text class="d-s" x="10" y="578">the run from pin 30 to pin 38 is ground, signal, guard, signal, guard, signal, guard, signal, guard, so no two signals are adjacent in the ribbon</text>
+          <!-- Each pin with what it answers at the far end, so an adapter can be
+          made from this drawing alone.  The index is the Pmod's own numbering
+          carried across, which is what makes a pin-to-pin cable land every
+          signal where a Zynq board expects it. -->
+          <text class="d-x" x="155.0" y="600" text-anchor="middle">3.3 V</text>
+          <text class="d-x d-warn" x="155.0" y="613" text-anchor="middle">NEVER JOINED</text>
+          <rect class="d-absent" x="80" y="626" width="150" height="46"/>
+          <path class="d-absent-x" d="M126,634 L184,664 M184,634 L126,664"/>
+          <text class="d-n" x="155.0" y="655" text-anchor="middle">29</text>
+          <rect class="d-tint" x="80" y="672" width="150" height="46"/>
+          <rect class="d-box" x="80" y="672" width="150" height="46"/>
+          <text class="d-n" x="155.0" y="701" text-anchor="middle">30</text>
+          <text class="d-x" x="155.0" y="736" text-anchor="middle">ground</text>
+          <text class="d-x" x="155.0" y="749" text-anchor="middle">to the Pmod&rsquo;s ground</text>
+          <text class="d-x" x="305.0" y="600" text-anchor="middle">debugger strobe</text>
+          <text class="d-x" x="305.0" y="613" text-anchor="middle">to Pmod 1</text>
+          <rect class="d-box" x="230" y="626" width="150" height="46"/>
+          <text class="d-n" x="305.0" y="655" text-anchor="middle">31</text>
+          <rect class="d-box" x="230" y="672" width="150" height="46"/>
+          <text class="d-n" x="305.0" y="701" text-anchor="middle">32</text>
+          <text class="d-x" x="305.0" y="736" text-anchor="middle">guard, driven low</text>
+          <text class="d-x" x="305.0" y="749" text-anchor="middle">to Pmod 2</text>
+          <text class="d-x" x="455.0" y="600" text-anchor="middle">debugger data</text>
+          <text class="d-x" x="455.0" y="613" text-anchor="middle">to Pmod 3</text>
+          <rect class="d-box" x="380" y="626" width="150" height="46"/>
+          <text class="d-n" x="455.0" y="655" text-anchor="middle">33</text>
+          <rect class="d-box" x="380" y="672" width="150" height="46"/>
+          <text class="d-n" x="455.0" y="701" text-anchor="middle">34</text>
+          <text class="d-x" x="455.0" y="736" text-anchor="middle">guard, driven low</text>
+          <text class="d-x" x="455.0" y="749" text-anchor="middle">to Pmod 4</text>
+          <text class="d-x" x="605.0" y="600" text-anchor="middle">debuggee strobe</text>
+          <text class="d-x" x="605.0" y="613" text-anchor="middle">to Pmod 7</text>
+          <rect class="d-box" x="530" y="626" width="150" height="46"/>
+          <text class="d-n" x="605.0" y="655" text-anchor="middle">35</text>
+          <rect class="d-box" x="530" y="672" width="150" height="46"/>
+          <text class="d-n" x="605.0" y="701" text-anchor="middle">36</text>
+          <text class="d-x" x="605.0" y="736" text-anchor="middle">guard, driven low</text>
+          <text class="d-x" x="605.0" y="749" text-anchor="middle">to Pmod 8</text>
+          <text class="d-x" x="755.0" y="600" text-anchor="middle">debuggee data</text>
+          <text class="d-x" x="755.0" y="613" text-anchor="middle">to Pmod 9</text>
+          <rect class="d-box" x="680" y="626" width="150" height="46"/>
+          <text class="d-n" x="755.0" y="655" text-anchor="middle">37</text>
+          <rect class="d-box" x="680" y="672" width="150" height="46"/>
+          <text class="d-n" x="755.0" y="701" text-anchor="middle">38</text>
+          <text class="d-x" x="755.0" y="736" text-anchor="middle">guard, driven low</text>
+          <text class="d-x" x="755.0" y="749" text-anchor="middle">to Pmod 10</text>
+          <text class="d-x" x="905.0" y="600" text-anchor="middle" fill-opacity="0.45">not used</text>
+          <rect class="d-box" x="830" y="626" width="150" height="46"/>
+          <text class="d-n" x="905.0" y="655" text-anchor="middle" fill-opacity="0.45">39</text>
+          <rect class="d-box" x="830" y="672" width="150" height="46"/>
+          <text class="d-n" x="905.0" y="701" text-anchor="middle" fill-opacity="0.45">40</text>
+          <text class="d-x" x="905.0" y="736" text-anchor="middle" fill-opacity="0.45">not used</text>
+          <text class="d-x" x="74" y="655" text-anchor="end">odd</text>
+          <text class="d-x" x="74" y="701" text-anchor="end">even</text>
+          <!-- The three things this page exists to say.  The first is the one
+          that costs a board if it is got wrong. -->
+          <text class="d-s d-warn" x="10" y="784">PIN 11 IS 5 V AND PIN 29 IS 3.3 V, AND NEITHER IS EVER JOINED TO ANYTHING. ONLY THE GROUND ON PIN 30 IS JOINED.</text>
+          <text class="d-s" x="10" y="801">Two boards&rsquo; regulators tied together is not something either of them is built for, and a manufactured ribbon joins every conductor unless it is stopped. Neither</text>
+          <text class="d-s" x="10" y="817">supply pin is a fabric pin, so nothing in this design can drive one either.</text>
+          <text class="d-s" x="10" y="843">The guards are a decision and not a measurement. On the Zynq boards the maker&rsquo;s schematics show those pins routed as coupled pairs; no schematic is</text>
+          <text class="d-s" x="10" y="859">published for this board and its manual says nothing about how JP1 is routed, so the arrangement was carried across because it is what the other two boards</text>
+          <text class="d-s" x="10" y="875">run. If a cable here ever misbehaves, that is the first assumption to revisit.</text>
+          <text class="d-s" x="10" y="901">No such cable exists. The far end is a Pmod and this end is a 2x20 header, and nobody has made the adapter. The connector is built, linted and read by a</text>
+          <text class="d-s" x="10" y="917">check, and nothing of it has run on hardware.</text>
+        </svg>
+      </div>
+      <figcaption>Which header, which end of it, and which pins are never
+      joined. No cable of this shape has been made, so nothing of this
+      connector has run on hardware.</figcaption>
+    </figure>
+  </div>
+</section>
+
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>The protocol on the wire</h2>
+      <p>Twenty-one wires do not fit on eight pins, so the levels are sent as
+      frames. Four pins go each way and neither group is ever driven from both
+      ends, which makes the link full duplex with nothing to turn around. One
+      pin of the four is a strobe, and nothing is clocked by it: it is sampled
+      through two flip-flops like any other asynchronous input, and each board
+      keeps a clock of its own.</p>
+
+      <p>A frame carries the levels, a two-bit marker reading <code>01</code>
+      and one parity bit. The marker tells a frame from a connector with nothing
+      on it, because a payload of all zeros and one of all ones are both legal.
+      The silence after the last beat tells a receiver which beat is beat zero.
+      A frame that fails either moves nothing, and the far end sends the same
+      levels again one frame later.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 300" role="img" aria-label="One frame on the wire. A strobe line and a data line, drawn as twenty-four beats. The strobe changes level at every beat and is never a clock. The data line carries one slot a beat, most significant first: beat 0 and beat 1 are the two-bit marker reading 01, beat 2 is the parity bit over the payload, and beats 3 to 23 are the twenty-one payload bits, numbered 20 down to 0. After the last beat the lines are left alone for the gap, which is what tells a receiver where the next frame begins. Six ticks a beat and eighteen of silence after the last; any interval longer than twelve ticks with no transition is between frames. The snapshot is taken once, at the first beat, and the receiver moves its outputs once, at the last, so a frame is presented whole or not at all.">
+          <text class="d-t" x="10" y="18">one frame on the wire</text>
+          <text class="d-s" x="10" y="36">one strobe and one data line each way, twenty-four beats, and the gap after them</text>
+
+          <path class="d-line" d="M140,74 V68 H208 V74"/>
+          <text class="d-x" x="174" y="62" text-anchor="middle">marker 01</text>
+          <path class="d-line" d="M208,74 V68 H242 V74"/>
+          <text class="d-x" x="225" y="62" text-anchor="middle">parity</text>
+          <path class="d-line" d="M242,74 V68 H956 V74"/>
+          <text class="d-x" x="599" y="62" text-anchor="middle">the payload: twenty-one bits, the most significant first</text>
+
+          <text class="d-n" x="30" y="97">strobe</text>
+          <text class="d-n" x="30" y="161">data</text>
+          <path class="d-line" d="M140,108 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34 V78 h34 V108 h34"/>
+          <rect class="d-tint" x="140" y="142" width="34" height="30"/>
+          <rect class="d-box" x="140" y="142" width="34" height="30"/>
+          <text class="d-x" x="157" y="161" text-anchor="middle">0</text>
+          <text class="d-x" x="157" y="188" text-anchor="middle">0</text>
+          <rect class="d-tint" x="174" y="142" width="34" height="30"/>
+          <rect class="d-box" x="174" y="142" width="34" height="30"/>
+          <text class="d-x" x="191" y="161" text-anchor="middle">1</text>
+          <text class="d-x" x="191" y="188" text-anchor="middle">1</text>
+          <rect class="d-tint" x="208" y="142" width="34" height="30"/>
+          <rect class="d-box" x="208" y="142" width="34" height="30"/>
+          <text class="d-x" x="225" y="161" text-anchor="middle">P</text>
+          <text class="d-x" x="225" y="188" text-anchor="middle">2</text>
+          <rect class="d-box" x="242" y="142" width="34" height="30"/>
+          <text class="d-x" x="259" y="161" text-anchor="middle">20</text>
+          <text class="d-x" x="259" y="188" text-anchor="middle">3</text>
+          <rect class="d-box" x="276" y="142" width="34" height="30"/>
+          <text class="d-x" x="293" y="161" text-anchor="middle">19</text>
+          <text class="d-x" x="293" y="188" text-anchor="middle">4</text>
+          <rect class="d-box" x="310" y="142" width="34" height="30"/>
+          <text class="d-x" x="327" y="161" text-anchor="middle">18</text>
+          <text class="d-x" x="327" y="188" text-anchor="middle">5</text>
+          <rect class="d-box" x="344" y="142" width="34" height="30"/>
+          <text class="d-x" x="361" y="161" text-anchor="middle">17</text>
+          <text class="d-x" x="361" y="188" text-anchor="middle">6</text>
+          <rect class="d-box" x="378" y="142" width="34" height="30"/>
+          <text class="d-x" x="395" y="161" text-anchor="middle">16</text>
+          <text class="d-x" x="395" y="188" text-anchor="middle">7</text>
+          <rect class="d-box" x="412" y="142" width="34" height="30"/>
+          <text class="d-x" x="429" y="161" text-anchor="middle">15</text>
+          <text class="d-x" x="429" y="188" text-anchor="middle">8</text>
+          <rect class="d-box" x="446" y="142" width="34" height="30"/>
+          <text class="d-x" x="463" y="161" text-anchor="middle">14</text>
+          <text class="d-x" x="463" y="188" text-anchor="middle">9</text>
+          <rect class="d-box" x="480" y="142" width="34" height="30"/>
+          <text class="d-x" x="497" y="161" text-anchor="middle">13</text>
+          <text class="d-x" x="497" y="188" text-anchor="middle">10</text>
+          <rect class="d-box" x="514" y="142" width="34" height="30"/>
+          <text class="d-x" x="531" y="161" text-anchor="middle">12</text>
+          <text class="d-x" x="531" y="188" text-anchor="middle">11</text>
+          <rect class="d-box" x="548" y="142" width="34" height="30"/>
+          <text class="d-x" x="565" y="161" text-anchor="middle">11</text>
+          <text class="d-x" x="565" y="188" text-anchor="middle">12</text>
+          <rect class="d-box" x="582" y="142" width="34" height="30"/>
+          <text class="d-x" x="599" y="161" text-anchor="middle">10</text>
+          <text class="d-x" x="599" y="188" text-anchor="middle">13</text>
+          <rect class="d-box" x="616" y="142" width="34" height="30"/>
+          <text class="d-x" x="633" y="161" text-anchor="middle">9</text>
+          <text class="d-x" x="633" y="188" text-anchor="middle">14</text>
+          <rect class="d-box" x="650" y="142" width="34" height="30"/>
+          <text class="d-x" x="667" y="161" text-anchor="middle">8</text>
+          <text class="d-x" x="667" y="188" text-anchor="middle">15</text>
+          <rect class="d-box" x="684" y="142" width="34" height="30"/>
+          <text class="d-x" x="701" y="161" text-anchor="middle">7</text>
+          <text class="d-x" x="701" y="188" text-anchor="middle">16</text>
+          <rect class="d-box" x="718" y="142" width="34" height="30"/>
+          <text class="d-x" x="735" y="161" text-anchor="middle">6</text>
+          <text class="d-x" x="735" y="188" text-anchor="middle">17</text>
+          <rect class="d-box" x="752" y="142" width="34" height="30"/>
+          <text class="d-x" x="769" y="161" text-anchor="middle">5</text>
+          <text class="d-x" x="769" y="188" text-anchor="middle">18</text>
+          <rect class="d-box" x="786" y="142" width="34" height="30"/>
+          <text class="d-x" x="803" y="161" text-anchor="middle">4</text>
+          <text class="d-x" x="803" y="188" text-anchor="middle">19</text>
+          <rect class="d-box" x="820" y="142" width="34" height="30"/>
+          <text class="d-x" x="837" y="161" text-anchor="middle">3</text>
+          <text class="d-x" x="837" y="188" text-anchor="middle">20</text>
+          <rect class="d-box" x="854" y="142" width="34" height="30"/>
+          <text class="d-x" x="871" y="161" text-anchor="middle">2</text>
+          <text class="d-x" x="871" y="188" text-anchor="middle">21</text>
+          <rect class="d-box" x="888" y="142" width="34" height="30"/>
+          <text class="d-x" x="905" y="161" text-anchor="middle">1</text>
+          <text class="d-x" x="905" y="188" text-anchor="middle">22</text>
+          <rect class="d-box" x="922" y="142" width="34" height="30"/>
+          <text class="d-x" x="939" y="161" text-anchor="middle">0</text>
+          <text class="d-x" x="939" y="188" text-anchor="middle">23</text>
+          <path class="d-line" d="M956,108 H1030"/>
+          <path class="d-dash" d="M956,142 H1030 V172 H956"/>
+          <text class="d-x" x="993" y="162" text-anchor="middle">the gap</text>
+          <text class="d-x" x="993" y="188" text-anchor="middle">18 ticks</text>
+
+          <text class="d-s" x="30" y="220">Six ticks a beat, and eighteen of silence after the last. Any interval longer than twelve ticks with no transition is between frames, so the</text>
+          <text class="d-s" x="30" y="236">next transition after it is beat zero. That costs no wire and no slot, and it puts a receiver that has just come up back in step within one frame.</text>
+          <text class="d-s" x="30" y="260">The snapshot is taken once, at the first beat, and the receiver moves its outputs once, at the last, so a frame is presented whole or not at all.</text>
+          <text class="d-s" x="30" y="276">A carrier that delivered a frame bit by bit would hand back every hazard the cable has no defense against: a late address bit makes the wrong</text>
+          <text class="d-s" x="30" y="292">strobe, a late data line is latched instead of the intended word, and a write flag that moves inside a request inverts the cycle.</text>
+        </svg>
+      </div>
+      <figcaption>The frame drawn here is the one the fabric builds now: one
+      signal to a pair of pins, the partner driven low as a guard, because the
+      header&rsquo;s pins are routed as coupled pairs and an edge on one couples
+      into the other. That is twenty-four beats, 162 ticks. The carrier before
+      it, which is what the two boards were running when they debugged each
+      other, put three data lines on each group and made a frame eight beats,
+      sixty-six ticks; a board carries whichever its bitstream was built with,
+      and both boards carry the guarded one now.
+      Either is a fraction of the 11.05 microseconds a debug cycle is
+      allowed.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <p>What crosses is twenty of MIT&rsquo;s signals one way and nineteen the
+      other. The bus enable and its direction are not among them: they are made
+      on the debugger&rsquo;s own board and never leave it. The return carries
+      two bits MIT&rsquo;s cable did not need, saying which bytes of the data
+      lines this end drives, because the status read drives only the low byte
+      and a ribbon has no pull-ups to carry the rest.</p>
+    </div>
+
+    <figure class="fig">
+      <div class="scroll">
+        <svg viewBox="0 0 1060 340" role="img" aria-label="What the frame carries, drawn as two bars of twenty-one bits each. The debugger's frame is the role bit at bit 20, the request at 19, the write line at 18, the two address bits at 17 and 16, and the sixteen data lines at 15 down to 0. The debuggee's frame is the role bit at 20, a spare bit that goes out as zero at 19, the acknowledgment at 18, two bits at 17 and 16 saying which bytes of the data lines this end is driving, and the sixteen data lines at 15 down to 0. The fields are drawn to the space their names need rather than to their width in bits. The bus enable and its direction do not cross the cable: they are made on the debugger's own board. The twenty-first bit each way is the carrier's own and says whether the board that sent the frame is the debugger.">
+          <text class="d-t" x="10" y="18">what the frame carries</text>
+
+          <text class="d-t" x="30" y="52">the debugger&rsquo;s frame: twenty of MIT&rsquo;s signals, and one bit that is the carrier&rsquo;s own</text>
+          <rect class="d-box" x="60" y="66" width="960" height="40"/>
+          <path class="d-hair" d="M130,66 V106 M240,66 V106 M340,66 V106 M500,66 V106"/>
+          <text class="d-x" x="95" y="91" text-anchor="middle">role</text>
+          <text class="d-s" x="185" y="91" text-anchor="middle">-DEBUG IN REQ</text>
+          <text class="d-s" x="290" y="91" text-anchor="middle">DEBUG IN WR</text>
+          <text class="d-s" x="420" y="91" text-anchor="middle">DEBUG IN A&lt;1:0&gt;</text>
+          <text class="d-s" x="760" y="91" text-anchor="middle">DBD&lt;15:0&gt;</text>
+          <text class="d-x" x="95" y="122" text-anchor="middle">20</text>
+          <text class="d-x" x="185" y="122" text-anchor="middle">19</text>
+          <text class="d-x" x="290" y="122" text-anchor="middle">18</text>
+          <text class="d-x" x="420" y="122" text-anchor="middle">17-16</text>
+          <text class="d-x" x="760" y="122" text-anchor="middle">15-0</text>
+
+          <text class="d-t" x="30" y="172">the debuggee&rsquo;s frame: nineteen of MIT&rsquo;s, one of the carrier&rsquo;s, and one spare</text>
+          <rect class="d-box" x="60" y="186" width="960" height="40"/>
+          <path class="d-hair" d="M130,186 V226 M240,186 V226 M340,186 V226 M500,186 V226"/>
+          <text class="d-x" x="95" y="211" text-anchor="middle">role</text>
+          <text class="d-s" x="185" y="211" text-anchor="middle">spare, sent as 0</text>
+          <text class="d-s" x="290" y="211" text-anchor="middle">DEBUG IN ACK</text>
+          <text class="d-s" x="420" y="206" text-anchor="middle">which bytes of DBD</text>
+          <text class="d-s" x="420" y="220" text-anchor="middle">this end is driving</text>
+          <text class="d-s" x="760" y="211" text-anchor="middle">DBD&lt;15:0&gt;</text>
+          <text class="d-x" x="95" y="242" text-anchor="middle">20</text>
+          <text class="d-x" x="185" y="242" text-anchor="middle">19</text>
+          <text class="d-x" x="290" y="242" text-anchor="middle">18</text>
+          <text class="d-x" x="420" y="242" text-anchor="middle">17-16</text>
+          <text class="d-x" x="760" y="242" text-anchor="middle">15-0</text>
+
+          <text class="d-s" x="30" y="274">The fields are drawn to the space their names need rather than to their width in bits.</text>
+          <text class="d-s" x="30" y="298">The two byte-drive bits are the return&rsquo;s own. MIT&rsquo;s cable carried the byte nobody drives on its pull-ups, and a ribbon has none, so the</text>
+          <text class="d-s" x="30" y="314">resolution is made at the debugger&rsquo;s end instead: a byte nobody drives arrives as ones, which is what an open cable reads as.</text>
+          <text class="d-s" x="30" y="334">The role bit is neither MIT&rsquo;s nor the machine&rsquo;s. It says whether the board that sent this frame is the debugger, and two idle boards use it to tell each other apart.</text>
+        </svg>
+      </div>
+      <figcaption>The twenty-first bit each way is the carrier&rsquo;s own. Two
+      boards cabled together with nothing set are two debuggees, and neither may
+      answer the other; the bit is how each knows the other is not a debugger,
+      whichever way round the ribbon was made.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>What has run on a board</h2>
+      <p>All three pieces have run on silicon. The window has carried CC into a
+      machine that was running Lisp, the ribbon has carried frames between two
+      boards, and CC has crossed the ribbon: the debugger board halting the
+      machine in the other board&rsquo;s fabric and reading it back, both ways
+      round. Both carriers have run on the same two boards and the same cable.
+      What has not crossed either is a write.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">What</th>
+            <th scope="col">How it was shown</th>
+            <th scope="col">Shown</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">The machine halted, and its registers read</th>
+            <td>muir on the board&rsquo;s own Arm cores, through the register window. CC stopped the machine and read the program counter, the instruction register and the flag word, each equal to the console&rsquo;s own reading of the same halt.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">The scratchpads</th>
+            <td>CC&rsquo;s reads of the A and M memories over the same window, against the console&rsquo;s readout of the same words: four, equal.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Main memory, through the map</th>
+            <td>CC wrote a Unibus map entry and read main memory through the window it opens: four words, each equal to the console&rsquo;s reading of the same address. A write through the map moved MD and spent no microcycle.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">The ribbon between two boards</th>
+            <td>Both boards&rsquo; consoles, on a real cable between two Pmod JA connectors: the role taken and given back, the far end answering, the frame counter saturated at 65,535 heard.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">A mirrored ribbon, found by the fabric</th>
+            <td>The cable on the bench was made the wrong way up. The board told to connect drove nothing, listened on both groups and reported the crossover it had found. Forced the wrong way round it said nothing was answering, and the far board said the two ends disagreed.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Two idle boards on that ribbon</th>
+            <td>Both consoles read a debuggee with nothing driving the connector. On the carrier before this one each board heard the other&rsquo;s idle frames on the same ribbon, called them a debugger&rsquo;s, and would not take the role until it was reset; the role bit in the frame removed that.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Neither machine noticing</th>
+            <td>Both boards ran Lisp throughout, at the rate they run at with no cable in them, while the role was taken, swapped and given back.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">CC over the ribbon</th>
+            <td>One board&rsquo;s CC, running in its own Lisp world, halted the machine in the other board&rsquo;s fabric over the ribbon, read it back and started it again. Both ways round. The program counter, all 48 bits of the instruction register, the output bus and the first flag word each equal the far board&rsquo;s own console at the same halt, and four scratchpad words each way equal that board&rsquo;s readout program. The second flag word differs by the one bit CC itself corrects, and the other direction, where the correction does not apply, is the control for it.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Every microcycle accounted for</th>
+            <td>A scratchpad read is one forced microinstruction, and the far machine&rsquo;s cycle counter moved by exactly one for each of them. CC&rsquo;s own program counter is what the console reads after the entry, less five, which is the five instructions its full save forces on the way in. The debuggee&rsquo;s own register window, read while it held that role, reported no requests and no faults at all, so what carried the cycle was the ribbon.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">The guards, and the frames refused</th>
+            <td>With one signal to a pair and the partner driven low, the debugger board read 0 frames refused against a saturated 65,535 heard on all twenty-four readings over four minutes and forty-eight seconds. On the carrier before it the same board in the same role refused 163 frames on one connect and 185 on the other, in bursts. That the bursts stopped when each pair carried one signal is consistent with coupling between the two unrelated signals a pair carried before, but nothing was measured on the lines themselves, so the coupling is inferred from the change and not seen. Separately, two frames on the other board, in half an hour of connects and cycles, are still unaccounted for.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">A debug cycle over the carrier that runs now</th>
+            <td>A status read typed at the debugger board&rsquo;s own Listener: the far end&rsquo;s status byte while connected, the debugger&rsquo;s own timeout while not, both ways round. The one bit that varied across sixteen reads is the far interface&rsquo;s own busy, so the byte is the far machine&rsquo;s work and not a pull-up. No register of the far machine crossed.</td>
+            <td class="name">yes</td>
+          </tr>
+          <tr>
+            <th scope="row">CC over the carrier that runs now</th>
+            <td>CC crossed the carrier with three data lines a group. On the guarded one, which is what both boards carry now, what has crossed is a status strobe.</td>
+            <td class="name">not yet</td>
+          </tr>
+          <tr>
+            <th scope="row">A write over the ribbon</th>
+            <td>CC can write a scratchpad, main memory and the machine&rsquo;s own registers, and it has done so over the window. None of that has crossed a ribbon yet.</td>
+            <td class="name">not yet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose">
+      <p><code>yes</code> means a board itself has shown it, which is the same
+      claim the colors on the board drawings make. The console&rsquo;s own line
+      carries two counters, frames heard and frames refused, and the second is
+      how much of the cable&rsquo;s time a bad ribbon costs. Frames heard
+      saturates at 65,535 within a tenth of a second of a connect and only a
+      reset of the fabric clears it, so what the pair can give is a trajectory
+      rather than a rate.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>Where each drawing came from</h2>
+      <p>Nothing above is a first-hand invention. A number with a leading
+      <code>0o</code> is octal, which is how MIT writes an address.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Figure</th><th scope="col">Read from</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">one CADR debugging another</th><td><code>docs/debug-cable.md</code>; MIT&rsquo;s own <code>sys/cc/ldbg.lisp</code>, which lists the four addresses and the modifier bits, and <code>lcadrd.lisp</code></td></tr>
+            <tr><th scope="row">the same cable in the fabric</th><td><code>rtl/machine/cadr_dbgin.sv</code>, <code>cadr_busint_regs.sv</code>, <code>rtl/plumbing/cadr_debug_window.sv</code>, <code>cadr_dbg_join.sv</code>; <code>docs/console.md</code></td></tr>
+            <tr><th scope="row">the cable</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, and each board&rsquo;s own <code>.xdc</code>, whose pins come from Digilent&rsquo;s published files</td></tr>
+            <tr><th scope="row">one frame on the wire</th><td><code>rtl/plumbing/cadr_dbg_tx.sv</code> and <code>cadr_dbg_rx.sv</code>: the marker, the parity, the beats and the gap</td></tr>
+            <tr><th scope="row">what the frame carries</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, which packs both frames in one expression, counted off <code>BUSINT.netlist</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="band">
+    <p>&copy; 2026 Mete Balci</p>
+  </div>
+</footer>
+
+</body>
+</html>

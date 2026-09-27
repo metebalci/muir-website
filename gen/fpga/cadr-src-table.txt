@@ -1,0 +1,18 @@
+        <table class="figsrc">
+          <thead>
+            <tr><th>Figure</th><th>Read from</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>the machine, whole</td><td><code>busint.erface</code>, muir's <code>data/cables.txt</code>, <code>xspec.text.3</code>, the three wire lists</td></tr>
+            <tr><td>the data paths</td><td>AI Memo 528, and the CLOCK1 delay-line taps as muir's <code>clock.rs</code> has them</td></tr>
+            <tr><td>the microinstruction</td><td><code>cadr/ir.bits</code>, and muir's <code>isa.rs</code> for the bit ranges</td></tr>
+            <tr><td>the macroinstruction</td><td><code>sys/ucadr/uc-parameters.lisp</code> and <code>uc-macrocode.lisp</code>, <code>sys/sys2/disass.lisp</code>, <code>sys/man/code.text</code></td></tr>
+            <tr><td>the map</td><td>AI Memo 528, <code>docs/map.md</code>, the VMEM drawings</td></tr>
+            <tr><td>the address space</td><td><code>sys/doc/unaddr.text</code>, muir's <code>busint.rs</code>, <code>cadr_xbus_decode.sv</code></td></tr>
+            <tr><td>the disk</td><td><code>sys/doc/disk.text</code>, and muir's <code>dm.rs</code> for the multiplexor</td></tr>
+            <tr><td>the display</td><td><code>cadrtv/lmtv.order</code>, <code>docs/tv.md</code>, <code>shwarm.lisp</code></td></tr>
+            <tr><td>the I/O board</td><td><code>docs/io-board.md</code>, <code>sys/io1/ukbd.lisp</code>, the <code>cadrio</code> drawings</td></tr>
+            <tr><td>the light panel</td><td><code>cadrwd/icmem3.wlr</code>, connector 1AJ2 pin by pin; AI Memo 528</td></tr>
+            <tr><td>the debug cable</td><td><code>docs/debug-cable.md</code>, <code>cadr/ir.bits</code>, the DBGOUT and DBGIN drawings</td></tr>
+          </tbody>
+        </table>

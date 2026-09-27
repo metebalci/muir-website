@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muir-fpga — the MIT CADR in fabric</title>
+<meta name="description" content="The MIT CADR Lisp Machine in the fabric of small FPGA boards, held tick for tick to the muir emulator: what runs on the Arty Z7-20 and the Cora Z7-07S, and what the real machine was.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="band">
+    <a class="home" href="index.html"><b>muir-fpga</b></a>
+    <nav>
+      <a href="arty-z7-20.html">Arty Z7-20</a>
+      <a href="cora-z7-07s.html">Cora Z7-07S</a>
+      <a href="booting.html">Booting</a>
+      <a href="debugging.html">Debugging</a>
+      <a href="faq.html">FAQ</a>
+      <a href="cadr.html">the CADR</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="band">
+    <h1>muir-fpga</h1>
+    <p class="lede">What runs on each of three small boards, and what the real machine was.</p>
+    <p class="sub">The CADR is the Lisp machine MIT designed in the 1970s. This project rebuilds it in programmable logic: the two processor boards, the bus interface, the disk controller, the display and the I/O board, as they were drawn. Every part of it is held to <a href="https://github.com/metebalci/muir">muir</a>, a simulator of the same machine, tick for tick and microcycle for microcycle. The result boots MIT's own system software off a disk pack and paints the window system on a screen.</p>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <h2>The boards</h2>
+
+    <!-- One row a board. The figures are each board's own place and route
+         report, both built from the color TV change, which landed at
+         653ca22 with its fabric unchanged. They are the figures that board's own drawing carries
+         under its fabric label. A cell says yes only where that board itself
+         has shown the thing, which is the same claim the drawings' colors
+         make. -->
+    <div class="tablescroll" tabindex="0" role="region" aria-label="What each board is and what it does">
+      <table class="boardtable">
+        <thead>
+          <tr>
+            <th scope="col" class="board">Board</th>
+            <th scope="col">CPU</th>
+            <th scope="col">Slices</th>
+            <th scope="col">Block RAM</th>
+            <th scope="col">Ethernet</th>
+            <th scope="col">microSD</th>
+            <th scope="col">HDMI out</th>
+            <th scope="col">USB input</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="board"><a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">XC7Z020</span></th>
+            <td class="cpu">2 x Arm Cortex-A9, Linux</td>
+            <td class="num">5,441 of 13,300<span class="pc">40.9%</span></td>
+            <td class="num">45.5 of 140<span class="pc">32.5%</span></td>
+            <td class="st">yes</td>
+            <td class="st" title="The board's own card slot.">yes</td>
+            <td class="st">yes</td>
+            <td class="st">yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">XC7Z007S</span></th>
+            <td class="cpu">1 x Arm Cortex-A9, Linux</td>
+            <td class="num">4,228 of 4,400<span class="pc">96.1%</span></td>
+            <td class="num">42.5 of 50<span class="pc">85.0%</span></td>
+            <td class="st">yes</td>
+            <td class="st" title="The board's own card slot.">yes</td>
+            <td class="st no" title="The board has no HDMI connector.">no</td>
+            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose tnote">
+      <p>The Arty Z7-20 is the recommended board, and the one tested the most. It is the board the project was built on, and every block on its drawing has now run on it.</p>
+      <p>The Cora Z7-07S carries a smaller part of the same kind and a smaller board, with no HDMI output and no USB host for a keyboard and mouse, and the machine fits it and closes timing with nothing in the machine itself changed.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>The machine itself</h2>
+      <p>The CADR was a real machine. It had two processor boards, a bus interface, a disk controller, a display board and an I/O board, wired together by five cables. It is worth knowing what it was before looking at a drawing of it inside a chip.</p>
+      <p><a href="cadr.html">What a CADR is: the hardware, board by board</a></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>The name</h2>
+      <p>muir-fpga is <a href="https://github.com/metebalci/muir">muir</a>'s RTL model of the CADR, synthesized into the fabric of an FPGA and held to muir tick for tick. muir is named for Nathan Muir, the character Robert Redford plays in <em>Spy Game</em> (2001). In memory of Robert Redford.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>License</h2>
+      <p>The work in this repository is free software under the <b>GNU Affero General Public License, version 3 or later</b>. That is the fabric, the checks and their reference traces, the programs that run beside the machine, the documents and these pages alike. The full text is <a href="https://github.com/metebalci/muir-fpga/blob/main/LICENSE"><code>LICENSE</code> at the root of the repository</a>. Almost every file in it repeats that in its own header as the SPDX identifier <code>AGPL-3.0-or-later</code>, so a file taken out of the repository still says what it is.</p>
+      <p>Eight files are under the <b>GNU General Public License, version 2 or later</b> instead, four for each of the two Zynq boards. They are the Zynq start-up routine <code>ps7_init_gpl.c</code>, U-Boot's default environment, the board's device tree and the <code>-u-boot.dtsi</code> beside it. Each of the eight is compiled into U-Boot, which is itself under that license, and the start-up routine's register tables are Digilent's board configuration as Xilinx's tool writes it out, whose own <code>ps7_init_gpl.c</code> carries the same terms. Every one of them says so in its own header.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="band">
+    <div class="prose">
+      <h2>Third-party material</h2>
+      <p>Some of what these boards need is not this project's work, and some of it is not in the repository at all. Each entry below says whose it is, under what terms, and where in the repository those terms are recorded. Where nothing records them, it says that instead of guessing.</p>
+
+      <dl class="credits">
+        <div>
+          <dt>Digilent's pin files</dt>
+          <dd>Pins come from Digilent's published master constraint files and never from memory, because a wrong pin is a light that does not come on. Digilent publishes them under the <b>MIT License</b>. The Cora Z7-07S's master file is in its board directory byte for byte as published, beside a copy of that license as <code>Digilent-License.txt</code>. The Arty Z7-20's own constraint file copies out the handful of pins that design uses rather than carrying the master file, and cites the commit and digest it read them from.</dd>
+        </div>
+        <div>
+          <dt>muir</dt>
+          <dd>The simulator this machine is held to is a separate repository and is not carried here. It sits beside this one, pinned by commit in <code>muir.commit</code> so that a reference trace names the muir it was taken from, and it is under the same AGPL, version 3 or later.</dd>
+        </div>
+        <div>
+          <dt>Buildroot, U-Boot, Linux</dt>
+          <dd>The Linux side of a Zynq board is built rather than copied. The build fetches Buildroot 2026.02.3, and through it U-Boot 2026.01 and Linux 6.19.14, each under its own license, which for the loader and the kernel is the GPL, version 2. Nothing of theirs is in this repository. The only files of this project's that are compiled into them are the four per board named above.</dd>
+        </div>
+        <div>
+          <dt>Archivo, IBM Plex Mono</dt>
+          <dd>The two faces these pages are set in, by Omnibus-Type and by IBM. Both are under the <b>SIL Open Font License, Version 1.1</b>, and both are in <code>pages/fonts/</code> as the unmodified Latin subsets Google Fonts serves, so that reading a page here asks nothing of a third party.</dd>
+        </div>
+        <div>
+          <dt>MIT's own files</dt>
+          <dd>The drawings on the page about the real machine, and the behavior every check in this project is held to, are read from MIT's engineering files: the drawings, wire lists, print sets and PROM images the AI Laboratory wrote between 1977 and 1981, and MIT's system software beside them. None of it is in this repository. muir carries it, recovered from the ITS backup tapes and unmodified. No statement of terms came with the engineering files and none is made up for them; the system release states its own, which is the AGPL, version 3 or later.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="band">
+    <p>&copy; 2026 Mete Balci</p>
+  </div>
+</footer>
+
+</body>
+</html>

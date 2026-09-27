@@ -1,0 +1,103 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+/* The technical drawings: muir-fpga's boards, sequences, cable and CADR
+   drawings, muir-sim's machine and QUUX diagrams, and ozd's switch.  They are
+   content, and they keep what they had: their line styles, the colors that
+   say whose work a block is, and the faces their labels were placed in by
+   measurement --- Zen Maru Gothic for words and IBM Plex Mono for numbers.
+   Only the page around them is the site's.  Loaded by the pages that carry a
+   drawing, and by no other. */
+
+@font-face { font-family: "Zen Maru Gothic"; src: url('fonts/zen-maru-gothic-500.woff2') format('woff2'); font-weight: 500; }
+@font-face { font-family: "Zen Maru Gothic"; src: url('fonts/zen-maru-gothic-700.woff2') format('woff2'); font-weight: 700; }
+
+:root {
+  --draw-sans: "Zen Maru Gothic", system-ui, sans-serif;
+  --draw-mono: Plex, ui-monospace, monospace;
+
+  /* WHOSE WORK EACH BLOCK ON AN ARCHITECTURE DRAWING IS, which is the whole
+     of what these colors say: green this project's work, and done; orange
+     another project's program, carried onto the board rather than built
+     there; gray a part of the board itself.  A block of this project's that
+     is not done carries no color at all.  The names are older than the
+     meanings and are kept because every drawing and the generator write
+     them. */
+  --st-done:  #2da44e;
+  --st-part:  #d97706;
+  --st-ext:   #d0d7de;
+  --st-absent: #d1495b;  /* not available on this board: the cross */
+  --tint: #ecd6c9;       /* a highlighted node on muir-sim's and ozd's diagrams */
+}
+
+/* ------------------------------------------------------------- figures */
+
+.fig { margin: 0 0 44px; display: grid; gap: 14px; color: var(--ink); min-width: 0; }
+.fig-top { display: flex; justify-content: space-between; gap: 20px; font: 9px var(--mono); letter-spacing: .6px; border-top: 1px solid var(--line); padding-top: 12px; }
+.fig-top span:last-child { color: var(--muted); text-align: right; }
+/* A drawing keeps its own minimum width and scrolls inside its box rather
+   than shrinking to illegibility. */
+.scroll { min-width: 0; overflow-x: auto; padding-bottom: 4px; }
+.fig svg { display: block; width: 100%; min-width: 660px; height: auto; }
+.fig.dense svg { min-width: 1000px; }
+/* An architecture drawing never forces a scrollbar on a wide window: it
+   scales down with its box. */
+.fig.dense.wide svg { min-width: 0; }
+.fig figcaption { font-size: 13px; line-height: 1.75; color: var(--muted); max-width: 820px; }
+.fig .more { font-size: 12px; line-height: 1.7; margin: 0; }
+.fig .more a, .fig figcaption a { font-weight: bold; }
+/* The small sketch beside prose, on ozd's page. */
+.sketch { display: block; width: 100%; max-width: 420px; height: auto; }
+@media (max-width: 700px) {
+  /* On a phone an architecture drawing scaled to the screen is a grid of
+     specks, so there it keeps a width its labels can be read at and scrolls
+     inside its own box. */
+  .fig.dense.wide svg { min-width: 1200px; }
+}
+
+/* ------------------------------------------------------------- drawings */
+
+.d-box  { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.d-fill { fill: var(--paper); stroke: currentColor; stroke-width: 1.5; }
+.d-tex  { stroke: currentColor; stroke-width: 1.5; }
+.d-dash { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 6 5; }
+.d-dot  { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 1 4; stroke-linecap: round; }
+.d-line { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.d-bus  { fill: none; stroke: currentColor; stroke-width: 4; }
+.d-wire { fill: none; stroke: currentColor; stroke-width: 4; }
+.d-ring { fill: none; stroke: currentColor; stroke-width: 1; opacity: .4; stroke-dasharray: 2 4; }
+.d-lit  { fill: var(--tint); stroke: currentColor; stroke-width: 1.5; }
+.d-switch { fill: var(--tint); stroke: currentColor; stroke-width: 3; }
+.d-plate { fill: var(--paper); }
+.d-done, .d-part, .d-ext { fill-opacity: 0.45; stroke-width: 2; }
+.d-done { fill: var(--st-done); stroke: var(--st-done); }
+.d-part { fill: var(--st-part); stroke: var(--st-part); }
+.d-ext  { fill: var(--st-ext);  stroke: var(--st-ext); }
+.d-absent   { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.d-absent-x { fill: none; stroke: var(--st-absent); stroke-width: 1.25; }
+.d-absent-t { fill-opacity: 0.5; }
+.d-absent-l { stroke-opacity: 0.35; }
+.d-line.d-done, .d-line.d-part, .d-line.d-ext { fill: none; }
+.d-key { fill-opacity: 1; }
+.d-absent-key { fill: var(--ink); fill-opacity: 1; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: none; }
+.d-hair { fill: none; stroke: currentColor; stroke-width: 1; }
+.d-tint { fill: currentColor; fill-opacity: 0.14; stroke: none; }
+
+/* The labels.  muir-fpga's drawings were placed at these sizes; muir-sim's
+   and ozd's, under `.dm`, a size larger. */
+.d-t { font: 500 13px var(--draw-sans); fill: currentColor; }
+.d-s { font: 400 11px var(--draw-sans); fill: currentColor; }
+.d-m { font: 500 13px var(--draw-mono); fill: currentColor; }
+.d-n { font: 400 11px var(--draw-mono); fill: currentColor; }
+.d-x { font: 400 9.5px var(--draw-mono); fill: currentColor; }
+.dm .d-t { font: 500 14px var(--draw-sans); }
+.dm .d-s { font: 500 12px var(--draw-sans); }
+.dm .d-n { font: 400 12px var(--draw-mono); }
+.dm .sketch .d-t { font: 500 17px var(--draw-sans); }
+.dm .sketch .d-s { font: 500 14px var(--draw-sans); }
+.dm .sketch .d-n { font: 400 14px var(--draw-mono); }
+/* ozd's name in its own switch, once in the display face; here in the
+   site's. */
+.d-big { font: bold 26px Arial, Helvetica, sans-serif; fill: currentColor; }
+/* The one red text on these drawings: the debug cable's supply pins, open at
+   both ends. */
+.d-warn, .d-s.d-warn, .d-x.d-warn { fill: var(--st-absent); font-weight: 700; }

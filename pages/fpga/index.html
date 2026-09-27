@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>muir-fpga &mdash; the MIT CADR in fabric</title>
+<meta name="description" content="The MIT CADR Lisp Machine in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano, and what the real machine was.">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../drawings.css">
+</head>
+<body class="fpga">
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX MOVING FORWARD.</span><nav aria-label="The projects"><a href="../simulator/">Simulator</a><a href="../fpga/" aria-current="page">FPGA</a><a href="../system/">System</a><a href="../ozd/">ozd</a><a class="github" href="https://github.com/metebalci/muir-fpga">GitHub <span>&#8599;</span></a></nav></header>
+<nav class="subnav wrap" aria-label="muir-fpga&rsquo;s pages"><b>muir-fpga</b><span aria-current="page">The boards</span><a href="arty-z7-20.html">Arty Z7-20</a><a href="cora-z7-07s.html">Cora Z7-07S</a><a href="de25-nano.html">DE25-Nano</a><a href="booting.html">Booting</a><a href="debugging.html">Debugging</a><a href="faq.html">Questions</a><a href="cadr.html">The CADR</a></nav>
+<main id="main">
+<section class="page-hero wrap">
+<div>
+<p class="eyebrow"><span class="dot"></span>muir-fpga &middot; the CADR in FPGA fabric</p>
+<h1>The CADR, rebuilt in an FPGA</h1>
+<p class="intro lede">What runs on each of three small boards, and what the real machine was.</p>
+<div class="actions"><a class="button" href="#boards">The boards</a><a class="text-link" href="cadr.html">The CADR</a><a class="text-link" href="https://github.com/metebalci/muir-fpga">GitHub &#8599;</a></div>
+</div>
+<div class="side">
+<p>Every part of it is held to <a href="https://github.com/metebalci/muir">muir-sim</a>, a simulator of the same machine:</p>
+<pre>HELD TO   muir-sim, <b>tick for tick</b>
+          and microcycle for microcycle
+BOOTS     MIT&rsquo;s own system software,
+          off a disk pack
+PAINTS    the window system, on a screen
+RUNS      its processor and clocks within
+          about 5% of the CADR&rsquo;s speed</pre>
+</div>
+</section>
+<section id="what" class="section wrap" aria-label="What it is">
+<div class="section-heading"><div><p class="eyebrow">01 / WHAT IT IS</p><h2>What it is</h2></div></div>
+<div class="cols">
+<div class="prose">
+<p>The CADR is the Lisp machine MIT designed in the 1970s. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
+</div>
+<div class="prose">
+<p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>).</p>
+<div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
+</div>
+</div>
+</section>
+<section id="boards" class="section wrap" aria-label="The boards">
+<div class="section-heading"><div><p class="eyebrow">02 / THE BOARDS</p><h2>The boards</h2></div></div>
+<p class="lead">A cell says yes where that board itself has run the thing, yes with a qualification where the thing is built into that board and nothing of it has run there yet, and no where the board does not have the thing at all. The two resource figures in each row are that board&rsquo;s own place and route report for the fabric it runs, with the memory, the disk and both display boards in it, in that part&rsquo;s own terms: lookup tables and block RAM on the Zynq boards, ALMs and M20K blocks on the DE25-Nano, and memory built out of logic is counted inside the logic figure rather than beside it. The two logic columns are different units, so their counts do not compare and the percentage is the figure that does: by Altera&rsquo;s own guide for converting a Zynq-7000 design to an Agilex 5 one, an ALM is about 1.3 lookup tables. The fabric carries one video mode, 1280 by 1024 at 60 hertz, and these figures are of it; a second mode was tried once and is not built now, and <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/display-output.md#a-retired-second-mode">its record</a> is in the display document. What a board has built and checked but never run is on that board&rsquo;s own page.</p>
+    <!-- One row a board. The figures are each board's own place and route
+         report for the fabric that board runs, with the memory, the disk and
+         both display boards in it, all three built from a clean tree at
+         7f44547, whose bitstreams stamp themselves 7f445470. They are the figures that board's own drawing carries
+         under its fabric label. A CELL HAS THREE READINGS AND NOT TWO: yes
+         where that board itself has run the thing, yes with a qualification
+         where the thing is built into that board and nothing of it has run
+         there yet, and no where the board does not have the thing at all.
+         The middle one was added because two unlike facts were both reading
+         as no. The Cora Z7-07S has no HDMI connector on it at all, and the
+         DE25-Nano's debug cable is in every bitstream that board builds with
+         no ribbon yet made for its header. It is a footnote in the cell and
+         not a third grade: the five-step status vocabulary this site retired
+         is exactly what it must not grow back into, so there is one
+         qualification here and it is spelled out in the note above.
+         That yes was once said to be the same claim the drawings' colors
+         make, and it no longer is: since the key was cut to three colors,
+         green says a block is this project's work and done, which means built
+         and checked rather than run on that board. So the DE25-Nano's drawing
+         colors its debug cable adapter green while this table's cell for the
+         same thing says yes with a qualification, and both are right about
+         their own question. Each
+         resource figure is named in its own part's terms, because one
+         vendor's word for another's part would be wrong: lookup tables and
+         block RAM on the Zynq boards, ALMs and M20K blocks on the DE25-Nano.
+         Lookup tables rather than the occupied slices this table carried
+         before, because a slice counts as occupied the moment anything at all
+         sits in it, so the count overstates how full a part is; a lookup table
+         and an ALM are both direct measures of logic. The two are still
+         different units and the counts do not compare: Altera's own
+         conversion guide puts one ALM at about 1.3 lookup tables, so the
+         percentage is the figure to read across the rows. That is section 2.2,
+         "AMD vs Altera FPGA Resource", of "Design Conversion Guidelines: AMD
+         Zynq 7000 SoC and Ultrascale+ MPSoC to Agilex 5 FPGAs and SoCs",
+         Altera document 826363, revision 2026-01-27:
+         https://docs.altera.com/r/docs/826363/current/design-conversion-guidelines-amd-zynq-7000-soc-and-ultrascale-mpsoc-to-agilextm-5-fpgas-and-socs
+         Memory built out of logic is counted inside the logic figure and never
+         reported beside it, which is why neither column names it. Under each
+         board's name are its FPGA's product name, its part number and a link
+         to its maker's page for it, each on a line of its own so that the
+         name column stays narrow on a phone. The debug cable is a column
+         because it is a thing one of these boards has run and another has
+         only built, and a table without it would read as though all three
+         were level. -->
+    <div class="table-scroll boardtable-wrap" tabindex="0" role="region" aria-label="What each board is and what it does">
+      <table class="boardtable">
+        <thead>
+          <tr>
+            <th scope="col" class="board">Board</th>
+            <th scope="col">CPU</th>
+            <th scope="col">Fabric logic</th>
+            <th scope="col">Block memory</th>
+            <th scope="col">Ethernet</th>
+            <th scope="col">microSD</th>
+            <th scope="col">HDMI out</th>
+            <th scope="col">USB input</th>
+            <th scope="col">Debug cable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="board"><a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">Xilinx Zynq 7020</span><span class="pc">XC7Z020</span><span class="pc">made by <a href="https://digilent.com/shop/arty-z7-zynq-7000-soc-development-board/">Digilent</a></span></th>
+            <td class="cpu">2 x Arm Cortex-A9, Linux</td>
+            <td class="num">15,054 of 53,200<span class="pc">LUTs &middot; 28.3%</span></td>
+            <td class="num">46 of 140<span class="pc">block RAM &middot; 32.9%</span></td>
+            <td class="st">yes</td>
+            <td class="st" title="The board's own card slot.">yes</td>
+            <td class="st">yes</td>
+            <td class="st">yes</td>
+            <td class="st" title="Run over a real ribbon between this board and the Cora Z7-07S.">yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">Xilinx Zynq 7007S</span><span class="pc">XC7Z007S</span><span class="pc">made by <a href="https://digilent.com/shop/cora-z7-zynq-7000-single-core-for-arm-fpga-soc-development/">Digilent</a></span></th>
+            <td class="cpu">1 x Arm Cortex-A9, Linux</td>
+            <td class="num">14,040 of 14,400<span class="pc">LUTs &middot; 97.5%</span></td>
+            <td class="num">43 of 50<span class="pc">block RAM &middot; 86.0%</span></td>
+            <td class="st">yes</td>
+            <td class="st" title="The board's own card slot.">yes</td>
+            <td class="st no" title="The board has no HDMI connector.">no</td>
+            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
+            <td class="st" title="Run over a real ribbon between this board and the Arty Z7-20.">yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="board"><a href="de25-nano.html">DE25-Nano</a><span class="pc">Altera Agilex-5E</span><span class="pc">A5EB013B</span><span class="pc">made by <a href="https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=115&amp;No=1384">Terasic</a></span></th>
+            <td class="cpu">2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux</td>
+            <td class="num">16,452 of 46,800<span class="pc">ALMs &middot; 35.2%</span></td>
+            <td class="num">135 of 358<span class="pc">M20K &middot; 37.7%</span></td>
+            <td class="st">yes</td>
+            <td class="st" title="The board's own card slot. This part has no card configuration scheme, so the flash carries the first stage and the card carries everything else.">yes</td>
+            <td class="st">yes</td>
+            <td class="st">yes</td>
+            <td class="st" title="The connector is in every build of this board, and no cable from its GPIO header to a Pmod has been made, so nothing of it has run here.">yes<span class="pc">(not tested)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</section>
+<section id="machine" class="section wrap" aria-label="The machine itself">
+<div class="section-heading"><div><p class="eyebrow">03 / THE MACHINE ITSELF</p><h2>The machine itself</h2></div></div>
+<div class="prose">
+<p>The CADR was a real machine: two processor boards, a bus interface, a disk controller, a display board and an I/O board, wired together by five cables. It is worth knowing what the CADR was before looking at a drawing of it inside a chip.</p>
+<div class="actions"><a class="button" href="cadr.html">What a CADR is, board by board <span>&#8599;</span></a></div>
+</div>
+</section>
+<section id="license" class="section wrap" aria-label="License and third-party material">
+<div class="section-heading"><div><p class="eyebrow">04 / TERMS</p><h2>License and third-party material</h2></div></div>
+<p class="lead">Where nothing records the terms, the table says so instead of guessing. The long form is <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/license.md">docs/license.md</a>.</p>
+<div class="table-scroll"><table class="terms">
+<thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
+<tbody>
+<tr><th scope="row">The work in this repository: the fabric, the checks and their reference traces, the programs beside the machine and the documents</th><td>This project&rsquo;s. <b>GNU Affero General Public License, version 3 or later</b></td><td><a href="https://github.com/metebalci/muir-fpga/blob/main/LICENSE"><code>LICENSE</code></a>, and the SPDX identifier <code>AGPL-3.0-or-later</code> in almost every file&rsquo;s header</td></tr>
+<tr><th scope="row">Eight files, four for each Zynq board: <code>ps7_init_gpl.c</code>, U-Boot&rsquo;s default environment, the board&rsquo;s device tree and the <code>-u-boot.dtsi</code> beside it</th><td>This project&rsquo;s, under the <b>GNU General Public License, version 2 or later</b>, because each is compiled into U-Boot</td><td>each file&rsquo;s own header</td></tr>
+<tr><th scope="row">Digilent&rsquo;s pin files</th><td>Digilent&rsquo;s, under the <b>MIT License</b></td><td><code>Digilent-License.txt</code> beside the Cora Z7-07S&rsquo;s master file; the Arty Z7-20&rsquo;s constraint file cites the commit and digest of its pins</td></tr>
+<tr><th scope="row"><a href="https://github.com/metebalci/muir">muir-sim</a></th><td>Its own repository, under the <b>AGPL, version 3 or later</b></td><td>not carried; pinned by commit in <code>muir.commit</code></td></tr>
+<tr><th scope="row">Buildroot 2026.02.3, U-Boot 2026.01, Linux 6.19.14</th><td>Each under its own license; for the loader and the kernel, the <b>GPL, version 2</b></td><td>not in the repository; the build fetches them</td></tr>
+<tr><th scope="row">MIT&rsquo;s own files: the drawings, wire lists, print sets and PROM images of 1977 to 1981, and the system software beside them</th><td>MIT&rsquo;s. No statement of terms came with the engineering files and none is made up for them; the system release states the <b>AGPL, version 3 or later</b></td><td>not in the repository; muir-sim carries them, recovered from the ITS backup tapes and unmodified</td></tr>
+</tbody>
+</table></div>
+</section>
+<section id="colophon" class="section wrap" aria-label="About">
+<div class="section-heading"><div><p class="eyebrow">05 / ABOUT</p><h2>About</h2></div></div>
+<div class="prose">
+<p>Almost nothing here is a first-hand invention. The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
+<p>muir-fpga is implemented entirely by <a href="https://claude.com/claude-code">Claude Code</a>, on Anthropic&rsquo;s Opus and Fable models. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
+<p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR, synthesized into the fabric of an FPGA and held to muir-sim tick for tick. muir is named for Nathan Muir, the character Robert Redford plays in <em>Spy Game</em> (2001). In memory of Robert Redford.</p>
+<p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
+<div class="actions"><a class="text-link" href="https://github.com/metebalci/muir-fpga/tree/main/docs">Read the documents &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">The sources &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga">Repository &#8599;</a></div>
+</div>
+</section>
+</main>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX moving forward.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><span>IN MEMORY OF ROBERT REDFORD.</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+</body>
+</html>
