@@ -40,3 +40,5 @@ table.boardtable{min-width:900px}.boardtable th.board{position:sticky;left:0;z-i
 .card .card-num,.prose .card-num{font-size:44px;letter-spacing:-2px;line-height:1;margin:0 0 10px;color:var(--ink)}@media(max-width:700px){.card .card-num,.prose .card-num{font-size:36px}}
 .page-hero .eyebrow{text-transform:uppercase}
 .cols+.fig,.cols+.table-scroll{margin-top:44px}
+
+@media(min-width:701px){.hero{padding-top:40px}.hero .hero-copy{align-self:start;padding-top:42px}}
