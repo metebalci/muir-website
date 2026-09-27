@@ -10,7 +10,7 @@ each of its four projects, each project's pages directly under its path:
 |---|---|---|
 | `/` | the front page: the aim, the two machines, the four projects | this one |
 | `/lisp-machine/` | what a Lisp Machine is, and how its system runs | this one |
-| `/simulator/` | muir-sim, the simulator of the CADR and QUUX | [metebalci/muir](https://github.com/metebalci/muir) |
+| `/simulator/` | muir-sim, the simulator of the CADR and QUUX | [metebalci/muir-sim](https://github.com/metebalci/muir-sim) |
 | `/fpga/` | muir-fpga, the machines in the fabric of FPGA boards | [metebalci/muir-fpga](https://github.com/metebalci/muir-fpga) |
 | `/system/` | muir-sys, the Lisp Machine system | [metebalci/muir-sys](https://github.com/metebalci/muir-sys) |
 | `/ozd/` | ozd, the CADR's associated machine | [metebalci/ozd](https://github.com/metebalci/ozd) |

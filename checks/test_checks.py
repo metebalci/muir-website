@@ -80,9 +80,9 @@ def main():
         if a.repos:
             faults += [
                 ('links', 'a GitHub path not in the repository',
-                 P('pages', 'index.html'), 'muir/blob/main/docs/quux.md"', 'muir/blob/main/docs/quux-gone.md"'),
+                 P('pages', 'index.html'), 'muir-sim/blob/main/docs/quux.md"', 'muir-sim/blob/main/docs/quux-gone.md"'),
                 ('links', 'a Markdown heading that is not there',
-                 P('pages', 'index.html'), 'muir/blob/main/docs/sources.md"', 'muir/blob/main/docs/sources.md#no-such-heading"'),
+                 P('pages', 'index.html'), 'muir-sim/blob/main/docs/sources.md"', 'muir-sim/blob/main/docs/sources.md#no-such-heading"'),
             ]
         for name, what, path, old, new in faults:
             if old is None:

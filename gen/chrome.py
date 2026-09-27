@@ -7,10 +7,9 @@ written by hand in src/ and by gen/fpga/gen.py for muir-fpga's."""
 GH = 'https://github.com/metebalci/'
 
 # The four projects, in the order the site lists them, each with its path,
-# its label in the header and its repository.  muir-sim's repository is
-# still github.com/metebalci/muir until it is renamed.
+# its label in the header and its repository.
 SECTIONS = [
-    ('simulator', 'Simulator', 'muir-sim', GH + 'muir'),
+    ('simulator', 'Simulator', 'muir-sim', GH + 'muir-sim'),
     ('fpga', 'FPGA', 'muir-fpga', GH + 'muir-fpga'),
     ('system', 'System', 'muir-sys', GH + 'muir-sys'),
     ('ozd', 'ozd', 'ozd', GH + 'ozd'),
@@ -85,7 +84,7 @@ def footer(root):
             '<p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with '
             '<a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. '
             'Its source is <a href="%s">muir-website</a>.</p></div>'
-            '<div>%s<a href="%smuir/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div>'
+            '<div>%s<a href="%smuir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div>'
             '<div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span>'
             '<a href="#main">BACK TO TOP &#8593;</a></div></footer>\n'
             % (href(root, 'index.html'), GH + 'muir-website', links, GH))

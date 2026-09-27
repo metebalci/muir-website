@@ -36,7 +36,7 @@ jobs:
       - name: Clone the four projects, for the links into them
         run: |
           mkdir -p "$RUNNER_TEMP/repos"
-          for r in muir muir-sys muir-fpga ozd; do
+          for r in muir-sim muir-sys muir-fpga ozd; do
             git clone --quiet --no-checkout "https://github.com/metebalci/$r.git" "$RUNNER_TEMP/repos/$r"
           done
       - name: pages/ is what gen/build.py writes

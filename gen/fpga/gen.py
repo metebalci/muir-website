@@ -570,7 +570,7 @@ def build_index():
                   keys=keys(('#boards', 'The boards'), ('cadr.html', 'The CADR'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
                   side='''<div class="side">
-<p>Every part of it is held to <a href="https://github.com/metebalci/muir">muir-sim</a>, a simulator of the same machine:</p>
+<p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machine:</p>
 <pre>HELD TO   muir-sim, <b>tick for tick</b>
           and microcycle for microcycle
 BOOTS     MIT&rsquo;s own system software,
@@ -585,7 +585,7 @@ RUNS      its processor and clocks within
     # the same words.
     P.append(section('what', '01 / WHAT IT IS', 'What it is', '', '''<div class="cols">
 <div class="prose">
-<p>The CADR is the Lisp machine MIT designed in the 1970s. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
+<p>The CADR is the Lisp machine MIT designed in the 1970s. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
@@ -616,7 +616,7 @@ RUNS      its processor and clocks within
         ('Digilent&rsquo;s pin files',
          'Digilent&rsquo;s, under the <b>MIT License</b>',
          '<code>Digilent-License.txt</code> beside the Cora Z7-07S&rsquo;s master file; the Arty Z7-20&rsquo;s constraint file cites the commit and digest of its pins'),
-        ('<a href="https://github.com/metebalci/muir">muir-sim</a>',
+        ('<a href="https://github.com/metebalci/muir-sim">muir-sim</a>',
          'Its own repository, under the <b>AGPL, version 3 or later</b>',
          'not carried; pinned by commit in <code>muir.commit</code>'),
         ('Buildroot 2026.02.3, U-Boot 2026.01, Linux 6.19.14',
@@ -637,7 +637,7 @@ RUNS      its processor and clocks within
 ''' % trs, label='License and third-party material'))
 
     P.append(section('colophon', '05 / ABOUT', 'About', '', '''<div class="prose">
-<p>Almost nothing here is a first-hand invention. The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
+<p>Almost nothing here is a first-hand invention. The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
 <p>muir-fpga is implemented entirely by <a href="https://claude.com/claude-code">Claude Code</a>, on Anthropic&rsquo;s Opus and Fable models. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR, synthesized into the fabric of an FPGA and held to muir-sim tick for tick. muir is named for Nathan Muir, the character Robert Redford plays in <em>Spy Game</em> (2001). In memory of Robert Redford.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
@@ -1512,7 +1512,7 @@ def build_faq():
     P = [comment, '\n']
     P.append(hero('muir-fpga &middot; questions', 'Questions',
                   'Questions this project is asked, each answered from the file that settles it.',
-                  body='<p class="hero-description">Each answer here is a sentence or two; the whole of each is in %s. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir">muir-sim</a> gives them, and the rest are files here.</p>\n' % docs_link('docs/faq.md', 'faq.md')))
+                  body='<p class="hero-description">Each answer here is a sentence or two; the whole of each is in %s. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir-sim">muir-sim</a> gives them, and the rest are files here.</p>\n' % docs_link('docs/faq.md', 'faq.md')))
     # THE QUESTIONS ARE docs/faq.md's HEADINGS, word for word, because each
     # one's anchor there is made from its words; so a question keeps the
     # document's wording even where the site's would differ.

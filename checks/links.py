@@ -10,7 +10,7 @@ this file is in):
     in pages/, a directory naming its index.html;
   - every #anchor names an id on the page it points at;
   - every url() in a stylesheet names a file that exists.
-With --repos, a directory holding clones of muir, muir-sys, muir-fpga and
+With --repos, a directory holding clones of muir-sim, muir-sys, muir-fpga and
 ozd, also every github.com/metebalci/<repo>/(blob|tree)/main/<path> link:
 the path exists at REF (default main) in that clone, and an #anchor on a
 Markdown file names one of its headings, slugged as GitHub slugs them; and
@@ -21,7 +21,7 @@ import argparse, os, re, subprocess, sys, unicodedata
 from html.parser import HTMLParser
 from urllib.parse import unquote, urlsplit
 
-REPOS = ('muir', 'muir-sys', 'muir-fpga', 'ozd', 'muir-website')
+REPOS = ('muir-sim', 'muir-sys', 'muir-fpga', 'ozd', 'muir-website')
 
 
 class Page(HTMLParser):
