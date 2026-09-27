@@ -52,7 +52,7 @@ def header(root, section):
     repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')
     return ('<a class="skip" href="#main">Skip to content</a>\n'
             '<header class="header wrap"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
-            '<span class="header-note">CADR PRESERVED.<br>QUUX MOVING FORWARD.</span>'
+            '<span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span>'
             '<nav aria-label="The projects">%s<a class="github" href="%s">GitHub <span>&#8599;</span></a></nav></header>\n'
             % (href(root, 'index.html'), ''.join(items), repo))
 
@@ -75,7 +75,7 @@ def footer(root):
     links = ''.join('<a href="%s">%s &middot; %s</a>' % (href(root, sid + '/'), name, label)
                     for sid, label, name, _ in SECTIONS)
     return ('<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
-            '<div class="footer-copy"><p>CADR preserved.<br>QUUX moving forward.</p>'
+            '<div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p>'
             '<p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with '
             '<a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. '
             'Its source is <a href="%s">muir-website</a>.</p></div>'
