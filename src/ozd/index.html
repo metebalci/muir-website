@@ -12,7 +12,7 @@ body: dm
 <div class="actions"><a class="button" href="#run">Build and run <span>&#8595;</span></a><a class="text-link" href="https://github.com/metebalci/ozd#readme">The README &#8599;</a><a class="text-link" href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">Every protocol &#8599;</a></div>
 </div>
 <div class="side">
-<p>ozd is for the CADR: it serves its releases up to System 1001. QUUX does not use it, having a file device and a real-time clock of its own.</p>
+<p>ozd is for the CADR: it serves its releases. QUUX does not use it, having a file device and a real-time clock of its own.</p>
 <p><b>ozd is written in Rust and has no crate dependencies.</b> It runs on Linux and macOS.</p>
 </div>
 </section>
@@ -158,9 +158,9 @@ body: dm
 <div class="step"><div class="step-heading"><span class="step-number">02</span><h3>Clone and build</h3></div><pre>git clone https://github.com/metebalci/ozd
 cd ozd
 cargo build --release</pre><p>rustup downloads the pinned toolchain the first time Cargo runs here. ozd has no crate dependencies.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">03</span><h3>Run a System 100 site</h3></div><pre>target/release/ozd --address 3060 --name MIT-OZ,OZ,system=UNIX \
+<div class="step"><div class="step-heading"><span class="step-number">03</span><h3>Run a site for MIT&rsquo;s system</h3></div><pre>target/release/ozd --address 3060 --name MIT-OZ,OZ,system=UNIX \
     --root /srv/lispm --root tree=/path/to/system-100-0/sys,ro \
-    --host 3050,MIT-LISPM-1,CADR-1,CADR1,LM1,system=LISPM</pre><p>System 100&rsquo;s host table lists the Lisp Machine as MIT-LISPM-1 at 3050 and its file and time host as MIT-OZ at 3060, so ozd takes that address and those names. Every root must be an existing directory when ozd starts.</p></div>
+    --host 3050,MIT-LISPM-1,CADR-1,CADR1,LM1,system=LISPM</pre><p>The host table of MIT&rsquo;s released system lists the Lisp Machine as MIT-LISPM-1 at 3050 and its file and time host as MIT-OZ at 3060, so ozd takes that address and those names. Every root must be an existing directory when ozd starts.</p></div>
 <dl class="flags">
 <div><dt>--address, --name</dt><dd>This host as the band&rsquo;s host table has it: its address, its names with the official one first, and its system type.</dd></div>
 <div><dt>--root /srv/lispm</dt><dd>The base root. It holds the users&rsquo; home directories, and ozd writes to it. Each user&rsquo;s is <code>/&lt;user&gt;/</code> in lower case: create it and make it writable, or a band that compiles stops with "Access to file denied".</dd></div>
