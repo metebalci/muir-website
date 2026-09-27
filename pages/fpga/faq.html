@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>muir-fpga &mdash; FAQ</title>
+<title>muir-fpga &mdash; questions</title>
 <meta name="description" content="Questions this project is asked, answered from the files that settle them: the disk multiplexor, the reference, the tick, the screen, the debug cable, the boards and the checks.">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../drawings.css">
@@ -28,20 +28,20 @@
 </div>
 </section>
 <section class="section wrap" aria-label="The machine">
-<div class="section-heading"><div><p class="eyebrow">01 / ASK</p><h2>The machine</h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">01 / SIX QUESTIONS</p><h2>The <em>machine.</em></h2></div></div>
 <div class="qa">
 <h3>Why is there no disk multiplexor block?</h3>
 <p>MIT built one, board type LG684, and its work is electrical: it fans the controller&rsquo;s one read and write path out to eight drives. Here a drive is a file on the card, so there is nothing for such a board to do, and the controller selects among eight units by <code>DA&lt;30:28&gt;</code> as MIT&rsquo;s does.</p>
-<p class="src">Rests on MIT&rsquo;s <code>mit/cadrdc/dm.txt</code>, <code>dm.wls</code>, <code>dm.eco</code> and <code>disk.hand</code>; muir&rsquo;s <code>src/cable.rs</code> and <code>src/disk_controller.rs</code>; <code>docs/disk-controller.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-there-no-disk-multiplexor-block">The whole answer</a>.</p>
+<p class="src">Rests on MIT&rsquo;s <code>mit/cadrdc/dm.txt</code>, <code>dm.wls</code>, <code>dm.eco</code> and <code>disk.hand</code>; muir-sim&rsquo;s <code>src/cable.rs</code> and <code>src/disk_controller.rs</code>; <code>docs/disk-controller.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-there-no-disk-multiplexor-block">The whole answer</a>.</p>
 </div>
 <div class="qa">
-<h3>Why is muir the reference, and what does &ldquo;held tick for tick&rdquo; mean?</h3>
-<p>A machine with no reference is a machine nobody can check. Each file in <code>rtl/machine/</code> is compared against a muir type over a recorded trace, cycle for cycle, and <code>muir.commit</code> names the muir the traces were taken from.</p>
+<h3>Why is muir-sim the reference, and what does &ldquo;held tick for tick&rdquo; mean?</h3>
+<p>A machine with no reference is a machine nobody can check. Each file in <code>rtl/machine/</code> is compared against a muir-sim type over a recorded trace, cycle for cycle, and <code>muir.commit</code> names the muir-sim the traces were taken from.</p>
 <p class="src">Rests on <code>README.md</code>; the header of <code>mutations/list.txt</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-muir-the-reference-and-what-does-held-tick-for-tick-mean">The whole answer</a>.</p>
 </div>
 <div class="qa">
 <h3>Why is a tick ten nanoseconds?</h3>
-<p>Because the design does not meet its timing with a 5&nbsp;ns clock. The CADR placed its clock edges with delay lines, and here each of MIT&rsquo;s instants goes to the first 10&nbsp;ns tick at or after it, so some edges fall up to 7&nbsp;ns later, and the processor and its clocks run within about 5% of the original speed. muir&rsquo;s fpga timing model rounds the same way.</p>
+<p>Because the design does not meet its timing with a 5&nbsp;ns clock. The CADR placed its clock edges with delay lines, and here each of MIT&rsquo;s instants goes to the first 10&nbsp;ns tick at or after it, so some edges fall up to 7&nbsp;ns later, and the processor and its clocks run within about 5% of the original speed. muir-sim&rsquo;s fpga timing model rounds the same way.</p>
 <p class="src">Rests on <code>docs/timing.md</code>; the header of <code>rtl/machine/cadr_tick_pkg.sv</code>; <code>README.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#why-is-a-tick-ten-nanoseconds">The whole answer</a>.</p>
 </div>
 <div class="qa">
@@ -52,7 +52,7 @@
 <div class="qa">
 <h3>Is the color TV four bits a pixel or eight?</h3>
 <p>Four, and nothing here implements eight: a pixel is a four-bit address into a map of sixteen colors, each of three eight-bit channels.</p>
-<p class="src">Rests on <code>docs/tv.md</code>; muir&rsquo;s <code>src/tv.rs</code>; MIT&rsquo;s <code>sys/window/color.lisp</code>, <code>sys/ucadr/uc-hacks.lisp</code> and <code>cadrtv/lmtv.order</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#is-the-color-tv-four-bits-a-pixel-or-eight">The whole answer</a>.</p>
+<p class="src">Rests on <code>docs/tv.md</code>; muir-sim&rsquo;s <code>src/tv.rs</code>; MIT&rsquo;s <code>sys/window/color.lisp</code>, <code>sys/ucadr/uc-hacks.lisp</code> and <code>cadrtv/lmtv.order</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#is-the-color-tv-four-bits-a-pixel-or-eight">The whole answer</a>.</p>
 </div>
 <div class="qa">
 <h3>Why does the screen keep the previous boot&rsquo;s picture?</h3>
@@ -61,7 +61,7 @@
 </div>
 </section>
 <section class="section wrap" aria-label="The boards, and the way they are checked">
-<div class="section-heading"><div><p class="eyebrow">02 / ASK</p><h2>The boards, and the way they are checked</h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">02 / FIVE QUESTIONS</p><h2>The boards, and the way<br>they are <em>checked.</em></h2></div></div>
 <div class="qa">
 <h3>Why is the debug cable on one Pmod connector?</h3>
 <p>A board is a debugger or a debuggee and never both at once, and neither group of four pins is ever driven from both ends, so one connector carries the whole link both ways.</p>
@@ -84,11 +84,11 @@
 </div>
 <div class="qa">
 <h3>What license is this under, and what in it is not this project&rsquo;s work?</h3>
-<p>The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on the <a href="index.html#license">front page</a>.</p>
+<p>The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on <a href="index.html#license">the boards page</a>.</p>
 <p class="src">Rests on <code>docs/license.md</code>. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/faq.md#what-license-is-this-under-and-what-in-it-is-not-this-projects-work">The whole answer</a>.</p>
 </div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

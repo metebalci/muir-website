@@ -39,7 +39,7 @@
           <li>The error handler saves and restores a stack group&rsquo;s property list again, and returns to single-instruction stepping from a foothold.</li>
           <li>A property of a function spec that is not a symbol, such as which file a method came from, can be read back again.</li>
           <li>Over TELNET: <code>~%</code> sends CR LF, a session whose first input is Return no longer breaks, a line read no longer traps, and a question answered wrongly asks again instead of failing.</li>
-          <li>The who line shows what a running process is doing, not NIL.</li>
+          <li>The who-line shows what a running process is doing, not NIL.</li>
           <li>The microcode assembler writes the diagnostic microcode files correctly.</li>
         </ul></div></div>
 <div class="release-part"><p class="eyebrow">NEW</p>
@@ -56,6 +56,7 @@
             <tr><td><code>release-1001-sys.tar.gz</code></td><td>4,344,017</td><td><code>74c6ed96d5dcebf6f01a8b5ba1ebebb160ffe345bbcebbd059253b9ca4695be9</code></td></tr>
           </tbody>
         </table></div>
+        <p>The sources asset was replaced on 27 Sep 2026 with the same files owned by root; the file it replaced had SHA-256 <code class="hash">507d1fe89e8a8890a42c4a8630ef5eddb058fbebebc4c66df7e33ea708a42269</code>.</p>
         <p>The tarball unpacks to <code>release-1001/</code>: the whole repository at the tag, with the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1001.md"><code>docs/release-1001.md</code></a>.</p></div></div>
 </section>
 
@@ -79,6 +80,7 @@
             <tr><td><code>release-1000-sys.tar.gz</code></td><td>4,515,803</td><td><code>529328c85be589ff80f9cebb7dc4b594479d375fbed7b5016ce9070a69e6be1e</code></td></tr>
           </tbody>
         </table></div>
+        <p>The sources asset was replaced on 27 Sep 2026 with the same files owned by root; the file it replaced had SHA-256 <code class="hash">939193ba71cb2b9e59616ee232f918cf727e5480f414c904ecb777baf498a823</code>.</p>
         <p>The tarball unpacks to <code>release-1000/</code>: <code>sys/</code> and <code>site/</code> with <code>LICENSE</code> and <code>NOTICE</code>, and the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1000.md"><code>docs/release-1000.md</code></a>.</p></div></div>
 </section>
 
@@ -92,14 +94,15 @@ ozd --address 177200 --name OZ,system=UNIX \
     --root sys=$PWD/release-N/sys --root site=$PWD/release-N/site \
     --root lispm=$PWD/lispm \
     --host 177201,LISPM-1,system=LISPM --peer 177201@127.0.0.1:42043 \
-    --tcp 127.0.0.1:2323,TELNET@177201
+    --tcp 127.0.0.1:2323,TELNET@177201 \
+    --file-dates mit --timezone -1
 
 cadr --micro --disk-pack release-N-pack.img \
     --chaos-address 177201 --chaos-udp 42043 \
     --chaos-udp-peer 177200@127.0.0.1:42042 --chaos-udp-default-peer 127.0.0.1:42042</code></pre>
-<div class="prose" style="margin-top:20px"><p>The machine boots to "MIT System, band 1 of LISPM-1". muir-sim serves the screen, keyboard and mouse over RFB, for any VNC viewer, and <code>telnet 127.0.0.1 2323</code> reaches its Lisp listener through ozd. Log in with <code>(login "LISPM" "OZ" t)</code> before touching files.</p></div>
+<div class="prose after-grid"><p>The machine boots to "MIT System, band 1 of LISPM-1". muir-sim serves the screen, keyboard and mouse over RFB, for any VNC viewer, and <code>telnet 127.0.0.1 2323</code> reaches its Lisp Listener through ozd. Log in with <code>(login "LISPM" "OZ" t)</code> before touching files.</p><p>ozd&rsquo;s last line is for Systems 1000 and 1001, which write a file&rsquo;s dates in their site&rsquo;s zone, one hour east of Greenwich, with MIT&rsquo;s daylight saving on top.</p></div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

@@ -74,20 +74,20 @@ def slack_block(ns):
 
 ARTY_FIT = [
     ('The CADR mapped onto one XC7Z020.', 'The CADR mapped onto one Xilinx Zynq 7020, part XC7Z020-1CLG400C.'),
-    ('Slices 5,441 of 13,300', 'LUTs 15,054 of 53,200'),
+    ('Slices 5,441 of 13,300', 'LUTs 15,050 of 53,200'),
     ('<rect x="-164" y="74" width="55.6" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="74" width="38.5" height="13" fill="currentColor" fill-opacity="0.42"/>'),
     ('<text class="d-n" x="-158" y="84">40.9%</text>', '<text class="d-n" x="-158" y="84">28.3%</text>'),
     ('5,441 of the 13,300 slices occupied, 40.9 per cent, which is a conservative figure since a fuller design packs tighter',
-     '15,054 of the 53,200 lookup tables in use, 28.3 per cent'),
+     '15,050 of the 53,200 lookup tables in use, 28.3 per cent'),
     ('and 205 KB of the 630 KB of block RAM, 32.5 per cent; and the timing of this build, which is met --- the fabric runs at 100 megahertz with a tick of 10 nanoseconds, worst slack plus 0.176 nanoseconds against that, and none of its 54,072 endpoints failing. ',
-     'and 207 KB of the 630 KB of block RAM, 32.9 per cent. Under those two figures, the worst setup slack of this build, plus 0.225 nanoseconds. '),
+     'and 207 KB of the 630 KB of block RAM, 32.9 per cent. Under those two figures, the worst setup slack of this build, plus 0.222 nanoseconds. '),
     ('<text class="d-s" x="-164" y="104">BRAM 205 KB of 630 KB</text>',
      '<text class="d-s" x="-164" y="104">BRAM 207 KB of 630 KB</text>'),
     ('<rect x="-164" y="110" width="44.2" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="110" width="44.7" height="13" fill="currentColor" fill-opacity="0.42"/>'),
     ('<text class="d-n" x="-158" y="120">32.5%</text>',
-     '<text class="d-n" x="-158" y="120">32.9%</text>\n' + slack_block('+0.225')),
+     '<text class="d-n" x="-158" y="120">32.9%</text>\n' + slack_block('+0.222')),
     ("""          <!-- Slack is a build's figure and not the design's, and it moves by a
                quarter of a nanosecond between builds of identical logic ---
                measured, at two commits whose RTL is identical. It is here at
@@ -126,17 +126,13 @@ ARTY_FIT = [
      """          <!-- What the machine costs on the part: the memory-on board with the
                disk and both display boards in it, place and routed with DDR=1,
                HDMI=1 and LMTV=1, which is the fabric the board runs.  Built at
-               7f44547 from a clean tree, which is the commit these figures are
-               of: the bitstream's own stamp reads 7f445470.  The Cora Z7-07S's
-               drawing carries that board's figures, built from a clean tree at
-               the same commit.  The 46 block RAM tiles are 42 RAMB36 and 8
-               RAMB18, and three of them are the display output's two band
-               buffers, one for each screen: that is exactly the gap between
-               this board's 46 and the Cora Z7-07S's 43 at the same commit,
-               that board having no display output in it.  Timing is met on
-               both edges:
-               +0.225 ns of setup with 0 of 55,799 endpoints failing, and
-               +0.028 ns of hold with 0 of 55,415.  The build uses four DSPs.
+               0c500d4, from the working tree on 681a08a with that change,
+               as muir-fpga's docs/fits.md records it; the Cora Z7-07S's
+               drawing carries that board's figures from the same fits.  The
+               46 block RAM tiles include the display output's two band
+               buffers, which is the gap between this board's 46 and the Cora
+               Z7-07S's 43, that board having no display output in it.  Timing
+               is met on both edges: +0.222 ns of setup and +0.042 ns of hold.
                Two rows,"""),
     # THE ROW'S UNIT CHANGED FROM OCCUPIED SLICES TO LOOKUP TABLES, and the
     # rationale in the base page argued for the one it no longer carries, so
@@ -159,12 +155,11 @@ ARTY_FIT = [
                occupied the moment anything at all sits in it, so the count
                overstates how full a part is, while a lookup table is a direct
                measure of logic and so is the ALM the DE25-Nano's drawing
-               reports. 2,617 of the 15,054 are built as memory rather than as
-               logic, which is where the machine's small memories go, and they
-               are inside this figure and never reported beside it. Those
-               lookup tables and 11,278 flip-flops sit in 5,523 of the part's
-               13,300 slices, 41.5 per cent, which is the figure this row used
-               to show."""),
+               reports. Those built as memory rather than as logic, which is
+               where the machine's small memories go, are inside this figure
+               and never reported beside it. Those lookup tables sit in 5,529
+               of the part's 13,300 slices, 41.6 per cent, which is the figure
+               this row used to show."""),
 ]
 CORA_FIT = [
     ('The CADR mapped onto one XC7Z007S, the small Zynq on a Cora Z7-07S.',
@@ -185,18 +180,18 @@ CORA_FIT = [
                its own size, and its six rows are the larger board's six.''',
      '''The block is the Arty Z7-20's, at its own place and
                its own size, and its six rows are the Arty Z7-20's six.'''),
-    ('Slices 4,228 of 4,400', 'LUTs 14,040 of 14,400'),
+    ('Slices 4,228 of 4,400', 'LUTs 14,024 of 14,400'),
     ('<rect x="-164" y="74" width="130.7" height="13" fill="currentColor" fill-opacity="0.42"/>',
-     '<rect x="-164" y="74" width="132.6" height="13" fill="currentColor" fill-opacity="0.42"/>'),
-    ('<text class="d-n" x="-158" y="84">96.1%</text>', '<text class="d-n" x="-158" y="84">97.5%</text>'),
+     '<rect x="-164" y="74" width="132.4" height="13" fill="currentColor" fill-opacity="0.42"/>'),
+    ('<text class="d-n" x="-158" y="84">96.1%</text>', '<text class="d-n" x="-158" y="84">97.4%</text>'),
     ('3,999 of the 4,400 slices occupied, 90.9 per cent; and 187 KB of the 225 KB of block RAM, 83.0 per cent. The machine spends the same 41.5 block RAM tiles here as it does on the larger part, so what changes between the two boards is the denominator.',
-     '14,040 of the 14,400 lookup tables in use, 97.5 per cent; and 194 KB of the 225 KB of block RAM, 86.0 per cent. The machine spends 43 block RAM tiles here. Under those two figures, the worst setup slack of this build, plus 0.277 nanoseconds.'),
+     '14,024 of the 14,400 lookup tables in use, 97.4 per cent; and 194 KB of the 225 KB of block RAM, 86.0 per cent. The machine spends 43 block RAM tiles here. Under those two figures, the worst setup slack of this build, plus 0.210 nanoseconds.'),
     ('<text class="d-s" x="-164" y="104">BRAM 191 KB of 225 KB</text>',
      '<text class="d-s" x="-164" y="104">BRAM 194 KB of 225 KB</text>'),
     ('<rect x="-164" y="110" width="115.6" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="110" width="117" height="13" fill="currentColor" fill-opacity="0.42"/>'),
     ('<text class="d-n" x="-158" y="120">85.0%</text>',
-     '<text class="d-n" x="-158" y="120">86.0%</text>\n' + slack_block('+0.277')),
+     '<text class="d-n" x="-158" y="120">86.0%</text>\n' + slack_block('+0.210')),
     ('The timing of this build is met: the fabric runs at 100 megahertz with a tick of 10 nanoseconds, worst slack plus 0.494 nanoseconds against that, and none of its 47,909 endpoints failing. ', ''),
     ("""          <!-- Slack is a build's figure and not the design's, and it moves by a
                quarter of a nanosecond between builds of identical logic ---
@@ -227,11 +222,10 @@ CORA_FIT = [
                Built from the color TV change on top of 261547d before it was
                committed; that change landed at 653ca22 with its fabric unchanged,
                so 653ca22 is the commit these figures are of.""",
-     """               placed on this part: 14,040 slice lookup tables of 14,400,
-               4,347 occupied slices of 4,400, 10,282 slice registers of
-               28,800, 43 block RAM tiles of 50 and four DSPs.  Timing is met
-               on both edges: +0.277 ns of setup and +0.021 ns of hold, with
-               none of the 52,682 endpoints failing on either.
+     """               placed on this part: 14,024 slice lookup tables of 14,400,
+               4,325 occupied slices of 4,400 and 43 block RAM tiles of 50.
+               Timing is met on both edges: +0.210 ns of setup and +0.041 ns
+               of hold.
                THE COLOR TV FITS AND CLOSES HERE, WHICH IS WHAT DECIDED THAT
                THIS BOARD KEEPS IT.  When that was decided, at 4d2ff67, the same
                tree with LMTV=0 was 4,171 slices at 94.8 per cent, 41.5 tiles at
@@ -241,10 +235,10 @@ CORA_FIT = [
                they are left in it, because they are a comparison made at that
                commit and not a reading of this build.  The switch is there for
                a part that cannot afford it; this one can.
-               Built at 7f44547 from a clean tree, which is the commit these
-               figures are of: the bitstream's own stamp reads 7f445470.  The
-               Arty Z7-20's drawing carries that board's figures, built from a
-               clean tree at the same commit."""),
+               These are the fit of 0c500d4, from the working tree on 681a08a
+               with that change, as muir-fpga's docs/fits.md records it; the
+               Arty Z7-20's drawing carries that board's figures from the same
+               fits."""),
     # THE ROW'S UNIT CHANGED, as it did on the Arty Z7-20's drawing, and the
     # rationale in the base page argued for the unit it no longer carries.  On
     # this part the two readings are furthest apart and the slice figure is
@@ -263,13 +257,12 @@ CORA_FIT = [
                counts as occupied the moment anything at all sits in it, so the
                count overstates how full a part is, while a lookup table is a
                direct measure of logic and so is the ALM the DE25-Nano's
-               drawing reports.  2,613 of the 14,040 are built as memory rather
-               than as logic, which is where the machine's small memories go,
-               and they are inside this figure and never reported beside it.
-               Those lookup tables and 10,282 flip-flops sit in 4,347 of the
-               part's 4,400 slices, 98.8 per cent, which is the figure this row
-               used to show and is still the one that says how little room is
-               left on this part."""),
+               drawing reports.  Those built as memory rather than as logic,
+               which is where the machine's small memories go, are inside this
+               figure and never reported beside it.  Those lookup tables sit in
+               4,325 of the part's 4,400 slices, 98.3 per cent, which is the
+               figure this row used to show and is still the one that says how
+               little room is left on this part."""),
 ]
 # MIT'S GRID MOVED FROM 5 ns TO 10 ns at 9d1cf26, and the drawings' clock
 # label and aria-labels were moved with it on the pages themselves.  These
@@ -393,8 +386,9 @@ INDEX_FIT = [
          653ca22 with its fabric unchanged. They are the figures that board's own drawing carries""",
      """    <!-- One row a board. The figures are each board's own place and route
          report for the fabric that board runs, with the memory, the disk and
-         both display boards in it, all three built from a clean tree at
-         7f44547, whose bitstreams stamp themselves 7f445470. They are the figures that board's own drawing carries"""),
+         both display boards in it: the CADR fits of 0c500d4, from the working
+         tree on 681a08a with that change, as muir-fpga's docs/fits.md records
+         them. They are the figures that board's own drawing carries"""),
     ("""         under its fabric label. A cell says yes only where that board itself
          has shown the thing, which is the same claim the drawings' colors
          make. -->""",
@@ -447,7 +441,7 @@ INDEX_FIT = [
      """            <th scope="col">USB input</th>
             <th scope="col">Debug cable</th>
           </tr>"""),
-    ('<td class="num">5,441 of 13,300<span class="pc">40.9%</span></td>', '<td class="num">15,054 of 53,200<span class="pc">LUTs &middot; 28.3%</span></td>'),
+    ('<td class="num">5,441 of 13,300<span class="pc">40.9%</span></td>', '<td class="num">15,050 of 53,200<span class="pc">LUTs &middot; 28.3%</span></td>'),
     ('<td class="num">45.5 of 140<span class="pc">32.5%</span></td>', '<td class="num">46 of 140<span class="pc">block RAM &middot; 32.9%</span></td>'),
     ('<a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">XC7Z020</span></th>',
      '<a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">Xilinx Zynq 7020</span><span class="pc">XC7Z020</span><span class="pc">made by <a href="%s">Digilent</a></span></th>' % DIGILENT_ARTY),
@@ -466,8 +460,8 @@ INDEX_FIT = [
             <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a>'''),
     # The Cora Z7-07S's debug cable cell and the whole of the DE25-Nano's row.
     # ITS TWO FIGURES ARE THE ONES ITS OWN DRAWING CARRIES, from the fit of the
-    # memory board with the display in it at 7f44547: 16,452 ALMs of 46,800 and
-    # 135 M20K blocks of 358, which is the same kind of build as the two Zynq
+    # memory board with the display in it, the fit of 0c500d4 that
+    # docs/fits.md records: 16,451 ALMs of 46,800 and 135 M20K blocks of 358, which is the same kind of build as the two Zynq
     # rows and the build its card carries.  The cores are the board's manual,
     # section 2.2 on page 8, through `boards/de25-nano/README.md`, and so are
     # the Ethernet, the card slot and the USB port, which are the processor's.
@@ -487,9 +481,9 @@ INDEX_FIT = [
             <td class="st" title="Run over a real ribbon between this board and the Arty Z7-20.">yes</td>
           </tr>
           <tr>
-            <th scope="row" class="board"><a href="de25-nano.html">DE25-Nano</a><span class="pc">Altera Agilex-5E</span><span class="pc">A5EB013B</span><span class="pc">made by <a href="%s">Terasic</a></span></th>
+            <th scope="row" class="board"><a href="de25-nano.html">DE25-Nano</a><span class="pc">Altera Agilex 5 E-series</span><span class="pc">A5EB013B</span><span class="pc">made by <a href="%s">Terasic</a></span></th>
             <td class="cpu">2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux</td>
-            <td class="num">16,452 of 46,800<span class="pc">ALMs &middot; 35.2%%</span></td>
+            <td class="num">16,451 of 46,800<span class="pc">ALMs &middot; 35.2%%</span></td>
             <td class="num">135 of 358<span class="pc">M20K &middot; 37.7%%</span></td>
             <td class="st">yes</td>
             <td class="st" title="The board's own card slot. This part has no card configuration scheme, so the flash carries the first stage and the card carries everything else.">yes</td>
@@ -498,7 +492,7 @@ INDEX_FIT = [
             <td class="st" title="The connector is in every build of this board, and no cable from its GPIO header to a Pmod has been made, so nothing of it has run here.">yes<span class="pc">(not tested)</span></td>
           </tr>
         </tbody>''' % TERASIC_DE25),
-    ('<td class="num">4,228 of 4,400<span class="pc">96.1%</span></td>', '<td class="num">14,040 of 14,400<span class="pc">LUTs &middot; 97.5%</span></td>'),
+    ('<td class="num">4,228 of 4,400<span class="pc">96.1%</span></td>', '<td class="num">14,024 of 14,400<span class="pc">LUTs &middot; 97.4%</span></td>'),
     ('<td class="num">42.5 of 50<span class="pc">85.0%</span></td>', '<td class="num">43 of 50<span class="pc">block RAM &middot; 86.0%</span></td>'),
 ]
 
@@ -512,8 +506,22 @@ INDEX_FIT = [
 
 WRITTEN = []
 
+# THE SITE'S TERMS, over the words lifted from muir-fpga's pages and
+# documents: the simulator is muir-sim, where muir-fpga still says muir (bare
+# muir is the whole project, and "muir is named for Nathan Muir" is about the
+# project, so it stays); and the machine is a Lisp Machine.  Only what a reader sees or hears is renamed: HTML comments are left
+# as they are, and so is every file name such as muir.commit and every
+# address such as muir-fpga's.
+def site_terms(html):
+    def terms(s):
+        s = re.sub(r'\bmuir\b(?![-.]\w)(?! is named)', 'muir-sim', s)
+        return re.sub(r'\bLisp machine', 'Lisp Machine', s)
+    parts = re.split(r'(<!--.*?-->)', html, flags=re.S)
+    return ''.join(p if p.startswith('<!--') else terms(p) for p in parts)
+
 def page(fname, title, desc, parts, css=()):
-    main = ''.join(parts)
+    main = site_terms(''.join(parts))
+    desc = site_terms(desc)
     html = chrome.page('fpga/' + fname, title, desc, main, section='fpga',
                        css=('drawings.css',) + tuple(css), body_class='fpga')
     open(os.path.join(OUT, fname), 'w', encoding='utf-8').write(html)
@@ -540,7 +548,7 @@ def section(sid, eyebrow, title, lead, body, label=None):
     them, and what it holds."""
     return ('<section%s class="section wrap" aria-label="%s">\n'
             '<div class="section-heading"><div><p class="eyebrow">%s</p><h2>%s</h2></div></div>\n%s%s</section>\n'
-            % (' id="%s"' % sid if sid else '', label or re.sub(r'<[^>]+>', '', title), eyebrow, title,
+            % (' id="%s"' % sid if sid else '', label or re.sub(r'<[^>]+>', '', title.replace('<br>', ' ')), eyebrow, title,
                '<p class="lead">%s</p>\n' % lead if lead else '', body))
 
 def figure(svg, caption, cls='fig', more='', label=''):
@@ -565,7 +573,7 @@ def build_index():
     # The table's own classes are kept; the site's style.css styles them.
     table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll boardtable-wrap" tabindex="0"')
     P = []
-    P.append(hero('muir-fpga &middot; the CADR in FPGA fabric', 'The CADR, rebuilt in an FPGA',
+    P.append(hero('muir-fpga &middot; the CADR in FPGA fabric', 'The CADR,<br>rebuilt in <em>an FPGA.</em>',
                   'What runs on each of three small boards, and what the real machine was.',
                   keys=keys(('#boards', 'The boards'), ('cadr.html', 'The CADR'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
@@ -583,23 +591,23 @@ RUNS      its processor and clocks within
 
     # The two speech bubbles this section had are plain sentences now, in
     # the same words.
-    P.append(section('what', '01 / WHAT IT IS', 'What it is', '', '''<div class="cols">
+    P.append(section('what', '01 / WHAT IT IS', 'A CADR<br>in the <em>fabric.</em>', '', '''<div class="cols">
 <div class="prose">
-<p>The CADR is the Lisp machine MIT designed in the 1970s. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
+<p>The CADR is the Lisp Machine MIT designed around 1978. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>).</p>
+<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
 </div>
 '''))
 
-    P.append(section('boards', '02 / THE BOARDS', 'The boards', BOARDS_NOTE, table))
+    P.append(section('boards', '02 / THE BOARDS', 'Three boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
-    P.append(section('machine', '03 / THE MACHINE ITSELF', 'The machine itself', '', '''<div class="prose">
+    P.append(section('machine', '03 / THE MACHINE ITSELF', 'The real<br><em>machine.</em>', '', '''<div class="prose">
 <p>The CADR was a real machine: two processor boards, a bus interface, a disk controller, a display board and an I/O board, wired together by five cables. It is worth knowing what the CADR was before looking at a drawing of it inside a chip.</p>
-<div class="actions"><a class="button" href="cadr.html">What a CADR is, board by board <span>&#8599;</span></a></div>
+<div class="actions"><a class="button" href="cadr.html">What a CADR is, board by board</a></div>
 </div>
 '''))
 
@@ -627,7 +635,7 @@ RUNS      its processor and clocks within
          'not in the repository; muir-sim carries them, recovered from the ITS backup tapes and unmodified'),
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td>%s</td></tr>\n' % r for r in rows)
-    P.append(section('license', '04 / TERMS', 'License and third-party material',
+    P.append(section('license', '04 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
                      'Where nothing records the terms, the table says so instead of guessing. The long form is %s.' % docs_link('docs/license.md', 'license.md'),
                      '''<div class="table-scroll"><table class="terms">
 <thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
@@ -636,9 +644,9 @@ RUNS      its processor and clocks within
 </table></div>
 ''' % trs, label='License and third-party material'))
 
-    P.append(section('colophon', '05 / ABOUT', 'About', '', '''<div class="prose">
-<p>Almost nothing here is a first-hand invention. The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
-<p>muir-fpga is implemented entirely by <a href="https://claude.com/claude-code">Claude Code</a>, on Anthropic&rsquo;s Opus and Fable models. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
+    P.append(section('colophon', '05 / ABOUT', 'Almost nothing here<br>is a <em>first-hand</em> invention.', '', '''<div class="prose">
+<p>The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
+<p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR, synthesized into the fabric of an FPGA and held to muir-sim tick for tick. muir is named for Nathan Muir, the character Robert Redford plays in <em>Spy Game</em> (2001). In memory of Robert Redford.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
 <div class="actions"><a class="text-link" href="https://github.com/metebalci/muir-fpga/tree/main/docs">Read the documents &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">The sources &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga">Repository &#8599;</a></div>
@@ -777,6 +785,14 @@ DE25_KEY = ('de25-nano.html', 'DE25-Nano')
 # here and the DE25-Nano's page inherits it with the rest of the Arty
 # Z7-20's drawing.
 
+# Each board page's eyebrow names its maker and its FPGA, so that no two board
+# pages open on the same words.
+BOARD_EYEBROW = {
+    'arty-z7-20.html': 'muir-fpga &middot; Digilent &middot; Zynq 7020',
+    'cora-z7-07s.html': 'muir-fpga &middot; Digilent &middot; Zynq 7007S',
+    'de25-nano.html': 'muir-fpga &middot; Terasic &middot; Agilex 5 E-series',
+}
+
 def build_board(fname, name, lede, corner_label, other, maker):
     svg = board_svg(fname)
     title = re.search(r'<title>([^<]*)</title>', open(os.path.join(BASE, fname)).read()).group(1)
@@ -789,7 +805,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     # pages with the maker's own page last, and the drawing, which is the
     # whole point of the page.  The corner character is gone; corner_label is
     # kept in the signature so that the calls below read as they did.
-    P = [hero('muir-fpga &middot; board', name, lede,
+    P = [hero(BOARD_EYEBROW[fname], name, lede,
               keys=keys(*(tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
          '<section class="section wrap tight" aria-label="%s, the drawing">\n' % name,
          figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % name.upper()).replace('<figcaption></figcaption>\n', ''),
@@ -818,7 +834,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
 # the drawing come off, because they are the Arty Z7-20's record of what that
 # board has shown, and the aria-label is replaced by de25_aria().  Every other
 # label is still the Arty Z7-20's.
-DE25_PART = ('A5EB013BB23BE4SCS', 'Altera Agilex-5E')
+DE25_PART = ('A5EB013BB23BE4SCS', 'Altera Agilex 5 E-series')
 
 # The aria-label, the drawing's own comment and the page's description say
 # which of this project's blocks are done on this board, and they are generated
@@ -828,15 +844,15 @@ DE25_PART = ('A5EB013BB23BE4SCS', 'Altera Agilex-5E')
 DE25_NOTHING_STARTED = 'None of it is done for this board yet: no block this project builds carries a color, the parts drawn gray are components of the board, and the blocks drawn orange are programs other projects carry onto it.'
 
 def de25_aria():
-    return ('The Arty Z7-20&rsquo;s architecture drawing, drawn for the DE25-Nano, whose FPGA is one Altera Agilex-5E, part A5EB013BB23BE4SCS. '
+    return ('The Arty Z7-20&rsquo;s architecture drawing, drawn for the DE25-Nano, whose FPGA is one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS. '
             + (de25_status() or DE25_NOTHING_STARTED) + ' '
             'The lamps at its right are drawn in the color each one lights, which on this board is green for every one of them, as its user LEDs are, and the debug cable is drawn on a GPIO header, since the board has no Pmod. '
             'HPS means Hard Processor System. '
             'Beside muir, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. '
             'It runs on a host of its own today, and no line reaches its block, because running it on this board&rsquo;s own processing system, so that a card by itself is a whole site, would be a path on the board and there is none yet. '
-            'Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,452 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. '
-            'Under those two, the worst setup slack of this build, plus 2.327 nanoseconds. '
-            'Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names, the lamps&rsquo; color and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.')
+            'Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,451 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. '
+            'Under those two, the worst setup slack of this build, plus 1.663 nanoseconds. '
+            'Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names and buses, the debug window&rsquo;s bridge, the HDMI transmitter, the buttons&rsquo; and the lamps&rsquo; names, the lamps&rsquo; color, the USB-Blaster III and its socket, and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.')
 
 NUMBER = ('zero one two three four five six seven eight nine ten eleven twelve thirteen '
           'fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one '
@@ -941,7 +957,7 @@ def de25_description():
         tail = 'with every block this project builds for this board colored green.'
     else:
         tail = 'with this project&rsquo;s own blocks colored green where they are done on this board.'
-    return ('The DE25-Nano, a board for muir-fpga with one Altera Agilex-5E, part A5EB013BB23BE4SCS: the Arty Z7-20&rsquo;s architecture drawing, '
+    return ('The DE25-Nano, a board for muir-fpga with one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the Arty Z7-20&rsquo;s architecture drawing, '
             + tail)
 
 # WHOSE WORK EACH DE25-NANO BLOCK IS, and the one place it is set.  Every block
@@ -999,14 +1015,12 @@ DE25_STATUS = [
 # its own resource figures.  Each row is (label, the fraction used); a bar is
 # 136 units wide and its fill and per cent are rounded to one decimal, as the
 # Arty Z7-20's are.  They stand at zero until this board has a build.
-DE25_FIT_NOTE = '''          <!-- From the Quartus fit report of the build with the faces and
-               the display output, built at 7f44547 from a clean tree, which
-               is the commit these figures are of: the bitstream's own
-               USERCODE reads 7f445470.  Timing is met at every corner the
-               part has, the worst being +2.327 ns of setup and +0.000 ns of
-               hold.
-               16,452 ALMs, of which 4,010 hold the small memories, and
-               135 M20K blocks.
+DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the faces and the
+               display output, the fit of 0c500d4 from the working tree on
+               681a08a with that change, as muir-fpga's docs/fits.md records
+               it.  Timing is met, the worst being +1.663 ns of setup, on an
+               HDMI output pin, and 0.000 ns of hold.
+               16,451 ALMs and 135 M20K blocks.
                A5E 013B: 46,800 ALMs, and 358 M20K blocks of 20 Kbit each,
                895 KB, the same convention as the Zynq boards' block RAM row.
                Source: Altera Agilex 5 E-Series Product Table, 2026.08.07, p. 3:
@@ -1016,7 +1030,7 @@ DE25_FIT_NOTE = '''          <!-- From the Quartus fit report of the build with 
                slices. -->
 '''
 DE25_FIT = [
-    ('ALM 16,452 of 46,800', 16452 / 46800),
+    ('ALM 16,451 of 46,800', 16451 / 46800),
     ('M20K 338 KB of 895 KB', 135 / 358),
 ]
 
@@ -1044,10 +1058,10 @@ def de25_svg():
     # The assertions name every figure inside the span, so a figure that moves
     # out of it stops the run rather than being carried over.
     i = svg.index('          <!-- What the machine costs on the part:')
-    end = '          <text class="d-s" x="-164" y="140">worst setup +0.225 ns</text>\n'
+    end = '          <text class="d-s" x="-164" y="140">worst setup +0.222 ns</text>\n'
     assert svg.count(end) == 1
     j = svg.index(end) + len(end)
-    assert svg[i:j].count('LUTs 15,054 of 53,200') == 1 and svg[i:j].count('BRAM 207 KB of 630 KB') == 1
+    assert svg[i:j].count('LUTs 15,050 of 53,200') == 1 and svg[i:j].count('BRAM 207 KB of 630 KB') == 1
     assert svg[i:j].count('<text class="d-n" x="-158" y="120">32.9%</text>') == 1
     svg = svg[:i] + svg[j:]
     # No drawn slack label survives.  The Arty Z7-20's aria-label still names
@@ -1103,8 +1117,11 @@ def de25_svg():
               '<text class="d-s" x="-164" y="48">FPGA fabric logic</text>')
     svg = sub(svg, 'text-anchor="middle">PL masters, 64 bits, AXI3</text>',
               'text-anchor="middle">FPGA masters, 64 bits, AXI3</text>', 3)
+    # Both processor-to-fabric bridges are AXI4, and the main one is not 32
+    # bits in the reference design (boards/de25-nano/README.md, "The faces on
+    # the two bridges" and the table of counterparts).
     svg = sub(svg, 'text-anchor="middle">PS masters, 32 bits, AXI3</text>',
-              'text-anchor="middle">HPS masters, 32 bits, AXI3</text>', 2)
+              'text-anchor="middle">HPS masters, AXI4</text>', 2)
     svg = sub(svg, '<text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>',
               '<text class="d-s" x="-164" y="520.4">HPS &mdash; Arm</text>')
     svg = sub(svg, '''          <text class="d-t" x="-7" y="566" text-anchor="middle">2 &times; Cortex-A9</text>
@@ -1160,6 +1177,30 @@ def de25_svg():
               '<text class="d-m" x="1162" y="446" text-anchor="middle">LWH2F</text>')
     svg = sub(svg, '<text class="d-s" x="893" y="600" text-anchor="middle">over M_AXI_GP1</text>',
               '<text class="d-s" x="893" y="600" text-anchor="middle">over LWH2F</text>')
+    # The debug cable's window is on the lightweight bridge, at 0x2000_1000
+    # (boards/de25-nano/README.md, "The faces on the two bridges").
+    svg = sub(svg, '<text class="d-s" x="1162" y="152" text-anchor="middle">registers at GP1 + 0x1000</text>',
+              '<text class="d-s" x="1162" y="152" text-anchor="middle">registers at LWH2F + 0x1000</text>')
+    # (8) THE BOARD'S OWN PARTS BY THEIR OWN NAMES, from
+    # boards/de25-nano/README.md: the ADV7513 does the HDMI encoding, so the
+    # fabric sends it no TMDS; the buttons are KEY0 and KEY1 and the lamps
+    # LEDR0 to LEDR5; the console and JTAG share the USB-Blaster III's one
+    # Type-C socket.  The Arty Z7-20's "four ports, arbitrated in hardware"
+    # under the memory controller is not confirmed for this board's HPS
+    # controller by any source here, so the claim comes off rather than being
+    # guessed.  The USB host port stays: docs/board.md, "A keyboard at the
+    # board", says the board has one and Linux drives it.
+    svg = sub(svg, 'over the first; TMDS to HDMI</text>', 'over the first; to the ADV7513</text>')
+    svg = sub(svg, '          <text class="d-s" x="87" y="684" text-anchor="middle">four ports, arbitrated in hardware</text>\n', '')
+    svg = sub(svg, '>BTN0 &mdash; BOOT</text>', '>KEY0 &mdash; BOOT</text>')
+    svg = sub(svg, '>BTN1 &mdash; RESET</text>', '>KEY1 &mdash; RESET</text>')
+    for n in range(6):
+        svg = sub(svg, '>LD%d &mdash; ' % n, '>LEDR%d &mdash; ' % n)
+    svg = sub(svg, '''          <text class="d-t" x="897" y="738" text-anchor="middle">USB-UART</text>
+          <text class="d-t" x="897" y="756" text-anchor="middle">/ JTAG</text>
+          <text class="d-s" x="897" y="778" text-anchor="middle">one micro-USB socket,</text>''',
+              '''          <text class="d-t" x="897" y="738" text-anchor="middle">USB-Blaster III</text>
+          <text class="d-s" x="897" y="778" text-anchor="middle">one USB-C socket,</text>''')
     # (7) THE LINUX OUTLINE IS NOT COLORED.  It is a container and not a
     # component: the blocks standing inside it carry the status, and it
     # carries only its own dotted stroke.  A tinted outline reads as a claim
@@ -1173,7 +1214,7 @@ def de25_svg():
     # (1) the fit bars, after (4) so that their note stays
     label = '          <text class="d-s" x="-164" y="48">FPGA fabric logic</text>\n'
     svg = sub(svg, label, label + DE25_FIT_NOTE + fit_bars(DE25_FIT)
-                   + slack_block('+2.327') + '\n')
+                   + slack_block('+1.663') + '\n')
     svg = sub(svg, '''">
 
           <rect class="d-box d-done d-key"''', '''">
@@ -1184,7 +1225,7 @@ def de25_svg():
 def build_de25():
     board_page('de25-nano.html', 'DE25-Nano', 'muir-fpga — the MIT CADR on a DE25-Nano',
                de25_description(),
-               'The CADR mapped onto one Altera Agilex-5E, the A5EB013B.',
+               'The CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
                "muir-fpga's board, waving",
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable'),
                 ('arty-z7-20.html', 'Arty Z7-20'), ('cora-z7-07s.html', 'Cora Z7-07S')),
@@ -1194,6 +1235,10 @@ DESC = {}
 for _f in ('arty-z7-20.html', 'cora-z7-07s.html'):
     DESC[_f] = re.search(r'<meta name="description" content="([^"]*)">', open(os.path.join(BASE, _f)).read()).group(1)
 DESC['cora-z7-07s.html'] = sub(DESC['cora-z7-07s.html'], 'where the two meet on the smaller part.', 'where the two meet.')
+# The board runs the design, so it is not "proposed"; the words are the Cora
+# Z7-07S's.
+DESC['arty-z7-20.html'] = sub(DESC['arty-z7-20.html'], 'The proposed architecture for running the MIT CADR Lisp Machine in fabric',
+                              'The MIT CADR Lisp Machine in fabric')
 
 # ================================================================ booting
 
@@ -1204,15 +1249,15 @@ def build_booting():
     # What the board said in its speech bubbles is said here in plain
     # sentences, in the third person.
     P = [comment, '\n']
-    P.append(hero('muir-fpga &middot; booting', 'How a board comes up',
-                  'Four sequences, two for each board here: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.',
+    P.append(hero('muir-fpga &middot; booting', 'How a board<br>comes <em>up.</em>',
+                  'Four sequences, two for the Zynq boards and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.',
                   body='<div class="hero-description">\n'
                        '<p>The two Zynq boards come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>\n'
                        '<p>The DE25-Nano has a pair of its own, because it boots differently enough to need one. Its boot crosses two storage devices rather than one, and its fabric is configured in the middle of the sequence rather than by the loader&rsquo;s first stage.</p>\n'
                        '<p>On either board the two paths differ only in where the files come from. The loader itself is read the same way on both, and the same last step ends both.</p>\n'
                        '</div>\n'))
 
-    P.append(section('card', '01 / CARD', 'A Zynq board on its own',
+    P.append(section('card', '01 / A ZYNQ BOARD, FROM ITS CARD', 'A Zynq board<br>on <em>its own.</em>',
         'This is how a board boots for anybody who is not this project: the loader, the CADR&rsquo;s bitstream, Linux with its root filesystem, and the disk packs are all on the microSD card.',
         '''<div class="cols">
 <div>
@@ -1232,7 +1277,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
     # same words: "with TFTP", and the parenthetical says what it is for.  The
     # two paths are then told apart by the thing that differs between them --- a
     # card or a server --- rather than by who happens to be using each.
-    P.append(section('server', '02 / TFTP', 'A Zynq board with TFTP (used for development)',
+    P.append(section('server', '02 / A ZYNQ BOARD, FOR DEVELOPMENT', 'A Zynq board<br>with <em>TFTP.</em>',
         'This project&rsquo;s own boards take the same five files from a TFTP server instead.',
         '''<div class="cols">
 <p class="callout">A change to any of the board&rsquo;s five files is a copy on the server and a reset. Its card is never rewritten.</p>
@@ -1251,7 +1296,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
     # same card.  The order inside the fabric's turn is the detail that
     # matters and it is the environment's own: the bridges are released
     # BEFORE the gate is raised, and the kernel is fetched only after both.
-    P.append(section('de25', '03 / CARD', 'The DE25-Nano on its own',
+    P.append(section('de25', '03 / THE DE25-NANO, FROM ITS CARD', 'The DE25-Nano<br>on <em>its own.</em>',
         'This board takes the same two paths as the Zynq boards, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.',
         '''<div class="cols">
 <div>
@@ -1280,7 +1325,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
     # its left are that one run's, as the two Zynq drawings' and the DE25 card
     # drawing's are of theirs.  The session is docs/board.md, "The DE25-Nano
     # over TFTP".
-    P.append(section('de25-server', '04 / TFTP', 'The DE25-Nano with TFTP (used for development)',
+    P.append(section('de25-server', '04 / THE DE25-NANO, FOR DEVELOPMENT', 'The DE25-Nano<br>with <em>TFTP.</em>',
         'A change to any of the five served files is then a copy and a reset, and the card is never rewritten. This path has run on the board: 48,691,884 bytes over the network, and 28 seconds from the reset to the login prompt, against 25 off the card.',
         '''<div class="cols">
 <p class="callout">The board&rsquo;s flash and card still carry its loader. Only the five files after it come from the server.</p>
@@ -1289,7 +1334,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 ''' + figure(s4, 'The same board, the same flash and the same card, with a server in the middle. What the network changes is where the five files come from, and nothing else: the loader is still read off the card, and the boot ends in the same <code>booti</code>.',
              cls='fig dense', label='FIG. 04 &mdash; THE DE25-NANO, WITH TFTP',
              more=more_line('The long form: %s.' % docs_link('one server, more than one board', 'boot.md', 'one-server-more-than-one-board'))),
-        label='The DE25-Nano with TFTP (used for development)'))
+        label='The DE25-Nano with TFTP, used for development'))
     page('booting.html', 'muir-fpga &mdash; booting',
          'How each board here comes up, in four sequences: a Zynq board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.',
          P)
@@ -1306,10 +1351,10 @@ def build_debugging():
     src_rows = open(os.path.join(HERE, 'dbg-src-rows.txt')).read()
     DC = 'debug-cable.md'
     P = [comment, '\n']
-    P.append(hero('muir-fpga &middot; debugging', 'Debugging a Lisp machine',
+    P.append(hero('muir-fpga &middot; debugging', 'Debugging a<br>Lisp <em>Machine.</em>',
                   'A CADR is debugged by another CADR. This page is how MIT did that, and how a board here does it.',
                   body='<div class="hero-description">\n'
-                       '<p>The debugger is not a program on a host. It is a second Lisp machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>\n'
+                       '<p>The debugger is not a program on a host. It is a second Lisp Machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>\n'
                        '<p>The program that drives the cable is CC, and it is Lisp software on the debugging machine.</p>\n'
                        '<p>Every board here is a debuggee the moment it is powered, which is what a CADR is with nothing set, and one of them can be told to be the debugger instead.</p>\n'
                        '<p>The long form of every figure on this page is %s.</p>\n'
@@ -1320,24 +1365,29 @@ def build_debugging():
         nfig[0] += 1
         return figure(svg, caption, more=more, label='FIG. %02d &mdash; %s' % (nfig[0], title.upper()))
 
+    # The heading carries the site's accent on its last words; the figure's
+    # label is the same words without it.
+    def plain(title):
+        return re.sub(r'<[^>]+>', '', title.replace('<br>', ' '))
+
     def fig_section(n, sid, eyebrow, title, lead, svg, caption, links):
         more = more_line('The long form: %s.' % ', '.join(docs_link(t, p, a) for t, p, a in links))
-        return section(sid, '%02d / %s' % (n - 1, eyebrow.upper()), title, lead, fig(svg, caption, title, more))
+        return section(sid, '%02d / %s' % (n - 1, eyebrow.upper()), title, lead, fig(svg, caption, plain(title).rstrip('.'), more))
 
-    P.append(fig_section(2, 'mit', 'MIT', 'How MIT debugged a CADR',
+    P.append(fig_section(2, 'mit', 'MIT&rsquo;s way', 'How MIT debugged<br>a <em>CADR.</em>',
         'The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s DBGIN connector on its bus interface board, and a debugger works the cable by writing four registers of its own.',
         f1,
         'Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="cadr.html#cable">page on the real machine</a> has the four strobes and the connector they arrive on.',
         [('what crosses the cable', DC, 'what-crosses-the-cable')]))
 
-    P.append(fig_section(3, 'fabric', 'Fabric', 'How the fabric does it',
+    P.append(fig_section(3, 'fabric', 'On the boards', 'How the fabric<br><em>does it.</em>',
         'MIT&rsquo;s DBGIN logic is in the machine here, and so are the four DBGOUT registers CC writes, so a board can be either end of the cable.',
         f2,
         'Only the connector changes hands. A board&rsquo;s own DBGIN page is never switched off, so a debugger board stays debuggable through its window.',
         [('the window', DC, 'the-window'),
          ('every board is a debuggee', DC, 'every-board-is-a-debuggee-and-one-is-told-to-be-the-debugger')]))
 
-    P.append(fig_section(4, 'cable', 'Cable', 'The cable',
+    P.append(fig_section(4, 'cable', 'Between two boards', 'The <em>cable.</em>',
         'A cable for this link joins the eight signals and the two grounds, and leaves the 3.3 V supply pins open at both ends.',
         f3,
         'The connector is Pmod JA on both boards. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.',
@@ -1350,7 +1400,7 @@ def build_debugging():
     # two things it has to say beyond the pin list are that the guards here
     # rest on a decision rather than on a schematic, and that no cable of this
     # shape exists, so nothing of this connector has been on hardware.
-    P.append(section('de25', '04 / DE25', 'The cable on the DE25-Nano',
+    P.append(section('de25', '04 / A GPIO HEADER, NOT A PMOD', 'The cable on<br>the <em>DE25-Nano.</em>',
         'That board has no Pmod, so its end of the cable is eight pins of a 2x20 GPIO header: JP1 pins 31 to 38, with the header&rsquo;s own ground on pin 30. The signals are on the odd pins and each guard is the even pin beside its signal.',
         '''<div class="cols">
 <div class="prose">
@@ -1372,7 +1422,7 @@ def build_debugging():
     more = more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
         ('twenty-four beats each way', 'twenty-four-beats-each-way'),
         ('what actually crosses', 'what-actually-crosses-counted-off-the-netlist'))))
-    P.append(section('wire', '05 / WIRE', 'The protocol on the wire',
+    P.append(section('wire', '05 / FRAMES ON EIGHT PINS', 'The protocol<br>on the <em>wire.</em>',
         'Twenty-one wires do not fit on eight pins, so the levels cross as frames: four pins each way, and neither group is ever driven from both ends.',
         fig(f4, 'One signal to a pair of pins, the partner driven low as a guard: twenty-four beats, 162 ticks, a fraction of the 11.05 microseconds a debug cycle is allowed.', 'One frame, on the wire') +
         fig(f5, 'Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.', 'What crosses, each way', more=more)))
@@ -1396,7 +1446,7 @@ def build_debugging():
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td class="st%s">%s</td></tr>\n'
                   % (a, b, '' if c == 'yes' else ' no', c) for a, b, c in rows)
-    P.append(section('shown', '06 / SHOWN', 'What has run on a board',
+    P.append(section('shown', '06 / ON SILICON', 'What has run<br>on a <em>board.</em>',
         'All three pieces have run on silicon: the window, the ribbon, and CC across the ribbon, both ways round. A write has crossed it since, into a register of the far machine rather than into its memory. CC itself ran on the earlier carrier, and what has crossed the guarded one is every cycle such a session is built out of.',
         '''<div class="table-scroll"><table>
 <thead><tr><th scope="col">What</th><th scope="col">How it was shown</th><th scope="col">Shown</th></tr></thead>
@@ -1407,7 +1457,7 @@ def build_debugging():
 ''' % (trs, docs_link('what two boards have shown', DC, 'what-two-boards-have-shown'),
        docs_link('the debugger over the cable', 'board.md', 'the-debugger-over-the-cable'))))
 
-    P.append(section('sources', '07 / SOURCES', 'Where each drawing came from',
+    P.append(section('sources', '07 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Nothing above is a first-hand invention. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
         '''<div class="table-scroll"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>
@@ -1423,28 +1473,40 @@ def build_cadr():
     base = open(os.path.join(BASE, 'cadr.html')).read()
     figs = svgs('cadr.html')
     caps = [re.sub(r'\s+', ' ', c).strip() for c in re.findall(r'<figcaption>(.*?)</figcaption>', base, re.S)]
+    # THREE WAYS, NOT FIVE: muir-sim's docs/keyboard-boot.md traces them on
+    # MIT's drawings, -BOOT1 from the keyboard, -BOOT2 from this button and
+    # PROG.BOOT over the debug cable, and the debugging page says three.
+    caps[9] = sub(caps[9], 'it is one of five ways a CADR can be told to boot.',
+                  'it is one of the three ways a CADR can be told to boot.')
     titles = [re.sub(r'\s+', ' ', h) for h in re.findall(r'<h2>(.*?)</h2>', base, re.S)]
     assert len(figs) == 11 and len(caps) == 11, (len(figs), len(caps))
     table = open(os.path.join(HERE, 'cadr-src-table.txt')).read()
     DOC = 'cadr.md'
-    P = [hero('muir-fpga &middot; the CADR', 'The machine this project reproduces',
+    P = [hero('muir-fpga &middot; the CADR', 'The machine this<br>project <em>reproduces.</em>',
               'The CADR is a 32-bit microcoded processor built at the MIT Artificial Intelligence Laboratory around 1978, and published as AI Memo 528 in 1980.',
               body='<p class="hero-description">It is the machine the Lisp Machine system was written for. The eleven drawings below are read from MIT&rsquo;s own files; what each one shows, and every source, is %s.</p>\n' % docs_link('docs/cadr.md', DOC))]
 
-    # (section id, eyebrow, the docs anchor, a second long form or None)
+    # (section id, eyebrow, the docs anchor, a second long form or None).
+    # Each eyebrow says what its drawing shows, in the words of the page's
+    # description, and none repeats its heading.
     meta = [
-        ('whole', 'Whole', 'the-machine-this-project-reproduces', None),
-        ('processor', 'Processor', 'the-processor', None),
-        ('word', 'Word', 'the-microinstruction', None),
-        ('macro', 'Macro', 'the-macroinstruction', None),
-        ('map', 'Map', 'the-map', ('docs/map.md', 'map.md')),
-        ('where', 'Space', 'what-is-where', None),
-        ('disk', 'Disk', 'the-disk', ('docs/disk-controller.md', 'disk-controller.md')),
-        ('display', 'Display', 'the-display', ('docs/tv.md', 'tv.md')),
-        ('io', 'I/O', 'the-io-board', ('docs/io-board.md', 'io-board.md')),
-        ('panel', 'Panel', 'the-light-panel', None),
-        ('cable', 'Cable', 'the-debug-cable', ('docs/debug-cable.md', 'debug-cable.md')),
+        ('whole', 'The cage and its two buses', 'the-machine-this-project-reproduces', None),
+        ('processor', 'The data paths', 'the-processor', None),
+        ('word', 'What the processor runs', 'the-microinstruction', None),
+        ('macro', 'What its microcode interprets', 'the-macroinstruction', None),
+        ('map', 'Virtual to physical', 'the-map', ('docs/map.md', 'map.md')),
+        ('where', 'The address space', 'what-is-where', None),
+        ('disk', 'A Trident pack', 'the-disk', ('docs/disk-controller.md', 'disk-controller.md')),
+        ('display', 'The screen and its frame buffer', 'the-display', ('docs/tv.md', 'tv.md')),
+        ('io', 'Keyboard, mouse and clocks', 'the-io-board', ('docs/io-board.md', 'io-board.md')),
+        ('panel', 'Lamps and one button', 'the-light-panel', None),
+        ('cable', 'One CADR debugging another', 'the-debug-cable', ('docs/debug-cable.md', 'debug-cable.md')),
     ]
+    def accent(title):
+        # The site's accent on a heading's last word, as the hand-written
+        # pages have it.
+        head, _, last = title.rpartition(' ')
+        return '%s <em>%s.</em>' % (head, last)
     for i, (sid, eyebrow, anchor, second) in enumerate(meta):
         title = 'The whole machine' if i == 0 else titles[i]
         more = more_line('More: %s%s.' % (
@@ -1452,9 +1514,9 @@ def build_cadr():
             ', and the long form in %s' % docs_link(second[0], second[1]) if second else ''))
         cls = 'fig dense wide' if i == 0 else 'fig'
         fig = figure(figs[i], caps[i], cls=cls, more=more, label='FIG. %02d &mdash; %s' % (i + 1, title.upper()))
-        P.append(section(sid, '%02d / %s' % (i + 1, eyebrow.upper()), title, '', fig))
+        P.append(section(sid, '%02d / %s' % (i + 1, eyebrow.upper()), accent(title), '', fig))
 
-    P.append(section('sources', '12 / SOURCES', 'Where each drawing came from',
+    P.append(section('sources', '12 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Nothing above is a first-hand invention. Numbers written with a leading <code>0o</code> are octal, which is how MIT writes an address.',
         '<div class="table-scroll">\n%s</div>\n<p class="small-print">The sources themselves, file by file, are listed in %s.</p>\n'
         % (table, docs_link('docs/cadr.md', DOC, 'sources'))))
@@ -1500,10 +1562,14 @@ FAQ = [
      'The free BASIC tier refuses <code>create_debug_core</code>, so the probe is a <code>BSCANE2</code> and a shift register, which fills from reset and freezes with nobody at the board.',
      'the header of <code>rtl/plumbing/cadr_probe.sv</code>; <code>docs/toolchain.md</code>'),
     ('What license is this under, and what in it is not this project&rsquo;s work?',
-     'The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on the <a href="index.html#license">front page</a>.',
+     'The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on <a href="index.html#license">the boards page</a>.',
      '<code>docs/license.md</code>'),
   ]),
 ]
+
+# Each group's eyebrow and heading, the heading with the site's accent.
+FAQ_EYEBROW = tuple('%s QUESTIONS' % NUMBER[len(qs)].upper() for _, qs in FAQ)
+FAQ_TITLE = ('The <em>machine.</em>', 'The boards, and the way<br>they are <em>checked.</em>')
 
 def build_faq():
     import html as H
@@ -1515,7 +1581,11 @@ def build_faq():
                   body='<p class="hero-description">Each answer here is a sentence or two; the whole of each is in %s. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir-sim">muir-sim</a> gives them, and the rest are files here.</p>\n' % docs_link('docs/faq.md', 'faq.md')))
     # THE QUESTIONS ARE docs/faq.md's HEADINGS, word for word, because each
     # one's anchor there is made from its words; so a question keeps the
-    # document's wording even where the site's would differ.
+    # document's wording even where the site's would differ.  The one
+    # exception is the site's name for the simulator: muir-fpga's documents
+    # still call it muir, the site calls it muir-sim, and site_terms() renames
+    # it in the visible question after the anchor is made from the
+    # document's own words, so the link still lands.
     n = 1
     for group, qs in FAQ:
         cells = ''
@@ -1527,9 +1597,9 @@ def build_faq():
 <p class="src">Rests on %s. %s.</p>
 </div>
 ''' % (q.replace('"', '&ldquo;', 1).replace('"', '&rdquo;', 1), a, src, docs_link('The whole answer', 'faq.md', anchor))
-        P.append(section(None, '%02d / ASK' % n, group, '', cells, label=group))
+        P.append(section(None, '%02d / %s' % (n, FAQ_EYEBROW[n - 1]), FAQ_TITLE[n - 1], '', cells, label=group))
         n += 1
-    page('faq.html', 'muir-fpga &mdash; FAQ',
+    page('faq.html', 'muir-fpga &mdash; questions',
          re.search(r'<meta name="description" content="([^"]*)">', base).group(1), P)
 
 # ================================================================ run

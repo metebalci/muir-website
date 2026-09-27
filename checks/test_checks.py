@@ -71,9 +71,9 @@ def main():
             ('public', 'this machine\'s name in a page',
              P('pages', 'index.html'), '<main id="main">', '<main id="main"><!-- built on %s -->' % socket.gethostname().split('.')[0]),
             ('generated', 'a fit figure changed in the generator and not built',
-             P('gen', 'fpga', 'gen.py'), '<td class="num">15,054 of 53,200<span', '<td class="num">15,055 of 53,200<span'),
+             P('gen', 'fpga', 'gen.py'), '<td class="num">15,050 of 53,200<span', '<td class="num">15,051 of 53,200<span'),
             ('generated', 'a page edited by hand',
-             P('pages', 'system', 'index.html'), '<h2>What it is</h2>', '<h2>What it was</h2>'),
+             P('pages', 'system', 'index.html'), '<h3>It evolves the system</h3>', '<h3>It evolved the system</h3>'),
             ('generated', 'a page nothing builds',
              P('pages', 'fpga', 'index.html'), None, 'full-page.html'),
         ]

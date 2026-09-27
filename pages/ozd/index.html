@@ -7,6 +7,7 @@
 <meta name="description" content="ozd is the host a site's Lisp Machines ask for their files, the time and their host table. It serves STATUS, TIME, UPTIME, FILE, MINI, HOSTAB and NAME over CHUDP, passes packets between the machines of its subnet, and carries a TCP connection to a machine's TELNET. Written in Rust, with no dependencies.">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../drawings.css">
+<script src="../script.js" defer></script>
 </head>
 <body class="dm">
 <a class="skip" href="#main">Skip to content</a>
@@ -16,7 +17,7 @@
 <div>
 <p class="eyebrow"><span class="dot"></span>OZD &middot; THE ASSOCIATED MACHINE FOR A SITE OF MIT CADR LISP MACHINES</p>
 <h1>ozd</h1>
-<p class="intro">ozd provides files, time, host table etc. to a site&rsquo;s Lisp Machines.</p>
+<p class="intro">ozd gives a site&rsquo;s Lisp Machines their files, the time and their host table.</p>
 <div class="actions"><a class="button" href="#run">Build and run <span>&#8595;</span></a><a class="text-link" href="https://github.com/metebalci/ozd#readme">The README &#8599;</a><a class="text-link" href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">Every protocol &#8599;</a></div>
 </div>
 <div class="side">
@@ -32,9 +33,9 @@
 <p>At MIT that was OZ. ozd is OZ as a daemon: one host on one Chaosnet subnet, reached over UDP, for one machine or many.</p>
 </div>
 <div class="prose">
-<p class="lead" style="margin-bottom:12px">What a band prints once it has booted, from <code>sys/io/disk.lisp</code>:</p>
+<p class="lead tight">What a band prints once it has booted, from <code>sys/io/disk.lisp</code>:</p>
 <pre>MIT Lisp Machine One, with associated machine <b>OZ</b>.</pre>
-<p style="margin-top:16px">OZ, also called MIT-OZ, was the host where MIT&rsquo;s Lisp Machines kept their system files. They also asked it for the time and for their host table. Several machines can share one ozd, just as MIT had one associated machine for many Lisp Machines.</p>
+<p>OZ, also called MIT-OZ, was the host where MIT&rsquo;s Lisp Machines kept their system files. They also asked it for the time and for their host table. Several machines can share one ozd, just as MIT had one associated machine for many Lisp Machines.</p>
 </div>
 </div>
 </section>
@@ -58,7 +59,7 @@
 <p>A cold load sends to the address that its <code>cold/mini.lisp</code> was compiled with. System 100&rsquo;s names 3060, OZ, so an ozd at 3060 serves it as it is. System 304&rsquo;s takes the host that <code>SYS:</code> translated to when it was compiled.</p>
 </div>
 <div>
-<p class="lead" style="margin-bottom:12px">What goes over a MINI connection, as MIT&rsquo;s own server, <code>cold/minisr.mid</code>, lists it:</p>
+<p class="lead tight">What goes over a MINI connection, as MIT&rsquo;s own server, <code>cold/minisr.mid</code>, lists it:</p>
 <div class="table-scroll"><table><thead><tr><th scope="col">Opcode</th><th scope="col">From</th><th scope="col">What it carries</th></tr></thead><tbody>
 <tr><td><code>200</code> <code>201</code></td><td>the machine</td><td>An open, for characters or for binary, with the file name</td></tr>
 <tr><td><code>202</code></td><td>ozd</td><td>The truename, a newline and the file&rsquo;s date</td></tr>
@@ -149,8 +150,8 @@
         </svg>
 </div><figcaption>Every machine names ozd as its default CHUDP peer. ozd learns each host&rsquo;s endpoint from the packets it sends, as an Ethernet switch learns where each host is, and <code>--peer</code> fixes one that must not move. FILE and MINI serve one tree: a base root, and roots mounted at its top level, each read-only or not. A <code>--tcp</code> listener carries a TCP client to a machine&rsquo;s stream through the same switch.</figcaption></figure>
 <div class="cols">
-<div><p class="lead" style="margin-bottom:12px">What ozd does with a packet, by where it is addressed:</p>
-<div class="table-scroll"><table style="min-width:380px"><thead><tr><th scope="col">Addressed to</th><th scope="col">ozd</th></tr></thead><tbody>
+<div><p class="lead tight">What ozd does with a packet, by where it is addressed:</p>
+<div class="table-scroll"><table class="narrow"><thead><tr><th scope="col">Addressed to</th><th scope="col">ozd</th></tr></thead><tbody>
 <tr><td><code>3060</code>, this host</td><td>answers it</td></tr>
 <tr><td><code>0</code>, a broadcast</td><td>answers it, and passes it to every endpoint but its sender&rsquo;s</td></tr>
 <tr><td><code>3051</code>, another machine</td><td>passes it on, byte for byte</td></tr>
@@ -162,13 +163,14 @@
 </section>
 
 <section id="run" class="section wrap" aria-label="Build and run"><div class="section-heading"><div><p class="eyebrow">04 / BUILD AND RUN</p><h2>Build it.<br>Run a <em>site.</em></h2></div><p>ozd is built from its source with Cargo. Its compiler is pinned in <code>rust-toolchain.toml</code>, and nothing else is downloaded.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">01</span><h3>The Rust toolchain</h3></div><pre>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</pre><p>Install rustup, and open a new shell. A Cargo from your system&rsquo;s packages ignores <code>rust-toolchain.toml</code> and may be too old for the 2024 edition.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">02</span><h3>Clone and build</h3></div><pre>git clone https://github.com/metebalci/ozd
+<div class="step"><div class="step-heading"><span class="step-number">01</span><h3>The Rust toolchain.</h3><button class="copy" data-copy="ozd-rustup">Copy</button></div><pre id="ozd-rustup">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</pre><p>Install rustup, and open a new shell. A Cargo from your system&rsquo;s packages ignores <code>rust-toolchain.toml</code> and may be too old for the 2024 edition.</p></div>
+<div class="step"><div class="step-heading"><span class="step-number">02</span><h3>Clone and build.</h3><button class="copy" data-copy="ozd-build">Copy</button></div><pre id="ozd-build">git clone https://github.com/metebalci/ozd
 cd ozd
 cargo build --release</pre><p>rustup downloads the pinned toolchain the first time Cargo runs here. ozd has no crate dependencies.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">03</span><h3>Run a site for MIT&rsquo;s system</h3></div><pre>target/release/ozd --address 3060 --name MIT-OZ,OZ,system=UNIX \
+<div class="step"><div class="step-heading"><span class="step-number">03</span><h3>Run a site for MIT&rsquo;s system.</h3><button class="copy" data-copy="ozd-run">Copy</button></div><pre id="ozd-run">target/release/ozd --address 3060 --name MIT-OZ,OZ,system=UNIX \
     --root /srv/lispm --root tree=/path/to/system-100-0/sys,ro \
-    --host 3050,MIT-LISPM-1,CADR-1,CADR1,LM1,system=LISPM</pre><p>The host table of MIT&rsquo;s released system lists the Lisp Machine as MIT-LISPM-1 at 3050 and its file and time host as MIT-OZ at 3060, so ozd takes that address and those names. Every root must be an existing directory when ozd starts.</p></div>
+    --host 3050,MIT-LISPM-1,CADR-1,CADR1,LM1,system=LISPM \
+    --file-dates mit --timezone 5</pre><p>The host table of MIT&rsquo;s released system lists the Lisp Machine as MIT-LISPM-1 at 3050 and its file and time host as MIT-OZ at 3060, so ozd takes that address and those names. Every root must be an existing directory when ozd starts.</p></div>
 <dl class="flags">
 <div><dt>--address, --name</dt><dd>This host as the band&rsquo;s host table has it: its address, its names with the official one first, and its system type.</dd></div>
 <div><dt>--root /srv/lispm</dt><dd>The base root. It holds the users&rsquo; home directories, and ozd writes to it. Each user&rsquo;s is <code>/&lt;user&gt;/</code> in lower case: create it and make it writable, or a band that compiles stops with "Access to file denied".</dd></div>
@@ -177,33 +179,34 @@ cargo build --release</pre><p>rustup downloads the pinned toolchain the first ti
 <div><dt>--listen</dt><dd>Where ozd answers. Without it, <code>127.0.0.1:42042</code>, which only this host can reach.</dd></div>
 <div><dt>--peer &lt;addr&gt;@&lt;ip&gt;</dt><dd>The fixed endpoint of a host that must not move. Every other endpoint is learned.</dd></div>
 <div><dt>--tcp 10000,TELNET@3050</dt><dd>A TCP port that ozd carries to a Chaosnet stream at a machine of its subnet. Nothing listens without it (<a href="#tcp">Into the machine</a>).</dd></div>
-<div><dt>--timezone 5</dt><dd>The band&rsquo;s zone, as its site&rsquo;s <code>:TIMEZONE</code>: whole hours west of Greenwich. FILE&rsquo;s dates are printed and read at it, with the band&rsquo;s own daylight saving on top, the old North American calendar, whatever the zone. Without it, 0: UTC, with that daylight saving on top, as a band reads every date.</dd></div>
+<div><dt>--file-dates mit|utc</dt><dd>How FILE writes and reads a file&rsquo;s dates. The default, <code>utc</code>, is plain UTC with no daylight saving, as System 1002 and later put dates on the wire. Systems 100 to 1001 write them in their site&rsquo;s zone with MIT&rsquo;s daylight saving on top, and want <code>--file-dates mit</code> with their <code>--timezone</code>.</dd></div>
+<div><dt>--timezone 5</dt><dd>With <code>--file-dates mit</code>, the band&rsquo;s zone, as its site&rsquo;s <code>:TIMEZONE</code>: whole hours west of Greenwich, 5 for System 100&rsquo;s site. FILE&rsquo;s dates are printed and read at it, with the band&rsquo;s own daylight saving on top, the old North American calendar, whatever the zone. Without <code>--file-dates mit</code> it is refused.</dd></div>
 <div><dt>--log-simple, --log-file, --log-file-probe, --log-mini, --log-tcp</dt><dd>More lines in the log: each simple transaction answered; each file read, directory listed and login; each FILE probe; each MINI open; each TCP connection opened and closed.</dd></div>
 </dl>
 <p class="small-print">The same flags, one per line, can go in a file of flags that <code>-c</code> names, or <code>OZD_RC</code>, or <code>.ozdrc</code>. <code>--check</code> reads the flags, checks the roots and exits, and <code>--help</code> describes each flag.</p>
-<div class="cols" style="margin-top:40px">
-<div class="step"><div class="step-heading"><span class="step-number">04</span><h3>Ask it</h3></div><pre>cargo run --example ask 3060@127.0.0.1:42042</pre><pre style="margin-top:8px">asking 3060 at 127.0.0.1:42042, from 3376
+<div class="cols after-grid-wide">
+<div class="step"><div class="step-heading"><span class="step-number">04</span><h3>Ask it.</h3><button class="copy" data-copy="ozd-ask">Copy</button></div><pre id="ozd-ask">cargo run --example ask 3060@127.0.0.1:42042</pre><pre>asking 3060 at 127.0.0.1:42042, from 3376
 STATUS  <b>MIT-OZ</b>
 TIME    2026-09-13T13:24:58Z (+0 s from this host)
 UPTIME  0d 1h 6m 45s
 FILE    / holds 2 directories and 1 file</pre><p>It asks for STATUS, TIME and UPTIME over CHUDP, as a Lisp Machine would, then lists a directory through FILE and counts what is in it.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">05</span><h3>Point the machines at it</h3></div><p>A machine names ozd as its default CHUDP peer: its address, then where it listens, <code>3060@127.0.0.1:42042</code> on the same computer. <a href="../simulator/">muir-sim</a>, a simulator of the CADR, and <a href="../fpga/">muir-fpga</a>, the CADR on an FPGA board, both work with ozd this way.</p><p>On one computer each program needs its own UDP port: ozd takes 42042, a machine 42043, the next 42044. On separate computers start ozd with <code>--listen 192.0.2.10</code>, and each machine names <code>3060@192.0.2.10</code>.</p><p>A machine whose CHUDP sends a unicast packet only to a peer named for its destination also names every other machine&rsquo;s address at ozd&rsquo;s endpoint, so that its packets for them pass through the switch.</p></div>
+<div class="step"><div class="step-heading"><span class="step-number">05</span><h3>Point the machines at it.</h3></div><p>A machine names ozd as its default CHUDP peer: its address, then where it listens, <code>3060@127.0.0.1:42042</code> on the same computer. <a href="../simulator/">muir-sim</a>, a simulator of the CADR, and <a href="../fpga/">muir-fpga</a>, the CADR on an FPGA board, both work with ozd this way.</p><p>On one computer each program needs its own UDP port: ozd takes 42042, a machine 42043, the next 42044. On separate computers start ozd with <code>--listen 192.0.2.10</code>, and each machine names <code>3060@192.0.2.10</code>.</p><p>A machine whose CHUDP sends a unicast packet only to a peer named for its destination also names every other machine&rsquo;s address at ozd&rsquo;s endpoint, so that its packets for them pass through the switch.</p></div>
 </div>
 </section>
 
 <section id="tcp" class="section wrap" aria-label="Into the machine"><div class="section-heading"><div><p class="eyebrow">05 / INTO THE MACHINE</p><h2>Into the <em>machine.</em></h2></div><p>A <code>--tcp</code> listener takes TCP connections on the Unix side and carries each one to a Chaosnet stream at a machine. TELNET comes first.</p></div>
 <div class="cols">
 <div class="prose"><p>A band serves TELNET. What it lacks is a Unix end to reach it from. Every machine already names ozd as its peer, so ozd listens on a TCP port and carries what comes in to the machine&rsquo;s TELNET.</p>
-<div class="step"><div class="step-heading"><span class="step-number">01</span><h3>Listen</h3></div><pre>target/release/ozd ... --tcp 10000,TELNET@3050</pre><p>A bare port binds the loopback and nothing else. Each connection ozd takes there becomes a stream from ozd to TELNET at 3050, with the bytes going both ways. The machine must be on ozd&rsquo;s subnet, and ozd must have heard from it.</p></div>
-<div class="step"><div class="step-heading"><span class="step-number">02</span><h3>Connect</h3></div><pre>nc 127.0.0.1 10000</pre><p>This reaches the Lisp top level of the machine at 3050. When either end closes, the other is closed too.</p></div>
+<div class="step"><div class="step-heading"><span class="step-number">01</span><h3>Listen.</h3></div><pre>target/release/ozd ... --tcp 10000,TELNET@3050</pre><p>A bare port binds the loopback and nothing else. Each connection ozd takes there becomes a stream from ozd to TELNET at 3050, with the bytes going both ways. The machine must be on ozd&rsquo;s subnet, and ozd must have heard from it.</p></div>
+<div class="step"><div class="step-heading"><span class="step-number">02</span><h3>Connect.</h3><button class="copy" data-copy="ozd-nc">Copy</button></div><pre id="ozd-nc">nc 127.0.0.1 10000</pre><p>This reaches the Lisp top level of the machine at 3050. When either end closes, the other is closed too.</p></div>
 <p>Nothing here is TELNET&rsquo;s in particular: <code>--tcp &lt;endpoint&gt;,&lt;CONTACT&gt;@&lt;addr&gt;</code> names any stream contact, one for each listener, and may be given more than once. <code>--log-tcp</code> writes a line when a connection opens and one when it closes.</p></div>
-<div class="callout ink"><p style="margin-top:0"><b>A TELNET connection is a Lisp top level with no login, for whoever reaches the port.</b></p><p style="margin-bottom:0">So nothing listens without <code>--tcp</code>, a bare port binds only the loopback, and each listener names its one contact, so that SUPDUP or EVAL is never reachable by accident. Name another address only where every host that can reach it may use the machine.</p></div>
+<div class="callout ink"><p><b>A TELNET connection is a Lisp top level with no login, for whoever reaches the port.</b></p><p>So nothing listens without <code>--tcp</code>, a bare port binds only the loopback, and each listener names its one contact, so that SUPDUP or EVAL is never reachable by accident. Name another address only where every host that can reach it may use the machine.</p></div>
 </div>
 </section>
 
 <section id="security" class="section wrap" aria-label="Who can reach it"><div class="section-heading"><div><p class="eyebrow">06 / WHO CAN REACH IT</p><h2>Who can <em>reach it.</em></h2></div></div>
 <div class="cols">
-<div class="callout ink"><p style="margin-top:0"><b>ozd does not ask who you are. Any host that reaches its socket gets an answer, and FILE too.</b></p><p style="margin-bottom:0">ozd is meant for a trusted network segment. <code>LOGIN</code> accepts any name and only records it; it is never a credential. So the address ozd listens on decides who can use it: without <code>--listen</code> only this host can, and with <code>0.0.0.0</code> every host that can reach it can. ozd has no TLS and does no routing.</p></div>
+<div class="callout ink"><p><b>ozd does not ask who you are. Any host that reaches its socket gets an answer, and FILE too.</b></p><p>ozd is meant for a trusted network segment. <code>LOGIN</code> accepts any name and only records it; it is never a credential. So the address ozd listens on decides who can use it: without <code>--listen</code> only this host can, and with <code>0.0.0.0</code> every host that can reach it can. ozd has no TLS and does no routing.</p></div>
 <div class="prose">
 <p class="eyebrow">WHAT OZD HOLDS TO</p>
 <p>A pathname cannot climb out of its root: <code>..</code> and <code>.</code> are refused, not normalised. A symbolic link is followed only while it stays inside its own root; a command that asks for a link itself, as DELETE, RENAME and an open with <code>INHIBIT-LINKS</code> do, acts on the link and never on what it leads to; and a directory from elsewhere is mounted with <code>--root &lt;name&gt;=&lt;path&gt;</code>, never linked in.</p>
@@ -217,21 +220,22 @@ FILE    / holds 2 directories and 1 file</pre><p>It asks for STATUS, TIME and UP
 
 <section id="service" class="section wrap" aria-label="As a service"><div class="section-heading"><div><p class="eyebrow">07 / AS A SERVICE</p><h2>As a <em>service.</em></h2></div><p><code>contrib/</code> has a systemd unit and a launchd daemon. Both run ozd as a user of its own, which owns the writable roots and nothing else. The systemd unit is in use; the launchd daemon has not been tried yet.</p></div>
 <div class="cols">
-<div class="step"><div class="step-heading"><h3>Linux, with systemd</h3></div><pre>sudo contrib/install-systemd.sh</pre><p>Build ozd first, and run the script from the source directory. It creates the <code>ozd</code> user and the base root <code>/srv/lispm</code>, installs the binary and the unit, writes <code>/etc/ozdrc</code> unless one exists, checks the flags and the roots as that user, and starts the service. With <code>--dry-run</code> it prints what it would do and changes nothing, which is all it has been checked with so far.</p><p>Edit <code>/etc/ozdrc</code> to suit your site, then <code>sudo systemctl restart ozd</code>. The log goes to the journal: <code>journalctl -u ozd</code>.</p></div>
-<div class="step"><div class="step-heading"><h3>macOS, with launchd</h3></div><pre>sudo cp contrib/com.metebalci.ozd.plist /Library/LaunchDaemons/</pre><p>Create a hidden system user named <code>_ozd</code> that owns the writable roots, for example with <code>dscl</code>. Install the binary as <code>/usr/local/bin/ozd</code> and the file of flags as <code>/usr/local/etc/ozdrc</code>, and copy the plist into place.</p></div>
+<div class="step"><div class="step-heading"><h3>Linux, with systemd.</h3><button class="copy" data-copy="ozd-systemd">Copy</button></div><pre id="ozd-systemd">sudo contrib/install-systemd.sh</pre><p>Build ozd first, and run the script from the source directory. It creates the <code>ozd</code> user and the base root <code>/srv/lispm</code>, installs the binary and the unit, writes <code>/etc/ozdrc</code> unless one exists, checks the flags and the roots as that user, and starts the service. With <code>--dry-run</code> it prints what it would do and changes nothing, which is all it has been checked with so far.</p><p>Edit <code>/etc/ozdrc</code> to suit your site, then <code>sudo systemctl restart ozd</code>. The log goes to the journal: <code>journalctl -u ozd</code>.</p></div>
+<div class="step"><div class="step-heading"><h3>macOS, with launchd.</h3><button class="copy" data-copy="ozd-launchd">Copy</button></div><pre id="ozd-launchd">sudo cp contrib/com.metebalci.ozd.plist /Library/LaunchDaemons/</pre><p>Create a hidden system user named <code>_ozd</code> that owns the writable roots, for example with <code>dscl</code>. Install the binary as <code>/usr/local/bin/ozd</code> and the file of flags as <code>/usr/local/etc/ozdrc</code>, and copy the plist into place.</p></div>
 </div>
+<span id="copy-status" role="status" class="sr-only"></span>
 </section>
 
-<section id="colophon" class="section wrap" aria-label="About"><div class="section-heading"><div><p class="eyebrow">08 / ABOUT</p><h2>About</h2></div></div>
+<section id="colophon" class="section wrap" aria-label="About"><div class="section-heading"><div><p class="eyebrow">08 / ABOUT</p><h2>Read from<br>the <em>sources.</em></h2></div></div>
 <div class="prose">
 <p>Every fact about a protocol is read from the Lisp Machine&rsquo;s own manual and sources: AIM-628, <code>sys/man/chaos.text</code>, <code>sys/doc/chfile.text</code> and the machine&rsquo;s network and cold-load code. <a href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">docs/protocols.md</a> says where each one was read.</p>
 <p>The name is OZ daemon. OZ was the host that did the same job for the Lisp Machines at the MIT AI Lab in the 1980s.</p>
-<p>ozd is written in Rust with <a href="https://claude.com/claude-code">Claude Code</a>, on Anthropic&rsquo;s Opus and Fable models, and has no crate dependencies.</p>
+<p>ozd is written in Rust with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, and has no crate dependencies.</p>
 <p><b>&copy; 2026 Mete Balci.</b> ozd is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>.</p>
 <div class="actions"><a class="text-link" href="https://github.com/metebalci/ozd#readme">Read the README &#8599;</a><a class="text-link" href="https://github.com/metebalci/ozd">Repository &#8599;</a></div>
 </div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

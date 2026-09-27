@@ -21,18 +21,18 @@
 <section class="page-hero wrap solo">
 <div>
 <p class="eyebrow"><span class="dot"></span>muir-fpga &middot; debugging</p>
-<h1>Debugging a Lisp machine</h1>
+<h1>Debugging a<br>Lisp <em>Machine.</em></h1>
 <p class="intro lede">A CADR is debugged by another CADR. This page is how MIT did that, and how a board here does it.</p>
 <div class="hero-description">
-<p>The debugger is not a program on a host. It is a second Lisp machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>
+<p>The debugger is not a program on a host. It is a second Lisp Machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>
 <p>The program that drives the cable is CC, and it is Lisp software on the debugging machine.</p>
 <p>Every board here is a debuggee the moment it is powered, which is what a CADR is with nothing set, and one of them can be told to be the debugger instead.</p>
 <p>The long form of every figure on this page is <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md">docs/debug-cable.md</a>.</p>
 </div>
 </div>
 </section>
-<section id="mit" class="section wrap" aria-label="How MIT debugged a CADR">
-<div class="section-heading"><div><p class="eyebrow">01 / MIT</p><h2>How MIT debugged a CADR</h2></div></div>
+<section id="mit" class="section wrap" aria-label="How MIT debugged a CADR.">
+<div class="section-heading"><div><p class="eyebrow">01 / MIT&RSQUO;S WAY</p><h2>How MIT debugged<br>a <em>CADR.</em></h2></div></div>
 <p class="lead">The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s DBGIN connector on its bus interface board, and a debugger works the cable by writing four registers of its own.</p>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 01 &mdash; HOW MIT DEBUGGED A CADR</span><span>MUIR-FPGA</span></div>
@@ -122,13 +122,13 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-crosses-the-cable">what crosses the cable</a>.</p>
 </figure>
 </section>
-<section id="fabric" class="section wrap" aria-label="How the fabric does it">
-<div class="section-heading"><div><p class="eyebrow">02 / FABRIC</p><h2>How the fabric does it</h2></div></div>
+<section id="fabric" class="section wrap" aria-label="How the fabric does it.">
+<div class="section-heading"><div><p class="eyebrow">02 / ON THE BOARDS</p><h2>How the fabric<br><em>does it.</em></h2></div></div>
 <p class="lead">MIT&rsquo;s DBGIN logic is in the machine here, and so are the four DBGOUT registers CC writes, so a board can be either end of the cable.</p>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 02 &mdash; HOW THE FABRIC DOES IT</span><span>MUIR-FPGA</span></div>
 <div class="scroll">
-        <svg viewBox="0 0 1060 640" role="img" aria-label="The same cable in the fabric, drawn as two boards side by side. Inside each board the CADR is in the fabric, with two pages of MIT's bus interface in it: the DBGIN page, which is the debuggee's end and is always live, and the DBGOUT page, which is the four registers CC writes on this machine's own Unibus. Under them a join, because one DBGIN page has two ways in. One is a register window at 0x80001000 on a general-purpose port, which muir on the board's own Arm cores reaches with ordinary loads and stores; muir is a CADR that runs CC. The other is the board's Pmod connector, eight pins, and a ribbon between the two boards joins them. The left board has been told to be the debugger; the right board has nothing set and is a debuggee. At the foot, the console's four words: debug-cable-connect asks to be the debugger, debug-cable-disconnect gives the role back, debug-cable-wiring says which way round the ribbon was made, and debug-cable reads back the role this board has, what is on the connector, and the frame counters.">
+        <svg viewBox="0 0 1060 640" role="img" aria-label="The same cable in the fabric, drawn as two boards side by side. Inside each board the CADR is in the fabric, with two pages of MIT's bus interface in it: the DBGIN page, which is the debuggee's end and is always live, and the DBGOUT page, which is the four registers CC writes on this machine's own Unibus. Under them a join, because one DBGIN page has two ways in. One is a register window at 0x80001000 on a general-purpose port, which muir-sim on the board's own Arm cores reaches with ordinary loads and stores; muir-sim is a CADR that runs CC. The other is the board's Pmod connector, eight pins, and a ribbon between the two boards joins them. The left board has been told to be the debugger; the right board has nothing set and is a debuggee. At the foot, the console's four words: debug-cable-connect asks to be the debugger, debug-cable-disconnect gives the role back, debug-cable-wiring says which way round the ribbon was made, and debug-cable reads back the role this board has, what is on the connector, and the frame counters.">
           <text class="d-t" x="10" y="18">the same cable in the fabric: two ways in, one DBGIN page</text>
 
           <rect class="d-box" x="30" y="44" width="450" height="420"/>
@@ -157,7 +157,7 @@
           <text class="d-s" x="143" y="384" text-anchor="middle">general-purpose port</text>
           <line class="d-line" x1="238" y1="349" x2="262" y2="349"/>
           <rect class="d-box" x="262" y="306" width="178" height="86"/>
-          <text class="d-t" x="351" y="328" text-anchor="middle">muir, on the Arm cores</text>
+          <text class="d-t" x="351" y="328" text-anchor="middle">muir-sim, on the Arm cores</text>
           <text class="d-s" x="351" y="348" text-anchor="middle">a CADR that runs CC,</text>
           <text class="d-s" x="351" y="364" text-anchor="middle">reaching the window with</text>
           <text class="d-n" x="351" y="384" text-anchor="middle">--debug-cable-connect</text>
@@ -193,7 +193,7 @@
           <text class="d-s" x="635" y="448" text-anchor="middle">eight pins</text>
           <line class="d-line" x1="798" y1="349" x2="822" y2="349"/>
           <rect class="d-box" x="620" y="306" width="178" height="86"/>
-          <text class="d-t" x="709" y="328" text-anchor="middle">muir, on the Arm cores</text>
+          <text class="d-t" x="709" y="328" text-anchor="middle">muir-sim, on the Arm cores</text>
           <text class="d-s" x="709" y="348" text-anchor="middle">this board stays</text>
           <text class="d-s" x="709" y="364" text-anchor="middle">debuggable from here</text>
           <text class="d-s" x="709" y="384" text-anchor="middle">whatever the ribbon does</text>
@@ -220,8 +220,8 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-window">the window</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#every-board-is-a-debuggee-and-one-is-told-to-be-the-debugger">every board is a debuggee</a>.</p>
 </figure>
 </section>
-<section id="cable" class="section wrap" aria-label="The cable">
-<div class="section-heading"><div><p class="eyebrow">03 / CABLE</p><h2>The cable</h2></div></div>
+<section id="cable" class="section wrap" aria-label="The cable.">
+<div class="section-heading"><div><p class="eyebrow">03 / BETWEEN TWO BOARDS</p><h2>The <em>cable.</em></h2></div></div>
 <p class="lead">A cable for this link joins the eight signals and the two grounds, and leaves the 3.3 V supply pins open at both ends.</p>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 03 &mdash; THE CABLE</span><span>MUIR-FPGA</span></div>
@@ -338,8 +338,8 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-cable-on-one-connector-of-eight-pins">the cable on one connector of eight pins</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-ribbon-can-be-made-the-wrong-way-round-and-one-was">the ribbon made the wrong way round</a>.</p>
 </figure>
 </section>
-<section id="de25" class="section wrap" aria-label="The cable on the DE25-Nano">
-<div class="section-heading"><div><p class="eyebrow">04 / DE25</p><h2>The cable on the DE25-Nano</h2></div></div>
+<section id="de25" class="section wrap" aria-label="The cable on the DE25-Nano.">
+<div class="section-heading"><div><p class="eyebrow">04 / A GPIO HEADER, NOT A PMOD</p><h2>The cable on<br>the <em>DE25-Nano.</em></h2></div></div>
 <p class="lead">That board has no Pmod, so its end of the cable is eight pins of a 2x20 GPIO header: JP1 pins 31 to 38, with the header&rsquo;s own ground on pin 30. The signals are on the odd pins and each guard is the even pin beside its signal.</p>
 <div class="cols">
 <div class="prose">
@@ -503,8 +503,8 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-de25-nano-has-no-pmod-so-its-connector-is-eight-of-jp1s-pins">the DE25-Nano has no Pmod</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-pins-of-a-row-are-coupled-pairs-so-each-pair-carries-one-signal">why each signal has a guard</a>.</p>
 </figure>
 </section>
-<section id="wire" class="section wrap" aria-label="The protocol on the wire">
-<div class="section-heading"><div><p class="eyebrow">05 / WIRE</p><h2>The protocol on the wire</h2></div></div>
+<section id="wire" class="section wrap" aria-label="The protocol on the wire.">
+<div class="section-heading"><div><p class="eyebrow">05 / FRAMES ON EIGHT PINS</p><h2>The protocol<br>on the <em>wire.</em></h2></div></div>
 <p class="lead">Twenty-one wires do not fit on eight pins, so the levels cross as frames: four pins each way, and neither group is ever driven from both ends.</p>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 05 &mdash; ONE FRAME, ON THE WIRE</span><span>MUIR-FPGA</span></div>
@@ -657,8 +657,8 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#twenty-four-beats-each-way">twenty-four beats each way</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-actually-crosses-counted-off-the-netlist">what actually crosses</a>.</p>
 </figure>
 </section>
-<section id="shown" class="section wrap" aria-label="What has run on a board">
-<div class="section-heading"><div><p class="eyebrow">06 / SHOWN</p><h2>What has run on a board</h2></div></div>
+<section id="shown" class="section wrap" aria-label="What has run on a board.">
+<div class="section-heading"><div><p class="eyebrow">06 / ON SILICON</p><h2>What has run<br>on a <em>board.</em></h2></div></div>
 <p class="lead">All three pieces have run on silicon: the window, the ribbon, and CC across the ribbon, both ways round. A write has crossed it since, into a register of the far machine rather than into its memory. CC itself ran on the earlier carrier, and what has crossed the guarded one is every cycle such a session is built out of.</p>
 <div class="table-scroll"><table>
 <thead><tr><th scope="col">What</th><th scope="col">How it was shown</th><th scope="col">Shown</th></tr></thead>
@@ -681,8 +681,8 @@
 </table></div>
 <p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board. Every reading, with its numbers, is in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-two-boards-have-shown">what two boards have shown</a> and <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/board.md#the-debugger-over-the-cable">the debugger over the cable</a>.</p>
 </section>
-<section id="sources" class="section wrap" aria-label="Where each drawing came from">
-<div class="section-heading"><div><p class="eyebrow">07 / SOURCES</p><h2>Where each drawing came from</h2></div></div>
+<section id="sources" class="section wrap" aria-label="Where each drawing came from.">
+<div class="section-heading"><div><p class="eyebrow">07 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
 <p class="lead">Nothing above is a first-hand invention. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.</p>
 <div class="table-scroll"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>
@@ -697,6 +697,6 @@
 </table></div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

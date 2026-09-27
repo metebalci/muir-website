@@ -42,3 +42,23 @@ table.boardtable{min-width:900px}.boardtable th.board{position:sticky;left:0;z-i
 .cols+.fig,.cols+.table-scroll{margin-top:44px}
 
 @media(min-width:701px){.hero{padding-top:40px}.hero .hero-copy{align-self:start;padding-top:42px}}
+/* One colour for orange text, dark enough for small type on the paper and
+   on the tinted cards (5.08:1 on --paper, 4.70:1 on .card.lit); --orange
+   stays for rules, dots, fills and the large headings' accent. */
+:root{--orange-text:#b53d1e;color-scheme:only light}
+a:hover,.header nav a[aria-current],.subnav [aria-current],.step-number{color:var(--orange-text)}
+/* An eyebrow keeps its size inside prose; a rule is drawn once between two sections. */
+.prose .eyebrow{font-size:11px;line-height:normal;margin:0 0 27px}
+.machine-choice,.install,.boards{border-bottom:0}
+.section.tight>.fig:first-child>.fig-top{border-top:0;padding-top:0}
+/* Card grids with a fixed number of columns. */
+.cards.two{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.cards.three{grid-template-columns:repeat(3,1fr)}.cards.five{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.cards.five .card-label{flex-direction:column;gap:4px}
+@media(max-width:1000px){.cards.three{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}}
+/* Links are bold wherever running text carries them. */
+.small-print a,.step>p a{font-weight:bold}
+/* Spacing the pages used to set one by one. */
+.card p.repo-link{margin-top:12px}.after-grid{margin-top:20px}.after-grid-wide{margin-top:44px}.nowrap{white-space:nowrap}.lead.tight{margin-bottom:12px}.prose pre+p{margin-top:16px}pre+pre{margin-top:8px}.callout.ink p:first-child{margin-top:0}.callout.ink p:last-child{margin-bottom:0}.fig svg.narrow{max-width:820px}.test .test-caption{grid-column:1/-1;margin:0}
+.table-scroll table.narrow{min-width:380px}.table-scroll table.wide{min-width:900px}table.assets{min-width:0}
+/* A box that scrolls sideways shows a shadow on the side that has more. */
+.table-scroll,.scroll{background:linear-gradient(to right,var(--paper) 40%,#f3f1e800) left/28px 100% no-repeat local,linear-gradient(to left,var(--paper) 40%,#f3f1e800) right/28px 100% no-repeat local,linear-gradient(to right,#24282026,#24282000) left/12px 100% no-repeat scroll,linear-gradient(to left,#24282026,#24282000) right/12px 100% no-repeat scroll}
+@media(max-width:700px){.header nav{gap:12px}}

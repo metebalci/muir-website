@@ -27,7 +27,7 @@ document.querySelectorAll('[data-copy]').forEach(button => {
     }
     button.textContent = copied ? 'Copied ✓' : 'Select & copy';
     document.getElementById('copy-status').textContent = copied ? 'Commands copied to clipboard.' : 'Commands selected. Press Control+C or Command+C to copy.';
-    window.setTimeout(() => { button.innerHTML = 'Copy <span>⧉</span>'; }, 2400);
+    window.setTimeout(() => { button.textContent = 'Copy'; }, 2400);
   });
 });
 

@@ -22,8 +22,8 @@
 <section class="page-hero wrap solo">
 <div>
 <p class="eyebrow"><span class="dot"></span>muir-fpga &middot; booting</p>
-<h1>How a board comes up</h1>
-<p class="intro lede">Four sequences, two for each board here: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
+<h1>How a board<br>comes <em>up.</em></h1>
+<p class="intro lede">Four sequences, two for the Zynq boards and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
 <div class="hero-description">
 <p>The two Zynq boards come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>
 <p>The DE25-Nano has a pair of its own, because it boots differently enough to need one. Its boot crosses two storage devices rather than one, and its fabric is configured in the middle of the sequence rather than by the loader&rsquo;s first stage.</p>
@@ -31,8 +31,8 @@
 </div>
 </div>
 </section>
-<section id="card" class="section wrap" aria-label="A Zynq board on its own">
-<div class="section-heading"><div><p class="eyebrow">01 / CARD</p><h2>A Zynq board on its own</h2></div></div>
+<section id="card" class="section wrap" aria-label="A Zynq board on its own.">
+<div class="section-heading"><div><p class="eyebrow">01 / A ZYNQ BOARD, FROM ITS CARD</p><h2>A Zynq board<br>on <em>its own.</em></h2></div></div>
 <p class="lead">This is how a board boots for anybody who is not this project: the loader, the CADR&rsquo;s bitstream, Linux with its root filesystem, and the disk packs are all on the microSD card.</p>
 <div class="cols">
 <div>
@@ -129,8 +129,8 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#the-card-and-the-two-ways-it-boots">the card, and the two ways it boots</a>.</p>
 </figure>
 </section>
-<section id="server" class="section wrap" aria-label="A Zynq board with TFTP (used for development)">
-<div class="section-heading"><div><p class="eyebrow">02 / TFTP</p><h2>A Zynq board with TFTP (used for development)</h2></div></div>
+<section id="server" class="section wrap" aria-label="A Zynq board with TFTP.">
+<div class="section-heading"><div><p class="eyebrow">02 / A ZYNQ BOARD, FOR DEVELOPMENT</p><h2>A Zynq board<br>with <em>TFTP.</em></h2></div></div>
 <p class="lead">This project&rsquo;s own boards take the same five files from a TFTP server instead.</p>
 <div class="cols">
 <p class="callout">A change to any of the board&rsquo;s five files is a copy on the server and a reset. Its card is never rewritten.</p>
@@ -238,8 +238,8 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#one-server-more-than-one-board">one server, more than one board</a>.</p>
 </figure>
 </section>
-<section id="de25" class="section wrap" aria-label="The DE25-Nano on its own">
-<div class="section-heading"><div><p class="eyebrow">03 / CARD</p><h2>The DE25-Nano on its own</h2></div></div>
+<section id="de25" class="section wrap" aria-label="The DE25-Nano on its own.">
+<div class="section-heading"><div><p class="eyebrow">03 / THE DE25-NANO, FROM ITS CARD</p><h2>The DE25-Nano<br>on <em>its own.</em></h2></div></div>
 <p class="lead">This board takes the same two paths as the Zynq boards, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.</p>
 <div class="cols">
 <div>
@@ -347,8 +347,8 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#the-card-and-the-two-ways-it-boots">the card, and the two ways it boots</a>.</p>
 </figure>
 </section>
-<section id="de25-server" class="section wrap" aria-label="The DE25-Nano with TFTP (used for development)">
-<div class="section-heading"><div><p class="eyebrow">04 / TFTP</p><h2>The DE25-Nano with TFTP (used for development)</h2></div></div>
+<section id="de25-server" class="section wrap" aria-label="The DE25-Nano with TFTP, used for development">
+<div class="section-heading"><div><p class="eyebrow">04 / THE DE25-NANO, FOR DEVELOPMENT</p><h2>The DE25-Nano<br>with <em>TFTP.</em></h2></div></div>
 <p class="lead">A change to any of the five served files is then a copy and a reset, and the card is never rewritten. This path has run on the board: 48,691,884 bytes over the network, and 28 seconds from the reset to the login prompt, against 25 off the card.</p>
 <div class="cols">
 <p class="callout">The board&rsquo;s flash and card still carry its loader. Only the five files after it come from the server.</p>
@@ -471,6 +471,6 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 </figure>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>
