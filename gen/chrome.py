@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The site's chrome: the head, the header with the four projects, a
-section's own page list, and the footer.  Every page but the two
+"""The site's chrome: the head, the header with the Lisp Machine pages
+and the four projects, a section's own page list, and the footer.  Every page but the two
 full-size image pages is wrapped in it, by gen/build.py for the pages
 written by hand in src/ and by gen/fpga/gen.py for muir-fpga's."""
 
@@ -16,9 +16,15 @@ SECTIONS = [
     ('ozd', 'ozd', 'ozd', GH + 'ozd'),
 ]
 
+# The pages about the Lisp Machine itself, what it is and how it runs:
+# the site's own, not a project's, so the header lists it before the
+# projects and the footer, which lists the projects, does not.
+GUIDE = ('lisp-machine', 'Lisp Machine', 'The Lisp Machine')
+
 # A section's own pages, in one fixed order, so that no word moves as a
 # reader goes from page to page.
 SUBNAV = {
+    'lisp-machine': [('index.html', 'What it is'), ('how-it-runs.html', 'How it runs')],
     'simulator': [('index.html', 'The simulator'), ('quux.html', 'QUUX')],
     'fpga': [('index.html', 'The boards'), ('arty-z7-20.html', 'Arty Z7-20'),
              ('cora-z7-07s.html', 'Cora Z7-07S'), ('de25-nano.html', 'DE25-Nano'),
@@ -46,14 +52,14 @@ def href(root, target):
 
 def header(root, section):
     items = []
-    for sid, label, _, _ in SECTIONS:
+    for sid, label, _, _ in (GUIDE + (None,),) + tuple(SECTIONS):
         cur = ' aria-current="page"' if sid == section else ''
         items.append('<a href="%s"%s>%s</a>' % (href(root, sid + '/'), cur, label))
     repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')
     return ('<a class="skip" href="#main">Skip to content</a>\n'
             '<header class="header wrap"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
             '<span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span>'
-            '<nav aria-label="The projects">%s<a class="github" href="%s">GitHub <span>&#8599;</span></a></nav></header>\n'
+            '<nav aria-label="The site&rsquo;s sections">%s<a class="github" href="%s">GitHub <span>&#8599;</span></a></nav></header>\n'
             % (href(root, 'index.html'), ''.join(items), repo))
 
 
@@ -61,7 +67,7 @@ def subnav(section, current):
     pages = SUBNAV.get(section)
     if not pages:
         return ''
-    name = dict((s[0], s[2]) for s in SECTIONS)[section]
+    name = dict([(GUIDE[0], GUIDE[2])] + [(s[0], s[2]) for s in SECTIONS])[section]
     out = []
     for fname, label in pages:
         if fname == current:

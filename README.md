@@ -9,6 +9,7 @@ each of its four projects, each project's pages directly under its path:
 | Path | Project | Repository |
 |---|---|---|
 | `/` | the front page: the aim, the two machines, the four projects | this one |
+| `/lisp-machine/` | what a Lisp Machine is, and how its system runs | this one |
 | `/simulator/` | muir-sim, the simulator of the CADR and QUUX | [metebalci/muir](https://github.com/metebalci/muir) |
 | `/fpga/` | muir-fpga, the machines in the fabric of FPGA boards | [metebalci/muir-fpga](https://github.com/metebalci/muir-fpga) |
 | `/system/` | muir-sys, the Lisp Machine system | [metebalci/muir-sys](https://github.com/metebalci/muir-sys) |
