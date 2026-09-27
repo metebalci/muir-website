@@ -1532,7 +1532,7 @@ FAQ = [
     ('Why is there no disk multiplexor block?',
      'MIT built one, board type LG684, and its work is electrical: it fans the controller&rsquo;s one read and write path out to eight drives. Here a drive is a file on the card, so there is nothing for such a board to do, and the controller selects among eight units by <code>DA&lt;30:28&gt;</code> as MIT&rsquo;s does.',
      'MIT&rsquo;s <code>mit/cadrdc/dm.txt</code>, <code>dm.wls</code>, <code>dm.eco</code> and <code>disk.hand</code>; muir&rsquo;s <code>src/cable.rs</code> and <code>src/disk_controller.rs</code>; <code>docs/disk-controller.md</code>'),
-    ('Why is muir the reference, and what does "held tick for tick" mean?',
+    ('Why is muir-sim the reference, and what does "held tick for tick" mean?',
      'A machine with no reference is a machine nobody can check. Each file in <code>rtl/machine/</code> is compared against a muir type over a recorded trace, cycle for cycle, and <code>muir.commit</code> names the muir the traces were taken from.',
      '<code>README.md</code>; the header of <code>mutations/list.txt</code>'),
     ('Why is a tick ten nanoseconds?',
@@ -1581,11 +1581,9 @@ def build_faq():
                   body='<p class="hero-description">Each answer here is a sentence or two; the whole of each is in %s. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir-sim">muir-sim</a> gives them, and the rest are files here.</p>\n' % docs_link('docs/faq.md', 'faq.md')))
     # THE QUESTIONS ARE docs/faq.md's HEADINGS, word for word, because each
     # one's anchor there is made from its words; so a question keeps the
-    # document's wording even where the site's would differ.  The one
-    # exception is the site's name for the simulator: muir-fpga's documents
-    # still call it muir, the site calls it muir-sim, and site_terms() renames
-    # it in the visible question after the anchor is made from the
-    # document's own words, so the link still lands.
+    # document's wording even where the site's would differ.  site_terms()
+    # still renames a bare muir to muir-sim in the visible text of the other
+    # questions, after the anchor is made from the document's own words.
     n = 1
     for group, qs in FAQ:
         cells = ''
