@@ -73,7 +73,7 @@ def main():
             ('generated', 'a fit figure changed in the generator and not built',
              P('gen', 'fpga', 'gen.py'), '<td class="num">15,054 of 53,200<span', '<td class="num">15,055 of 53,200<span'),
             ('generated', 'a page edited by hand',
-             P('pages', 'system', 'index.html'), 'System 1001 is the last', 'System 1001 was the last'),
+             P('pages', 'system', 'index.html'), '<h2>What it is</h2>', '<h2>What it was</h2>'),
             ('generated', 'a page nothing builds',
              P('pages', 'fpga', 'index.html'), None, 'full-page.html'),
         ]
