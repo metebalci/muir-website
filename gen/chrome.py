@@ -81,7 +81,7 @@ def footer(root):
             'Its source is <a href="%s">muir-website</a>.</p></div>'
             '<div>%s<a href="%smuir/blob/main/docs/sources.md">Sources &amp; acknowledgments &#8599;</a></div></div>'
             '<div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span>'
-            '<span>IN MEMORY OF ROBERT REDFORD.</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>\n'
+            '<a href="#main">BACK TO TOP &#8593;</a></div></footer>\n'
             % (href(root, 'index.html'), GH + 'muir-website', links, GH))
 
 
