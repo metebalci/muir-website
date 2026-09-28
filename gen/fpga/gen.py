@@ -573,7 +573,7 @@ def build_index():
     # The table's own classes are kept; the site's style.css styles them.
     table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll boardtable-wrap" tabindex="0"')
     P = []
-    P.append(hero('muir-fpga &middot; the CADR in FPGA fabric', 'The CADR,<br>rebuilt in <em>an FPGA.</em>',
+    P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
                   'What runs on each of three small boards, and what the real machine was.',
                   keys=keys(('#boards', 'The boards'), ('cadr.html', 'The CADR'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
