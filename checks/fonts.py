@@ -4,9 +4,9 @@
 
     python3 checks/fonts.py [--root DIR] [--browser PATH]
 
-The site serves its own fonts, IBM Plex Mono and the cut of Zen Maru Gothic
-in pages/fonts/, and a character a font lacks is drawn in whatever the
-reader's system has instead, or as an empty box.  So, over every page in
+The site serves its own fonts, IBM Plex Mono, the cut of Zen Maru Gothic
+and the cut of Gelasio Italic in pages/fonts/, and a character a font lacks
+is drawn in whatever the reader's system has instead, or as an empty box.  So, over every page in
 DIR/pages (DIR is the repository, by default the one this file is in):
   - a headless Chromium loads the page, 1440 px wide, and reports
     each piece of text with the font family the stylesheets give it, as the
@@ -16,7 +16,8 @@ DIR/pages (DIR is the repository, by default the one this file is in):
     with @font-face, every character of the text must be in the character
     map of each of the family's files, as fc-query reads it.
 Text whose first family is a system font (Arial, Georgia) is the reader's
-system's to draw, and is not checked.
+system's to draw, and is not checked, even where a font of the site's own
+(Gelasio, after Georgia) comes next.
 
 It needs Chromium or Chrome (--browser, or $CHROME, or chrome-headless-shell,
 chromium, chromium-browser, google-chrome on the PATH, or Playwright's

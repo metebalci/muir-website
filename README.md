@@ -59,9 +59,11 @@ fault planted for it.
                                      session, or this machine's or user's
                                      name in the public tree
     python3 checks/fonts.py          every character drawn in one of the
-                                     site's fonts, Plex or Zen Maru Gothic,
-                                     is in that font's files; needs Chromium
-                                     or Chrome and fc-query (fontconfig)
+                                     site's fonts, Plex, Zen Maru Gothic or
+                                     Gelasio, where it is the first family
+                                     named, is in that font's files; needs
+                                     Chromium or Chrome and fc-query
+                                     (fontconfig)
     python3 checks/sitelinks.py --repos DIR
                                      every muir.metebalci.com link and
                                      #anchor in the four projects' tracked
@@ -79,13 +81,18 @@ version 3 or later; the full text is [`LICENSE`](LICENSE). The drawings are
 the projects' own work, under the same license.
 
 The fonts are not this project's work. IBM Plex Mono (regular and medium),
-by IBM, and Zen Maru Gothic (medium and bold), by the Zen Maru Gothic Project
-Authors, are under the SIL Open Font License, Version 1.1, whose texts are
-beside them in `pages/fonts/`. The IBM Plex Mono files are Google Fonts'
-own `latin` subset, unmodified: Plex is licensed with the Reserved Font Name
-"Plex", so it is never cut here. The Zen Maru Gothic files are subsets cut
-from the upstream TTFs in [google/fonts](https://github.com/google/fonts);
-the drawings' labels were placed in them.
+by IBM, Zen Maru Gothic (medium and bold), by the Zen Maru Gothic Project
+Authors, and Gelasio (italic), by the Gelasio Project Authors, are under the
+SIL Open Font License, Version 1.1, whose texts are beside them in
+`pages/fonts/`. The IBM Plex Mono files are Google Fonts' own `latin`
+subset, unmodified: Plex is licensed with the Reserved Font Name "Plex", so
+it is never cut here. The Zen Maru Gothic files are subsets cut from the
+upstream TTFs in [google/fonts](https://github.com/google/fonts); the
+drawings' labels were placed in them. The Gelasio file is cut from the
+upstream variable italic TTF there, at weight 400, to the range of Google
+Fonts' `latin` subset; Gelasio has no Reserved Font Name. The headings'
+italic accents are set in Georgia, and in Gelasio, metrically compatible
+with Georgia, where the reader's system has no Georgia.
 
 ## How it was written
 
