@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The site's chrome: the head, the header with the Lisp Machine pages
+"""The site's chrome: the head, the header with the machines' pages
 and the four projects, a section's own page list, and the footer.  Every page but the two
 full-size image pages is wrapped in it, by gen/build.py for the pages
 written by hand in src/ and by gen/fpga/gen.py for muir-fpga's."""
@@ -15,22 +15,31 @@ SECTIONS = [
     ('ozd', 'ozd', 'ozd', GH + 'ozd'),
 ]
 
-# The pages about the Lisp Machine itself, what it is and how it runs:
-# the site's own, not a project's, so the header lists it before the
-# projects and the footer, which lists the projects, does not.
-GUIDE = ('lisp-machine', 'Lisp Machine', 'The Lisp Machine')
+# The machines: what a Lisp Machine is and how it runs, the CADR, and QUUX.
+# They are the site's own pages, not a project's, so the header lists them
+# first, under one item, and the footer, which lists the projects, does not.
+# The item leads to the first of its pages.
+MACHINES = ('lisp-machine', 'cadr', 'quux')
+GUIDE = ('lisp-machine', 'Machines', 'Machines')
 
 # A section's own pages, in one fixed order, so that no word moves as a
-# reader goes from page to page.
+# reader goes from page to page.  Each is a path from the site's root; the
+# machines' pages are one list, shared by their three directories.
 SUBNAV = {
-    'lisp-machine': [('index.html', 'What it is'), ('how-it-runs.html', 'How it runs')],
-    'simulator': [('index.html', 'The simulator'), ('quux.html', 'QUUX')],
-    'fpga': [('index.html', 'The boards'), ('arty-z7-20.html', 'Arty Z7-20'),
-             ('cora-z7-07s.html', 'Cora Z7-07S'), ('de25-nano.html', 'DE25-Nano'),
-             ('booting.html', 'Booting'), ('debugging.html', 'Debugging'),
-             ('faq.html', 'Questions'), ('cadr.html', 'The CADR')],
-    'system': [('index.html', 'The system'), ('releases.html', 'Release notes')],
+    'machines': [('lisp-machine/index.html', 'Lisp Machine'), ('lisp-machine/how-it-runs.html', 'How it runs'),
+                 ('cadr/index.html', 'CADR'), ('quux/index.html', 'QUUX')],
+    'simulator': [('simulator/index.html', 'The simulator')],
+    'fpga': [('fpga/index.html', 'The boards'), ('fpga/arty-z7-20.html', 'Arty Z7-20'),
+             ('fpga/cora-z7-07s.html', 'Cora Z7-07S'), ('fpga/de25-nano.html', 'DE25-Nano'),
+             ('fpga/booting.html', 'Booting'), ('fpga/debugging.html', 'Debugging'),
+             ('fpga/faq.html', 'Questions')],
+    'system': [('system/index.html', 'The system'), ('system/releases.html', 'Release notes')],
 }
+
+
+def group(section):
+    """The header item and the page list a section belongs to."""
+    return 'machines' if section in MACHINES else section
 
 
 def root_of(path):
@@ -52,7 +61,7 @@ def href(root, target):
 def header(root, section):
     items = []
     for sid, label, _, _ in (GUIDE + (None,),) + tuple(SECTIONS):
-        cur = ' aria-current="page"' if sid == section else ''
+        cur = ' aria-current="page"' if sid == section or (sid == GUIDE[0] and section in MACHINES) else ''
         items.append('<a href="%s"%s>%s</a>' % (href(root, sid + '/'), cur, label))
     repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')
     return ('<a class="skip" href="#main">Skip to content</a>\n'
@@ -62,18 +71,23 @@ def header(root, section):
             % (href(root, 'index.html'), ''.join(items), repo))
 
 
-def subnav(section, current):
-    pages = SUBNAV.get(section)
-    if not pages:
+def subnav(section, path):
+    pages = SUBNAV.get(group(section))
+    if not pages or len(pages) < 2:
         return ''
-    name = dict([(GUIDE[0], GUIDE[2])] + [(s[0], s[2]) for s in SECTIONS])[section]
+    name = dict([('machines', GUIDE[2])] + [(s[0], s[2]) for s in SECTIONS])[group(section)]
+    here = path.rsplit('/', 1)[0]
     out = []
-    for fname, label in pages:
-        if fname == current:
+    for target, label in pages:
+        tdir, fname = target.rsplit('/', 1)
+        if target == path:
             out.append('<span aria-current="page">%s</span>' % label)
-        else:
+        elif tdir == here:
             out.append('<a href="%s">%s</a>' % ('./' if fname == 'index.html' else fname, label))
-    return '<nav class="subnav wrap" aria-label="%s&rsquo;s pages"><b>%s</b>%s</nav>\n' % (name, name, ''.join(out))
+        else:
+            out.append('<a href="%s">%s</a>' % (href(root_of(path), tdir + '/' if fname == 'index.html' else target), label))
+    own = name + ('&rsquo;' if name.endswith('s') else '&rsquo;s')
+    return '<nav class="subnav wrap" aria-label="%s pages"><b>%s</b>%s</nav>\n' % (own, name, ''.join(out))
 
 
 def footer(root):
@@ -92,7 +106,7 @@ def footer(root):
             % (href(root, 'index.html'), GH + 'muir-website', links, GH))
 
 
-def page(path, title, description, main, section=None, css=(), script=False, body_class=None, current=None):
+def page(path, title, description, main, section=None, css=(), script=False, body_class=None):
     """A whole page.  `path` is relative to pages/, `main` is what goes
     inside <main>, and `css` names extra stylesheets at the root, such as
     'drawings.css'."""
@@ -105,5 +119,5 @@ def page(path, title, description, main, section=None, css=(), script=False, bod
             '<title>%s</title>\n<meta name="description" content="%s">\n%s%s</head>\n<body%s>\n'
             '%s%s<main id="main">\n%s</main>\n%s</body>\n</html>\n'
             % (title, description, links, js, cls, header(root, section),
-               subnav(section, current or path.rsplit('/', 1)[-1]) if section else '',
+               subnav(section, path) if section else '',
                main, footer(root)))

@@ -140,7 +140,7 @@ body: dm
 <p>The Lisp Machine&rsquo;s network is the <b>Chaosnet</b>. Its basic service is a <b>connection</b> between two processes on different machines, a reliable channel of packets; a host is named by a 16-bit address. The interface interrupts on a packet, the microcode puts it on a receive list, and the <b>Chaos Receiver</b>, a process at priority 35, reads them from there; a <b>Chaos Background</b> process retransmits and probes. A server on the machine, such as its TELNET server, runs in a process of its own.</p>
 </div><div class="prose">
 <p>A Lisp Machine usually reads and writes files on a <b>file server</b>, a computer that serves a whole community of machines, reached over the Chaosnet. A file is opened as a stream and read or written like any other stream. The CADR gets its files and the time from such a host; in this project that host is <a href="../ozd/">ozd</a>.</p>
-<p>QUUX reads and writes files on its host instead: a <b>file device</b> of its own serves folders of the host under one pathname host, <code>HOST</code>, and its system&rsquo;s own files come from there. <a href="../simulator/quux.html">What QUUX changes</a> has the rest.</p>
+<p>QUUX reads and writes files on its host instead: a <b>file device</b> of its own serves folders of the host under one pathname host, <code>HOST</code>, and its system&rsquo;s own files come from there. <a href="../quux/#changes">What QUUX changes</a> has the rest.</p>
 </div></div>
 </section>
 

@@ -3,13 +3,17 @@
 The website of the muir projects, published at <https://muir.metebalci.com/>.
 
 Project muir is to simulate MIT's CADR Lisp Machine accurately, and to create
-an evolved version of it, QUUX. The site has a front page and a section for
-each of its four projects, each project's pages directly under its path:
+an evolved version of it, QUUX. The site has a front page, the machines' pages
+(the Lisp Machine, the CADR and QUUX, under one header item, Machines) and a
+section for each of its four projects, each project's pages directly under
+its path:
 
 | Path | Project | Repository |
 |---|---|---|
 | `/` | the front page: the aim, the two machines, the four projects | this one |
 | `/lisp-machine/` | what a Lisp Machine is, and how its system runs | this one |
+| `/cadr/` | the CADR, MIT's machine: its processor, its buses and its boards, drawn | this one |
+| `/quux/` | QUUX, the CADR evolved: its processor and its machine, drawn, and every change | this one |
 | `/simulator/` | muir-sim, the simulator of the CADR and QUUX | [metebalci/muir-sim](https://github.com/metebalci/muir-sim) |
 | `/fpga/` | muir-fpga, the machines in the fabric of FPGA boards | [metebalci/muir-fpga](https://github.com/metebalci/muir-fpga) |
 | `/system/` | muir-sys, the Lisp Machine system | [metebalci/muir-sys](https://github.com/metebalci/muir-sys) |
@@ -24,7 +28,8 @@ each of its four projects, each project's pages directly under its path:
                   comment of key: value lines giving the title, description
                   and what else the page loads
     gen/build.py  builds every page into pages/
-    gen/chrome.py the head, the header with the four projects, a section's
+    gen/chrome.py the head, the header with the machines and the four
+                  projects, a section's
                   page list and the footer, shared by every page
     gen/fpga/     muir-fpga's pages: gen.py writes them from the drawings in
                   base/, which it lifts byte for byte; checks/ holds its

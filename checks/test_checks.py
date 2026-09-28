@@ -99,7 +99,7 @@ def main():
 
         faults = [
             ('links', 'a link to a page that does not exist',
-             P('pages', 'index.html'), 'href="simulator/quux.html"', 'href="simulator/quux-gone.html"'),
+             P('pages', 'index.html'), 'href="quux/"', 'href="quux-gone/"'),
             ('links', '#no-such on a page that exists',
              P('pages', 'index.html'), 'href="simulator/#install"', 'href="simulator/#no-such"'),
             ('links', 'an image that is not there',
@@ -121,7 +121,7 @@ def main():
             ('generated', 'a page nothing builds',
              P('pages', 'fpga', 'index.html'), None, 'full-page.html'),
             ('fonts', 'a katakana outside the cut in a drawing label',
-             P('pages', 'fpga', 'cadr.html'), '>the machine, whole</text>', '>the machine, whole \u30b3</text>'),
+             P('pages', 'cadr', 'index.html'), '>the machine, whole</text>', '>the machine, whole \u30b3</text>'),
             ('fonts', 'a character outside Plex in a pre',
              P('pages', 'ozd', 'index.html'), '<pre>asking 3060 at', '<pre>asking \u29c9 3060 at'),
         ]

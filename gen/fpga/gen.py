@@ -580,8 +580,8 @@ def build_index():
     table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll" tabindex="0"')
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
-                  'What runs on each of three small boards, and what the real machine was.',
-                  keys=keys(('#boards', 'The boards'), ('cadr.html', 'The CADR'),
+                  'What runs on each of three small boards.',
+                  keys=keys(('#boards', 'The boards'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
                   side='''<div class="side">
 <p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machine:</p>
@@ -611,9 +611,9 @@ RUNS      its processor and clocks within
 
     P.append(section('boards', '02 / THE BOARDS', 'Three boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
-    P.append(section('machine', '03 / THE MACHINE ITSELF', 'The real<br><em>machine.</em>', '', '''<div class="prose">
-<p>The CADR was a real machine: two processor boards, a bus interface, a disk controller, a display board and an I/O board, wired together by five cables. It is worth knowing what the CADR was before looking at a drawing of it inside a chip.</p>
-<div class="actions"><a class="button" href="cadr.html">What a CADR is, board by board</a></div>
+    P.append(section('machine', '03 / THE MACHINES THEMSELVES', 'The real<br><em>machines.</em>', '', '''<div class="prose">
+<p>What the two machines are, their processors, buses and devices, is on their own pages: QUUX, the CADR evolved, and the CADR, MIT&rsquo;s machine as it was built, board by board. It is worth knowing what a machine is before looking at a drawing of it inside a chip.</p>
+<div class="actions"><a class="text-link" href="../cadr/">The CADR</a><a class="button" href="../quux/">QUUX</a></div>
 </div>
 '''))
 
@@ -659,7 +659,7 @@ RUNS      its processor and clocks within
 </div>
 ''', label='About'))
     page('index.html', 'muir-fpga &mdash; the MIT CADR and QUUX in fabric',
-         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano, and what the real machine was.',
+         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano.',
          P)
 
 # ================================================================ board pages
@@ -1383,7 +1383,7 @@ def build_debugging():
     P.append(fig_section(2, 'mit', 'MIT&rsquo;s way', 'How MIT debugged<br>a <em>CADR.</em>',
         'The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s DBGIN connector on its bus interface board, and a debugger works the cable by writing four registers of its own.',
         f1,
-        'Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="cadr.html#cable">page on the real machine</a> has the four strobes and the connector they arrive on.',
+        'Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="../cadr/#cable">page on the real machine</a> has the four strobes and the connector they arrive on.',
         [('what crosses the cable', DC, 'what-crosses-the-cable')]))
 
     P.append(fig_section(3, 'fabric', 'On the boards', 'How the fabric<br><em>does it.</em>',
@@ -1476,59 +1476,24 @@ def build_debugging():
 # ================================================================ the CADR
 
 def build_cadr():
-    base = open(os.path.join(BASE, 'cadr.html')).read()
-    figs = svgs('cadr.html')
-    caps = [re.sub(r'\s+', ' ', c).strip() for c in re.findall(r'<figcaption>(.*?)</figcaption>', base, re.S)]
-    # THREE WAYS, NOT FIVE: muir-sim's docs/keyboard-boot.md traces them on
-    # MIT's drawings, -BOOT1 from the keyboard, -BOOT2 from this button and
-    # PROG.BOOT over the debug cable, and the debugging page says three.
-    caps[9] = sub(caps[9], 'it is one of five ways a CADR can be told to boot.',
-                  'it is one of the three ways a CADR can be told to boot.')
-    titles = [re.sub(r'\s+', ' ', h) for h in re.findall(r'<h2>(.*?)</h2>', base, re.S)]
-    assert len(figs) == 11 and len(caps) == 11, (len(figs), len(caps))
-    table = open(os.path.join(HERE, 'cadr-src-table.txt')).read()
-    DOC = 'cadr.md'
-    P = [hero('muir-fpga &middot; the CADR', 'The machine this<br>project <em>reproduces.</em>',
-              'The CADR is a 32-bit microcoded processor built at the MIT Artificial Intelligence Laboratory around 1978, and published as AI Memo 528 in 1980.',
-              body='<p class="hero-description">It is the machine the Lisp Machine system was written for. The eleven drawings below are read from MIT&rsquo;s own files; what each one shows, and every source, is %s.</p>\n' % docs_link('docs/cadr.md', DOC))]
-
-    # (section id, eyebrow, the docs anchor, a second long form or None).
-    # Each eyebrow says what its drawing shows, in the words of the page's
-    # description, and none repeats its heading.
-    meta = [
-        ('whole', 'The cage and its two buses', 'the-machine-this-project-reproduces', None),
-        ('processor', 'The data paths', 'the-processor', None),
-        ('word', 'What the processor runs', 'the-microinstruction', None),
-        ('macro', 'What its microcode interprets', 'the-macroinstruction', None),
-        ('map', 'Virtual to physical', 'the-map', ('docs/map.md', 'map.md')),
-        ('where', 'The address space', 'what-is-where', None),
-        ('disk', 'A Trident pack', 'the-disk', ('docs/disk-controller.md', 'disk-controller.md')),
-        ('display', 'The screen and its frame buffer', 'the-display', ('docs/tv.md', 'tv.md')),
-        ('io', 'Keyboard, mouse and clocks', 'the-io-board', ('docs/io-board.md', 'io-board.md')),
-        ('panel', 'Lamps and one button', 'the-light-panel', None),
-        ('cable', 'One CADR debugging another', 'the-debug-cable', ('docs/debug-cable.md', 'debug-cable.md')),
-    ]
-    def accent(title):
-        # The site's accent on a heading's last word, as the hand-written
-        # pages have it.
-        head, _, last = title.rpartition(' ')
-        return '%s <em>%s.</em>' % (head, last)
-    for i, (sid, eyebrow, anchor, second) in enumerate(meta):
-        title = 'The whole machine' if i == 0 else titles[i]
-        more = more_line('More: %s%s.' % (
-            docs_link('docs/cadr.md', DOC, anchor),
-            ', and the long form in %s' % docs_link(second[0], second[1]) if second else ''))
-        cls = 'fig dense wide' if i == 0 else 'fig'
-        fig = figure(figs[i], caps[i], cls=cls, more=more, label='FIG. %02d &mdash; %s' % (i + 1, title.upper()), name=title)
-        P.append(section(sid, '%02d / %s' % (i + 1, eyebrow.upper()), accent(title), '', fig))
-
-    P.append(section('sources', '12 / SOURCES', 'Where each drawing<br><em>came from.</em>',
-        'Nothing above is a first-hand invention. Numbers written with a leading <code>0o</code> are octal, which is how MIT writes an address.',
-        '<div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from">\n%s</div>\n<p class="small-print">The sources themselves, file by file, are listed in %s.</p>\n'
-        % (table, docs_link('docs/cadr.md', DOC, 'sources'))))
+    """What the CADR is, board by board, is the machine's own page, /cadr/;
+    this page says so, and keeps every anchor it had, each a line that
+    leads to the same drawing there."""
+    P = [hero('muir-fpga &middot; the CADR', 'The CADR',
+              'What the CADR is, board by board, is on its own page among the machines.',
+              body='<p class="hero-description">muir-fpga puts it in the fabric of <a href="index.html#boards">three boards</a>; the drawings of the machine itself, read from MIT&rsquo;s own files, are on the CADR&rsquo;s page.</p>\n',
+              keys=keys(('../cadr/', 'The CADR'), ('index.html', 'The boards')))]
+    items = [('whole', 'The whole machine'), ('processor', 'The processor'), ('word', 'The microinstruction'),
+             ('macro', 'The macroinstruction'), ('map', 'The map'), ('where', 'What is where'),
+             ('disk', 'The disk'), ('display', 'The display'), ('io', 'The I/O board'),
+             ('panel', 'The light panel'), ('cable', 'The debug cable'), ('sources', 'Where each drawing came from')]
+    lis = ''.join('<li id="%s"><a href="../cadr/#%s">%s</a>.</li>\n' % (i, i, t) for i, t in items)
+    P.append(section('drawings', '01 / WHERE ITS DRAWINGS ARE', 'On the machine&rsquo;s <em>page.</em>', '',
+                     '<div class="prose"><ul>\n%s</ul></div>\n' % lis, label='Where the drawings are'))
     page('cadr.html', 'muir-fpga &mdash; the CADR',
-         'What the MIT CADR Lisp Machine is, in eleven drawings: the cage and its two buses, the processor&rsquo;s data paths, its microinstruction and the macroinstruction its microcode interprets, the map, the address space, the disk, the display, the I/O board, the light panel and the debug cable.',
+         'What the MIT CADR Lisp Machine is, in drawings of the whole machine, its processor and its boards, is on the CADR&rsquo;s own page among the machines.',
          P)
+
 
 # ================================================================ questions
 
