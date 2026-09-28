@@ -365,10 +365,11 @@ ARTY_FIT += DISPLAY_2026_09_21
 # hardware and the other an absence of testing, and a reader could not tell
 # them apart.  What a cell still cannot carry goes in this note, in sentences,
 # rather than into a fourth word or a mark nobody follows.
-BOARDS_NOTE = ('A cell says yes where that board itself has run the thing, '
+BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the Cora Z7-07S the CADR alone. '
+               'A cell says yes where that board itself has run the thing, '
                'yes with a qualification where the thing is built into that board and nothing of it has run there yet, '
                'and no where the board does not have the thing at all. '
-               'The two resource figures in each row are that board&rsquo;s own place and route report for the fabric it runs, '
+               'The two resource figures in each row are that board&rsquo;s own place and route report for the CADR&rsquo;s fabric, '
                'with the memory, the disk and both display boards in it, in that part&rsquo;s own terms: '
                'lookup tables and block RAM on the Zynq boards, ALMs and M20K blocks on the DE25-Nano, '
                'and memory built out of logic is counted inside the logic figure rather than beside it. '
@@ -593,11 +594,11 @@ RUNS      its processor and clocks within
     # the same words.
     P.append(section('what', '01 / WHAT IT IS', 'A CADR<br>in the <em>fabric.</em>', '', '''<div class="cols">
 <div class="prose">
-<p>The CADR is the Lisp Machine MIT designed around 1978. muir-fpga is a CADR too: <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
+<p>muir-fpga puts QUUX and the CADR in the fabric of an FPGA. The CADR is the Lisp Machine MIT designed around 1978, and muir-fpga&rsquo;s CADR is <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S builds the CADR alone. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
 </div>
@@ -647,13 +648,13 @@ RUNS      its processor and clocks within
     P.append(section('colophon', '05 / ABOUT', 'Almost nothing here<br>is a <em>first-hand</em> invention.', '', '''<div class="prose">
 <p>The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
 <p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
-<p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
+<p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR and of QUUX, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
 <div class="actions"><a class="text-link" href="https://github.com/metebalci/muir-fpga/tree/main/docs">Read the documents &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">The sources &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga">Repository &#8599;</a></div>
 </div>
 ''', label='About'))
-    page('index.html', 'muir-fpga &mdash; the MIT CADR in fabric',
-         'The MIT CADR Lisp Machine in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano, and what the real machine was.',
+    page('index.html', 'muir-fpga &mdash; the MIT CADR and QUUX in fabric',
+         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano, and what the real machine was.',
          P)
 
 # ================================================================ board pages
@@ -1225,7 +1226,7 @@ def de25_svg():
 def build_de25():
     board_page('de25-nano.html', 'DE25-Nano', 'muir-fpga — the MIT CADR on a DE25-Nano',
                de25_description(),
-               'The CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
+               'QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
                "muir-fpga's board, waving",
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable'),
                 ('arty-z7-20.html', 'Arty Z7-20'), ('cora-z7-07s.html', 'Cora Z7-07S')),
@@ -1609,9 +1610,9 @@ def main(out):
     os.makedirs(OUT, exist_ok=True)
     del WRITTEN[:]
     build_index()
-    build_board('arty-z7-20.html', 'Arty Z7-20', 'The CADR mapped onto one Xilinx Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
+    build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one Xilinx Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
                 ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY)
-    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one Xilinx Zynq 7007S, the XC7Z007S.', "muir-fpga's board, waving",
+    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one Xilinx Zynq 7007S, the XC7Z007S. This board builds the CADR alone; QUUX is built for the Arty Z7-20 and the DE25-Nano.', "muir-fpga's board, waving",
                 ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA)
     build_de25()
     build_booting()
