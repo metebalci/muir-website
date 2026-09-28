@@ -58,6 +58,15 @@ fault planted for it.
                                      port, process ID, e-mail address,
                                      session, or this machine's or user's
                                      name in the public tree
+    python3 checks/fonts.py          every character drawn in one of the
+                                     site's fonts, Plex or Zen Maru Gothic,
+                                     is in that font's files; needs Chromium
+                                     or Chrome and fc-query (fontconfig)
+    python3 checks/sitelinks.py --repos DIR
+                                     every muir.metebalci.com link and
+                                     #anchor in the four projects' tracked
+                                     files resolves on the site, and none
+                                     names a retired site
     python3 checks/test_checks.py --repos DIR
                                      plants a fault for each check in a
                                      scratch copy and requires it to fail

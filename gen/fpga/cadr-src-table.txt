@@ -1,4 +1,4 @@
-        <table class="figsrc">
+        <table>
           <thead>
             <tr><th>Figure</th><th>Read from</th></tr>
           </thead>

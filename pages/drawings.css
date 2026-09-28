@@ -32,7 +32,7 @@
 /* ------------------------------------------------------------- figures */
 
 .fig { margin: 0 0 44px; display: grid; gap: 14px; color: var(--ink); min-width: 0; }
-.fig-top { display: flex; justify-content: space-between; gap: 20px; font: 9px var(--mono); letter-spacing: .6px; border-top: 1px solid var(--line); padding-top: 12px; }
+.fig-top { display: flex; justify-content: space-between; gap: 20px; font: 10px var(--mono); letter-spacing: .6px; border-top: 1px solid var(--line); padding-top: 12px; }
 .fig-top span:last-child { color: var(--muted); text-align: right; }
 /* A drawing keeps its own minimum width and scrolls inside its box rather
    than shrinking to illegibility. */

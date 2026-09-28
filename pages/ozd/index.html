@@ -41,7 +41,7 @@
 </section>
 
 <section id="services" class="section wrap" aria-label="Seven services"><div class="section-heading"><div><p class="eyebrow">02 / SEVEN SERVICES</p><h2>Seven <em>services.</em></h2></div><p>Four because a machine does not finish booting without them, one because a cold load does not, and two because a band calls them at its associated machine. A simple transaction is one request and one answer; a stream is a connection.</p></div>
-<div class="table-scroll"><table><thead><tr><th scope="col">Contact</th><th scope="col">Kind</th><th scope="col">What ozd answers</th><th scope="col">When a band asks</th></tr></thead><tbody>
+<div class="table-scroll" tabindex="0" role="region" aria-label="The seven services"><table><thead><tr><th scope="col">Contact</th><th scope="col">Kind</th><th scope="col">What ozd answers</th><th scope="col">When a band asks</th></tr></thead><tbody>
 <tr><td class="name">STATUS</td><td>simple transaction</td><td>Its name, and the counters of its subnet</td><td><code>(hostat)</code>, which asks every host</td></tr>
 <tr><td class="name">TIME</td><td>simple transaction</td><td>The universal time, from the system clock</td><td>When it wants the date, from the site&rsquo;s time servers</td></tr>
 <tr><td class="name">UPTIME</td><td>simple transaction</td><td>How long ozd has been up</td><td><code>(uptime)</code></td></tr>
@@ -60,7 +60,7 @@
 </div>
 <div>
 <p class="lead tight">What goes over a MINI connection, as MIT&rsquo;s own server, <code>cold/minisr.mid</code>, lists it:</p>
-<div class="table-scroll"><table><thead><tr><th scope="col">Opcode</th><th scope="col">From</th><th scope="col">What it carries</th></tr></thead><tbody>
+<div class="table-scroll" tabindex="0" role="region" aria-label="What goes over a MINI connection"><table><thead><tr><th scope="col">Opcode</th><th scope="col">From</th><th scope="col">What it carries</th></tr></thead><tbody>
 <tr><td><code>200</code> <code>201</code></td><td>the machine</td><td>An open, for characters or for binary, with the file name</td></tr>
 <tr><td><code>202</code></td><td>ozd</td><td>The truename, a newline and the file&rsquo;s date</td></tr>
 <tr><td><code>203</code></td><td>ozd</td><td>Why the file cannot be read, and a newline</td></tr>
@@ -105,7 +105,7 @@
 <p>Each machine sends its packets to ozd. ozd passes each one on to the host it is addressed to, or to every host but its sender if it is a broadcast, and changes nothing on the way.</p>
 </div>
 </div>
-<figure class="fig"><div class="fig-top"><span>FIG. 02 &mdash; OZD, THE SWITCH OF ONE SUBNET</span><span>OZD</span></div><div class="scroll">
+<figure class="fig"><div class="fig-top"><span>FIG. 02 &mdash; OZD, THE SWITCH OF ONE SUBNET</span><span>OZD</span></div><div class="scroll" tabindex="0" role="region" aria-label="Figure 2: ozd, the switch of one subnet">
 <svg viewBox="0 0 1000 396" role="img" aria-label="Three Lisp Machines, at 3050, 3051 and more, each connect over CHUDP on UDP port 42042 to ozd at 3060, the switch of one subnet, which serves STATUS, TIME, UPTIME, FILE, MINI, HOSTAB and NAME. FILE and MINI serve two roots: a writable base root, the users' homes, served as /, and a read-only mount of the release's sources at /tree. A TCP client, such as nc, reaches a --tcp listener and is carried to TELNET at a machine.">
           <rect class="d-box" x="20" y="24" width="210" height="76"/>
           <text class="d-t" x="125" y="56" text-anchor="middle">Lisp Machine</text>
@@ -151,7 +151,7 @@
 </div><figcaption>Every machine names ozd as its default CHUDP peer. ozd learns each host&rsquo;s endpoint from the packets it sends, as an Ethernet switch learns where each host is, and <code>--peer</code> fixes one that must not move. FILE and MINI serve one tree: a base root, and roots mounted at its top level, each read-only or not. A <code>--tcp</code> listener carries a TCP client to a machine&rsquo;s stream through the same switch.</figcaption></figure>
 <div class="cols">
 <div><p class="lead tight">What ozd does with a packet, by where it is addressed:</p>
-<div class="table-scroll"><table class="narrow"><thead><tr><th scope="col">Addressed to</th><th scope="col">ozd</th></tr></thead><tbody>
+<div class="table-scroll" tabindex="0" role="region" aria-label="What ozd does with a packet"><table class="narrow"><thead><tr><th scope="col">Addressed to</th><th scope="col">ozd</th></tr></thead><tbody>
 <tr><td><code>3060</code>, this host</td><td>answers it</td></tr>
 <tr><td><code>0</code>, a broadcast</td><td>answers it, and passes it to every endpoint but its sender&rsquo;s</td></tr>
 <tr><td><code>3051</code>, another machine</td><td>passes it on, byte for byte</td></tr>
@@ -236,6 +236,6 @@ FILE    / holds 2 directories and 1 file</pre><p>It asks for STATUS, TIME and UP
 </div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

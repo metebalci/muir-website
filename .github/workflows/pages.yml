@@ -45,6 +45,14 @@ jobs:
         run: python3 checks/links.py --repos "$RUNNER_TEMP/repos"
       - name: Nothing local in the public tree
         run: python3 checks/public.py
+      - name: The projects' links into the site resolve
+        run: python3 checks/sitelinks.py --repos "$RUNNER_TEMP/repos"
+      - name: A browser and fc-query, for the font check
+        run: |
+          command -v fc-query || { sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends fontconfig; }
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+      - name: Every character is in the font it is drawn in
+        run: python3 checks/fonts.py
       - name: Each check fails on its planted faults
         run: python3 checks/test_checks.py --repos "$RUNNER_TEMP/repos"
 

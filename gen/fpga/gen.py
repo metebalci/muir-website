@@ -524,7 +524,7 @@ def page(fname, title, desc, parts, css=()):
     main = site_terms(''.join(parts))
     desc = site_terms(desc)
     html = chrome.page('fpga/' + fname, title, desc, main, section='fpga',
-                       css=('drawings.css',) + tuple(css), body_class='fpga')
+                       css=('drawings.css',) + tuple(css))
     open(os.path.join(OUT, fname), 'w', encoding='utf-8').write(html)
     WRITTEN.append(fname)
 
@@ -533,7 +533,7 @@ def hero(eyebrow, title, lede, body='', keys='', side=''):
     under it, and the keys to the pages it leads to."""
     return ('<section class="page-hero wrap%s">\n<div>\n'
             '<p class="eyebrow"><span class="dot"></span>%s</p>\n<h1>%s</h1>\n'
-            '<p class="intro lede">%s</p>\n%s%s</div>\n%s</section>\n'
+            '<p class="intro">%s</p>\n%s%s</div>\n%s</section>\n'
             % ('' if side else ' solo', eyebrow, title, lede, body, keys, side))
 
 def keys(*ks, first='key'):
@@ -552,10 +552,15 @@ def section(sid, eyebrow, title, lead, body, label=None):
             % (' id="%s"' % sid if sid else '', label or re.sub(r'<[^>]+>', '', title.replace('<br>', ' ')), eyebrow, title,
                '<p class="lead">%s</p>\n' % lead if lead else '', body))
 
-def figure(svg, caption, cls='fig', more='', label=''):
+def figure(svg, caption, cls='fig', more='', label='', name=''):
+    """A drawing in its box, which scrolls sideways where the drawing is
+    wider than the screen; the box can be reached from the keyboard and is
+    named after the figure: `name` is its title as written, `label` the
+    figure's number and title above it."""
+    n = int(re.match(r'FIG\. (\d+)', label).group(1))
     return ('<figure class="%s">\n<div class="fig-top"><span>%s</span><span>MUIR-FPGA</span></div>\n'
-            '<div class="scroll">\n        %s\n</div>\n<figcaption>%s</figcaption>\n%s</figure>\n'
-            % (cls, label, svg, caption, more))
+            '<div class="scroll" tabindex="0" role="region" aria-label="Figure %d: %s">\n        %s\n</div>\n<figcaption>%s</figcaption>\n%s</figure>\n'
+            % (cls, label, n, name, svg, caption, more))
 
 def more_line(text):
     return '<p class="more">%s</p>\n' % text
@@ -572,7 +577,7 @@ def build_index():
     for o, n in INDEX_FIT:
         table = sub(table, o, n)
     # The table's own classes are kept; the site's style.css styles them.
-    table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll boardtable-wrap" tabindex="0"')
+    table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll" tabindex="0"')
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
                   'What runs on each of three small boards, and what the real machine was.',
@@ -638,7 +643,7 @@ RUNS      its processor and clocks within
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td>%s</td></tr>\n' % r for r in rows)
     P.append(section('license', '04 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
                      'Where nothing records the terms, the table says so instead of guessing. The long form is %s.' % docs_link('docs/license.md', 'license.md'),
-                     '''<div class="table-scroll"><table class="terms">
+                     '''<div class="table-scroll" tabindex="0" role="region" aria-label="License and third-party material"><table class="terms">
 <thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
 <tbody>
 %s</tbody>
@@ -809,7 +814,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     P = [hero(BOARD_EYEBROW[fname], name, lede,
               keys=keys(*(tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
          '<section class="section wrap tight" aria-label="%s, the drawing">\n' % name,
-         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % name.upper()).replace('<figcaption></figcaption>\n', ''),
+         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % name.upper(), name=name).replace('<figcaption></figcaption>\n', ''),
          '</section>\n']
     page(fname, title, desc, P)
 
@@ -1271,7 +1276,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <p class="callout">Everything the board needs is on its card. No network is used and none is needed.</p>
 </div>
 ''' + figure(s1, 'The card holds everything, the CADR is in the fabric before the kernel is fetched, and the machine&rsquo;s own boot PROM waits in its no-drive loop until Linux presents it a disk. The Arty Z7-20 has booted this way with no network at all.',
-             cls='fig dense', label='FIG. 01 &mdash; A ZYNQ BOARD, FROM ITS CARD',
+             cls='fig dense', label='FIG. 01 &mdash; A ZYNQ BOARD, FROM ITS CARD', name='A Zynq board, from its card',
              more=more_line('The long form: %s.' % docs_link('the card, and the two ways it boots', 'boot.md', 'the-card-and-the-two-ways-it-boots')))))
 
     # THE DEVELOPMENT PATH IS NAMED FOR WHAT IT USES, on both boards and in the
@@ -1285,7 +1290,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <div class="prose"><p>The card&rsquo;s <code>uEnv.txt</code> decides between the two paths, by whether it names a server, and one U-Boot environment carries both. Each board&rsquo;s five files sit in a directory named for the board, and the network path never falls back to the card&rsquo;s own copies.</p></div>
 </div>
 ''' + figure(s2, 'The two paths differ only in where the bytes come from: both put the CADR in the fabric before the kernel, and both end in the same <code>bootz</code>.',
-             cls='fig dense', label='FIG. 02 &mdash; A ZYNQ BOARD, WITH TFTP',
+             cls='fig dense', label='FIG. 02 &mdash; A ZYNQ BOARD, WITH TFTP', name='A Zynq board, with TFTP',
              more=more_line('The long form: %s.' % docs_link('one server, more than one board', 'boot.md', 'one-server-more-than-one-board')))))
 
     # THE DE25-NANO, a third sequence rather than a variant of either above.
@@ -1309,7 +1314,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 <p class="callout">The board&rsquo;s first phase is in the flash and everything after it is on the card. Its fabric is filled by the loader, not before it.</p>
 </div>
 ''' + figure(s3, 'The four steps of the fabric&rsquo;s turn are in the order the boot environment runs them: the image is read, the gate is shut, the CADR is configured, the bridges are released, and only then is the gate opened. The kernel is fetched after all four, so the machine&rsquo;s first memory cycle cannot meet a bridge still in reset.',
-             cls='fig dense', label='FIG. 03 &mdash; THE DE25-NANO, FROM ITS CARD',
+             cls='fig dense', label='FIG. 03 &mdash; THE DE25-NANO, FROM ITS CARD', name='The DE25-Nano, from its card',
              more=more_line('The long form: %s.' % docs_link('the card, and the two ways it boots', 'boot.md', 'the-card-and-the-two-ways-it-boots')))))
 
     # THE DE25-NANO WITH TFTP, the fourth sequence.  What it is here to show is
@@ -1333,7 +1338,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 <div class="prose"><p>The first-stage loader is in the QSPI flash, and it asks for <code>u-boot.itb</code> by that name at the root of the card, so neither of them comes from the server: the first stage reads the card, and it is U-Boot that speaks TFTP here. <code>uEnv.txt</code> is read off the card on this path too, and it is the file that chose the path. The four steps of the fabric&rsquo;s turn are the card path&rsquo;s own, and only the fetch before them changes.</p></div>
 </div>
 ''' + figure(s4, 'The same board, the same flash and the same card, with a server in the middle. What the network changes is where the five files come from, and nothing else: the loader is still read off the card, and the boot ends in the same <code>booti</code>.',
-             cls='fig dense', label='FIG. 04 &mdash; THE DE25-NANO, WITH TFTP',
+             cls='fig dense', label='FIG. 04 &mdash; THE DE25-NANO, WITH TFTP', name='The DE25-Nano, with TFTP',
              more=more_line('The long form: %s.' % docs_link('one server, more than one board', 'boot.md', 'one-server-more-than-one-board'))),
         label='The DE25-Nano with TFTP, used for development'))
     page('booting.html', 'muir-fpga &mdash; booting',
@@ -1364,7 +1369,7 @@ def build_debugging():
     nfig = [0]
     def fig(svg, caption, title, more=''):
         nfig[0] += 1
-        return figure(svg, caption, more=more, label='FIG. %02d &mdash; %s' % (nfig[0], title.upper()))
+        return figure(svg, caption, more=more, label='FIG. %02d &mdash; %s' % (nfig[0], title.upper()), name=title)
 
     # The heading carries the site's accent on its last words; the figure's
     # label is the same words without it.
@@ -1449,7 +1454,7 @@ def build_debugging():
                   % (a, b, '' if c == 'yes' else ' no', c) for a, b, c in rows)
     P.append(section('shown', '06 / ON SILICON', 'What has run<br>on a <em>board.</em>',
         'All three pieces have run on silicon: the window, the ribbon, and CC across the ribbon, both ways round. A write has crossed it since, into a register of the far machine rather than into its memory. CC itself ran on the earlier carrier, and what has crossed the guarded one is every cycle such a session is built out of.',
-        '''<div class="table-scroll"><table>
+        '''<div class="table-scroll" tabindex="0" role="region" aria-label="What has run on a board"><table>
 <thead><tr><th scope="col">What</th><th scope="col">How it was shown</th><th scope="col">Shown</th></tr></thead>
 <tbody>
 %s</tbody>
@@ -1460,7 +1465,7 @@ def build_debugging():
 
     P.append(section('sources', '07 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Nothing above is a first-hand invention. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
-        '''<div class="table-scroll"><table>
+        '''<div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>
 %s</table></div>
 ''' % src_rows))
@@ -1514,12 +1519,12 @@ def build_cadr():
             docs_link('docs/cadr.md', DOC, anchor),
             ', and the long form in %s' % docs_link(second[0], second[1]) if second else ''))
         cls = 'fig dense wide' if i == 0 else 'fig'
-        fig = figure(figs[i], caps[i], cls=cls, more=more, label='FIG. %02d &mdash; %s' % (i + 1, title.upper()))
+        fig = figure(figs[i], caps[i], cls=cls, more=more, label='FIG. %02d &mdash; %s' % (i + 1, title.upper()), name=title)
         P.append(section(sid, '%02d / %s' % (i + 1, eyebrow.upper()), accent(title), '', fig))
 
     P.append(section('sources', '12 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Nothing above is a first-hand invention. Numbers written with a leading <code>0o</code> are octal, which is how MIT writes an address.',
-        '<div class="table-scroll">\n%s</div>\n<p class="small-print">The sources themselves, file by file, are listed in %s.</p>\n'
+        '<div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from">\n%s</div>\n<p class="small-print">The sources themselves, file by file, are listed in %s.</p>\n'
         % (table, docs_link('docs/cadr.md', DOC, 'sources'))))
     page('cadr.html', 'muir-fpga &mdash; the CADR',
          'What the MIT CADR Lisp Machine is, in eleven drawings: the cage and its two buses, the processor&rsquo;s data paths, its microinstruction and the macroinstruction its microcode interprets, the map, the address space, the disk, the display, the I/O board, the light panel and the debug cable.',

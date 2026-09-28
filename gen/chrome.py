@@ -77,7 +77,9 @@ def subnav(section, current):
 
 
 def footer(root):
-    links = ''.join('<a href="%s">%s &middot; %s</a>' % (href(root, sid + '/'), name, label)
+    # A project's name, and the section's label where it says more (ozd's
+    # is its name).
+    links = ''.join('<a href="%s">%s</a>' % (href(root, sid + '/'), name if name == label else '%s &middot; %s' % (name, label))
                     for sid, label, name, _ in SECTIONS)
     return ('<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
             '<div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p>'

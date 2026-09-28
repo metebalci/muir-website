@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../drawings.css">
 </head>
-<body class="fpga">
+<body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/">Lisp Machine</a><a href="../simulator/">Simulator</a><a href="../fpga/" aria-current="page">FPGA</a><a href="../system/">System</a><a href="../ozd/">ozd</a><a class="github" href="https://github.com/metebalci/muir-fpga">GitHub <span>&#8599;</span></a></nav></header>
 <nav class="subnav wrap" aria-label="muir-fpga&rsquo;s pages"><b>muir-fpga</b><a href="./">The boards</a><a href="arty-z7-20.html">Arty Z7-20</a><a href="cora-z7-07s.html">Cora Z7-07S</a><span aria-current="page">DE25-Nano</span><a href="booting.html">Booting</a><a href="debugging.html">Debugging</a><a href="faq.html">Questions</a><a href="cadr.html">The CADR</a></nav>
@@ -17,14 +17,14 @@
 <div>
 <p class="eyebrow"><span class="dot"></span>muir-fpga &middot; Terasic &middot; Agilex 5 E-series</p>
 <h1>DE25-Nano</h1>
-<p class="intro lede">QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.</p>
+<p class="intro">QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.</p>
 <div class="actions"><a class="text-link" href="booting.html">How it boots</a><a class="text-link" href="debugging.html">The debug cable</a><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=115&amp;No=1384">The maker&rsquo;s page &#8599;</a></div>
 </div>
 </section>
 <section class="section wrap tight" aria-label="DE25-Nano, the drawing">
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 01 &mdash; DE25-NANO</span><span>MUIR-FPGA</span></div>
-<div class="scroll">
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 1: DE25-Nano">
         <svg viewBox="20 41 1813 829" role="img" aria-label="The Arty Z7-20&rsquo;s architecture drawing, drawn for the DE25-Nano, whose FPGA is one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS. All twenty-one blocks this project builds for this board are done and drawn green: display output, F2SDRAM, clock, ICMEM board, CADR board, bus interface, debug cable adapter, Xbus to DDR, disk controller, TV, Color TV, I/O board, H2F, LWH2F, SPL, terminal, Chaosnet, serial, disk packs, console and USB input. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board. The lamps at its right are drawn in the color each one lights, which on this board is green for every one of them, as its user LEDs are, and the debug cable is drawn on a GPIO header, since the board has no Pmod. HPS means Hard Processor System. Beside muir-sim, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. It runs on a host of its own today, and no line reaches its block, because running it on this board&rsquo;s own processing system, so that a card by itself is a whole site, would be a path on the board and there is none yet. Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,451 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. Under those two, the worst setup slack of this build, plus 1.663 nanoseconds. Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names and buses, the debug window&rsquo;s bridge, the HDMI transmitter, the buttons&rsquo; and the lamps&rsquo; names, the lamps&rsquo; color, the USB-Blaster III and its socket, and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.">
 
           <!-- The Arty Z7-20's drawing, generated for the DE25-Nano.  All
@@ -358,6 +358,6 @@
 </figure>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd &middot; ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="../ozd/">ozd</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>
