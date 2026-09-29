@@ -110,6 +110,8 @@ def main():
              P('gen', 'fpga', 'gen.py'), '# THE MAKERS\' OWN PAGES', '# see /' + 'home/someone/work/site/base\n# THE MAKERS\' OWN PAGES'),
             ('public', 'a private address in a page',
              P('pages', 'ozd', 'index.html'), '--listen 192.0.2.10', '--listen 192.' + '168.1.20'),
+            ('public', 'a private address at the end of a sentence',
+             P('README.md'), '# muir-website', '# muir-website\n\nBoot from 10.' + '0.0.5.'),
             ('public', 'an e-mail address in the README',
              P('README.md'), '# muir-website', '# muir-website\n\nWrite to someone' + '@' + 'example.org.'),
             ('public', 'this machine\'s name in a page',

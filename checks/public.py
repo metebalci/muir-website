@@ -33,7 +33,8 @@ PATTERNS = [
     ('a process ID', re.compile(r'\bpid[=: ]+\d+|\bPID \d+', re.I)),
     ('a Claude session', re.compile(r'claude\.ai/(?:code|chat|artifact)|session[_-]?id', re.I)),
 ]
-IPV4 = re.compile(r'(?<![\d.])(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?![\d.])')
+# A dot after the address ends a sentence unless a digit follows it.
+IPV4 = re.compile(r'(?<![\d.])(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?!\d|\.\d)')
 EMAIL = re.compile(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}')
 
 
