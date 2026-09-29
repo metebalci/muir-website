@@ -57,8 +57,9 @@ fault planted for it.
                                      every internal link and #anchor
                                      resolves; with --repos, a directory of
                                      clones of the four projects, so does
-                                     every link into their files, headings
-                                     and release tags on GitHub
+                                     every link into their files, at any
+                                     branch or tag, their headings and
+                                     release tags on GitHub
     python3 checks/public.py         no local path, private address, local
                                      port, process ID, e-mail address,
                                      session, or this machine's or user's

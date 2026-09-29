@@ -11,10 +11,13 @@ this file is in):
   - every #anchor names an id on the page it points at;
   - every url() in a stylesheet names a file that exists.
 With --repos, a directory holding clones of muir-sim, muir-sys, muir-fpga and
-ozd, also every github.com/metebalci/<repo>/(blob|tree)/main/<path> link:
-the path exists at REF (default main) in that clone, and an #anchor on a
-Markdown file names one of its headings, slugged as GitHub slugs them; and
-every releases/tag/<tag> link names a tag the clone has.
+ozd, also every github.com/metebalci/<repo>/(blob|tree)/<ref>/<path> link:
+<ref> names a branch or a tag of that clone, main standing for REF (default
+main), any other branch taken as the clone's own or else origin's; the path
+exists at that ref, and an #anchor on a Markdown file names one of its
+headings, slugged as GitHub slugs them.  A tree/<ref> link with no path
+names a branch or tag the clone has, and so does every releases/tag/<tag>
+link.
 
 It prints each broken link and exits 1 if there is any."""
 import argparse, os, re, subprocess, sys, unicodedata
@@ -99,6 +102,18 @@ def git(repo, *args):
     return subprocess.run(['git', '-C', repo] + list(args), capture_output=True, text=True)
 
 
+def git_ref(d, name, ref):
+    """The commit a branch or tag named in a GitHub link is at in clone d, or
+    None: main is REF; another branch is the clone's own, or else origin's
+    (a clone made with --no-checkout has only origin's); then a tag."""
+    for want in ([ref] if name == 'main' else
+                 ['refs/heads/' + name, 'refs/remotes/origin/' + name, 'refs/tags/' + name]):
+        r = git(d, 'rev-parse', '-q', '--verify', want + '^{commit}')
+        if r.returncode == 0:
+            return r.stdout.strip()
+    return None
+
+
 def check_github(url, repos, ref, cache={}):
     """None if a github.com/metebalci link resolves in the clones, else why."""
     u = urlsplit(url)
@@ -111,16 +126,26 @@ def check_github(url, repos, ref, cache={}):
         return 'not one of the projects\' repositories'
     if not os.path.isdir(d):
         return None if repo == 'muir-website' else 'no clone of %s under --repos' % repo
-    if len(parts) >= 5 and parts[2] in ('blob', 'tree') and parts[3] == 'main':
-        path = unquote('/'.join(parts[4:]))
-        r = git(d, 'cat-file', '-t', '%s:%s' % (ref, path))
+    if len(parts) >= 4 and parts[2] in ('blob', 'tree'):
+        # A ref may hold slashes; GitHub takes the one the repository has.
+        for j in range(4, len(parts) + 1):
+            at = git_ref(d, '/'.join(parts[3:j]), ref)
+            if at:
+                break
+        else:
+            return 'no branch or tag %s in %s' % (parts[3], repo)
+        name = '/'.join(parts[3:j])
+        path = unquote('/'.join(parts[j:]))
+        if not path:
+            return None if parts[2] == 'tree' else 'no file named after blob/%s' % name
+        r = git(d, 'cat-file', '-t', '%s:%s' % (at, path))
         want = 'blob' if parts[2] == 'blob' else 'tree'
         if r.returncode != 0 or r.stdout.strip() != want:
-            return '%s %s is not in %s at %s' % (want, path, repo, ref)
+            return '%s %s is not in %s at %s' % (want, path, repo, name if name != 'main' else ref)
         if u.fragment and parts[2] == 'blob' and path.endswith('.md'):
-            key = (d, ref, path)
+            key = (d, at, path)
             if key not in cache:
-                cache[key] = github_slugs(git(d, 'show', '%s:%s' % (ref, path)).stdout)
+                cache[key] = github_slugs(git(d, 'show', '%s:%s' % (at, path)).stdout)
             if u.fragment not in cache[key]:
                 return 'no heading #%s in %s/%s' % (u.fragment, repo, path)
     elif len(parts) >= 5 and parts[2] == 'releases' and parts[3] == 'tag':
