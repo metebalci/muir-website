@@ -126,7 +126,7 @@ ARTY_FIT = [
      """          <!-- What the machine costs on the part: the memory-on board with the
                disk and both display boards in it, place and routed with DDR=1,
                HDMI=1 and LMTV=1, which is the fabric the board runs.  Built at
-               0c500d4, from the working tree on 681a08a with that change,
+               ffe34ca, from the working tree on ab41da7 with that change,
                as muir-fpga's docs/fits.md records it; the Cora Z7-07S's
                drawing carries that board's figures from the same fits.  The
                46 block RAM tiles include the display output's two band
@@ -227,7 +227,7 @@ CORA_FIT = [
                Timing is met on both edges: +0.210 ns of setup and +0.041 ns
                of hold.
                THE COLOR TV FITS AND CLOSES HERE, WHICH IS WHAT DECIDED THAT
-               THIS BOARD KEEPS IT.  When that was decided, at 4d2ff67, the same
+               THIS BOARD KEEPS IT.  When that was decided, at d55b436, the same
                tree with LMTV=0 was 4,171 slices at 94.8 per cent, 41.5 tiles at
                83.0 per cent and +0.294 ns on 0 of 49,650 endpoints, so the
                second display board cost this part 57 slices and one block RAM
@@ -235,7 +235,7 @@ CORA_FIT = [
                they are left in it, because they are a comparison made at that
                commit and not a reading of this build.  The switch is there for
                a part that cannot afford it; this one can.
-               These are the fit of 0c500d4, from the working tree on 681a08a
+               These are the fit of ffe34ca, from the working tree on ab41da7
                with that change, as muir-fpga's docs/fits.md records it; the
                Arty Z7-20's drawing carries that board's figures from the same
                fits."""),
@@ -387,8 +387,8 @@ INDEX_FIT = [
          653ca22 with its fabric unchanged. They are the figures that board's own drawing carries""",
      """    <!-- One row a board. The figures are each board's own place and route
          report for the fabric that board runs, with the memory, the disk and
-         both display boards in it: the CADR fits of 0c500d4, from the working
-         tree on 681a08a with that change, as muir-fpga's docs/fits.md records
+         both display boards in it: the CADR fits of ffe34ca, from the working
+         tree on ab41da7 with that change, as muir-fpga's docs/fits.md records
          them. They are the figures that board's own drawing carries"""),
     ("""         under its fabric label. A cell says yes only where that board itself
          has shown the thing, which is the same claim the drawings' colors
@@ -461,7 +461,7 @@ INDEX_FIT = [
             <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a>'''),
     # The Cora Z7-07S's debug cable cell and the whole of the DE25-Nano's row.
     # ITS TWO FIGURES ARE THE ONES ITS OWN DRAWING CARRIES, from the fit of the
-    # memory board with the display in it, the fit of 0c500d4 that
+    # memory board with the display in it, the fit of ffe34ca that
     # docs/fits.md records: 16,451 ALMs of 46,800 and 135 M20K blocks of 358, which is the same kind of build as the two Zynq
     # rows and the build its card carries.  The cores are the board's manual,
     # section 2.2 on page 8, through `boards/de25-nano/README.md`, and so are
@@ -1023,8 +1023,8 @@ DE25_STATUS = [
 # 136 units wide and its fill and per cent are rounded to one decimal, as the
 # Arty Z7-20's are.  They stand at zero until this board has a build.
 DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the faces and the
-               display output, the fit of 0c500d4 from the working tree on
-               681a08a with that change, as muir-fpga's docs/fits.md records
+               display output, the fit of ffe34ca from the working tree on
+               ab41da7 with that change, as muir-fpga's docs/fits.md records
                it.  Timing is met, the worst being +1.663 ns of setup, on an
                HDMI output pin, and 0.000 ns of hold.
                16,451 ALMs and 135 M20K blocks.
