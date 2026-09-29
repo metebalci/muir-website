@@ -48,7 +48,7 @@ script: yes
 <p><b>The unit of UPTIME&rsquo;s answer</b>, as the band&rsquo;s own server sends it and its own user end divides it. The manual says seconds. The band&rsquo;s code says sixtieths, and the band is what reads the answer.</p>
 <p>Every protocol a Lisp Machine speaks, and where each fact about it was read, is in <a href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">docs/protocols.md</a>.</p>
 <p>Cold-loaded, a band has a reader, an evaluator and a fasloader, and no FILE yet. <code>(si:qld)</code> reads the rest of it through MINI: one file at a time, on one connection that is never closed. Each file goes whole, and then an EOF.</p>
-<p>A cold load sends to the address that its <code>cold/mini.lisp</code> was compiled with. System 100&rsquo;s names 3060, OZ, so an ozd at 3060 serves it as it is. System 304&rsquo;s takes the host that <code>SYS:</code> translated to when it was compiled.</p>
+<p>A cold load sends to the address that its <code>cold/mini.lisp</code> was compiled with. System 100&rsquo;s names 3060, OZ, so an ozd at 3060 serves it as it is. System 1000 and later take the host that <code>SYS:</code> translated to when it was compiled.</p>
 </div>
 <div>
 <p class="lead tight">What goes over a MINI connection, as MIT&rsquo;s own server, <code>cold/minisr.mid</code>, lists it:</p>
