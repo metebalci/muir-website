@@ -54,7 +54,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
             </marker>
           </defs>
           <text class="d-t" x="10" y="18">how a Zynq board boots on its own</text>
-          <text class="d-s" x="225" y="18">everything from the microSD card; no network needed</text>
+          <text class="d-s" x="297" y="18">everything from the microSD card; no network needed</text>
           <rect class="d-box" x="6" y="28" width="1158" height="634"/>
           <!-- lifelines -->
           <rect class="d-box" x="60" y="34" width="120" height="30"/>
@@ -146,7 +146,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
             </marker>
           </defs>
           <text class="d-t" x="10" y="18">how a Zynq board boots with TFTP</text>
-          <text class="d-s" x="256" y="18">the microSD card holds the loader; the rest comes from a TFTP server</text>
+          <text class="d-s" x="290" y="18">the microSD card holds the loader; the rest comes from a TFTP server</text>
           <rect class="d-box" x="6" y="28" width="1158" height="728"/>
           <!-- lifelines -->
           <rect class="d-box" x="40" y="34" width="120" height="30"/>
@@ -223,7 +223,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
           <text class="d-s" x="413" y="662">S88 a USB keyboard and mouse &mdash; a board with no USB host leaves it out</text>
 
           <text class="d-s" x="413" y="690">login on the serial console</text>
-          <text class="d-s" x="413" y="706">384 MB &mdash; 0x18000000 and up is the CADR&rsquo;s</text>
+          <text class="d-s" x="413" y="706">384 MB; the CADR&rsquo;s from 0x18000000</text>
           <text class="d-s" x="413" y="734" fill-opacity="0.62">on any failure: another try every ten seconds, and never the card&rsquo;s own copies</text>
 
           <text class="d-n" x="10" y="82" fill-opacity="0.62">0 s</text>
@@ -260,7 +260,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
             </marker>
           </defs>
           <text class="d-t" x="10" y="18">how the DE25-Nano boots on its own</text>
-          <text class="d-s" x="240" y="18">the flash carries the first phase; the card carries everything after it</text>
+          <text class="d-s" x="305" y="18">the flash carries the first phase; the card carries everything after it</text>
           <rect class="d-box" x="6" y="28" width="1158" height="742"/>
           <!-- lifelines.  Two storage devices, which is what this board does that a
           Zynq board does not: the first phase is in the flash and the rest is on
@@ -293,7 +293,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           <line class="d-line" x1="330" y1="78" x2="605" y2="78" marker-end="url(#arr-de25)"/>
           <text class="d-s" x="467" y="74" text-anchor="middle">power on</text>
           <line class="d-line" x1="70" y1="104" x2="605" y2="104" marker-end="url(#arr-de25)"/>
-          <text class="d-s" x="337" y="100" text-anchor="middle">the first phase, over Active Serial &mdash; MSEL 001</text>
+          <text class="d-s" x="220" y="100">the first phase, over Active Serial &mdash; MSEL 001</text>
           <line class="d-line" x1="210" y1="166" x2="605" y2="166" marker-end="url(#arr-de25)"/>
           <text class="d-s" x="407" y="162" text-anchor="middle">u-boot.itb &mdash; BL31, then U-Boot proper</text>
           <line class="d-line" x1="210" y1="228" x2="605" y2="228" marker-end="url(#arr-de25)"/>
@@ -319,7 +319,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           Zynq board; the clock comes back from the bay because no board here
           shows Linux a real-time clock. -->
           <line class="d-line" x1="605" y1="540" x2="210" y2="540" marker-end="url(#arr-de25)"/>
-          <text class="d-s" x="407" y="536" text-anchor="middle">S80: the card mounted read-write, the clock back from the bay</text>
+          <text class="d-s" x="407" y="536" text-anchor="middle">S80: the card mounted read-write, clock back from the bay</text>
           <line class="d-line" x1="635" y1="568" x2="1070" y2="568" marker-end="url(#arr-de25)"/>
           <text class="d-s" x="852" y="564" text-anchor="middle">S80: --no-auto-boot, if fpgarc asks &mdash; the machine held, RUN clear</text>
           <line class="d-line" x1="635" y1="596" x2="1070" y2="596" marker-end="url(#arr-de25)"/>
@@ -364,7 +364,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
             </marker>
           </defs>
           <text class="d-t" x="10" y="18">how the DE25-Nano boots with TFTP</text>
-          <text class="d-s" x="245" y="18">the flash and the card carry the loader; the rest comes from a TFTP server</text>
+          <text class="d-s" x="297" y="18">the flash and the card carry the loader; the rest comes from a TFTP server</text>
           <rect class="d-box" x="6" y="28" width="1158" height="872"/>
           <!-- lifelines.  The third drawing's two storage devices, at the same x, and
           the network's two actors between the processing system and the fabric.
@@ -402,7 +402,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           <line class="d-line" x1="300" y1="78" x2="545" y2="78" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="422" y="74" text-anchor="middle">power on</text>
           <line class="d-line" x1="70" y1="104" x2="545" y2="104" marker-end="url(#arr-de25net)"/>
-          <text class="d-s" x="307" y="100" text-anchor="middle">the first phase, over Active Serial &mdash; MSEL 001</text>
+          <text class="d-s" x="220" y="100">the first phase, over Active Serial &mdash; MSEL 001</text>
           <line class="d-line" x1="210" y1="166" x2="545" y2="166" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="377" y="162" text-anchor="middle">u-boot.itb &mdash; BL31, then U-Boot proper</text>
           <line class="d-line" x1="210" y1="228" x2="545" y2="228" marker-end="url(#arr-de25net)"/>
@@ -415,7 +415,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           <line class="d-line" x1="760" y1="278" x2="575" y2="278" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="667" y="274" text-anchor="middle">&lt;IP&gt;</text>
           <line class="d-line" x1="210" y1="306" x2="545" y2="306" marker-end="url(#arr-de25net)"/>
-          <text class="d-s" x="377" y="302" text-anchor="middle">uEnv.txt again &mdash; the card&rsquo;s server, not the lease&rsquo;s</text>
+          <text class="d-s" x="377" y="302" text-anchor="middle">uEnv.txt again: the card&rsquo;s server, not the lease&rsquo;s</text>
           <line class="d-line" x1="940" y1="334" x2="575" y2="334" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="757" y="330" text-anchor="middle">TFTP: de25-nano/uEnv.net &mdash; the boot command, 1,568 B</text>
           <!-- cadr_fabric, unchanged: the bridges are released BEFORE the gate is
@@ -443,14 +443,15 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           <line class="d-line" x1="760" y1="662" x2="575" y2="662" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="667" y="658" text-anchor="middle">&lt;IP&gt;</text>
           <line class="d-line" x1="545" y1="690" x2="210" y2="690" marker-end="url(#arr-de25net)"/>
-          <text class="d-s" x="377" y="686" text-anchor="middle">S80: the card mounted read-write, the clock back from the bay</text>
+          <text class="d-s" x="377" y="672" text-anchor="middle">S80: the card mounted read-write,</text>
+          <text class="d-s" x="377" y="686" text-anchor="middle">the clock back from the bay</text>
           <line class="d-line" x1="575" y1="718" x2="1085" y2="718" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="830" y="714" text-anchor="middle">S80: --no-auto-boot, if fpgarc asks &mdash; the machine held, RUN clear</text>
           <line class="d-line" x1="575" y1="746" x2="1085" y2="746" marker-end="url(#arr-de25net)"/>
           <text class="d-s" x="830" y="742" text-anchor="middle">S80: the drive comes present &mdash; a labeled pack is the CADR&rsquo;s disk</text>
           <text class="d-s" x="583" y="774">S84 ozd, S85 the screen over RFB, S86 the serial line,</text>
           <text class="d-s" x="583" y="790">S87 Chaosnet, S88 a USB keyboard and mouse</text>
-          <text class="d-s" x="583" y="818">login on the serial console</text>
+          <text class="d-s" x="583" y="818">serial console login</text>
           <text class="d-s" x="583" y="842">1 GiB &mdash; 0xB0000000 to 0xB7FFFFFF is the CADR&rsquo;s</text>
           <text class="d-s" x="10" y="884" fill-opacity="0.62">on any failure: another try every ten seconds, and never the card&rsquo;s own copies</text>
 
@@ -463,7 +464,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
           <text class="d-n" x="10" y="446" fill-opacity="0.62">10 s</text>
           <text class="d-n" x="10" y="596" fill-opacity="0.62">17 s</text>
           <text class="d-n" x="10" y="822" fill-opacity="0.62">28 s</text>
-          <text class="d-s" x="560" y="884" fill-opacity="0.62">the times down the left are this board&rsquo;s, measured; the same boot off the card reached the prompt at 25 s</text>
+          <text class="d-s" x="10" y="898" fill-opacity="0.62">the times down the left are this board&rsquo;s, measured; the same boot off the card reached the prompt at 25 s</text>
         </svg>
 </div>
 <figcaption>The same board, the same flash and the same card, with a server in the middle. What the network changes is where the five files come from, and nothing else: the loader is still read off the card, and the boot ends in the same <code>booti</code>.</figcaption>

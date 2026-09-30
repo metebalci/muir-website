@@ -1,30 +1,18 @@
 #!/usr/bin/env python3
 """No label wider than the box it sits in.  Nothing here can render a font,
-so the width is estimated from Helvetica's own advance widths, which are a
-little wider than Archivo's --- so this over-estimates, and a label it does
-not flag is safe."""
+so the width is computed from Plex Mono's advance, which is 600 units to the
+em at every size and weight the drawings use, so a label of n letters at s
+units is n * 0.6 * s units wide, and this is exact rather than an estimate.
+Only centered labels are looked at, in the generated pages, where gen/fpga/fit.py
+has already set the labels again where it could."""
 import os, re, sys, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from check_geom import arch, boxes
 D = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'pages', 'fpga')
-W = {' ':278,'!':278,'"':355,'#':556,'$':556,'%':889,'&':667,"'":191,'(':333,')':333,
-     '*':389,'+':584,',':278,'-':333,'.':278,'/':278,':':278,';':278,'<':584,'=':584,
-     '>':584,'?':556,'@':1015,'[':278,'\\':278,']':278,'^':469,'_':556,'`':333,
-     '{':334,'|':260,'}':334,'~':584,'—':1000,'’':191,'×':584,' ':278}
-for c, w in zip('ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                [667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,
-                 722,667,611,722,667,944,667,667,611]): W[c] = w
-for c, w in zip('abcdefghijklmnopqrstuvwxyz',
-                [556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,
-                 333,500,278,556,500,722,500,500,500]): W[c] = w
-for c in '0123456789': W[c] = 556
-SIZE = {'d-t': 13, 'd-s': 11, 'd-m': 13, 'd-n': 11}
+SIZE = {'d-t': 13, 'd-s': 11, 'd-m': 13, 'd-n': 11, 'd-x': 9.5}
 
 def width(s, cls):
-    size = SIZE[cls.split()[0]]
-    mono = cls.split()[0] in ('d-m', 'd-n')
-    if mono: return len(s) * size * 0.6
-    return sum(W.get(c, 556) for c in s) / 1000.0 * size
+    return len(s) * 0.6 * SIZE[cls.split()[0]]
 
 def run(f):
     g = arch(open(os.path.join(D, f + '.html')).read())

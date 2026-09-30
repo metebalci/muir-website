@@ -44,12 +44,12 @@ BUILT      about 30</pre>
           <text class="d-t" x="10" y="18">the machine, whole</text>
           <path class="d-dash" d="M250,14 H290"/>
           <text class="d-s" x="298" y="18">a backplane or a cage</text>
-          <path class="d-bus" d="M440,14 H480"/>
-          <text class="d-s" x="488" y="18">a bus</text>
-          <path class="d-line" d="M540,14 H580"/>
-          <text class="d-s" x="588" y="18">a cable</text>
-          <path class="d-dot" d="M650,14 H690"/>
-          <text class="d-s" x="698" y="18">an interrupt, the SPY bus</text>
+          <path class="d-bus" d="M461,14 H501"/>
+          <text class="d-s" x="509" y="18">a bus</text>
+          <path class="d-line" d="M566,14 H606"/>
+          <text class="d-s" x="614" y="18">a cable</text>
+          <path class="d-dot" d="M684,14 H724"/>
+          <text class="d-s" x="732" y="18">an interrupt, the SPY bus</text>
 
           <!-- The processor is two boards in a backplane of their own. Which
                schematic belongs to which board is cadr.book and icmem.book. -->
@@ -91,7 +91,8 @@ BUILT      about 30</pre>
           <path class="d-dot" d="M604,152 H254" marker-end="url(#m1arr)"/>
           <text class="d-n" x="584" y="164" text-anchor="end">INT</text>
           <path class="d-dot" d="M604,256 H254" marker-start="url(#m1arr)" marker-end="url(#m1arr)"/>
-          <text class="d-s" x="272" y="272">the SPY bus: a Unibus master reads the diagnostic registers</text>
+          <text class="d-s" x="272" y="272">the SPY bus: a Unibus master</text>
+          <text class="d-s" x="272" y="286">reads the diagnostic registers</text>
           <path class="d-dot" d="M800,126 H758" marker-end="url(#m1arr)"/>
           <path class="d-dot" d="M800,610 H766 V288 H758" marker-end="url(#m1arr)"/>
           <text class="d-s" x="760" y="420" text-anchor="end">the Unibus's</text>
@@ -113,12 +114,13 @@ BUILT      about 30</pre>
           <rect class="d-box" x="604" y="66" width="150" height="234"/>
           <text class="d-t" x="679" y="88" text-anchor="middle">bus interface</text>
           <text class="d-s" x="679" y="108" text-anchor="middle">slot 11</text>
-          <text class="d-s" x="679" y="132" text-anchor="middle">it arbitrates both buses</text>
-          <text class="d-s" x="679" y="146" text-anchor="middle">and passes both interrupts</text>
-          <text class="d-s" x="679" y="170" text-anchor="middle">master of the SPY bus</text>
-          <text class="d-s" x="679" y="194" text-anchor="middle">the Unibus map</text>
-          <text class="d-s" x="679" y="208" text-anchor="middle">the NXM timer</text>
-          <text class="d-s" x="679" y="232" text-anchor="middle">DBGOUT and DBGIN</text>
+          <text class="d-s" x="679" y="132" text-anchor="middle">it arbitrates both</text>
+          <text class="d-s" x="679" y="146" text-anchor="middle">buses and passes both</text>
+          <text class="d-s" x="679" y="160" text-anchor="middle">interrupts</text>
+          <text class="d-s" x="679" y="184" text-anchor="middle">master of the SPY bus</text>
+          <text class="d-s" x="679" y="208" text-anchor="middle">the Unibus map</text>
+          <text class="d-s" x="679" y="222" text-anchor="middle">the NXM timer</text>
+          <text class="d-s" x="679" y="246" text-anchor="middle">DBGOUT and DBGIN</text>
 
           <path class="d-line" d="M754,110 H800"/>
           <path class="d-bus" d="M800,104 V510"/>
@@ -244,14 +246,14 @@ BUILT      about 30</pre>
           <text class="d-t" x="10" y="18">the CADR's processor</text>
           <path class="d-bus" d="M250,14 H290"/>
           <text class="d-s" x="298" y="18">32 bits or more</text>
-          <path class="d-line" d="M410,14 H450"/>
-          <text class="d-s" x="458" y="18">narrower</text>
-          <path class="d-dot" d="M538,14 H578"/>
-          <text class="d-s" x="586" y="18">dotted: a field of the IR, or a condition</text>
-          <path class="d-dash" d="M828,14 H868"/>
-          <text class="d-s" x="876" y="18">a board</text>
-          <path class="d-line" d="M938,14 H968" marker-end="url(#p1arr)"/>
-          <text class="d-s" x="976" y="18">a line from a name comes from that part</text>
+          <path class="d-line" d="M421,14 H461"/>
+          <text class="d-s" x="469" y="18">narrower</text>
+          <path class="d-dot" d="M546,14 H586"/>
+          <text class="d-s" x="594" y="18">dotted: an IR field, or a condition</text>
+          <path class="d-dash" d="M849,14 H889"/>
+          <text class="d-s" x="897" y="18">a board</text>
+          <path class="d-line" d="M967,14 H997" marker-end="url(#p1arr)"/>
+          <text class="d-s" x="1005" y="18">a line from a name comes from that part</text>
 
           <!-- Two boards, cadr.book and icmem.book: the ICMEM board is the top-left corner, the CADR board everything else. The PC, the I bus, the IWR and the OPCs cross the backplane between them. -->
           <rect class="d-dash" x="12" y="40" width="222" height="320"/>
@@ -274,19 +276,21 @@ BUILT      about 30</pre>
           <text class="d-s" x="120" y="310" text-anchor="middle">read as source 6</text>
 
           <!-- The IR. Its fields are drawn at their consumers, dotted. -->
-          <rect class="d-box" x="280" y="66" width="190" height="80"/>
+          <rect class="d-box" x="280" y="66" width="190" height="84"/>
           <text class="d-t" x="375" y="86" text-anchor="middle">IR</text>
-          <text class="d-s" x="375" y="104" text-anchor="middle">I&lt;47:0&gt;, the microinstruction;</text>
-          <text class="d-s" x="375" y="118" text-anchor="middle">OA, destinations 16 and 17,</text>
-          <text class="d-s" x="375" y="132" text-anchor="middle">OR'd into the next one</text>
+          <text class="d-s" x="375" y="104" text-anchor="middle">I&lt;47:0&gt;, the</text>
+          <text class="d-s" x="375" y="118" text-anchor="middle">microinstruction; OA,</text>
+          <text class="d-s" x="375" y="132" text-anchor="middle">destinations 16 and 17, OR'd</text>
+          <text class="d-s" x="375" y="146" text-anchor="middle">into the next one</text>
           <path class="d-bus" d="M222,100 H280" marker-end="url(#p1arr)"/>
           <text class="d-n" x="265" y="92" text-anchor="middle">48</text>
-          <rect class="d-box" x="280" y="196" width="190" height="90"/>
+          <rect class="d-box" x="280" y="196" width="190" height="98"/>
           <text class="d-t" x="375" y="216" text-anchor="middle">next PC</text>
-          <text class="d-s" x="375" y="234" text-anchor="middle">the SPC's top, IR&lt;25:12&gt;, the</text>
-          <text class="d-s" x="375" y="248" text-anchor="middle">dispatch memory, PC + 1;</text>
+          <text class="d-s" x="375" y="234" text-anchor="middle">the SPC's top, IR&lt;25:12&gt;,</text>
+          <text class="d-s" x="375" y="248" text-anchor="middle">the dispatch memory, PC + 1;</text>
           <text class="d-s" x="375" y="262" text-anchor="middle">0 on a trap; SPC&lt;14&gt; and</text>
-          <text class="d-s" x="375" y="276" text-anchor="middle">NEEDFETCH: a main-loop return</text>
+          <text class="d-s" x="375" y="276" text-anchor="middle">NEEDFETCH: a main-loop</text>
+          <text class="d-s" x="375" y="290" text-anchor="middle">return</text>
 
           <!-- Fields into the next PC selector. -->
           <path class="d-dot" d="M300,170 V196"/>
@@ -296,8 +300,8 @@ BUILT      about 30</pre>
           <rect class="d-box" x="280" y="316" width="90" height="44"/>
           <text class="d-t" x="325" y="334" text-anchor="middle">PC</text>
           <text class="d-s" x="325" y="350" text-anchor="middle">14 bits</text>
-          <path class="d-line" d="M305,286 V316" marker-end="url(#p1arr)"/>
-          <path class="d-line" d="M350,316 V286" marker-end="url(#p1arr)"/>
+          <path class="d-line" d="M305,294 V316" marker-end="url(#p1arr)"/>
+          <path class="d-line" d="M350,316 V294" marker-end="url(#p1arr)"/>
           <text class="d-n" x="356" y="306">+1</text>
 
           <!-- The PC across the backplane: to the control store and the OPCs. -->
@@ -312,27 +316,28 @@ BUILT      about 30</pre>
           <text class="d-s" x="360" y="452" text-anchor="middle">a 5-bit pointer</text>
           <path class="d-line" d="M320,360 V400" marker-end="url(#p1arr)"/>
           <text class="d-s" x="326" y="384">return address</text>
-          <path class="d-line" d="M430,400 V286" marker-end="url(#p1arr)"/>
+          <path class="d-line" d="M430,400 V294" marker-end="url(#p1arr)"/>
           <path class="d-line" d="M254,440 H280" marker-end="url(#p1arr)"/>
           <text class="d-s" x="250" y="444" text-anchor="end">L, destination 15</text>
           <rect class="d-box" x="280" y="490" width="160" height="66"/>
           <text class="d-t" x="360" y="510" text-anchor="middle">dispatch memory</text>
           <text class="d-s" x="360" y="528" text-anchor="middle">2,048 words of 17 bits:</text>
           <text class="d-s" x="360" y="542" text-anchor="middle">a PC and N, P, R</text>
-          <path class="d-line" d="M440,523 H456 V286" marker-end="url(#p1arr)"/>
+          <path class="d-line" d="M440,523 H456 V294" marker-end="url(#p1arr)"/>
           <path class="d-dot" d="M254,504 H280"/>
           <text class="d-n" x="250" y="508" text-anchor="end">IR&lt;22:12&gt;</text>
           <path class="d-line" d="M254,526 H280" marker-end="url(#p1arr)"/>
           <text class="d-s" x="250" y="530" text-anchor="end">rotated M, up to 7 bits</text>
           <path class="d-line" d="M254,548 H280" marker-end="url(#p1arr)"/>
           <text class="d-s" x="250" y="552" text-anchor="end">A, misc function 2</text>
-          <rect class="d-box" x="24" y="590" width="200" height="50"/>
+          <rect class="d-box" x="24" y="590" width="200" height="52"/>
           <text class="d-t" x="124" y="608" text-anchor="middle">IWR</text>
-          <text class="d-s" x="124" y="624" text-anchor="middle">writes the control store at the PC</text>
+          <text class="d-s" x="124" y="624" text-anchor="middle">writes the control store at</text>
+          <text class="d-s" x="124" y="638" text-anchor="middle">the PC</text>
           <path class="d-bus" d="M44,590 V216" marker-end="url(#p1arr)"/>
           <text class="d-n" x="50" y="394">WRITE</text>
           <text class="d-n" x="50" y="408">48</text>
-          <path class="d-bus" d="M124,666 V640" marker-end="url(#p1arr)"/>
+          <path class="d-bus" d="M124,666 V642" marker-end="url(#p1arr)"/>
           <text class="d-s" x="124" y="678" text-anchor="middle">A&lt;15:0&gt; and M&lt;31:0&gt;</text>
           <rect class="d-box" x="280" y="610" width="190" height="132"/>
           <text class="d-t" x="375" y="630" text-anchor="middle">jump condition</text>
@@ -365,8 +370,9 @@ BUILT      about 30</pre>
           <text class="d-t" x="590" y="252" text-anchor="middle">functional sources</text>
           <text class="d-s" x="590" y="270" text-anchor="middle">the dispatch constant,</text>
           <text class="d-s" x="590" y="284" text-anchor="middle">SPC, PDL pointer and</text>
-          <text class="d-s" x="590" y="298" text-anchor="middle">index, PDL buffer, OPCs,</text>
-          <text class="d-s" x="590" y="312" text-anchor="middle">Q, VMA, MAP[MD], MD, LC</text>
+          <text class="d-s" x="590" y="298" text-anchor="middle">index, PDL buffer,</text>
+          <text class="d-s" x="590" y="312" text-anchor="middle">OPCs, Q, VMA, MAP[MD],</text>
+          <text class="d-s" x="590" y="326" text-anchor="middle">MD, LC</text>
           <rect class="d-box" x="510" y="370" width="160" height="76"/>
           <text class="d-t" x="590" y="390" text-anchor="middle">PDL buffer</text>
           <text class="d-s" x="590" y="408" text-anchor="middle">1,024 words of 32 bits;</text>
@@ -386,9 +392,10 @@ BUILT      about 30</pre>
           <!-- The ALU, and on QUUX multiply and divide beside it; the rotator and the masker. -->
           <rect class="d-box" x="714" y="150" width="130" height="84"/>
           <text class="d-t" x="779" y="170" text-anchor="middle">ALU</text>
-          <text class="d-s" x="779" y="188" text-anchor="middle">32 bits: boolean, add,</text>
-          <text class="d-s" x="779" y="202" text-anchor="middle">subtract, and the</text>
-          <text class="d-s" x="779" y="216" text-anchor="middle">multiply and divide steps</text>
+          <text class="d-s" x="779" y="188" text-anchor="middle">32 bits: boolean,</text>
+          <text class="d-s" x="779" y="202" text-anchor="middle">add, subtract, and</text>
+          <text class="d-s" x="779" y="216" text-anchor="middle">the multiply and</text>
+          <text class="d-s" x="779" y="230" text-anchor="middle">divide steps</text>
           <path class="d-bus" d="M690,210 H714" marker-end="url(#p1arr)"/>
           <path class="d-dot" d="M800,126 V150"/>
           <text class="d-n" x="806" y="122">IR&lt;8:3&gt;, IR&lt;2&gt;</text>
@@ -400,36 +407,38 @@ BUILT      about 30</pre>
           <path class="d-dot" d="M780,432 V406"/>
           <text class="d-n" x="726" y="444">IR&lt;4:0&gt;, or LC's</text>
           <text class="d-n" x="726" y="458">when IR&lt;11:10&gt; = 3</text>
-          <rect class="d-box" x="714" y="470" width="130" height="62"/>
+          <rect class="d-box" x="714" y="470" width="130" height="70"/>
           <text class="d-t" x="779" y="490" text-anchor="middle">Q</text>
-          <text class="d-s" x="779" y="508" text-anchor="middle">32 bits, for multiply</text>
-          <text class="d-s" x="779" y="522" text-anchor="middle">and divide</text>
+          <text class="d-s" x="779" y="508" text-anchor="middle">32 bits, for</text>
+          <text class="d-s" x="779" y="522" text-anchor="middle">multiply and</text>
+          <text class="d-s" x="779" y="536" text-anchor="middle">divide</text>
           <path class="d-bus" d="M714,501 H690" marker-end="url(#p1arr)"/>
-          <path class="d-dot" d="M740,552 V532"/>
+          <path class="d-dot" d="M740,552 V540"/>
           <text class="d-n" x="746" y="558">IR&lt;1:0&gt;</text>
-          <rect class="d-box" x="876" y="150" width="140" height="104"/>
+          <rect class="d-box" x="876" y="150" width="140" height="112"/>
           <text class="d-t" x="946" y="170" text-anchor="middle">masker</text>
           <text class="d-s" x="946" y="188" text-anchor="middle">a mask of any length</text>
           <text class="d-s" x="946" y="202" text-anchor="middle">and position merges</text>
-          <text class="d-s" x="946" y="216" text-anchor="middle">the rotated M into A:</text>
-          <text class="d-s" x="946" y="230" text-anchor="middle">load byte, deposit</text>
-          <text class="d-s" x="946" y="244" text-anchor="middle">byte, selective deposit</text>
+          <text class="d-s" x="946" y="216" text-anchor="middle">the rotated M into</text>
+          <text class="d-s" x="946" y="230" text-anchor="middle">A: load byte,</text>
+          <text class="d-s" x="946" y="244" text-anchor="middle">deposit byte,</text>
+          <text class="d-s" x="946" y="258" text-anchor="middle">selective deposit</text>
           <path class="d-dot" d="M960,126 V150"/>
           <text class="d-n" x="966" y="122">IR&lt;9:5&gt;</text>
 
           <!-- The rotated M goes up to the masker, under the ALU's output. -->
           <path class="d-bus" d="M844,375 H854"/>
-          <path class="d-bus" d="M866,375 H910 V254" marker-end="url(#p1arr)"/>
-          <rect class="d-box" x="876" y="410" width="140" height="76"/>
+          <path class="d-bus" d="M866,375 H910 V262" marker-end="url(#p1arr)"/>
+          <rect class="d-box" x="866" y="410" width="160" height="76"/>
           <text class="d-t" x="946" y="430" text-anchor="middle">output bus selector</text>
           <text class="d-s" x="946" y="448" text-anchor="middle">the masker, the ALU,</text>
           <text class="d-s" x="946" y="462" text-anchor="middle">the ALU shifted right,</text>
           <text class="d-s" x="946" y="476" text-anchor="middle">or left with Q&lt;31&gt;</text>
-          <path class="d-bus" d="M980,254 V410" marker-end="url(#p1arr)"/>
+          <path class="d-bus" d="M980,262 V410" marker-end="url(#p1arr)"/>
 
           <!-- The ALU's output: to the output bus selector, and to Q. -->
           <path class="d-bus" d="M844,190 H860 V485 H844" marker-end="url(#p1arr)"/>
-          <path class="d-bus" d="M860,448 H876" marker-end="url(#p1arr)"/>
+          <path class="d-bus" d="M860,448 H866" marker-end="url(#p1arr)"/>
           <circle cx="860" cy="448" r="4" fill="currentColor"/>
           <path class="d-line" d="M844,516 H940 V486" marker-end="url(#p1arr)"/>
           <text class="d-n" x="868" y="510">Q&lt;31&gt;</text>
@@ -437,7 +446,7 @@ BUILT      about 30</pre>
           <text class="d-n" x="940" y="394" text-anchor="end">IR&lt;13:12&gt;</text>
 
           <!-- OB, and L, which writes A, M and the PDL buffer a microcycle later. -->
-          <path class="d-bus" d="M1016,448 H1032"/>
+          <path class="d-bus" d="M1026,448 H1032"/>
           <path class="d-bus" d="M1032,104 V571 H1016" marker-end="url(#p1arr)"/>
           <path class="d-bus" d="M1032,104 H1050" marker-end="url(#p1arr)"/>
           <path class="d-bus" d="M1032,207 H1050" marker-end="url(#p1arr)"/>
@@ -465,28 +474,29 @@ BUILT      about 30</pre>
           <text class="d-t" x="1123" y="86" text-anchor="middle">LC</text>
           <text class="d-s" x="1123" y="104" text-anchor="middle">26 bits, the byte</text>
           <text class="d-s" x="1123" y="118" text-anchor="middle">address of the next</text>
-          <text class="d-s" x="1123" y="132" text-anchor="middle">instruction-stream unit;</text>
-          <text class="d-s" x="1123" y="146" text-anchor="middle">LC/4 to VMA on a fetch</text>
+          <text class="d-s" x="1123" y="132" text-anchor="middle">instruction unit;</text>
+          <text class="d-s" x="1123" y="146" text-anchor="middle">LC/4 to VMA on fetch</text>
           <rect class="d-box" x="1050" y="172" width="146" height="90"/>
           <text class="d-t" x="1123" y="192" text-anchor="middle">INTERRUPT-CONTROL</text>
           <text class="d-s" x="1123" y="210" text-anchor="middle">&lt;26&gt; sequence break,</text>
-          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;27&gt; interrupt enable,</text>
-          <text class="d-s" x="1123" y="238" text-anchor="middle">&lt;28&gt; bus reset,</text>
-          <text class="d-s" x="1123" y="252" text-anchor="middle">&lt;29&gt; byte mode</text>
+          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;27&gt; interrupt</text>
+          <text class="d-s" x="1123" y="238" text-anchor="middle">enable, &lt;28&gt; bus</text>
+          <text class="d-s" x="1123" y="252" text-anchor="middle">reset, &lt;29&gt; byte mode</text>
           <path class="d-dot" d="M1080,172 V156" marker-end="url(#p1arr)"/>
           <text class="d-n" x="1086" y="168">&lt;29&gt;</text>
           <rect class="d-box" x="1050" y="280" width="146" height="52"/>
           <text class="d-t" x="1123" y="300" text-anchor="middle">VMA</text>
           <text class="d-s" x="1123" y="318" text-anchor="middle">32 bits, 24 used</text>
-          <rect class="d-box" x="1050" y="358" width="146" height="134"/>
+          <rect class="d-box" x="1050" y="358" width="146" height="140"/>
           <text class="d-t" x="1123" y="378" text-anchor="middle">the map</text>
           <text class="d-s" x="1123" y="396" text-anchor="middle">from VMA starting a</text>
           <text class="d-s" x="1123" y="410" text-anchor="middle">cycle, else from MD;</text>
-          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 2,048 × 5 bits,</text>
-          <text class="d-s" x="1123" y="438" text-anchor="middle">by &lt;23:13&gt;; level 2:</text>
-          <text class="d-s" x="1123" y="452" text-anchor="middle">1,024 × 24 bits; a 22-bit</text>
-          <text class="d-s" x="1123" y="466" text-anchor="middle">physical address and</text>
-          <text class="d-s" x="1123" y="480" text-anchor="middle">the access bits</text>
+          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 2,048 × 5</text>
+          <text class="d-s" x="1123" y="438" text-anchor="middle">bits, by &lt;23:13&gt;;</text>
+          <text class="d-s" x="1123" y="452" text-anchor="middle">level 2: 1,024 × 24</text>
+          <text class="d-s" x="1123" y="466" text-anchor="middle">bits; a 22-bit</text>
+          <text class="d-s" x="1123" y="480" text-anchor="middle">physical address and</text>
+          <text class="d-s" x="1123" y="494" text-anchor="middle">the access bits</text>
           <rect class="d-box" x="1050" y="512" width="146" height="50"/>
           <text class="d-t" x="1123" y="532" text-anchor="middle">MD</text>
           <text class="d-s" x="1123" y="550" text-anchor="middle">32 bits</text>
@@ -496,7 +506,7 @@ BUILT      about 30</pre>
           <path class="d-bus" d="M1032,537 H1050" marker-end="url(#p1arr)"/>
           <path class="d-line" d="M1100,332 V358" marker-end="url(#p1arr)"/>
           <text class="d-n" x="1106" y="350">24</text>
-          <path class="d-bus" d="M1100,512 V492" marker-end="url(#p1arr)"/>
+          <path class="d-bus" d="M1100,512 V498" marker-end="url(#p1arr)"/>
           <path class="d-line" d="M1196,142 H1204 V306 H1196" marker-end="url(#p1arr)"/>
 
           <!-- Out of the processor: the physical address and MD. -->
@@ -807,7 +817,7 @@ BUILT      about 30</pre>
           <text class="d-n" x="589" y="74" text-anchor="middle">VMA&lt;12:8&gt;</text>
           <text class="d-s" x="589" y="89" text-anchor="middle">5 bits</text>
           <text class="d-n" x="843" y="74" text-anchor="middle">VMA&lt;7:0&gt;</text>
-          <text class="d-s" x="843" y="89" text-anchor="middle">8 bits: a page is 256 words, so these pass through</text>
+          <text class="d-s" x="843" y="89" text-anchor="middle">8 bits: a page is 256 words, passed through</text>
 
           <path class="d-line" d="M275,94 V140"/>
           <rect class="d-box" x="140" y="140" width="240" height="76"/>
@@ -950,7 +960,7 @@ BUILT      about 30</pre>
           <text class="d-s" x="300" y="216">a T-300 formatted at 17</text>
           <text class="d-s" x="300" y="230">holds 263,245 blocks</text>
 
-          <text class="d-s" x="30" y="320">the disk address, one word: three bits of unit is why one controller has eight drives</text>
+          <text class="d-s" x="30" y="320">the disk address, one word: three bits of unit, eight drives to a controller</text>
           <rect class="d-box" x="30" y="330" width="490" height="46"/>
           <path class="d-hair" d="M120,330 V376 M270,330 V376 M390,330 V376"/>
           <text class="d-s" x="75" y="350" text-anchor="middle">unit</text>
@@ -996,7 +1006,7 @@ BUILT      about 30</pre>
           <text class="d-n" x="560" y="236">44 bytes</text>
           <text class="d-s" x="660" y="236">POSTAMBLE, all ones</text>
 
-          <text class="d-s" x="560" y="262">the header word, compared against the address the controller was told to read</text>
+          <text class="d-s" x="560" y="262">the header, compared with the address the controller was told to read</text>
           <rect class="d-box" x="560" y="270" width="470" height="46"/>
           <path class="d-hair" d="M670,270 V316 M740,270 V316 M850,270 V316 M940,270 V316"/>
           <text class="d-s" x="615" y="290" text-anchor="middle">next block</text>
@@ -1028,7 +1038,7 @@ BUILT      about 30</pre>
           <text class="d-s" x="620" y="486">the disk address</text>
           <text class="d-s" x="840" y="486">the disk address</text>
           <text class="d-n" x="560" y="506">3</text>
-          <text class="d-s" x="620" y="506">a soft error&rsquo;s burst and its place</text>
+          <text class="d-s" x="620" y="506">a soft error&rsquo;s burst and place</text>
           <text class="d-s" x="840" y="506">START</text>
         </svg>
 </div>
@@ -1234,7 +1244,7 @@ BUILT      about 30</pre>
           <circle class="d-tint" cx="919" cy="107" r="3"/>
           <circle class="d-tint" cx="963" cy="107" r="3"/>
           <circle class="d-tint" cx="1007" cy="107" r="3"/>
-          <text class="d-s" x="800" y="134">Five TIL309 digits show the PC in octal,</text>
+          <text class="d-s" x="800" y="134">Five TIL309 digits, the PC in octal,</text>
           <text class="d-s" x="800" y="148">and each decimal point is a lamp:</text>
           <text class="d-n" x="800" y="172">TILT1</text>
           <text class="d-s" x="866" y="172">the parity errors,</text>

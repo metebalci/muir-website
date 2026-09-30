@@ -12,6 +12,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.join(HERE, 'base')
 sys.path.insert(0, os.path.dirname(HERE))
 import chrome  # noqa: E402
+import fit  # noqa: E402
 OUT = None     # set by main()
 GH = 'https://github.com/metebalci/muir-fpga/blob/main/docs/'
 
@@ -271,7 +272,7 @@ CORA_FIT = [
 # follow them, so the generator regenerates what is committed.
 GRID_10 = [
     ('<text class="d-s" x="96" y="176" text-anchor="middle">29 ticks = 290 ns</text>',
-     '<text class="d-s" x="96" y="176" text-anchor="middle">15 ticks = 150 ns</text>'),
+     '<text class="d-s" x="96" y="176" text-anchor="middle">15 ticks=150 ns</text>'),
     ('runs at 100 MHz, 29 ticks to the microcycle, 290 nanoseconds of real time',
      'runs at 100 MHz, 15 ticks to the microcycle, 150 nanoseconds of real time'),
     ('for the 145 the drawings name', 'for the 145 the schematics name'),
@@ -522,8 +523,104 @@ def site_terms(html):
     parts = re.split(r'(<!--.*?-->)', html, flags=re.S)
     return ''.join(p if p.startswith('<!--') else terms(p) for p in parts)
 
+# LABELS THAT DO NOT FIT THEIR BOX IN PLEX MONO, and that fit.py could not set
+# again without leaving the box: the words the drawing says instead, each
+# taken out of the words it said and nothing added.  A label is written as
+# the page has it after site_terms(), a page is named by the boards that carry
+# the label, and a label that is not there stops the run.
+A, C, D = 'arty-z7-20.html', 'cora-z7-07s.html', 'de25-nano.html'
+def _t(cls, x, y, anchor, words):
+    return '<text class="%s" x="%s" y="%s"%s>%s</text>' % (cls, x, y, ' text-anchor="middle"' if anchor else '', words)
+LABELS = [
+    ((A, C, D), '>for the other machines<', '>for other machines<'),
+    ((A, C, D), '>the console and JTAG<', '>console and JTAG<'),
+    ((A, C), '>one micro-USB socket,<', '>micro-USB socket,<'),
+    ((A, C), '>PL masters, 64 bits, AXI3<', '>PL masters, 64-bit AXI3<'),
+    ((A, C), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits')),
+    ((A, C, D), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
+    ((A, C, D), '>the debugger<', '>debugger<'),
+    ((A, C, D), '>Vcc open at both sides<', '>Vcc open both sides<'),
+    ((A, C, D), '>U-Boot, the CADR&rsquo;s bitstream,<', '>U-Boot, CADR bitstream,<'),
+    ((A, C, D), '>Linux and its root filesystem,<', '>Linux, root filesystem,<'),
+    ((A, C, D), '>and the disk packs, a file a drive<', '>disk packs, a file each<'),
+    # the boxes of the lower row take three lines of a body and one of a name,
+    # so a body that ran to four lines is written in three
+    ((A, C, D), _t('d-s', 599, 586, 1, 'the CADR&rsquo;s serial line') + '\n          ' + _t('d-s', 599, 600, 1, 'on a TCP socket,') + '\n          '
+     + _t('d-s', 599, 622, 1, 'as muir-sim offers it'),
+     _t('d-s', 599, 586, 1, 'serial line on a') + '\n          ' + _t('d-s', 599, 600, 1, 'TCP socket, as') + '\n          '
+     + _t('d-s', 599, 614, 1, 'muir-sim does')),
+    ((A, C, D), _t('d-s', 746, 586, 1, 'a drive&rsquo;s blocks as a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'one file a drive') + '\n          '
+     + _t('d-s', 746, 622, 1, 'staged into DDR'),
+     _t('d-s', 746, 586, 1, 'a drive is a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'its blocks staged') + '\n          '
+     + _t('d-s', 746, 614, 1, 'into DDR')),
+    ((A, C), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over M_AXI_GP1') + '\n          '
+     + _t('d-s', 893, 622, 1, 'a Unibus master'),
+     _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
+     + _t('d-s', 893, 614, 1, 'M_AXI_GP1') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
+    ((D,), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over LWH2F') + '\n          '
+     + _t('d-s', 893, 622, 1, 'a Unibus master'),
+     _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
+     + _t('d-s', 893, 614, 1, 'LWH2F') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
+    ((A, C, D), '>four registers, and the channel<', '>four registers, the channel<'),
+    ((A, C, D), '>a second display board,<', '>second display board:<'),
+    ((A, C, D), '>576 &times; 454, 4 bits a pixel<', '>576 &times; 454 &times; 4 bits<'),
+    ((A, D), _t('d-s', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s', 1040, 600, 1, 'onto the I/O board') + '\n          '
+     + _t('d-s', 1040, 622, 1, 'through the terminal'),
+     _t('d-s', 1040, 586, 1, 'the keyboard and') + '\n          ' + _t('d-s', 1040, 600, 1, 'mouse, onto the') + '\n          '
+     + _t('d-s', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s', 1040, 628, 1, 'via the terminal')),
+    ((C,), _t('d-s d-absent-t', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s d-absent-t', 1040, 600, 1, 'onto the I/O board') + '\n          '
+     + _t('d-s d-absent-t', 1040, 622, 1, 'through the terminal'),
+     _t('d-s d-absent-t', 1040, 586, 1, 'the keyboard and') + '\n          ' + _t('d-s d-absent-t', 1040, 600, 1, 'mouse, onto the') + '\n          '
+     + _t('d-s d-absent-t', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s d-absent-t', 1040, 628, 1, 'via the terminal')),
+    ((D,), '>2 &times; Cortex-A76<', '>2&times;Cortex-A76<'),
+    ((D,), '>2 &times; Cortex-A55<', '>2&times;Cortex-A55<'),
+    ((A, C, D), '<text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>',
+     '<text class="d-s" x="1066" y="214" text-anchor="end">Unibus, 16 bits,</text>\n          <text class="d-s" x="1066" y="228" text-anchor="end">open collector</text>'),
+    # the HDMI box is 100 wide and takes 14 letters a line, so its four lines
+    # start one line higher than the three they replace
+    ((A, D), _t('d-s', -233, 330, 1, 'the display,') + '\n          ' + _t('d-s', -233, 344, 1, 'from the fabric,') + '\n          '
+     + _t('d-s', -233, 358, 1, '1280 &times; 1024, 60 Hz'),
+     _t('d-s', -233, 326, 1, 'display out of') + '\n          ' + _t('d-s', -233, 340, 1, 'the fabric,') + '\n          '
+     + _t('d-s', -233, 354, 1, '1280 &times; 1024') + '\n          ' + _t('d-s', -233, 368, 1, 'at 60 Hz')),
+]
+
+DEBUGGING = ('debugging.html',)
+LABELS += [
+    # the header's box is 22 wide and four letters of the 9.5-unit label are 22.8
+    (DEBUGGING, '<text class="d-x" x="21.0" y="406.0" text-anchor="middle">MIPI</text>',
+     '<text class="d-x" x="21.0" y="406.0" text-anchor="middle" style="font-size:8.5px">MIPI</text>'),
+]
+BOOTING = ('booting.html',)
+LABELS += [
+    # the sequences' title is 7.8 units a letter now, so its subtitle starts a
+    # gap of 30 after it
+    (BOOTING, '<text class="d-s" x="225" y="18">everything from', '<text class="d-s" x="297" y="18">everything from'),
+    (BOOTING, '<text class="d-s" x="256" y="18">the microSD card holds', '<text class="d-s" x="290" y="18">the microSD card holds'),
+    (BOOTING, '<text class="d-s" x="240" y="18">the flash carries', '<text class="d-s" x="305" y="18">the flash carries'),
+    (BOOTING, '<text class="d-s" x="245" y="18">the flash and the card carry', '<text class="d-s" x="297" y="18">the flash and the card carry'),
+    # the sequences' labels that ran across a lifeline, said in the room between
+    (BOOTING, '<text class="d-s" x="337" y="100" text-anchor="middle">the first phase', '<text class="d-s" x="220" y="100">the first phase'),
+    (BOOTING, '<text class="d-s" x="307" y="100" text-anchor="middle">the first phase', '<text class="d-s" x="220" y="100">the first phase'),
+    (BOOTING, '>S80: the card mounted read-write, the clock back from the bay</text>\n          <line class="d-line" x1="635" y1="568"',
+     '>S80: the card mounted read-write, clock back from the bay</text>\n          <line class="d-line" x1="635" y1="568"'),
+    (BOOTING, '<text class="d-s" x="377" y="686" text-anchor="middle">S80: the card mounted read-write, the clock back from the bay</text>',
+     '<text class="d-s" x="377" y="672" text-anchor="middle">S80: the card mounted read-write,</text>\n          <text class="d-s" x="377" y="686" text-anchor="middle">the clock back from the bay</text>'),
+    (BOOTING, '>uEnv.txt again &mdash; the card&rsquo;s server, not the lease&rsquo;s<', '>uEnv.txt again: the card&rsquo;s server, not the lease&rsquo;s<'),
+    (BOOTING, '<text class="d-s" x="583" y="818">login on the serial console</text>', '<text class="d-s" x="583" y="818">serial console login</text>'),
+    (BOOTING, '<text class="d-s" x="413" y="706">384 MB &mdash; 0x18000000 and up is the CADR&rsquo;s</text>', '<text class="d-s" x="413" y="706">384 MB; the CADR&rsquo;s from 0x18000000</text>'),
+    # a note that ran on to the right of the drawing goes under the one beside it
+    (BOOTING, '<text class="d-s" x="560" y="884" fill-opacity="0.62">the times down', '<text class="d-s" x="10" y="898" fill-opacity="0.62">the times down'),
+]
+
+def fix_labels(text, fname):
+    for pages, old, new in LABELS:
+        if fname in pages:
+            assert old in text, (fname, old)
+            text = text.replace(old, new)
+    return text
+
 def page(fname, title, desc, parts, css=()):
-    main = site_terms(''.join(parts))
+    main = fit.fit_labels(fix_labels(site_terms(''.join(parts)), fname), fname)
     desc = site_terms(desc)
     html = chrome.page('fpga/' + fname, title, desc, main, section='fpga',
                        css=('drawings.css',) + tuple(css))
@@ -687,28 +784,18 @@ KEY_BASELINE = 861        # the words' baseline, 10 under the swatch's top as it
 KEY_TO_WORD = 7           # from a swatch's right edge to its word
 KEY_GAP = 24              # from a word's end to the next swatch
 
-# Each word's advance in Zen Maru Gothic at 11 units, the face and size the
-# drawing's `d-s` labels are set in.  The first of these were measured in
-# Chromium with the site's own woff2 loaded, at 1,100 pixels and divided by a
-# hundred, which is the face's own advance and not one rounded to a screen's
-# pixels; a word measured at 11 pixels comes back rounded to whole pixels and
-# would space the key by the screen rather than by the face.  The three words
-# the key carries now are read out of the face itself, from
-# fontsrc/zenmarugothic/ZenMaruGothic-Medium.ttf, which is what
-# zen-maru-gothic-500.woff2 is built from and what a browser picks for `d-s`,
-# since the file offers 500 and 700 and the rule asks 400: each glyph's
-# advance from `hmtx`, the pair adjustments of the GPOS `kern` feature added,
-# every one of them taken to 1.1 units and rounded half down, summed and
-# divided by a hundred.  That rule reproduces all seven of the browser's own
-# measurements to the hundredth --- including `not available on this board`,
-# which is still in use --- which is why it is trusted for words no browser
-# here has measured.
-KEY_WIDTH = {
-    'this project': 55.3,
-    'another project': 74.99,
-    'board component': 84.73,
-    'not available on this board': 128.75,
-}
+# Each word's width is its letters times Plex Mono's advance, the face the
+# drawing's `d-s` labels are set in at 11 units.  The advance is 600 units of
+# 1,000 to the em at 400 and at 500, read in Chromium from the site's served
+# ibm-plex-mono-400.woff2 and -500.woff2 at 1,000 pixels (a space, `M`, `i`,
+# `W`, `x`, a digit, `.` and `%` each measured 600), so a word of n letters
+# is n * 0.6 * 11 = 6.6n units, whole words included: `this project` measured
+# 7,200 and `not available on this board` 16,200 at 1,000 pixels.
+PLEX_ADVANCE = 0.6
+KEY_FONT_SIZE = 11
+KEY_WORDS = ('this project', 'another project', 'board component', 'not available on this board')
+KEY_WIDTH = dict((w, round(len(w) * PLEX_ADVANCE * KEY_FONT_SIZE, 2)) for w in KEY_WORDS)
+
 # WHOSE WORK EACH BLOCK IS, which is the whole of what the colors say.  Green
 # is this project's and done, orange is another project's, carried here rather
 # than built here, and gray is a part of the board itself.  A block of this
@@ -1592,6 +1679,9 @@ def main(out):
     build_debugging()
     build_cadr()
     build_faq()
+    if os.environ.get('FIT_REPORT'):
+        for where, text in fit.UNFITTED:
+            print('unfitted', where, text, file=sys.stderr)
     return list(WRITTEN)
 
 if __name__ == '__main__':

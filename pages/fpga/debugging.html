@@ -156,11 +156,12 @@
           <text class="d-s" x="143" y="368" text-anchor="middle">sixteen words on a</text>
           <text class="d-s" x="143" y="384" text-anchor="middle">general-purpose port</text>
           <line class="d-line" x1="238" y1="349" x2="262" y2="349"/>
-          <rect class="d-box" x="262" y="306" width="178" height="86"/>
-          <text class="d-t" x="351" y="328" text-anchor="middle">muir-sim, on the Arm cores</text>
-          <text class="d-s" x="351" y="348" text-anchor="middle">a CADR that runs CC,</text>
-          <text class="d-s" x="351" y="364" text-anchor="middle">reaching the window with</text>
-          <text class="d-n" x="351" y="384" text-anchor="middle">--debug-cable-connect</text>
+          <rect class="d-box" x="262" y="306" width="178" height="96"/>
+          <text class="d-t" x="351" y="328" text-anchor="middle">muir-sim, on the Arm</text>
+          <text class="d-t" x="351" y="342" text-anchor="middle">cores</text>
+          <text class="d-s" x="351" y="362" text-anchor="middle">a CADR that runs CC,</text>
+          <text class="d-s" x="351" y="378" text-anchor="middle">reaching the window with</text>
+          <text class="d-n" x="351" y="398" text-anchor="middle">--debug-cable-connect</text>
           <line class="d-line" x1="455" y1="288" x2="455" y2="410"/>
           <rect class="d-box" x="370" y="410" width="110" height="44"/>
           <text class="d-m" x="425" y="432" text-anchor="middle">Pmod JA</text>
@@ -192,11 +193,12 @@
           <text class="d-m" x="635" y="432" text-anchor="middle">Pmod JA</text>
           <text class="d-s" x="635" y="448" text-anchor="middle">eight pins</text>
           <line class="d-line" x1="798" y1="349" x2="822" y2="349"/>
-          <rect class="d-box" x="620" y="306" width="178" height="86"/>
-          <text class="d-t" x="709" y="328" text-anchor="middle">muir-sim, on the Arm cores</text>
-          <text class="d-s" x="709" y="348" text-anchor="middle">this board stays</text>
-          <text class="d-s" x="709" y="364" text-anchor="middle">debuggable from here</text>
-          <text class="d-s" x="709" y="384" text-anchor="middle">whatever the ribbon does</text>
+          <rect class="d-box" x="620" y="306" width="178" height="96"/>
+          <text class="d-t" x="709" y="328" text-anchor="middle">muir-sim, on the Arm</text>
+          <text class="d-t" x="709" y="342" text-anchor="middle">cores</text>
+          <text class="d-s" x="709" y="362" text-anchor="middle">this board stays</text>
+          <text class="d-s" x="709" y="378" text-anchor="middle">debuggable from here</text>
+          <text class="d-s" x="709" y="398" text-anchor="middle">whatever the ribbon does</text>
           <rect class="d-box" x="822" y="306" width="190" height="86"/>
           <text class="d-t" x="917" y="328" text-anchor="middle">the register window</text>
           <text class="d-n" x="917" y="348" text-anchor="middle">0x8000_1000</text>
@@ -371,7 +373,7 @@
           <rect class="d-fill" x="10" y="194" width="42" height="52"/>
           <text class="d-x" x="31.0" y="223.0" text-anchor="middle">HDMI</text>
           <rect class="d-fill" x="10" y="372" width="22" height="62"/>
-          <text class="d-x" x="21.0" y="406.0" text-anchor="middle">MIPI</text>
+          <text class="d-x" x="21.0" y="406.0" text-anchor="middle" style="font-size:8.5px">MIPI</text>
           <rect class="d-fill" x="648" y="132" width="42" height="32"/>
           <text class="d-x" x="669.0" y="151.0" text-anchor="middle">USB-C</text>
           <rect class="d-fill" x="648" y="172" width="42" height="32"/>
@@ -420,17 +422,19 @@
           <rect class="d-fill" x="150" y="482" width="410" height="26"/>
           <text class="d-x" x="151" y="474">JP2 &mdash; the manual&rsquo;s GPIO 1; nothing here uses it</text>
           <text class="d-t" x="726" y="162">finding it</text>
-          <text class="d-s" x="726" y="190">JP1 is the header on the edge between the power jack</text>
-          <text class="d-s" x="726" y="208">and the USB sockets. The other edge, with the switches,</text>
-          <text class="d-s" x="726" y="226">the buttons and the LEDs along it, carries JP2.</text>
-          <text class="d-s" x="726" y="262">Pin 1 is at the power-jack end.</text>
-          <text class="d-s" x="726" y="298">Pins 31 to 38 are not at the far end. Pins 39 and 40 are</text>
-          <text class="d-s" x="726" y="316">the last pair, so the eight are the four pairs before</text>
-          <text class="d-s" x="726" y="334">them: count four pairs back from the end.</text>
-          <text class="d-s" x="726" y="370">Pin 30, the ground this cable joins, is the pair before</text>
-          <text class="d-s" x="726" y="388">pin 31.</text>
-          <text class="d-s" x="726" y="424">The two supply pins are pin 11 and pin 29, and a cable</text>
-          <text class="d-s" x="726" y="442">joins neither of them.</text>
+          <text class="d-s" x="726" y="190">JP1 is the header on the edge between the power</text>
+          <text class="d-s" x="726" y="208">jack and the USB sockets. The other edge, with</text>
+          <text class="d-s" x="726" y="226">the switches, the buttons and the LEDs along it,</text>
+          <text class="d-s" x="726" y="244">carries JP2.</text>
+          <text class="d-s" x="726" y="280">Pin 1 is at the power-jack end.</text>
+          <text class="d-s" x="726" y="316">Pins 31 to 38 are not at the far end. Pins 39 and</text>
+          <text class="d-s" x="726" y="334">40 are the last pair, so the eight are the four</text>
+          <text class="d-s" x="726" y="352">pairs before them: count four pairs back from the</text>
+          <text class="d-s" x="726" y="370">end.</text>
+          <text class="d-s" x="726" y="406">Pin 30, the ground this cable joins, is the pair</text>
+          <text class="d-s" x="726" y="424">before pin 31.</text>
+          <text class="d-s" x="726" y="460">The two supply pins are pin 11 and pin 29, and a</text>
+          <text class="d-s" x="726" y="478">cable joins neither of them.</text>
           <text class="d-t" x="10" y="560">the twelve pins at that end, at a size that can be read</text>
           <text class="d-s" x="10" y="578">the run from pin 30 to pin 38 is ground, signal, guard, signal, guard, signal, guard, signal, guard, so no two signals are adjacent in the ribbon</text>
           <!-- Each pin with what it answers at the far end, so an adapter can be
@@ -490,8 +494,8 @@
           <!-- The three things this page exists to say.  The first is the one
           that costs a board if it is got wrong. -->
           <text class="d-s d-warn" x="10" y="784">PIN 11 IS 5 V AND PIN 29 IS 3.3 V, AND NEITHER IS EVER JOINED TO ANYTHING. ONLY THE GROUND ON PIN 30 IS JOINED.</text>
-          <text class="d-s" x="10" y="801">Two boards&rsquo; regulators tied together is not something either of them is built for, and a manufactured ribbon joins every conductor unless it is stopped. Neither</text>
-          <text class="d-s" x="10" y="817">supply pin is a fabric pin, so nothing in this design can drive one either.</text>
+          <text class="d-s" x="10" y="801">Two boards&rsquo; regulators tied together is not something either of them is built for, and a manufactured ribbon joins every conductor unless it is stopped.</text>
+          <text class="d-s" x="10" y="817">Neither supply pin is a fabric pin, so nothing in this design can drive one either.</text>
           <text class="d-s" x="10" y="843">The guards are a decision and not a measurement. On the Zynq boards the maker&rsquo;s schematics show those pins routed as coupled pairs; no schematic is</text>
           <text class="d-s" x="10" y="859">published for this board and its manual says nothing about how JP1 is routed, so the arrangement was carried across because it is what the other two boards</text>
           <text class="d-s" x="10" y="875">run. If a cable here ever misbehaves, that is the first assumption to revisit.</text>
@@ -615,7 +619,7 @@
 <figure class="fig">
 <div class="fig-top"><span>FIG. 06 &mdash; WHAT CROSSES, EACH WAY</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 6: What crosses, each way">
-        <svg viewBox="0 0 1060 340" role="img" aria-label="What the frame carries, drawn as two bars of twenty-one bits each. The debugger's frame is the role bit at bit 20, the request at 19, the write line at 18, the two address bits at 17 and 16, and the sixteen data lines at 15 down to 0. The debuggee's frame is the role bit at 20, a spare bit that goes out as zero at 19, the acknowledgment at 18, two bits at 17 and 16 saying which bytes of the data lines this end is driving, and the sixteen data lines at 15 down to 0. The fields are drawn to the space their names need rather than to their width in bits. The bus enable and its direction do not cross the cable: they are made on the debugger's own board. The twenty-first bit each way is the carrier's own and says whether the board that sent the frame is the debugger.">
+        <svg viewBox="0 0 1060 360" role="img" aria-label="What the frame carries, drawn as two bars of twenty-one bits each. The debugger's frame is the role bit at bit 20, the request at 19, the write line at 18, the two address bits at 17 and 16, and the sixteen data lines at 15 down to 0. The debuggee's frame is the role bit at 20, a spare bit that goes out as zero at 19, the acknowledgment at 18, two bits at 17 and 16 saying which bytes of the data lines this end is driving, and the sixteen data lines at 15 down to 0. The fields are drawn to the space their names need rather than to their width in bits. The bus enable and its direction do not cross the cable: they are made on the debugger's own board. The twenty-first bit each way is the carrier's own and says whether the board that sent the frame is the debugger.">
           <text class="d-t" x="10" y="18">what the frame carries</text>
 
           <text class="d-t" x="30" y="52">the debugger&rsquo;s frame: twenty of MIT&rsquo;s signals, and one bit that is the carrier&rsquo;s own</text>
@@ -650,7 +654,8 @@
           <text class="d-s" x="30" y="274">The fields are drawn to the space their names need rather than to their width in bits.</text>
           <text class="d-s" x="30" y="298">The two byte-drive bits are the return&rsquo;s own. MIT&rsquo;s cable carried the byte nobody drives on its pull-ups, and a ribbon has none, so the</text>
           <text class="d-s" x="30" y="314">resolution is made at the debugger&rsquo;s end instead: a byte nobody drives arrives as ones, which is what an open cable reads as.</text>
-          <text class="d-s" x="30" y="334">The role bit is neither MIT&rsquo;s nor the machine&rsquo;s. It says whether the board that sent this frame is the debugger, and two idle boards use it to tell each other apart.</text>
+          <text class="d-s" x="30" y="334">The role bit is neither MIT&rsquo;s nor the machine&rsquo;s. It says whether the board that sent this frame is the debugger, and two idle boards use it to tell each</text>
+          <text class="d-s" x="30" y="348">other apart.</text>
         </svg>
 </div>
 <figcaption>Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.</figcaption>

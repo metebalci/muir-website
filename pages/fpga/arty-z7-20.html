@@ -38,12 +38,12 @@
                one baseline, a swatch 7 units before its word and a word 24
                units before the next swatch, spaced by each word's own measured
                width. -->
-          <rect class="d-box d-done d-key" x="764.99" y="851" width="13" height="13"/>
-          <text class="d-s" x="784.99" y="861">this project</text>
-          <rect class="d-box d-part d-key" x="864.29" y="851" width="13" height="13"/>
-          <text class="d-s" x="884.29" y="861">another project</text>
-          <rect class="d-box d-ext d-key" x="983.28" y="851" width="13" height="13"/>
-          <text class="d-s" x="1003.28" y="861">board component</text>
+          <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
+          <text class="d-s" x="753.9" y="861">this project</text>
+          <rect class="d-box d-part d-key" x="857.1" y="851" width="13" height="13"/>
+          <text class="d-s" x="877.1" y="861">another project</text>
+          <rect class="d-box d-ext d-key" x="1000.1" y="851" width="13" height="13"/>
+          <text class="d-s" x="1020.1" y="861">board component</text>
           <!-- No outline around the board: the chip's outline below is the
                one that is drawn and labeled. -->
           <g transform="translate(310,36)">
@@ -66,21 +66,23 @@
           <text class="d-t" x="-70" y="300" text-anchor="middle">display output</text>
           <text class="d-s" x="-70" y="318" text-anchor="middle">scans both screens out of</text>
           <text class="d-s" x="-70" y="332" text-anchor="middle">DDR at the monitor&rsquo;s rate,</text>
-          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
-          <text class="d-s" x="-70" y="360" text-anchor="middle">over the first; TMDS to HDMI</text>
+          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">one over the first; TMDS</text>
+          <text class="d-s" x="-70" y="374" text-anchor="middle">to HDMI</text>
           <path class="d-line" d="M470,274 L470,256 L-70,256 L-70,274"/>
           <path class="d-line" d="M-70,386 L-70,428"/>
           <path class="d-line" d="M-160,330 L-183,330"/>
           <rect class="d-plate" x="-150" y="428" width="160" height="38"/>
           <rect class="d-box d-done" x="-150" y="428" width="160" height="38"/>
           <text class="d-m" x="-70" y="446" text-anchor="middle">S_AXI_HP3</text>
-          <text class="d-s" x="-70" y="460" text-anchor="middle">PL masters, 64 bits, AXI3</text>
+          <text class="d-s" x="-70" y="460" text-anchor="middle">PL masters, 64-bit AXI3</text>
           <path class="d-line" d="M-70,466 L-70,652"/>
           <rect class="d-box d-ext" x="-283" y="288" width="100" height="84"/>
           <text class="d-t" x="-233" y="310" text-anchor="middle">HDMI out</text>
-          <text class="d-s" x="-233" y="330" text-anchor="middle">the display,</text>
-          <text class="d-s" x="-233" y="344" text-anchor="middle">from the fabric,</text>
-          <text class="d-s" x="-233" y="358" text-anchor="middle">1280 &times; 1024, 60 Hz</text>
+          <text class="d-s" x="-233" y="326" text-anchor="middle">display out of</text>
+          <text class="d-s" x="-233" y="340" text-anchor="middle">the fabric,</text>
+          <text class="d-s" x="-233" y="354" text-anchor="middle">1280 &times; 1024</text>
+          <text class="d-s" x="-233" y="368" text-anchor="middle">at 60 Hz</text>
 
           <text class="d-s" x="-164" y="48">Programmable Logic</text>
           <!-- What the machine costs on the part: the memory-on board with the
@@ -127,12 +129,12 @@
           <text class="d-n" x="96" y="120" text-anchor="middle">CLOCK1, CLOCK2</text>
           <text class="d-s" x="96" y="142" text-anchor="middle">100 MHz,</text>
           <text class="d-s" x="96" y="156" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="96" y="176" text-anchor="middle">15 ticks = 150 ns</text>
+          <text class="d-s" x="96" y="176" text-anchor="middle">15 ticks=150 ns</text>
 
           <!-- the processor: two boards -->
           <rect class="d-box d-done" x="152" y="62" width="224" height="56"/>
           <text class="d-t" x="264" y="84" text-anchor="middle">ICMEM board</text>
-          <text class="d-s" x="264" y="104" text-anchor="middle">the control store: 16K &times; 48, 768 Kb</text>
+          <text class="d-s" x="264" y="104" text-anchor="middle">control store: 16K &times; 48, 768 Kb</text>
           <rect class="d-box d-done" x="152" y="118" width="224" height="72"/>
           <text class="d-t" x="264" y="142" text-anchor="middle">CADR board</text>
           <text class="d-s" x="264" y="162" text-anchor="middle">datapath, sequencer,</text>
@@ -199,7 +201,8 @@
           <line class="d-bus" x1="40" y1="238" x2="730" y2="238"/>
           <text class="d-s" x="40" y="228">Xbus, 32 bits</text>
           <line class="d-bus" x1="780" y1="238" x2="1066" y2="238"/>
-          <text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>
+          <text class="d-s" x="1066" y="214" text-anchor="end">Unibus, 16 bits,</text>
+          <text class="d-s" x="1066" y="228" text-anchor="end">open collector</text>
 
           <path class="d-line" d="M118,238 L118,274 M310,238 L310,274 M497,238 L497,274 M657,238 L657,274 M885,238 L885,274"/>
 
@@ -212,7 +215,7 @@
 
           <rect class="d-box d-done" x="210" y="274" width="200" height="112"/>
           <text class="d-t" x="310" y="300" text-anchor="middle">disk controller</text>
-          <text class="d-s" x="310" y="320" text-anchor="middle">four registers, and the channel</text>
+          <text class="d-s" x="310" y="320" text-anchor="middle">four registers, the channel</text>
           <text class="d-s" x="310" y="334" text-anchor="middle">that walks a list in memory</text>
           <text class="d-n" x="310" y="356" text-anchor="middle">CADRDC</text>
           <text class="d-s" x="310" y="376" text-anchor="middle">an AXI4 master</text>
@@ -256,8 +259,8 @@
                is untested for this board. -->
           <rect class="d-box d-done" x="584" y="274" width="146" height="112"/>
           <text class="d-t" x="657" y="300" text-anchor="middle">Color TV</text>
-          <text class="d-s" x="657" y="320" text-anchor="middle">a second display board,</text>
-          <text class="d-s" x="657" y="334" text-anchor="middle">576 &times; 454, 4 bits a pixel</text>
+          <text class="d-s" x="657" y="320" text-anchor="middle">second display board:</text>
+          <text class="d-s" x="657" y="334" text-anchor="middle">576 &times; 454 &times; 4 bits</text>
           <text class="d-n" x="657" y="356" text-anchor="middle">LISPMTV</text>
           <text class="d-n" x="657" y="376" text-anchor="middle">0o17200000</text>
 
@@ -290,10 +293,10 @@
           <rect class="d-plate" x="38" y="428" width="160" height="38"/>
           <rect class="d-box d-done" x="38" y="428" width="160" height="38"/>
           <text class="d-m" x="118" y="446" text-anchor="middle">S_AXI_HP0</text>
-          <text class="d-s" x="118" y="460" text-anchor="middle">PL masters, 64 bits, AXI3</text>
+          <text class="d-s" x="118" y="460" text-anchor="middle">PL masters, 64-bit AXI3</text>
           <rect class="d-box d-done" x="230" y="428" width="160" height="38"/>
           <text class="d-m" x="310" y="446" text-anchor="middle">S_AXI_HP2</text>
-          <text class="d-s" x="310" y="460" text-anchor="middle">PL masters, 64 bits, AXI3</text>
+          <text class="d-s" x="310" y="460" text-anchor="middle">PL masters, 64-bit AXI3</text>
           <!-- THE PORT GREW WITH THE XBUS ROW RATHER THAN MOVING WITH IT.
                Three lines land on its top edge: the disk controller's second
                leg at 660, which did not move when the color display opened a
@@ -307,7 +310,7 @@
           <text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>
           <rect class="d-box d-done" x="1092" y="428" width="140" height="38"/>
           <text class="d-m" x="1162" y="446" text-anchor="middle">M_AXI_GP1</text>
-          <text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>
+          <text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 32 bits</text>
 
           <!-- the PS -->
           <text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>
@@ -377,36 +380,38 @@
           <rect class="d-plate" x="240" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="240" y="542" width="130" height="96"/>
           <text class="d-t" x="305" y="566" text-anchor="middle">terminal</text>
-          <text class="d-s" x="305" y="586" text-anchor="middle">an RFB server: the screen,</text>
-          <text class="d-s" x="305" y="600" text-anchor="middle">the keys and the mouse</text>
+          <text class="d-s" x="305" y="586" text-anchor="middle">an RFB server: the</text>
+          <text class="d-s" x="305" y="600" text-anchor="middle">screen, the keys</text>
+          <text class="d-s" x="305" y="614" text-anchor="middle">and the mouse</text>
 
           <rect class="d-plate" x="387" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="387" y="542" width="130" height="96"/>
           <text class="d-t" x="452" y="566" text-anchor="middle">Chaosnet</text>
           <text class="d-s" x="452" y="586" text-anchor="middle">routing, and the</text>
           <text class="d-s" x="452" y="600" text-anchor="middle">cable to the net</text>
-          <text class="d-s" x="452" y="622" text-anchor="middle">for the other machines</text>
+          <text class="d-s" x="452" y="622" text-anchor="middle">for other machines</text>
 
           <rect class="d-plate" x="534" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="534" y="542" width="130" height="96"/>
           <text class="d-t" x="599" y="566" text-anchor="middle">serial</text>
-          <text class="d-s" x="599" y="586" text-anchor="middle">the CADR&rsquo;s serial line</text>
-          <text class="d-s" x="599" y="600" text-anchor="middle">on a TCP socket,</text>
-          <text class="d-s" x="599" y="622" text-anchor="middle">as muir-sim offers it</text>
+          <text class="d-s" x="599" y="586" text-anchor="middle">serial line on a</text>
+          <text class="d-s" x="599" y="600" text-anchor="middle">TCP socket, as</text>
+          <text class="d-s" x="599" y="614" text-anchor="middle">muir-sim does</text>
 
           <rect class="d-plate" x="681" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="681" y="542" width="130" height="96"/>
           <text class="d-t" x="746" y="566" text-anchor="middle">disk packs</text>
-          <text class="d-s" x="746" y="586" text-anchor="middle">a drive&rsquo;s blocks as a file,</text>
-          <text class="d-s" x="746" y="600" text-anchor="middle">one file a drive</text>
-          <text class="d-s" x="746" y="622" text-anchor="middle">staged into DDR</text>
+          <text class="d-s" x="746" y="586" text-anchor="middle">a drive is a file,</text>
+          <text class="d-s" x="746" y="600" text-anchor="middle">its blocks staged</text>
+          <text class="d-s" x="746" y="614" text-anchor="middle">into DDR</text>
 
           <rect class="d-plate" x="828" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="828" y="542" width="130" height="96"/>
           <text class="d-t" x="893" y="566" text-anchor="middle">console</text>
-          <text class="d-s" x="893" y="586" text-anchor="middle">halt, step and inspect</text>
-          <text class="d-s" x="893" y="600" text-anchor="middle">over M_AXI_GP1</text>
-          <text class="d-s" x="893" y="622" text-anchor="middle">a Unibus master</text>
+          <text class="d-s" x="893" y="586" text-anchor="middle">halt, step and</text>
+          <text class="d-s" x="893" y="600" text-anchor="middle">inspect over</text>
+          <text class="d-s" x="893" y="614" text-anchor="middle">M_AXI_GP1</text>
+          <text class="d-s" x="893" y="628" text-anchor="middle">a Unibus master</text>
 
           <!-- A USB keyboard and a USB mouse plugged into the
                board have both reached Lisp through this program and the
@@ -416,9 +421,10 @@
           <rect class="d-plate" x="975" y="542" width="130" height="96"/>
           <rect class="d-box d-done" x="975" y="542" width="130" height="96"/>
           <text class="d-t" x="1040" y="566" text-anchor="middle">USB input</text>
-          <text class="d-s" x="1040" y="586" text-anchor="middle">the keyboard and mouse,</text>
-          <text class="d-s" x="1040" y="600" text-anchor="middle">onto the I/O board</text>
-          <text class="d-s" x="1040" y="622" text-anchor="middle">through the terminal</text>
+          <text class="d-s" x="1040" y="586" text-anchor="middle">the keyboard and</text>
+          <text class="d-s" x="1040" y="600" text-anchor="middle">mouse, onto the</text>
+          <text class="d-s" x="1040" y="614" text-anchor="middle">I/O board</text>
+          <text class="d-s" x="1040" y="628" text-anchor="middle">via the terminal</text>
 
           <!-- muir, ANOTHER PROJECT'S PROGRAM, CARRIED ONTO THIS BOARD.  It is
                the reference simulator this project's machine is held to,
@@ -431,7 +437,7 @@
           <text class="d-t" x="1162" y="566" text-anchor="middle">muir-sim</text>
           <text class="d-s" x="1162" y="586" text-anchor="middle">on the PS,</text>
           <text class="d-s" x="1162" y="600" text-anchor="middle">running CC</text>
-          <text class="d-s" x="1162" y="622" text-anchor="middle">the debugger</text>
+          <text class="d-s" x="1162" y="622" text-anchor="middle">debugger</text>
 
           <!-- THE ASSOCIATED MACHINE, BESIDE muir AND FOR THE SAME REASON: both
                of them are other projects.  A site of these machines takes its
@@ -451,8 +457,9 @@
           <rect class="d-box d-part" x="1219" y="542" width="80" height="96"/>
           <text class="d-t" x="1259" y="566" text-anchor="middle">ozd</text>
           <text class="d-s" x="1259" y="586" text-anchor="middle">the files,</text>
-          <text class="d-s" x="1259" y="600" text-anchor="middle">the time and</text>
-          <text class="d-s" x="1259" y="614" text-anchor="middle">the host table</text>
+          <text class="d-s" x="1259" y="600" text-anchor="middle">the time</text>
+          <text class="d-s" x="1259" y="614" text-anchor="middle">and the</text>
+          <text class="d-s" x="1259" y="628" text-anchor="middle">host table</text>
 
           <!-- THE CONTROLLERS, IN ONE ROW AT THE FOOT OF THE PROCESSING
                SYSTEM, each of them over the connector it drives.  Every line that
@@ -539,7 +546,7 @@
           <!-- A plate under the warning: red on the connector's gray is hard to read,
                so the line sits on the page color, as the plates under the boxes do. -->
           <rect class="d-plate" x="1373" y="160" width="136" height="17"/>
-          <text class="d-s d-warn" x="1441" y="172" text-anchor="middle">Vcc open at both sides</text>
+          <text class="d-s d-warn" x="1441" y="172" text-anchor="middle">Vcc open both sides</text>
           <!-- The machine's boot button, above the lamps because on MIT's
                light panel it sits with them.  There it is -BOOT2, a momentary
                contact pulled up and taken low through a Schmitt inverter,
@@ -589,11 +596,12 @@
           <circle class="d-lamp-fast" cx="1380" cy="400" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="404">LD2 &mdash; microcycles</text>
           <circle class="d-lamp-disk" cx="1380" cy="422" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="426">LD3 &mdash; disk activity</text>
+          <text class="d-s" x="1394" y="426">LD3 &mdash; disk</text>
+          <text class="d-s" x="1394" y="440">activity</text>
           <circle cx="1380" cy="444" r="4.5" fill="#d1495b" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="448">LD4 &mdash; ERRHALT</text>
+          <text class="d-s" x="1394" y="462">LD4 &mdash; ERRHALT</text>
           <circle cx="1380" cy="466" r="4.5" fill="#0969da" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="470">LD5 &mdash; PROMENABLE</text>
+          <text class="d-s" x="1394" y="484">LD5 &mdash; PROMENABLE</text>
           <path class="d-line" d="M1351,412 L1366,412"/>
           <!-- The no-auto-boot switch, above the boot button because that is
                the order they are used in: the switch decides how the machine
@@ -627,8 +635,9 @@
 
           <rect class="d-box d-ext" x="970" y="712" width="140" height="84"/>
           <text class="d-t" x="1040" y="738" text-anchor="middle">USB host port</text>
-          <text class="d-s" x="1040" y="760" text-anchor="middle">a keyboard and a mouse,</text>
-          <text class="d-s" x="1040" y="774" text-anchor="middle">plugged into the board</text>
+          <text class="d-s" x="1040" y="760" text-anchor="middle">a keyboard and a</text>
+          <text class="d-s" x="1040" y="774" text-anchor="middle">mouse, plugged into</text>
+          <text class="d-s" x="1040" y="788" text-anchor="middle">the board</text>
           <path class="d-line" d="M1040,638 L1040,652"/>
 
 
@@ -644,14 +653,14 @@
           <text class="d-s" x="453" y="778" text-anchor="middle">other machines; the serial line is a TCP socket</text>
           <rect class="d-box d-ext" x="666" y="712" width="160" height="84"/>
           <text class="d-t" x="746" y="738" text-anchor="middle">microSD</text>
-          <text class="d-s" x="746" y="758" text-anchor="middle">U-Boot, the CADR&rsquo;s bitstream,</text>
-          <text class="d-s" x="746" y="772" text-anchor="middle">Linux and its root filesystem,</text>
-          <text class="d-s" x="746" y="786" text-anchor="middle">and the disk packs, a file a drive</text>
+          <text class="d-s" x="746" y="758" text-anchor="middle">U-Boot, CADR bitstream,</text>
+          <text class="d-s" x="746" y="772" text-anchor="middle">Linux, root filesystem,</text>
+          <text class="d-s" x="746" y="786" text-anchor="middle">disk packs, a file each</text>
           <rect class="d-box d-ext" x="836" y="712" width="122" height="84"/>
           <text class="d-t" x="897" y="738" text-anchor="middle">USB-UART</text>
           <text class="d-t" x="897" y="756" text-anchor="middle">/ JTAG</text>
-          <text class="d-s" x="897" y="778" text-anchor="middle">one micro-USB socket,</text>
-          <text class="d-s" x="897" y="792" text-anchor="middle">the console and JTAG</text>
+          <text class="d-s" x="897" y="778" text-anchor="middle">micro-USB socket,</text>
+          <text class="d-s" x="897" y="792" text-anchor="middle">console and JTAG</text>
 
           </g>
         </svg>

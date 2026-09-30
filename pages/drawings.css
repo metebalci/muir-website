@@ -2,17 +2,12 @@
 
 /* The technical drawings: muir-fpga's boards, sequences, cable and CADR
    drawings, muir-sim's machine and QUUX diagrams, and ozd's switch.  They are
-   content, and they keep what they had: their line styles, the colors that
-   say whose work a block is, and the faces their labels were placed in by
-   measurement --- Zen Maru Gothic for words and IBM Plex Mono for numbers.
-   Only the page around them is the site's.  Loaded by the pages that carry a
-   drawing, and by no other. */
-
-@font-face { font-family: "Zen Maru Gothic"; src: url('fonts/zen-maru-gothic-500.woff2') format('woff2'); font-weight: 500; }
-@font-face { font-family: "Zen Maru Gothic"; src: url('fonts/zen-maru-gothic-700.woff2') format('woff2'); font-weight: 700; }
+   content, and they keep what they had: their line styles and the colors that
+   say whose work a block is.  Every label is set in IBM Plex Mono, which the
+   site serves.  Only the page around them is the site's.  Loaded by the
+   pages that carry a drawing, and by no other. */
 
 :root {
-  --draw-sans: "Zen Maru Gothic", system-ui, sans-serif;
   --draw-mono: Plex, ui-monospace, monospace;
 
   /* WHOSE WORK EACH BLOCK ON AN ARCHITECTURE DRAWING IS, which is the whole
@@ -84,20 +79,23 @@
 
 /* The labels.  muir-fpga's drawings were placed at these sizes; muir-sim's
    and ozd's, under `.dm`, a size larger. */
-.d-t { font: 500 13px var(--draw-sans); fill: currentColor; }
-.d-s { font: 400 11px var(--draw-sans); fill: currentColor; }
+/* A label's width is its letters' advances, 0.6 em each, and not one rounded
+   to the screen's pixels: the drawings' boxes are sized to it. */
+svg text { text-rendering: geometricPrecision; }
+.d-t { font: 500 13px var(--draw-mono); fill: currentColor; }
+.d-s { font: 400 11px var(--draw-mono); fill: currentColor; }
 .d-m { font: 500 13px var(--draw-mono); fill: currentColor; }
 .d-n { font: 400 11px var(--draw-mono); fill: currentColor; }
 .d-x { font: 400 9.5px var(--draw-mono); fill: currentColor; }
-.dm .d-t { font: 500 14px var(--draw-sans); }
-.dm .d-s { font: 500 12px var(--draw-sans); }
+.dm .d-t { font: 500 14px var(--draw-mono); }
+.dm .d-s { font: 500 12px var(--draw-mono); }
 .dm .d-n { font: 400 12px var(--draw-mono); }
-.dm .sketch .d-t { font: 500 17px var(--draw-sans); }
-.dm .sketch .d-s { font: 500 14px var(--draw-sans); }
+.dm .sketch .d-t { font: 500 17px var(--draw-mono); }
+.dm .sketch .d-s { font: 500 14px var(--draw-mono); }
 .dm .sketch .d-n { font: 400 14px var(--draw-mono); }
 /* ozd's name in its own switch, once in the display face; here in the
    site's. */
 .d-big { font: bold 26px Arial, Helvetica, sans-serif; fill: currentColor; }
 /* The one red text on these drawings: the debug cable's supply pins, open at
    both ends. */
-.d-warn, .d-s.d-warn, .d-x.d-warn { fill: var(--st-absent); font-weight: 700; }
+.d-warn, .d-s.d-warn, .d-x.d-warn { fill: var(--st-absent); font-weight: 500; }

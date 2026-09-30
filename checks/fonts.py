@@ -4,8 +4,8 @@
 
     python3 checks/fonts.py [--root DIR] [--browser PATH]
 
-The site serves its own fonts, IBM Plex Mono, the cut of Zen Maru Gothic
-and the cut of Gelasio Italic in pages/fonts/, and a character a font lacks
+The site serves its own fonts, IBM Plex Mono and the cut of Gelasio Italic
+in pages/fonts/, and a character a font lacks
 is drawn in whatever the reader's system has instead, or as an empty box.  So, over every page in
 DIR/pages (DIR is the repository, by default the one this file is in):
   - a headless Chromium loads the page, 1440 px wide, and reports

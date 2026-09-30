@@ -31,14 +31,14 @@ css: drawings.css
           <text class="d-t" x="10" y="18">QUUX's processor</text>
           <path class="d-bus" d="M250,14 H290"/>
           <text class="d-s" x="298" y="18">32 bits or more</text>
-          <path class="d-line" d="M410,14 H450"/>
-          <text class="d-s" x="458" y="18">narrower</text>
-          <path class="d-dot" d="M538,14 H578"/>
-          <text class="d-s" x="586" y="18">dotted: a field of the IR, or a condition</text>
-          <path class="d-dash" d="M828,14 H868"/>
-          <text class="d-s" x="876" y="18">the processor</text>
-          <rect class="d-tint" x="978" y="7" width="40" height="14"/>
-          <text class="d-s" x="1026" y="18">tinted: QUUX's change</text>
+          <path class="d-line" d="M421,14 H461"/>
+          <text class="d-s" x="469" y="18">narrower</text>
+          <path class="d-dot" d="M546,14 H586"/>
+          <text class="d-s" x="594" y="18">dotted: an IR field, or a condition</text>
+          <path class="d-dash" d="M849,14 H889"/>
+          <text class="d-s" x="897" y="18">the processor</text>
+          <rect class="d-tint" x="1007" y="7" width="40" height="14"/>
+          <text class="d-s" x="1055" y="18">tinted: QUUX's change</text>
 
           <!-- No boards: one enclosure, the processor. -->
           <rect class="d-dash" x="12" y="40" width="1204" height="728"/>
@@ -60,19 +60,21 @@ css: drawings.css
           <text class="d-s" x="120" y="310" text-anchor="middle">read as source 6</text>
 
           <!-- The IR. Its fields are drawn at their consumers, dotted. -->
-          <rect class="d-box" x="280" y="66" width="190" height="80"/>
+          <rect class="d-box" x="280" y="66" width="190" height="84"/>
           <text class="d-t" x="375" y="86" text-anchor="middle">IR</text>
-          <text class="d-s" x="375" y="104" text-anchor="middle">I&lt;47:0&gt;, the microinstruction;</text>
-          <text class="d-s" x="375" y="118" text-anchor="middle">OA, destinations 16 and 17,</text>
-          <text class="d-s" x="375" y="132" text-anchor="middle">OR'd into the next one</text>
+          <text class="d-s" x="375" y="104" text-anchor="middle">I&lt;47:0&gt;, the</text>
+          <text class="d-s" x="375" y="118" text-anchor="middle">microinstruction; OA,</text>
+          <text class="d-s" x="375" y="132" text-anchor="middle">destinations 16 and 17, OR'd</text>
+          <text class="d-s" x="375" y="146" text-anchor="middle">into the next one</text>
           <path class="d-bus" d="M222,100 H280" marker-end="url(#p2arr)"/>
           <text class="d-n" x="265" y="92" text-anchor="middle">48</text>
-          <rect class="d-box" x="280" y="196" width="190" height="90"/>
+          <rect class="d-box" x="280" y="196" width="190" height="98"/>
           <text class="d-t" x="375" y="216" text-anchor="middle">next PC</text>
-          <text class="d-s" x="375" y="234" text-anchor="middle">the SPC's top, IR&lt;25:12&gt;, the</text>
-          <text class="d-s" x="375" y="248" text-anchor="middle">dispatch memory, PC + 1;</text>
+          <text class="d-s" x="375" y="234" text-anchor="middle">the SPC's top, IR&lt;25:12&gt;,</text>
+          <text class="d-s" x="375" y="248" text-anchor="middle">the dispatch memory, PC + 1;</text>
           <text class="d-s" x="375" y="262" text-anchor="middle">0 on a trap; SPC&lt;14&gt; and</text>
-          <text class="d-s" x="375" y="276" text-anchor="middle">NEEDFETCH: a main-loop return</text>
+          <text class="d-s" x="375" y="276" text-anchor="middle">NEEDFETCH: a main-loop</text>
+          <text class="d-s" x="375" y="290" text-anchor="middle">return</text>
 
           <!-- Fields into the next PC selector. -->
           <path class="d-dot" d="M300,170 V196"/>
@@ -82,8 +84,8 @@ css: drawings.css
           <rect class="d-box" x="280" y="316" width="90" height="44"/>
           <text class="d-t" x="325" y="334" text-anchor="middle">PC</text>
           <text class="d-s" x="325" y="350" text-anchor="middle">14 bits</text>
-          <path class="d-line" d="M305,286 V316" marker-end="url(#p2arr)"/>
-          <path class="d-line" d="M350,316 V286" marker-end="url(#p2arr)"/>
+          <path class="d-line" d="M305,294 V316" marker-end="url(#p2arr)"/>
+          <path class="d-line" d="M350,316 V294" marker-end="url(#p2arr)"/>
           <text class="d-n" x="356" y="306">+1</text>
 
           <!-- The PC across the backplane: to the control store and the OPCs. -->
@@ -98,43 +100,44 @@ css: drawings.css
           <text class="d-s" x="360" y="452" text-anchor="middle">a 5-bit pointer</text>
           <path class="d-line" d="M320,360 V400" marker-end="url(#p2arr)"/>
           <text class="d-s" x="326" y="384">return address</text>
-          <path class="d-line" d="M430,400 V286" marker-end="url(#p2arr)"/>
+          <path class="d-line" d="M430,400 V294" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M254,440 H280" marker-end="url(#p2arr)"/>
           <text class="d-s" x="250" y="444" text-anchor="end">L, destination 15</text>
           <rect class="d-box" x="280" y="490" width="160" height="66"/>
           <text class="d-t" x="360" y="510" text-anchor="middle">dispatch memory</text>
           <text class="d-s" x="360" y="528" text-anchor="middle">2,048 words of 17 bits:</text>
           <text class="d-s" x="360" y="542" text-anchor="middle">a PC and N, P, R</text>
-          <path class="d-line" d="M440,523 H456 V286" marker-end="url(#p2arr)"/>
+          <path class="d-line" d="M440,523 H456 V294" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M254,504 H280"/>
           <text class="d-n" x="250" y="508" text-anchor="end">IR&lt;22:12&gt;</text>
           <path class="d-line" d="M254,526 H280" marker-end="url(#p2arr)"/>
           <text class="d-s" x="250" y="530" text-anchor="end">rotated M, up to 7 bits</text>
           <path class="d-line" d="M254,548 H280" marker-end="url(#p2arr)"/>
           <text class="d-s" x="250" y="552" text-anchor="end">A, misc function 2</text>
-          <rect class="d-box" x="24" y="590" width="200" height="50"/>
+          <rect class="d-box" x="24" y="590" width="200" height="52"/>
           <text class="d-t" x="124" y="608" text-anchor="middle">IWR</text>
-          <text class="d-s" x="124" y="624" text-anchor="middle">writes the control store at the PC</text>
+          <text class="d-s" x="124" y="624" text-anchor="middle">writes the control store at</text>
+          <text class="d-s" x="124" y="638" text-anchor="middle">the PC</text>
           <path class="d-bus" d="M44,590 V216" marker-end="url(#p2arr)"/>
           <text class="d-n" x="50" y="394">WRITE</text>
           <text class="d-n" x="50" y="408">48</text>
-          <path class="d-bus" d="M124,666 V640" marker-end="url(#p2arr)"/>
+          <path class="d-bus" d="M124,666 V642" marker-end="url(#p2arr)"/>
           <text class="d-s" x="124" y="678" text-anchor="middle">A&lt;15:0&gt; and M&lt;31:0&gt;</text>
           <rect class="d-tint" x="24" y="700" width="200" height="58"/>
           <rect class="d-box" x="24" y="700" width="200" height="58"/>
           <text class="d-t" x="124" y="720" text-anchor="middle">clock</text>
-          <text class="d-s" x="124" y="738" text-anchor="middle">sync: 4 ticks of 10 ns, 40 ns;</text>
+          <text class="d-s" x="124" y="738" text-anchor="middle">sync: 4 ticks of 10 ns, 40 ns</text>
           <text class="d-s" x="124" y="752" text-anchor="middle">no delay lines, no speed bits</text>
           <rect class="d-tint" x="280" y="610" width="190" height="132"/>
           <rect class="d-box" x="280" y="610" width="190" height="132"/>
           <text class="d-t" x="375" y="630" text-anchor="middle">jump condition</text>
-          <text class="d-s" x="375" y="648" text-anchor="middle">M &lt; A, M &lt;= A, M = A,</text>
-          <text class="d-s" x="375" y="662" text-anchor="middle">from the ALU; a bit of the</text>
+          <text class="d-s" x="375" y="648" text-anchor="middle">M &lt; A, M &lt;= A, M = A, from</text>
+          <text class="d-s" x="375" y="662" text-anchor="middle">the ALU; a bit of the</text>
           <text class="d-s" x="375" y="676" text-anchor="middle">rotated M; page fault, from</text>
           <text class="d-s" x="375" y="690" text-anchor="middle">the map; interrupt pending:</text>
-          <text class="d-s" x="375" y="704" text-anchor="middle">INT, from the register page's</text>
-          <text class="d-s" x="375" y="718" text-anchor="middle">word 100, and &lt;27&gt;; sequence</text>
-          <text class="d-s" x="375" y="732" text-anchor="middle">break, &lt;26&gt;; always</text>
+          <text class="d-s" x="375" y="704" text-anchor="middle">INT, from the register</text>
+          <text class="d-s" x="375" y="718" text-anchor="middle">page's word 100, and &lt;27&gt;;</text>
+          <text class="d-s" x="375" y="732" text-anchor="middle">sequence break, &lt;26&gt;; always</text>
           <path class="d-dot" d="M470,650 H478 V240 H470" marker-end="url(#p2arr)"/>
 
           <!-- The data paths. The A bus is driven from the A memory alone; the M bus from the M memory and the functional sources. -->
@@ -153,21 +156,22 @@ css: drawings.css
           <text class="d-s" x="590" y="202" text-anchor="middle">A's first 32</text>
           <path class="d-dot" d="M620,128 V150"/>
           <text class="d-n" x="626" y="138">IR&lt;31:26&gt;</text>
-          <rect class="d-tint" x="510" y="232" width="160" height="118"/>
-          <rect class="d-box" x="510" y="232" width="160" height="118"/>
+          <rect class="d-tint" x="510" y="232" width="160" height="126"/>
+          <rect class="d-box" x="510" y="232" width="160" height="126"/>
           <text class="d-t" x="590" y="252" text-anchor="middle">functional sources</text>
           <text class="d-s" x="590" y="270" text-anchor="middle">the dispatch constant,</text>
           <text class="d-s" x="590" y="284" text-anchor="middle">SPC, PDL pointer and</text>
-          <text class="d-s" x="590" y="298" text-anchor="middle">index, PDL buffer, OPCs,</text>
-          <text class="d-s" x="590" y="312" text-anchor="middle">Q, VMA, MAP[MD], MD, LC;</text>
-          <text class="d-s" x="590" y="326" text-anchor="middle">15, the microsecond clock;</text>
-          <text class="d-s" x="590" y="340" text-anchor="middle">16, MACHINE-ID</text>
+          <text class="d-s" x="590" y="298" text-anchor="middle">index, PDL buffer,</text>
+          <text class="d-s" x="590" y="312" text-anchor="middle">OPCs, Q, VMA, MAP[MD],</text>
+          <text class="d-s" x="590" y="326" text-anchor="middle">MD, LC; 15, the</text>
+          <text class="d-s" x="590" y="340" text-anchor="middle">microsecond clock; 16,</text>
+          <text class="d-s" x="590" y="354" text-anchor="middle">MACHINE-ID</text>
           <rect class="d-tint" x="510" y="370" width="160" height="76"/>
           <rect class="d-box" x="510" y="370" width="160" height="76"/>
           <text class="d-t" x="590" y="390" text-anchor="middle">PDL buffer</text>
-          <text class="d-s" x="590" y="408" text-anchor="middle">16,384 words of 32 bits;</text>
-          <text class="d-s" x="590" y="422" text-anchor="middle">pointer and index,</text>
-          <text class="d-s" x="590" y="436" text-anchor="middle">14 bits each</text>
+          <text class="d-s" x="590" y="408" text-anchor="middle">16,384 words of 32</text>
+          <text class="d-s" x="590" y="422" text-anchor="middle">bits; pointer and</text>
+          <text class="d-s" x="590" y="436" text-anchor="middle">index, 14 bits each</text>
           <path class="d-dot" d="M586,466 V446"/>
           <text class="d-n" x="592" y="474">IR&lt;30&gt;, PWIDX</text>
 
@@ -182,17 +186,19 @@ css: drawings.css
           <!-- The ALU, and on QUUX multiply and divide beside it; the rotator and the masker. -->
           <rect class="d-box" x="714" y="150" width="130" height="84"/>
           <text class="d-t" x="779" y="170" text-anchor="middle">ALU</text>
-          <text class="d-s" x="779" y="188" text-anchor="middle">32 bits: boolean, add,</text>
-          <text class="d-s" x="779" y="202" text-anchor="middle">subtract, and the</text>
-          <text class="d-s" x="779" y="216" text-anchor="middle">multiply and divide steps</text>
+          <text class="d-s" x="779" y="188" text-anchor="middle">32 bits: boolean,</text>
+          <text class="d-s" x="779" y="202" text-anchor="middle">add, subtract, and</text>
+          <text class="d-s" x="779" y="216" text-anchor="middle">the multiply and</text>
+          <text class="d-s" x="779" y="230" text-anchor="middle">divide steps</text>
           <path class="d-bus" d="M690,210 H714" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M800,126 V150"/>
           <text class="d-n" x="806" y="122">IR&lt;8:3&gt;, IR&lt;2&gt;</text>
-          <rect class="d-tint" x="714" y="262" width="130" height="62"/>
-          <rect class="d-box" x="714" y="262" width="130" height="62"/>
-          <text class="d-t" x="779" y="282" text-anchor="middle">multiply and divide</text>
-          <text class="d-s" x="779" y="300" text-anchor="middle">MUL (42), one microcycle;</text>
-          <text class="d-s" x="779" y="314" text-anchor="middle">DIV (43), ten</text>
+          <rect class="d-tint" x="714" y="262" width="130" height="70"/>
+          <rect class="d-box" x="714" y="262" width="130" height="70"/>
+          <text class="d-t" x="779" y="282" text-anchor="middle">multiply/divide</text>
+          <text class="d-s" x="779" y="300" text-anchor="middle">MUL (42), one</text>
+          <text class="d-s" x="779" y="314" text-anchor="middle">microcycle; DIV</text>
+          <text class="d-s" x="779" y="328" text-anchor="middle">(43), ten</text>
           <path class="d-bus" d="M690,293 H714" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M844,293 H860"/>
           <circle cx="860" cy="293" r="4" fill="currentColor"/>
@@ -204,36 +210,38 @@ css: drawings.css
           <path class="d-dot" d="M780,432 V406"/>
           <text class="d-n" x="726" y="444">IR&lt;4:0&gt;, or LC's</text>
           <text class="d-n" x="726" y="458">when IR&lt;11:10&gt; = 3</text>
-          <rect class="d-box" x="714" y="470" width="130" height="62"/>
+          <rect class="d-box" x="714" y="470" width="130" height="70"/>
           <text class="d-t" x="779" y="490" text-anchor="middle">Q</text>
-          <text class="d-s" x="779" y="508" text-anchor="middle">32 bits, for multiply</text>
-          <text class="d-s" x="779" y="522" text-anchor="middle">and divide</text>
+          <text class="d-s" x="779" y="508" text-anchor="middle">32 bits, for</text>
+          <text class="d-s" x="779" y="522" text-anchor="middle">multiply and</text>
+          <text class="d-s" x="779" y="536" text-anchor="middle">divide</text>
           <path class="d-bus" d="M714,501 H690" marker-end="url(#p2arr)"/>
-          <path class="d-dot" d="M740,552 V532"/>
+          <path class="d-dot" d="M740,552 V540"/>
           <text class="d-n" x="746" y="558">IR&lt;1:0&gt;</text>
-          <rect class="d-box" x="876" y="150" width="140" height="104"/>
+          <rect class="d-box" x="876" y="150" width="140" height="112"/>
           <text class="d-t" x="946" y="170" text-anchor="middle">masker</text>
           <text class="d-s" x="946" y="188" text-anchor="middle">a mask of any length</text>
           <text class="d-s" x="946" y="202" text-anchor="middle">and position merges</text>
-          <text class="d-s" x="946" y="216" text-anchor="middle">the rotated M into A:</text>
-          <text class="d-s" x="946" y="230" text-anchor="middle">load byte, deposit</text>
-          <text class="d-s" x="946" y="244" text-anchor="middle">byte, selective deposit</text>
+          <text class="d-s" x="946" y="216" text-anchor="middle">the rotated M into</text>
+          <text class="d-s" x="946" y="230" text-anchor="middle">A: load byte,</text>
+          <text class="d-s" x="946" y="244" text-anchor="middle">deposit byte,</text>
+          <text class="d-s" x="946" y="258" text-anchor="middle">selective deposit</text>
           <path class="d-dot" d="M960,126 V150"/>
           <text class="d-n" x="966" y="122">IR&lt;9:5&gt;</text>
 
           <!-- The rotated M goes up to the masker, under the ALU's output. -->
           <path class="d-bus" d="M844,375 H854"/>
-          <path class="d-bus" d="M866,375 H910 V254" marker-end="url(#p2arr)"/>
-          <rect class="d-box" x="876" y="410" width="140" height="76"/>
+          <path class="d-bus" d="M866,375 H910 V262" marker-end="url(#p2arr)"/>
+          <rect class="d-box" x="866" y="410" width="160" height="76"/>
           <text class="d-t" x="946" y="430" text-anchor="middle">output bus selector</text>
           <text class="d-s" x="946" y="448" text-anchor="middle">the masker, the ALU,</text>
           <text class="d-s" x="946" y="462" text-anchor="middle">the ALU shifted right,</text>
           <text class="d-s" x="946" y="476" text-anchor="middle">or left with Q&lt;31&gt;</text>
-          <path class="d-bus" d="M980,254 V410" marker-end="url(#p2arr)"/>
+          <path class="d-bus" d="M980,262 V410" marker-end="url(#p2arr)"/>
 
           <!-- The ALU's output: to the output bus selector, and to Q. -->
           <path class="d-bus" d="M844,190 H860 V485 H844" marker-end="url(#p2arr)"/>
-          <path class="d-bus" d="M860,448 H876" marker-end="url(#p2arr)"/>
+          <path class="d-bus" d="M860,448 H866" marker-end="url(#p2arr)"/>
           <circle cx="860" cy="448" r="4" fill="currentColor"/>
           <path class="d-line" d="M844,516 H940 V486" marker-end="url(#p2arr)"/>
           <text class="d-n" x="868" y="510">Q&lt;31&gt;</text>
@@ -241,7 +249,7 @@ css: drawings.css
           <text class="d-n" x="940" y="394" text-anchor="end">IR&lt;13:12&gt;</text>
 
           <!-- OB, and L, which writes A, M and the PDL buffer a microcycle later. -->
-          <path class="d-bus" d="M1016,448 H1032"/>
+          <path class="d-bus" d="M1026,448 H1032"/>
           <path class="d-bus" d="M1032,104 V571 H1016" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,104 H1050" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,207 H1050" marker-end="url(#p2arr)"/>
@@ -269,30 +277,32 @@ css: drawings.css
           <text class="d-t" x="1123" y="86" text-anchor="middle">LC</text>
           <text class="d-s" x="1123" y="104" text-anchor="middle">26 bits, the byte</text>
           <text class="d-s" x="1123" y="118" text-anchor="middle">address of the next</text>
-          <text class="d-s" x="1123" y="132" text-anchor="middle">instruction-stream unit;</text>
-          <text class="d-s" x="1123" y="146" text-anchor="middle">LC/4 to VMA on a fetch</text>
-          <rect class="d-tint" x="1050" y="172" width="146" height="90"/>
-          <rect class="d-box" x="1050" y="172" width="146" height="90"/>
+          <text class="d-s" x="1123" y="132" text-anchor="middle">instruction unit;</text>
+          <text class="d-s" x="1123" y="146" text-anchor="middle">LC/4 to VMA on fetch</text>
+          <rect class="d-tint" x="1050" y="172" width="146" height="98"/>
+          <rect class="d-box" x="1050" y="172" width="146" height="98"/>
           <text class="d-t" x="1123" y="192" text-anchor="middle">INTERRUPT-CONTROL</text>
           <text class="d-s" x="1123" y="210" text-anchor="middle">&lt;26&gt; sequence break,</text>
-          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;27&gt; interrupt enable,</text>
-          <text class="d-s" x="1123" y="238" text-anchor="middle">&lt;28&gt; drives nothing,</text>
-          <text class="d-s" x="1123" y="252" text-anchor="middle">&lt;29&gt; byte mode</text>
+          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;27&gt; interrupt</text>
+          <text class="d-s" x="1123" y="238" text-anchor="middle">enable, &lt;28&gt; drives</text>
+          <text class="d-s" x="1123" y="252" text-anchor="middle">nothing, &lt;29&gt; byte</text>
+          <text class="d-s" x="1123" y="266" text-anchor="middle">mode</text>
           <path class="d-dot" d="M1080,172 V156" marker-end="url(#p2arr)"/>
           <text class="d-n" x="1086" y="168">&lt;29&gt;</text>
           <rect class="d-box" x="1050" y="280" width="146" height="52"/>
           <text class="d-t" x="1123" y="300" text-anchor="middle">VMA</text>
           <text class="d-s" x="1123" y="318" text-anchor="middle">32 bits, 24 used</text>
-          <rect class="d-tint" x="1050" y="358" width="146" height="134"/>
-          <rect class="d-box" x="1050" y="358" width="146" height="134"/>
+          <rect class="d-tint" x="1050" y="358" width="146" height="140"/>
+          <rect class="d-box" x="1050" y="358" width="146" height="140"/>
           <text class="d-t" x="1123" y="378" text-anchor="middle">the map</text>
           <text class="d-s" x="1123" y="396" text-anchor="middle">from VMA starting a</text>
           <text class="d-s" x="1123" y="410" text-anchor="middle">cycle, else from MD;</text>
-          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 2,048 × 6 bits,</text>
-          <text class="d-s" x="1123" y="438" text-anchor="middle">by &lt;23:13&gt;; level 2:</text>
-          <text class="d-s" x="1123" y="452" text-anchor="middle">2,048 entries; the sixth</text>
-          <text class="d-s" x="1123" y="466" text-anchor="middle">bit from VMA&lt;24&gt;, read</text>
-          <text class="d-s" x="1123" y="480" text-anchor="middle">in MAP(MD)&lt;29&gt;</text>
+          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 2,048 × 6</text>
+          <text class="d-s" x="1123" y="438" text-anchor="middle">bits, by &lt;23:13&gt;;</text>
+          <text class="d-s" x="1123" y="452" text-anchor="middle">level 2: 2,048</text>
+          <text class="d-s" x="1123" y="466" text-anchor="middle">entries; the sixth</text>
+          <text class="d-s" x="1123" y="480" text-anchor="middle">bit from VMA&lt;24&gt;,</text>
+          <text class="d-s" x="1123" y="494" text-anchor="middle">read in MAP(MD)&lt;29&gt;</text>
           <rect class="d-box" x="1050" y="512" width="146" height="50"/>
           <text class="d-t" x="1123" y="532" text-anchor="middle">MD</text>
           <text class="d-s" x="1123" y="550" text-anchor="middle">32 bits</text>
@@ -302,7 +312,7 @@ css: drawings.css
           <path class="d-bus" d="M1032,537 H1050" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M1100,332 V358" marker-end="url(#p2arr)"/>
           <text class="d-n" x="1106" y="350">24</text>
-          <path class="d-bus" d="M1100,512 V492" marker-end="url(#p2arr)"/>
+          <path class="d-bus" d="M1100,512 V498" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M1196,142 H1204 V306 H1196" marker-end="url(#p2arr)"/>
 
           <!-- Out of the processor: the physical address and MD. -->
@@ -314,34 +324,41 @@ css: drawings.css
           <rect class="d-box" x="1228" y="396" width="106" height="168"/>
           <text class="d-t" x="1281" y="416" text-anchor="middle">memory port</text>
           <text class="d-s" x="1281" y="434" text-anchor="middle">main memory and</text>
-          <text class="d-s" x="1281" y="448" text-anchor="middle">the frame buffer:</text>
-          <text class="d-s" x="1281" y="462" text-anchor="middle">the cache; a device</text>
-          <text class="d-s" x="1281" y="476" text-anchor="middle">register: the</text>
-          <text class="d-s" x="1281" y="490" text-anchor="middle">register decode;</text>
-          <text class="d-s" x="1281" y="504" text-anchor="middle">nothing else: fails</text>
-          <text class="d-s" x="1281" y="518" text-anchor="middle">at once, word 101's</text>
-          <text class="d-s" x="1281" y="532" text-anchor="middle">NXM</text>
-          <path class="d-bus" d="M1281,396 V374" marker-end="url(#p2arr)"/>
-          <rect class="d-tint" x="1228" y="262" width="106" height="112"/>
-          <rect class="d-box" x="1228" y="262" width="106" height="112"/>
+          <text class="d-s" x="1281" y="448" text-anchor="middle">the frame</text>
+          <text class="d-s" x="1281" y="462" text-anchor="middle">buffer: the</text>
+          <text class="d-s" x="1281" y="476" text-anchor="middle">cache; a device</text>
+          <text class="d-s" x="1281" y="490" text-anchor="middle">register: the</text>
+          <text class="d-s" x="1281" y="504" text-anchor="middle">register</text>
+          <text class="d-s" x="1281" y="518" text-anchor="middle">decode; nothing</text>
+          <text class="d-s" x="1281" y="532" text-anchor="middle">else: fails at</text>
+          <text class="d-s" x="1281" y="546" text-anchor="middle">once, word</text>
+          <text class="d-s" x="1281" y="560" text-anchor="middle">101's NXM</text>
+          <path class="d-bus" d="M1281,396 V388" marker-end="url(#p2arr)"/>
+          <rect class="d-tint" x="1228" y="262" width="106" height="126"/>
+          <rect class="d-box" x="1228" y="262" width="106" height="126"/>
           <text class="d-t" x="1281" y="282" text-anchor="middle">cache</text>
-          <text class="d-s" x="1281" y="300" text-anchor="middle">4K words, unified,</text>
-          <text class="d-s" x="1281" y="314" text-anchor="middle">write-through,</text>
-          <text class="d-s" x="1281" y="328" text-anchor="middle">2-way, lines of 4</text>
-          <text class="d-s" x="1281" y="342" text-anchor="middle">words, a one-word</text>
-          <text class="d-s" x="1281" y="356" text-anchor="middle">write buffer</text>
+          <text class="d-s" x="1281" y="300" text-anchor="middle">4K words,</text>
+          <text class="d-s" x="1281" y="314" text-anchor="middle">unified,</text>
+          <text class="d-s" x="1281" y="328" text-anchor="middle">write-through,</text>
+          <text class="d-s" x="1281" y="342" text-anchor="middle">2-way, lines of</text>
+          <text class="d-s" x="1281" y="356" text-anchor="middle">4 words, a</text>
+          <text class="d-s" x="1281" y="370" text-anchor="middle">one-word write</text>
+          <text class="d-s" x="1281" y="384" text-anchor="middle">buffer</text>
           <path class="d-bus" d="M1281,262 V230" marker-end="url(#p2arr)"/>
-          <text class="d-s" x="1281" y="190" text-anchor="middle">the memory bus:</text>
-          <text class="d-s" x="1281" y="204" text-anchor="middle">main memory and</text>
-          <text class="d-s" x="1281" y="218" text-anchor="middle">the frame buffer</text>
+          <text class="d-s" x="1281" y="176" text-anchor="middle">the memory</text>
+          <text class="d-s" x="1281" y="190" text-anchor="middle">bus: main</text>
+          <text class="d-s" x="1281" y="204" text-anchor="middle">memory and the</text>
+          <text class="d-s" x="1281" y="218" text-anchor="middle">frame buffer</text>
           <path class="d-line" d="M1281,564 V590" marker-end="url(#p2arr)"/>
-          <rect class="d-tint" x="1228" y="590" width="106" height="64"/>
-          <rect class="d-box" x="1228" y="590" width="106" height="64"/>
-          <text class="d-t" x="1281" y="610" text-anchor="middle">register decode</text>
-          <text class="d-s" x="1281" y="628" text-anchor="middle">never cached, two</text>
-          <text class="d-s" x="1281" y="642" text-anchor="middle">microcycles</text>
-          <path class="d-line" d="M1281,654 V690" marker-end="url(#p2arr)"/>
-          <text class="d-s" x="1281" y="706" text-anchor="middle">the register page</text>
+          <rect class="d-tint" x="1228" y="590" width="106" height="70"/>
+          <rect class="d-box" x="1228" y="590" width="106" height="70"/>
+          <text class="d-t" x="1281" y="610" text-anchor="middle">register</text>
+          <text class="d-t" x="1281" y="624" text-anchor="middle">decode</text>
+          <text class="d-s" x="1281" y="642" text-anchor="middle">never cached,</text>
+          <text class="d-s" x="1281" y="656" text-anchor="middle">two microcycles</text>
+          <path class="d-line" d="M1281,660 V690" marker-end="url(#p2arr)"/>
+          <text class="d-s" x="1281" y="706" text-anchor="middle">the register</text>
+          <text class="d-s" x="1281" y="720" text-anchor="middle">page</text>
         </svg>
 </div>
 <figcaption>QUUX&rsquo;s processor is the <a href="../cadr/#processor">CADR&rsquo;s</a>, drawn on the same plan, with the tinted parts changed: a fixed 40&nbsp;ns microcycle; the boot PROM in addresses of its own; a 16K-word PDL buffer; a wider map; multiply and divide in one instruction; a microsecond clock; and memory reached through a cache on a port of its own.</figcaption>
@@ -362,14 +379,14 @@ css: drawings.css
           <text class="d-t" x="10" y="18">the QUUX machine</text>
           <path class="d-bus" d="M250,14 H290"/>
           <text class="d-s" x="298" y="18">the memory bus</text>
-          <path class="d-line" d="M448,14 H488"/>
-          <text class="d-s" x="496" y="18">a register access</text>
-          <path class="d-dash" d="M656,14 H696"/>
-          <text class="d-s" x="704" y="18">direct memory access</text>
-          <path class="d-dot" d="M879,14 H919"/>
-          <text class="d-s" x="927" y="18">the interrupt</text>
-          <path class="d-hair" d="M1057,14 H1097"/>
-          <text class="d-s" x="1105" y="18">what stands behind a device</text>
+          <path class="d-line" d="M414,14 H454"/>
+          <text class="d-s" x="462" y="18">a register access</text>
+          <path class="d-dash" d="M599,14 H639"/>
+          <text class="d-s" x="647" y="18">direct memory access</text>
+          <path class="d-dot" d="M803,14 H843"/>
+          <text class="d-s" x="851" y="18">the interrupt</text>
+          <path class="d-hair" d="M960,14 H1000"/>
+          <text class="d-s" x="1008" y="18">what stands behind a device</text>
           <text class="d-t" x="896" y="56">in muir-sim</text>
           <text class="d-t" x="1116" y="56">on an FPGA board</text>
 
@@ -379,17 +396,19 @@ css: drawings.css
           <text class="d-s" x="110" y="108" text-anchor="middle">QUUX, revision 11: the</text>
           <text class="d-s" x="110" y="122" text-anchor="middle">microsecond clock, MUL and</text>
           <text class="d-s" x="110" y="136" text-anchor="middle">DIV, a 16K PDL, a six-bit</text>
-          <text class="d-s" x="110" y="150" text-anchor="middle">map, the boot PROM at 36000</text>
+          <text class="d-s" x="110" y="150" text-anchor="middle">map, the boot PROM at</text>
+          <text class="d-s" x="110" y="164" text-anchor="middle">36000</text>
           <path class="d-line" d="M200,96 H250" marker-end="url(#m2arr)"/>
           <text class="d-n" x="225" y="90" text-anchor="middle">22</text>
           <path class="d-bus" d="M200,130 H250" marker-start="url(#m2arr)" marker-end="url(#m2arr)"/>
           <text class="d-n" x="225" y="124" text-anchor="middle">32</text>
-          <rect class="d-box" x="250" y="70" width="120" height="90"/>
+          <rect class="d-box" x="250" y="70" width="120" height="98"/>
           <text class="d-t" x="310" y="90" text-anchor="middle">memory port</text>
-          <text class="d-s" x="310" y="108" text-anchor="middle">one requester, the</text>
-          <text class="d-s" x="310" y="122" text-anchor="middle">processor; fails at</text>
-          <text class="d-s" x="310" y="136" text-anchor="middle">once where nothing</text>
-          <text class="d-s" x="310" y="150" text-anchor="middle">answers</text>
+          <text class="d-s" x="310" y="108" text-anchor="middle">one requester,</text>
+          <text class="d-s" x="310" y="122" text-anchor="middle">the processor;</text>
+          <text class="d-s" x="310" y="136" text-anchor="middle">fails at once</text>
+          <text class="d-s" x="310" y="150" text-anchor="middle">where nothing</text>
+          <text class="d-s" x="310" y="164" text-anchor="middle">answers</text>
 
           <!-- Main memory and the frame buffer, through the cache, on the memory bus. -->
           <path class="d-bus" d="M370,101 H400" marker-end="url(#m2arr)"/>
@@ -400,24 +419,26 @@ css: drawings.css
           <path class="d-bus" d="M520,101 H680" marker-end="url(#m2arr)"/>
           <path class="d-bus" d="M640,101 V177 H680" marker-end="url(#m2arr)"/>
           <text class="d-s" x="530" y="92">the memory bus</text>
-          <rect class="d-box" x="680" y="70" width="180" height="62"/>
+          <rect class="d-box" x="680" y="70" width="180" height="70"/>
           <text class="d-t" x="770" y="90" text-anchor="middle">main memory</text>
-          <text class="d-s" x="770" y="108" text-anchor="middle">two million words by default;</text>
-          <text class="d-s" x="770" y="122" text-anchor="middle">380 ns a line fill, 290 a write</text>
+          <text class="d-s" x="770" y="108" text-anchor="middle">two million words by</text>
+          <text class="d-s" x="770" y="122" text-anchor="middle">default; 380 ns a line</text>
+          <text class="d-s" x="770" y="136" text-anchor="middle">fill, 290 a write</text>
           <rect class="d-box" x="680" y="146" width="180" height="62"/>
           <text class="d-t" x="770" y="166" text-anchor="middle">frame buffer</text>
           <text class="d-s" x="770" y="184" text-anchor="middle">17000000 up to the video</text>
           <text class="d-s" x="770" y="198" text-anchor="middle">controller's end; cached</text>
 
           <!-- Every device register is on one page, reached through the register decode; there is no device bus. -->
-          <path class="d-line" d="M310,160 V323 H400" marker-end="url(#m2arr)"/>
-          <rect class="d-box" x="400" y="294" width="124" height="62"/>
+          <path class="d-line" d="M310,168 V323 H400" marker-end="url(#m2arr)"/>
+          <rect class="d-box" x="400" y="294" width="124" height="70"/>
           <text class="d-t" x="462" y="314" text-anchor="middle">register decode</text>
           <text class="d-s" x="462" y="332" text-anchor="middle">never cached; two</text>
-          <text class="d-s" x="462" y="346" text-anchor="middle">microcycles a register</text>
+          <text class="d-s" x="462" y="346" text-anchor="middle">microcycles a</text>
+          <text class="d-s" x="462" y="360" text-anchor="middle">register</text>
           <text class="d-t" x="556" y="250">the register page</text>
           <text class="d-s" x="556" y="266">17777400-17777777, 256 words,</text>
-          <text class="d-s" x="556" y="280">the last page of the physical space</text>
+          <text class="d-s" x="556" y="280">the physical space&rsquo;s last page</text>
           <path class="d-line" d="M540,323 V867"/>
           <rect class="d-box" x="556" y="294" width="100" height="70"/>
           <path class="d-line" d="M540,329 H556" marker-end="url(#m2arr)"/>
@@ -460,10 +481,11 @@ css: drawings.css
           <text class="d-s" x="770" y="570" text-anchor="middle">five registers</text>
           <text class="d-n" x="606" y="627" text-anchor="middle">120-123</text>
           <path class="d-line" d="M656,623 H680"/>
-          <rect class="d-box" x="680" y="592" width="180" height="62"/>
+          <rect class="d-box" x="680" y="592" width="180" height="70"/>
           <text class="d-t" x="770" y="612" text-anchor="middle">keyboard and mouse</text>
           <text class="d-s" x="770" y="630" text-anchor="middle">a FIFO of 64 key words;</text>
-          <text class="d-s" x="770" y="644" text-anchor="middle">the mouse's counts, buttons</text>
+          <text class="d-s" x="770" y="644" text-anchor="middle">the mouse's counts,</text>
+          <text class="d-s" x="770" y="658" text-anchor="middle">buttons</text>
           <text class="d-n" x="606" y="699" text-anchor="middle">110-115</text>
           <path class="d-line" d="M656,695 H680"/>
           <rect class="d-box" x="680" y="671" width="180" height="48"/>
@@ -473,8 +495,8 @@ css: drawings.css
           <path class="d-line" d="M656,781 H680"/>
           <rect class="d-box" x="680" y="736" width="180" height="90"/>
           <text class="d-t" x="770" y="756" text-anchor="middle">the page's own words</text>
-          <text class="d-s" x="770" y="774" text-anchor="middle">100 interrupt status,</text>
-          <text class="d-s" x="770" y="788" text-anchor="middle">101 error status, 102 mode,</text>
+          <text class="d-s" x="770" y="774" text-anchor="middle">100 interrupt status, 101</text>
+          <text class="d-s" x="770" y="788" text-anchor="middle">error status, 102 mode,</text>
           <text class="d-s" x="770" y="802" text-anchor="middle">103 the real-time clock,</text>
           <text class="d-s" x="770" y="816" text-anchor="middle">104 RESET-DEVICES</text>
           <text class="d-n" x="606" y="862" text-anchor="middle">0-77</text>
@@ -525,8 +547,8 @@ css: drawings.css
           <text class="d-s" x="896" y="539">CHUDP over UDP to ozd</text>
           <text class="d-n" x="896" y="553">--chaos-address,</text>
           <text class="d-n" x="896" y="567">--chaos-udp-peer</text>
-          <text class="d-s" x="1116" y="546">the CADR's Chaosnet interface</text>
-          <text class="d-s" x="1116" y="560">in the fabric, and its Linux half</text>
+          <text class="d-s" x="1116" y="546">the CADR's Chaosnet interface in</text>
+          <text class="d-s" x="1116" y="560">the fabric, and its Linux half</text>
           <path class="d-hair" d="M860,623 H890"/>
           <text class="d-s" x="896" y="627">the terminal's VNC client</text>
           <text class="d-s" x="1116" y="613">the CADR's lines, from Linux:</text>
