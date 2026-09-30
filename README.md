@@ -29,7 +29,7 @@ its path:
                   and what else the page loads
     gen/build.py  builds every page into pages/
     gen/chrome.py the head, the header with the machines and three of the
-                  four projects (ozd is in the footer), a section's
+                  four projects (ozd is in neither), a section's
                   page list and the footer, shared by every page
     gen/fpga/     muir-fpga's pages: gen.py writes them from the drawings in
                   base/, which it lifts byte for byte; checks/ holds its

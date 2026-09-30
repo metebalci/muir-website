@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """The site's chrome: the head, the header with the machines' pages
-and three of the four projects, a section's own page list, and the footer.  Every page but the two
+and three of the four projects, a section's own page list, and the footer
+with the same three.  Every page but the two
 full-size image pages is wrapped in it, by gen/build.py for the pages
 written by hand in src/ and by gen/fpga/gen.py for muir-fpga's."""
 
@@ -15,9 +16,9 @@ SECTIONS = [
     ('ozd', 'ozd', 'ozd', GH + 'ozd'),
 ]
 
-# ozd is not in the header: it is linked where it is needed and from the
-# footer, which lists all four projects.
-NOT_IN_HEADER = ('ozd',)
+# ozd is in neither the header nor the footer: it is linked where it is
+# needed.
+NOT_IN_HEADER_OR_FOOTER = ('ozd',)
 
 # The machines: what a Lisp Machine is and how it runs, the CADR, and QUUX.
 # They are the site's own pages, not a project's, so the header lists them
@@ -64,7 +65,7 @@ def href(root, target):
 
 def header(root, section):
     items = []
-    for sid, label, _, _ in (GUIDE + (None,),) + tuple(s for s in SECTIONS if s[0] not in NOT_IN_HEADER):
+    for sid, label, _, _ in (GUIDE + (None,),) + tuple(s for s in SECTIONS if s[0] not in NOT_IN_HEADER_OR_FOOTER):
         cur = ' aria-current="page"' if sid == section or (sid == GUIDE[0] and section in MACHINES) else ''
         items.append('<a href="%s"%s>%s</a>' % (href(root, sid + '/'), cur, label))
     repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')
@@ -95,10 +96,9 @@ def subnav(section, path):
 
 
 def footer(root):
-    # A project's name, and the section's label where it says more (ozd's
-    # is its name).
+    # A project's name, and the section's label where it says more.
     links = ''.join('<a href="%s">%s</a>' % (href(root, sid + '/'), name if name == label else '%s &middot; %s' % (name, label))
-                    for sid, label, name, _ in SECTIONS)
+                    for sid, label, name, _ in SECTIONS if sid not in NOT_IN_HEADER_OR_FOOTER)
     return ('<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
             '<div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p>'
             '<p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with '
