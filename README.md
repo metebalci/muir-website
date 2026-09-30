@@ -10,7 +10,7 @@ its path:
 
 | Path | Project | Repository |
 |---|---|---|
-| `/` | the front page: the aim, the two machines, the four projects | this one |
+| `/` | the front page: what muir is and its three aims, the two machines, the four projects | this one |
 | `/lisp-machine/` | what a Lisp Machine is, and how its system runs | this one |
 | `/cadr/` | the CADR, MIT's machine: its processor, its buses and its boards, drawn | this one |
 | `/quux/` | QUUX, the CADR evolved: its processor and its machine, drawn, and every change | this one |
@@ -28,8 +28,8 @@ its path:
                   comment of key: value lines giving the title, description
                   and what else the page loads
     gen/build.py  builds every page into pages/
-    gen/chrome.py the head, the header with the machines and the four
-                  projects, a section's
+    gen/chrome.py the head, the header with the machines and three of the
+                  four projects (ozd is in the footer), a section's
                   page list and the footer, shared by every page
     gen/fpga/     muir-fpga's pages: gen.py writes them from the drawings in
                   base/, which it lifts byte for byte; checks/ holds its

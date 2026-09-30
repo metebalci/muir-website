@@ -274,6 +274,7 @@ GRID_10 = [
      '<text class="d-s" x="96" y="176" text-anchor="middle">15 ticks = 150 ns</text>'),
     ('runs at 100 MHz, 29 ticks to the microcycle, 290 nanoseconds of real time',
      'runs at 100 MHz, 15 ticks to the microcycle, 150 nanoseconds of real time'),
+    ('for the 145 the drawings name', 'for the 145 the schematics name'),
 ]
 # THE FABRIC'S LABEL on both Zynq drawings names the programmable logic in
 # words, where the drawings had "PL &mdash; fabric".  The DE25-Nano's drawing is
@@ -511,13 +512,12 @@ WRITTEN = []
 
 # THE SITE'S TERMS, over the words lifted from muir-fpga's pages and
 # documents: the simulator is muir-sim, where muir-fpga still says muir (bare
-# muir is the whole project, and "muir is named for Nathan Muir" is about the
-# project, so it stays); and the machine is a Lisp Machine.  Only what a reader sees or hears is renamed: HTML comments are left
+# muir is the whole project); and the machine is a Lisp Machine.  Only what a reader sees or hears is renamed: HTML comments are left
 # as they are, and so is every file name such as muir.commit and every
 # address such as muir-fpga's.
 def site_terms(html):
     def terms(s):
-        s = re.sub(r'\bmuir\b(?![-.]\w)(?! is named)', 'muir-sim', s)
+        s = re.sub(r'\bmuir\b(?![-.]\w)', 'muir-sim', s)
         return re.sub(r'\bLisp machine', 'Lisp Machine', s)
     parts = re.split(r'(<!--.*?-->)', html, flags=re.S)
     return ''.join(p if p.startswith('<!--') else terms(p) for p in parts)
@@ -605,7 +605,7 @@ RUNS      its processor and clocks within
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S builds the CADR alone. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S builds the CADR alone. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
 <p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
@@ -639,7 +639,7 @@ RUNS      its processor and clocks within
         ('Buildroot 2026.02.3, U-Boot 2026.01, Linux 6.19.14',
          'Each under its own license; for the loader and the kernel, the <b>GPL, version 2</b>',
          'not in the repository; the build fetches them'),
-        ('MIT&rsquo;s own files: the drawings, wire lists, print sets and PROM images of 1977 to 1981, and the system software beside them',
+        ('MIT&rsquo;s own files: the schematics, wire lists, print sets and PROM images of 1977 to 1981, and the system software beside them',
          'MIT&rsquo;s. No statement of terms came with the engineering files and none is made up for them; the system release states the <b>AGPL, version 3 or later</b>',
          'not in the repository; muir-sim carries them, recovered from the ITS backup tapes and unmodified'),
     ]
@@ -654,7 +654,7 @@ RUNS      its processor and clocks within
 ''' % trs, label='License and third-party material'))
 
     P.append(section('colophon', '05 / ABOUT', 'Almost nothing here<br>is a <em>first-hand</em> invention.', '', '''<div class="prose">
-<p>The CADR, the drawings, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
+<p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
 <p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR and of QUUX, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>

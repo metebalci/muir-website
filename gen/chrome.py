@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """The site's chrome: the head, the header with the machines' pages
-and the four projects, a section's own page list, and the footer.  Every page but the two
+and three of the four projects, a section's own page list, and the footer.  Every page but the two
 full-size image pages is wrapped in it, by gen/build.py for the pages
 written by hand in src/ and by gen/fpga/gen.py for muir-fpga's."""
 
@@ -14,6 +14,10 @@ SECTIONS = [
     ('system', 'System', 'muir-sys', GH + 'muir-sys'),
     ('ozd', 'ozd', 'ozd', GH + 'ozd'),
 ]
+
+# ozd is not in the header: it is linked where it is needed and from the
+# footer, which lists all four projects.
+NOT_IN_HEADER = ('ozd',)
 
 # The machines: what a Lisp Machine is and how it runs, the CADR, and QUUX.
 # They are the site's own pages, not a project's, so the header lists them
@@ -60,7 +64,7 @@ def href(root, target):
 
 def header(root, section):
     items = []
-    for sid, label, _, _ in (GUIDE + (None,),) + tuple(SECTIONS):
+    for sid, label, _, _ in (GUIDE + (None,),) + tuple(s for s in SECTIONS if s[0] not in NOT_IN_HEADER):
         cur = ' aria-current="page"' if sid == section or (sid == GUIDE[0] and section in MACHINES) else ''
         items.append('<a href="%s"%s>%s</a>' % (href(root, sid + '/'), cur, label))
     repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')

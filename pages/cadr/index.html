@@ -10,7 +10,7 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/" aria-current="page">Machines</a><a href="../simulator/">Simulator</a><a href="../fpga/">FPGA</a><a href="../system/">System</a><a href="../ozd/">ozd</a><a class="github" href="https://github.com/metebalci/muir-website">GitHub <span>&#8599;</span></a></nav></header>
+<header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/" aria-current="page">Machines</a><a href="../simulator/">Simulator</a><a href="../fpga/">FPGA</a><a href="../system/">System</a><a class="github" href="https://github.com/metebalci/muir-website">GitHub <span>&#8599;</span></a></nav></header>
 <nav class="subnav wrap" aria-label="Machines&rsquo; pages"><b>Machines</b><a href="../lisp-machine/">Lisp Machine</a><a href="../lisp-machine/how-it-runs.html">How it runs</a><span aria-current="page">CADR</span><a href="../quux/">QUUX</a></nav>
 <main id="main">
 <section class="page-hero wrap">
@@ -29,7 +29,7 @@ BUSES      Xbus and Unibus
 BUILT      about 30</pre>
 </div>
 </section>
-<section id="history" class="section wrap story" aria-label="A Lisp Machine"><div><p class="eyebrow">01 / A LISP MACHINE</p><h2>Built at MIT<br>to run <em>Lisp.</em></h2></div><div class="story-copy"><p class="large">A screen, a keyboard, a mouse and a network.<br>And the system on it all written in Lisp.</p><p>The CADR is a computer built at the MIT AI Lab to run Lisp. It was one person&rsquo;s workstation: a screen, a keyboard, a mouse and a network, and the system on it &mdash; the windows, the editor, the network code &mdash; was all written in Lisp.</p><p>Tom Knight, David Moon, Jack Holloway and Guy Steele drew it in about 1978. MIT built about thirty of them, and the first Lisp Machines LMI and Symbolics sold were built on it.</p><p>MIT&rsquo;s drawings, wire lists, microcode and software for it survive. <a href="../simulator/">muir-sim</a> simulates it from them, and <a href="../fpga/">muir-fpga</a> puts it in the fabric of FPGA boards.</p></div></section>
+<section id="history" class="section wrap story" aria-label="A Lisp Machine"><div><p class="eyebrow">01 / A LISP MACHINE</p><h2>Built at MIT<br>to run <em>Lisp.</em></h2></div><div class="story-copy"><p class="large">A screen, a keyboard, a mouse and a network.<br>And the system on it all written in Lisp.</p><p>The CADR is a computer built at the MIT AI Lab to run Lisp. It was one person&rsquo;s workstation: a screen, a keyboard, a mouse and a network, and the system on it &mdash; the windows, the editor, the network code &mdash; was all written in Lisp.</p><p>Tom Knight, David Moon, Jack Holloway and Guy Steele drew it in about 1978. MIT built about thirty of them, and the first Lisp Machines LMI and Symbolics sold were built on it.</p><p>MIT&rsquo;s schematics, wire lists, microcode and software for it survive. <a href="../simulator/">muir-sim</a> simulates it from them, and <a href="../fpga/">muir-fpga</a> puts it in the fabric of FPGA boards.</p></div></section>
 <section id="whole" class="section wrap" aria-label="The whole machine.">
 <div class="section-heading"><div><p class="eyebrow">02 / THE CAGE AND ITS TWO BUSES</p><h2>The whole <em>machine.</em></h2></div></div>
 <figure class="fig dense wide">
@@ -52,7 +52,7 @@ BUILT      about 30</pre>
           <text class="d-s" x="698" y="18">an interrupt, the SPY bus</text>
 
           <!-- The processor is two boards in a backplane of their own. Which
-               drawing belongs to which board is cadr.book and icmem.book. -->
+               schematic belongs to which board is cadr.book and icmem.book. -->
           <rect class="d-dash" x="24" y="44" width="240" height="232"/>
           <text class="d-s" x="32" y="62">the processor&rsquo;s backplane</text>
           <rect class="d-box" x="38" y="72" width="212" height="88"/>
@@ -97,7 +97,7 @@ BUILT      about 30</pre>
           <text class="d-s" x="760" y="420" text-anchor="end">the Unibus's</text>
           <text class="d-s" x="760" y="434" text-anchor="end">BR lines</text>
 
-          <!-- The light panel is 1AJ2 on the ICMEM board: the MBCPIN drawing
+          <!-- The light panel is 1AJ2 on the ICMEM board: the MBCPIN schematic
                marks that connector "TO LIGHT PANEL". -->
           <path class="d-line" d="M100,264 V330"/>
           <text class="d-n" x="106" y="300">1AJ2, 12 signals</text>
@@ -520,7 +520,7 @@ BUILT      about 30</pre>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 4: One microcycle">
         <svg viewBox="40 566 980 164" role="img" aria-label="One microcycle at normal speed: 145 nanoseconds, an 85 nanosecond read phase and a 60 nanosecond write phase, with the delay line&rsquo;s taps marked along it: -TPR0, TSE on and off, -TPR60, SELECT, the read tap, the write pulse, -TPW45 and -TPDONE. Under it, the four speeds, fast 135 ns, normal 145, slow 160 and extra slow 220; ILONG adds 40 ns to the read phase, and the clock can wait at the end of the read phase and hang at the end of the write phase.">
           <!-- One microcycle at normal speed, off the CLOCK1 delay line: the
-               instants are multiples of five nanoseconds on MIT's drawings. -->
+               instants are multiples of five nanoseconds on MIT's schematics. -->
           <text class="d-t" x="60" y="588">one microcycle, 145 ns at normal speed</text>
           <rect class="d-box" x="60" y="628" width="551" height="26"/>
           <text class="d-s" x="335" y="645" text-anchor="middle">read phase, 85 ns</text>
@@ -1169,9 +1169,9 @@ BUILT      about 30</pre>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 12 &mdash; THE LIGHT PANEL</span><span>THE CADR</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 12: The light panel">
-        <svg viewBox="0 0 1060 310" role="img" aria-label="The light panel, on connector 1AJ2 of the ICMEM board, which the drawing marks TO LIGHT PANEL. Twelve wires are used: ten error lamps, the run lamp carrying MACHRUN, and the boot button, which is one wire grounded by a push button. The ten error lamps are the A memory, the M memory, the pushdown buffer, the microcode stack, the dispatch memory, the control store, main memory, both levels of the map, and the A memory's two address parity checks. Pins 15 to 22 of the connector are not connected. Beside it, on the ICMEM board itself, five TIL309 digits show the program counter in octal, and each digit's decimal point is a lamp of its own: two that gather the parity errors into groups, the dispatch memory's, the control store's, and one that says the boot PROM is selected.">
+        <svg viewBox="0 0 1060 310" role="img" aria-label="The light panel, on connector 1AJ2 of the ICMEM board, which the schematic marks TO LIGHT PANEL. Twelve wires are used: ten error lamps, the run lamp carrying MACHRUN, and the boot button, which is one wire grounded by a push button. The ten error lamps are the A memory, the M memory, the pushdown buffer, the microcode stack, the dispatch memory, the control store, main memory, both levels of the map, and the A memory's two address parity checks. Pins 15 to 22 of the connector are not connected. Beside it, on the ICMEM board itself, five TIL309 digits show the program counter in octal, and each digit's decimal point is a lamp of its own: two that gather the parity errors into groups, the dispatch memory's, the control store's, and one that says the boot PROM is selected.">
           <text class="d-t" x="10" y="18">the light panel</text>
-          <text class="d-s" x="60" y="48">on connector 1AJ2, which the drawing marks &ldquo;TO LIGHT PANEL&rdquo;</text>
+          <text class="d-s" x="60" y="48">on connector 1AJ2, which the schematic marks &ldquo;TO LIGHT PANEL&rdquo;</text>
 
           <rect class="d-box" x="60" y="60" width="700" height="90"/>
           <text class="d-s" x="324" y="80" text-anchor="middle">ten error lamps</text>
@@ -1336,13 +1336,13 @@ BUILT      about 30</pre>
 <tr><td>one microcycle</td><td>AI Memo 528, and the CLOCK1 delay-line taps as muir-sim&rsquo;s <code>clock.rs</code> has them</td></tr>
 <tr><td>the microinstruction</td><td>MIT&rsquo;s <code>cadr/ir.bits</code>, and muir-sim&rsquo;s <code>isa.rs</code> for the bit ranges</td></tr>
 <tr><td>the macroinstruction</td><td>MIT&rsquo;s <code>sys/ucadr/uc-parameters.lisp</code> and <code>uc-macrocode.lisp</code>, <code>sys/sys2/disass.lisp</code>, <code>sys/man/code.text</code></td></tr>
-<tr><td>the map</td><td>AI Memo 528, muir-fpga&rsquo;s <code>docs/map.md</code>, MIT&rsquo;s VMEM drawings</td></tr>
+<tr><td>the map</td><td>AI Memo 528, muir-fpga&rsquo;s <code>docs/map.md</code>, MIT&rsquo;s VMEM schematics</td></tr>
 <tr><td>the address space</td><td>MIT&rsquo;s <code>sys/doc/unaddr.text</code>, muir-sim&rsquo;s <code>busint.rs</code>, muir-fpga&rsquo;s <code>cadr_xbus_decode.sv</code></td></tr>
 <tr><td>the disk</td><td>MIT&rsquo;s <code>sys/doc/disk.text</code>, and muir-sim&rsquo;s <code>dm.rs</code> for the multiplexor</td></tr>
 <tr><td>the display</td><td>MIT&rsquo;s <code>cadrtv/lmtv.order</code> and <code>shwarm.lisp</code>, muir-fpga&rsquo;s <code>docs/tv.md</code></td></tr>
-<tr><td>the I/O board</td><td>muir-fpga&rsquo;s <code>docs/io-board.md</code>, MIT&rsquo;s <code>sys/io1/ukbd.lisp</code> and <code>cadrio</code> drawings</td></tr>
+<tr><td>the I/O board</td><td>muir-fpga&rsquo;s <code>docs/io-board.md</code>, MIT&rsquo;s <code>sys/io1/ukbd.lisp</code> and <code>cadrio</code> schematics</td></tr>
 <tr><td>the light panel</td><td>MIT&rsquo;s <code>cadrwd/icmem3.wlr</code>, connector 1AJ2 pin by pin; AI Memo 528</td></tr>
-<tr><td>the debug cable</td><td>muir-fpga&rsquo;s <code>docs/debug-cable.md</code>, MIT&rsquo;s <code>cadr/ir.bits</code> and the DBGOUT and DBGIN drawings</td></tr>
+<tr><td>the debug cable</td><td>muir-fpga&rsquo;s <code>docs/debug-cable.md</code>, MIT&rsquo;s <code>cadr/ir.bits</code> and the DBGOUT and DBGIN schematics</td></tr>
 </tbody>
 </table>
 </div>
