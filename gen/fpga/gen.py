@@ -425,7 +425,7 @@ BOARD_ROWS = [
      [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
      [('yes', '', ''),
       ('yes', 'The slot is a USB mass-storage reader behind the first USB controller: the loader reads the card as a USB disk.', ''),
-      ('no', 'The board&rsquo;s one video connector is the processing system&rsquo;s DisplayPort, and its output is not built yet.', ''),
+      ('text', '', 'DisplayPort'),
       ('yes', '', '')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
      [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
@@ -461,7 +461,6 @@ def board_table():
         body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, lu, lt, un) for m, lu, lt, un, *_ in fits])
         body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, mu, mt, un) for m, _, _, _, mu, mt, un in fits])
         if fname == 'kria-kr260.html':
-            body += '            <!-- TODO(K10): the Display cell becomes DisplayPort, plain text, once the KR260\'s monitor output works. -->\n'
             body += ('            <!-- TODO(K5): the Kria KR260\'s two bars are the CADR fit of the K4 slice; replace them with the K5 full fit\'s'
                      ' LUTs and block RAM tiles if it differs. -->\n')
         for word, title, foot in cells:
