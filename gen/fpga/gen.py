@@ -403,7 +403,7 @@ BOARD_ROWS = [
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
      [('CADR', 15050, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
       ('QUUX', 17105, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
-     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard|Mouse')]),
+     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
     ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
      [('CADR', 14024, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
      [('no', 'The board has no display connector.', ''),
@@ -411,11 +411,11 @@ BOARD_ROWS = [
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR', '4 x Arm Cortex-A53, Linux',
      [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
      [('text', '', 'DisplayPort|1920&times;1080'),
-      ('text', '', 'Keyboard|Mouse')]),
+      ('text', '', 'Keyboard<br>Mouse')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
      [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
       ('QUUX', 18912, 46800, 'ALMs', 191, 358, 'M20K blocks')],
-     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard|Mouse')]),
+     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
 ]
 
 def resource_bars(rows):
