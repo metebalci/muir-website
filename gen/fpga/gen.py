@@ -370,21 +370,8 @@ ARTY_FIT += DISPLAY_2026_09_21
 # hardware and the other an absence of testing, and a reader could not tell
 # them apart.  What a cell still cannot carry goes in this note, in sentences,
 # rather than into a fourth word or a mark nobody follows.
-BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the Cora Z7-07S and the Kria KR260 the CADR. '
-               'Every board has run with its Ethernet port and its microSD card, so the table leaves them out. '
-               'A cell says yes where that board itself has run the thing and no where it has not, '
-               'and the display column names the connector the board shows its screen on. '
-               'A bar is the share of the part a machine&rsquo;s fabric uses, with the memory, the disk and the display boards in it, '
-               'from that board&rsquo;s own place and route report, in that part&rsquo;s own terms: '
-               'lookup tables and block RAM tiles on the Zynq boards, ALMs and M20K blocks on the DE25-Nano, '
-               'and memory built out of logic is counted inside the logic figure rather than beside it. '
-               'The logic units are different, so their counts do not compare and the percentage is the figure that does: '
-               'by Altera&rsquo;s own guide for converting a Zynq-7000 design to an Agilex 5 one, an ALM is about 1.3 lookup tables. '
-               'The Arty Z7-20&rsquo;s and the DE25-Nano&rsquo;s fabric carries one video mode, 1280 by 1024 at 60 hertz, and their figures are of it; '
-               'a second mode was tried once and is not built now, and '
-               '<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/display-output.md#a-retired-second-mode">its record</a> '
-               'is in the display document. '
-               'What a board has built and checked but never run is on that board&rsquo;s own page.')
+BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves them out. '
+               'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses.')
 
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
@@ -416,19 +403,19 @@ BOARD_ROWS = [
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
      [('CADR', 15050, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
       ('QUUX', 17105, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
-     [('text', '', 'HDMI'), ('yes', '', '')]),
+     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard and mouse')]),
     ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
      [('CADR', 14024, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
      [('no', 'The board has no display connector.', ''),
       ('no', 'The board has no USB host port, so the image leaves the program out.', '')]),
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR', '4 x Arm Cortex-A53, Linux',
      [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
-     [('text', '', 'DisplayPort'),
-      ('yes', '', '')]),
+     [('text', '', 'DisplayPort|1920&times;1080'),
+      ('text', '', 'Keyboard and mouse')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
      [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
       ('QUUX', 18912, 46800, 'ALMs', 191, 358, 'M20K blocks')],
-     [('text', '', 'HDMI'), ('yes', '', '')]),
+     [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard and mouse')]),
 ]
 
 def resource_bars(rows):
@@ -461,7 +448,9 @@ def board_table():
                      ' LUTs and block RAM tiles if it differs. -->\n')
         for word, title, foot in cells:
             if word == 'text':      # a connector's name, and not a yes or a no
-                body += '            <td class="st plain"%s>%s</td>\n' % (' title="%s"' % title if title else '', foot)
+                label, _, size = foot.partition('|')
+                body += ('            <td class="st plain"%s>%s%s</td>\n'
+                         % (' title="%s"' % title if title else '', label, '<span class="pc">%s</span>' % size if size else ''))
                 continue
             body += ('            <td class="st%s"%s>%s%s</td>\n'
                      % (' no' if word == 'no' else '', ' title="%s"' % title if title else '', word,
@@ -672,7 +661,7 @@ RUNS      its processor and clocks within
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S and the Kria KR260 run the CADR. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved. QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S and the Kria KR260 run the CADR. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
 <p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
@@ -712,7 +701,7 @@ RUNS      its processor and clocks within
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td>%s</td></tr>\n' % r for r in rows)
     P.append(section('license', '04 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
-                     'Where nothing records the terms, the table says so instead of guessing. The long form is %s.' % docs_link('docs/license.md', 'license.md'),
+                     'The long form is %s.' % docs_link('docs/license.md', 'license.md'),
                      '''<div class="table-scroll" tabindex="0" role="region" aria-label="License and third-party material"><table class="terms">
 <thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
 <tbody>
