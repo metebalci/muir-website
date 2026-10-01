@@ -661,7 +661,7 @@ RUNS      its processor and clocks within
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved. QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S and the Kria KR260 run the CADR. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved. QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S and the Kria KR260 run the CADR. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. The CADR gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host. QUUX does not need ozd, having a file device and a real-time clock of its own.</p>
 <p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
@@ -1561,7 +1561,7 @@ def quux_aria(board):
               'the memory port, one requester, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of four words; '
               'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
               'Under the page: the memory master, block-disk, the video controller, the file device and the keyboard and mouse. '
-              'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has the file device. '
+              'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
               'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
               % ('programmable logic' if arty else 'FPGA fabric', QUUX_K[board]))
 
