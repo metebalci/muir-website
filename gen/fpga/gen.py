@@ -709,8 +709,8 @@ RUNS      its processor and clocks within
 </table></div>
 ''' % trs, label='License and third-party material'))
 
-    P.append(section('colophon', '05 / ABOUT', 'Almost nothing here<br>is a <em>first-hand</em> invention.', '', '''<div class="prose">
-<p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is.</p>
+    P.append(section('colophon', '05 / ABOUT', 'MIT&rsquo;s machine, and<br>what muir-fpga <em>adds.</em>', '', '''<div class="prose">
+<p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is. The fabric, its checks and their reference traces, the programs beside the machine on the board and the documents are this project&rsquo;s.</p>
 <p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR and of QUUX, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
@@ -2018,7 +2018,7 @@ def build_debugging():
        docs_link('the debugger over the cable', 'board.md', 'the-debugger-over-the-cable'))))
 
     P.append(section('sources', '07 / SOURCES', 'Where each drawing<br><em>came from.</em>',
-        'Nothing above is a first-hand invention. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
+        'Each figure above was read from the sources listed here. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
         '''<div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>
 %s</table></div>
