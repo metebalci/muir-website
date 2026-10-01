@@ -20,7 +20,7 @@ code{font-family:var(--mono);font-size:.9em}pre code{font-size:inherit}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));border-top:1px solid #bfc3b4;border-left:1px solid #bfc3b4;margin-bottom:34px}.card{border-right:1px solid #bfc3b4;border-bottom:1px solid #bfc3b4;padding:26px;display:flex;flex-direction:column;min-width:0}.card.lit{background:#e8e9df}.card-label{display:flex;justify-content:space-between;gap:10px;font:9px var(--mono);letter-spacing:.5px;margin-bottom:18px}.card-num{font-size:44px;letter-spacing:-2px;line-height:1;margin:0 0 8px}.card h3{font-size:24px;font-weight:400;letter-spacing:-.6px;margin:0 0 12px}.card .card-sub{font-size:12px;font-weight:bold;margin:0 0 12px;color:var(--ink)}.card p{font-size:13px;line-height:1.75;color:var(--muted);margin:0 0 12px}.card p:last-child{margin-bottom:0}.card .text-link{margin-top:auto;align-self:flex-start}.card ul{font-size:12px;line-height:1.9;padding-left:17px;margin:0 0 16px}
 .table-scroll{margin-bottom:34px}.table-scroll table{min-width:560px}th,td{vertical-align:top}th+th,td+td,th+td{padding-left:18px}tbody th{text-align:left;font-weight:bold;font:bold 12px/1.6 Arial,Helvetica,sans-serif;color:var(--ink);padding:14px 18px 14px 0;border-top:1px solid var(--line)}thead th{white-space:nowrap}td code,th code{font-size:11px}.table-scroll caption{text-align:left;font:10px var(--mono);letter-spacing:.5px;padding-bottom:14px}
 .mono-cell,td.num,td.name{font-family:var(--mono);font-size:11px;white-space:nowrap}.pc{display:block;font:9px/1.7 var(--mono);color:var(--muted);font-weight:400}
-.st{font:10px var(--mono);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}.st:not(.no)::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:7px}.st.no{color:var(--muted)}td[title]{cursor:help}
+.st{font:10px var(--mono);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}.st::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--yes);margin-right:7px}.st.no::before{background:var(--no)}.st.plain::before{display:none}.st.no{color:var(--muted)}td[title]{cursor:help}
 dl.flags{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:0;margin:0 0 30px;border-top:1px solid var(--line)}dl.flags>div{display:contents}dl.flags dt{font:11px/1.7 var(--mono);padding:12px 18px 12px 0;border-bottom:1px solid var(--line)}dl.flags dd{margin:0;font-size:13px;line-height:1.75;padding:12px 0;border-bottom:1px solid var(--line);color:var(--muted)}
 .callout{border-left:3px solid var(--orange);padding:2px 0 2px 18px;margin:0 0 20px;font-size:15px;line-height:1.7;max-width:760px}.callout.ink{border:0;background:var(--ink);color:var(--paper);padding:24px 26px}.callout.ink code{color:#fff}
 .steps-list{counter-reset:step}.step{margin-bottom:30px}.step .step-heading h3{font-size:17px}.step>p{font-size:12px;line-height:1.8;color:var(--muted);margin:13px 0 0;max-width:760px}.step>p code{color:var(--ink)}
@@ -45,7 +45,7 @@ table.boardtable{min-width:900px}.boardtable th.board{position:sticky;left:0;z-i
 /* One colour for orange text, dark enough for small type on the paper and
    on the tinted cards (5.08:1 on --paper, 4.70:1 on .card.lit); --orange
    stays for rules, dots, fills and the large headings' accent. */
-:root{--orange-text:#b53d1e;color-scheme:only light}
+:root{--orange-text:#b53d1e;--yes:#1f7a3d;--no:#b8283c;color-scheme:only light}
 a:hover,.header nav a[aria-current],.subnav [aria-current],.step-number{color:var(--orange-text)}
 /* An eyebrow keeps its size inside prose; a rule is drawn once between two sections. */
 .prose .eyebrow{font-size:11px;line-height:normal;margin:0 0 27px}
@@ -80,3 +80,9 @@ a:hover,.header nav a[aria-current],.subnav [aria-current],.step-number{color:va
 /* The front page's hero starts as far under the header's rule as the wordmark
    stands over it; the other pages' heroes are as they were. */
 @media(min-width:701px){.hero.hero-home{padding-top:28px}.hero.hero-home .hero-copy{padding-top:0}}
+/* The boards' resource bars: the share of the part a machine's fabric uses, in
+   a narrow outlined bar with the percentage inside it, in the filled part
+   where there is room and just after the fill where there is not, and the
+   figures under it in small text.  The percentage is the text; the fill is
+   for the eye. */
+.rbs{min-width:150px}.rb{display:flex;align-items:flex-start;gap:6px;padding:3px 0}.rb-m{font:12px/16px Arial,Helvetica,sans-serif;color:var(--ink);width:38px;flex:none}.rb-wrap{display:block}.rb-bar{display:block;position:relative;width:104px;height:16px;border:1px solid var(--ink)}.rb-bar i{display:block;height:100%;background:var(--ink);opacity:.34}.rb-bar b{position:absolute;top:0;font:500 10px/14px var(--mono);padding:0 3px;color:var(--ink)}.rb-wrap .pc{margin-top:2px;white-space:nowrap}

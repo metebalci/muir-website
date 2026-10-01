@@ -25,6 +25,7 @@ GH = 'https://github.com/metebalci/muir-fpga/blob/main/docs/'
 # A5EB013BB23BE4SCS.  The ampersands are written as HTML wants them.
 DIGILENT_ARTY = 'https://digilent.com/shop/arty-z7-zynq-7000-soc-development-board/'
 DIGILENT_CORA = 'https://digilent.com/shop/cora-z7-zynq-7000-single-core-for-arm-fpga-soc-development/'
+AMD_KR260 = 'https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit.html'
 TERASIC_DE25 = 'https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=115&amp;No=1384'
 
 def svgs(page):
@@ -74,7 +75,7 @@ def slack_block(ns):
             '          <text class="d-s" x="-164" y="140">worst setup %s ns</text>' % ns)
 
 ARTY_FIT = [
-    ('The CADR mapped onto one XC7Z020.', 'The CADR mapped onto one Xilinx Zynq 7020, part XC7Z020-1CLG400C.'),
+    ('The CADR mapped onto one XC7Z020.', 'The CADR mapped onto one AMD Zynq 7020, part XC7Z020-1CLG400C.'),
     ('Slices 5,441 of 13,300', 'LUTs 15,050 of 53,200'),
     ('<rect x="-164" y="74" width="55.6" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="74" width="38.5" height="13" fill="currentColor" fill-opacity="0.42"/>'),
@@ -165,7 +166,7 @@ ARTY_FIT = [
 ]
 CORA_FIT = [
     ('The CADR mapped onto one XC7Z007S, the small Zynq on a Cora Z7-07S.',
-     'The CADR mapped onto one Xilinx Zynq 7007S, part XC7Z007S-1CLG400C.'),
+     'The CADR mapped onto one AMD Zynq 7007S, part XC7Z007S-1CLG400C. This board runs the CADR only: the CADR takes 97.4 per cent of its lookup tables, and QUUX does not fit.'),
     ("MIT's own CC, running in the Lisp world of the CADR in the larger board's fabric,",
      "MIT's own CC, running in the Lisp world of the CADR in the Arty Z7-20's fabric,"),
     ('two lamps cannot carry what six carry on the larger board:', 'two lamps cannot carry what six carry on the Arty Z7-20:'),
@@ -369,137 +370,110 @@ ARTY_FIT += DISPLAY_2026_09_21
 # hardware and the other an absence of testing, and a reader could not tell
 # them apart.  What a cell still cannot carry goes in this note, in sentences,
 # rather than into a fourth word or a mark nobody follows.
-BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the Cora Z7-07S the CADR alone. '
-               'A cell says yes where that board itself has run the thing, '
-               'yes with a qualification where the thing is built into that board and nothing of it has run there yet, '
-               'and no where the board does not have the thing at all. '
-               'The two resource figures in each row are that board&rsquo;s own place and route report for the CADR&rsquo;s fabric, '
-               'with the memory, the disk and both display boards in it, in that part&rsquo;s own terms: '
-               'lookup tables and block RAM on the Zynq boards, ALMs and M20K blocks on the DE25-Nano, '
+BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the Cora Z7-07S and the Kria KR260 the CADR. '
+               'A cell says yes where that board itself has run the thing and no where it has not, '
+               'and the display column names the connector the board shows its screen on. '
+               'A bar is the share of the part a machine&rsquo;s fabric uses, with the memory, the disk and the display boards in it, '
+               'from that board&rsquo;s own place and route report, in that part&rsquo;s own terms: '
+               'lookup tables and block RAM tiles on the Zynq boards, ALMs and M20K blocks on the DE25-Nano, '
                'and memory built out of logic is counted inside the logic figure rather than beside it. '
-               'The two logic columns are different units, so their counts do not compare and the percentage is the figure that does: '
+               'The logic units are different, so their counts do not compare and the percentage is the figure that does: '
                'by Altera&rsquo;s own guide for converting a Zynq-7000 design to an Agilex 5 one, an ALM is about 1.3 lookup tables. '
-               'The fabric carries one video mode, 1280 by 1024 at 60 hertz, and these figures are of it; '
+               'The Arty Z7-20&rsquo;s and the DE25-Nano&rsquo;s fabric carries one video mode, 1280 by 1024 at 60 hertz, and their figures are of it; '
                'a second mode was tried once and is not built now, and '
                '<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/display-output.md#a-retired-second-mode">its record</a> '
                'is in the display document. '
                'What a board has built and checked but never run is on that board&rsquo;s own page.')
 
-INDEX_FIT = [
-    ("""    <!-- One row a board. The figures are each board's own place and route
-         report, both built from the color TV change, which landed at
-         653ca22 with its fabric unchanged. They are the figures that board's own drawing carries""",
-     """    <!-- One row a board. The figures are each board's own place and route
-         report for the fabric that board runs, with the memory, the disk and
-         both display boards in it: the CADR fits of the working tree on
-         ab41da7 with the change that gives QUUX's control store an explicit
-         block RAM enable, as muir-fpga's docs/fits.md records them. They are the figures that board's own drawing carries"""),
-    ("""         under its fabric label. A cell says yes only where that board itself
-         has shown the thing, which is the same claim the drawings' colors
-         make. -->""",
-     """         under its fabric label. A CELL HAS THREE READINGS AND NOT TWO: yes
-         where that board itself has run the thing, yes with a qualification
-         where the thing is built into that board and nothing of it has run
-         there yet, and no where the board does not have the thing at all.
-         The middle one was added because two unlike facts were both reading
-         as no. The Cora Z7-07S has no HDMI connector on it at all, and the
-         DE25-Nano's debug cable is in every bitstream that board builds with
-         no ribbon yet made for its header. It is a footnote in the cell and
-         not a third grade: the five-step status vocabulary this site retired
-         is exactly what it must not grow back into, so there is one
-         qualification here and it is spelled out in the note above.
-         That yes was once said to be the same claim the drawings' colors
-         make, and it no longer is: since the key was cut to three colors,
-         green says a block is this project's work and done, which means built
-         and checked rather than run on that board. So the DE25-Nano's drawing
-         colors its debug cable adapter green while this table's cell for the
-         same thing says yes with a qualification, and both are right about
-         their own question. Each
-         resource figure is named in its own part's terms, because one
-         vendor's word for another's part would be wrong: lookup tables and
-         block RAM on the Zynq boards, ALMs and M20K blocks on the DE25-Nano.
-         Lookup tables rather than the occupied slices this table carried
-         before, because a slice counts as occupied the moment anything at all
-         sits in it, so the count overstates how full a part is; a lookup table
-         and an ALM are both direct measures of logic. The two are still
-         different units and the counts do not compare: Altera's own
-         conversion guide puts one ALM at about 1.3 lookup tables, so the
-         percentage is the figure to read across the rows. That is section 2.2,
-         "AMD vs Altera FPGA Resource", of "Design Conversion Guidelines: AMD
-         Zynq 7000 SoC and Ultrascale+ MPSoC to Agilex 5 FPGAs and SoCs",
-         Altera document 826363, revision 2026-01-27:
-         https://docs.altera.com/r/docs/826363/current/design-conversion-guidelines-amd-zynq-7000-soc-and-ultrascale-mpsoc-to-agilextm-5-fpgas-and-socs
-         Memory built out of logic is counted inside the logic figure and never
-         reported beside it, which is why neither column names it. Under each
-         board's name are its FPGA's product name, its part number and a link
-         to its maker's page for it, each on a line of its own so that the
-         name column stays narrow on a phone. The debug cable is a column
-         because it is a thing one of these boards has run and another has
-         only built, and a table without it would read as though all three
-         were level. -->"""),
-    ("""            <th scope="col">Slices</th>
-            <th scope="col">Block RAM</th>""",
-     """            <th scope="col">Fabric logic</th>
-            <th scope="col">Block memory</th>"""),
-    ("""            <th scope="col">USB input</th>
-          </tr>""",
-     """            <th scope="col">USB input</th>
-            <th scope="col">Debug cable</th>
-          </tr>"""),
-    ('<td class="num">5,441 of 13,300<span class="pc">40.9%</span></td>', '<td class="num">15,050 of 53,200<span class="pc">LUTs &middot; 28.3%</span></td>'),
-    ('<td class="num">45.5 of 140<span class="pc">32.5%</span></td>', '<td class="num">46 of 140<span class="pc">block RAM &middot; 32.9%</span></td>'),
-    ('<a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">XC7Z020</span></th>',
-     '<a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">Xilinx Zynq 7020</span><span class="pc">XC7Z020</span><span class="pc">made by <a href="%s">Digilent</a></span></th>' % DIGILENT_ARTY),
-    ('<a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">XC7Z007S</span></th>',
-     '<a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">Xilinx Zynq 7007S</span><span class="pc">XC7Z007S</span><span class="pc">made by <a href="%s">Digilent</a></span></th>' % DIGILENT_CORA),
-    # The Arty Z7-20's debug cable cell, placed by the row that follows it,
-    # which is the only text that says where this row ends.
-    ('''            <td class="st">yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a>''',
-     '''            <td class="st">yes</td>
-            <td class="st" title="Run over a real ribbon between this board and the Cora Z7-07S.">yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a>'''),
-    # The Cora Z7-07S's debug cable cell and the whole of the DE25-Nano's row.
-    # ITS TWO FIGURES ARE THE ONES ITS OWN DRAWING CARRIES, from the fit of the
-    # memory board with the display in it, the fit of the working tree on
-    # ab41da7 that docs/fits.md records: 16,451 ALMs of 46,800 and 135 M20K blocks of 358, which is the same kind of build as the two Zynq
-    # rows and the build its card carries.  The cores are the board's manual,
-    # section 2.2 on page 8, through `boards/de25-nano/README.md`, and so are
-    # the Ethernet, the card slot and the USB port, which are the processor's.
-    # THE DEBUG CABLE IS THE ONE QUALIFIED YES, AND THE ONLY CELL IN THE TABLE
-    # THAT CARRIES A QUALIFICATION.  The connector is in every build of this
-    # board and every module under it is checked, but no cable from a 2x20
-    # header to a Pmod has been made, so nothing of it has run on this board.
-    # It read `no` for one day, beside the Cora Z7-07S's `no` for HDMI, and the
-    # two are not the same fact: that board has no connector at all and this
-    # one has the thing built and untested.  The qualification goes on a line
-    # of its own under the word, in the same `pc` span the resource cells use
-    # for their unit, so the column does not widen for it.
-    ('''            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
-          </tr>
-        </tbody>''',
-     '''            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
-            <td class="st" title="Run over a real ribbon between this board and the Arty Z7-20.">yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="board"><a href="de25-nano.html">DE25-Nano</a><span class="pc">Altera Agilex 5 E-series</span><span class="pc">A5EB013B</span><span class="pc">made by <a href="%s">Terasic</a></span></th>
-            <td class="cpu">2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux</td>
-            <td class="num">16,451 of 46,800<span class="pc">ALMs &middot; 35.2%%</span></td>
-            <td class="num">135 of 358<span class="pc">M20K &middot; 37.7%%</span></td>
-            <td class="st">yes</td>
-            <td class="st" title="The board's own card slot. This part has no card configuration scheme, so the flash carries the first stage and the card carries everything else.">yes</td>
-            <td class="st">yes</td>
-            <td class="st">yes</td>
-            <td class="st" title="The connector is in every build of this board, and no cable from its GPIO header to a Pmod has been made, so nothing of it has run here.">yes<span class="pc">(not tested)</span></td>
-          </tr>
-        </tbody>''' % TERASIC_DE25),
-    ('<td class="num">4,228 of 4,400<span class="pc">96.1%</span></td>', '<td class="num">14,024 of 14,400<span class="pc">LUTs &middot; 97.4%</span></td>'),
-    ('<td class="num">42.5 of 50<span class="pc">85.0%</span></td>', '<td class="num">43 of 50<span class="pc">block RAM &middot; 86.0%</span></td>'),
+# THE BOARDS' TABLE, one row a board, written here from data and not lifted.
+# THE FIGURES are each board's own place and route report for the fabric it
+# runs, in that part's own terms, from docs/fits.md of muir-fpga: the CADR's
+# are the clean fit of 74c2cf9 for the Arty Z7-20, the Cora Z7-07S and the
+# DE25-Nano, which are the figures their drawings carry; the QUUX figures are
+# those of revision 12, the QUUX that runs today, from the fits of aec5f54, the
+# latest of that revision that meet timing; the Kria KR260's is the CADR's fit of the K4 slice
+# (xck26-sfvc784-2LV-c, DDR=1, Vivado 2026.1).  A bar is the percentage of the
+# part used, and the percentage is the figure that compares across the rows:
+# lookup tables and block RAM tiles on the Zynq boards, ALMs and M20K blocks on
+# the DE25-Nano, which are different units (Altera's own conversion guide puts
+# one ALM at about 1.3 lookup tables, section 2.2, "AMD vs Altera FPGA
+# Resource", of "Design Conversion Guidelines: AMD Zynq 7000 SoC and
+# Ultrascale+ MPSoC to Agilex 5 FPGAs and SoCs", Altera document 826363,
+# revision 2026-01-27).  Memory built out of logic is counted inside the
+# logic figure and never reported beside it.
+# A CELL HAS THREE READINGS AND NOT TWO: yes where that board itself has run
+# the thing, yes with a qualification where the thing is built into that board
+# and nothing of it has run there yet, and no where the board does not have
+# the thing at all.  The middle one is a footnote in the cell and not a third
+# grade, because the five-step status vocabulary this site retired is what it
+# must not grow back into.  It is not the drawings' green, which says a block
+# is this project's work and built and checked, not that it has run.
+BOARD_ROWS = [
+    # (file, name, product, part, maker, maker's page, machines, cpu,
+    #  [(machine, logic used, logic total, logic unit, memory used, memory total, memory unit)],
+    #  ethernet, microSD, display, USB input, debug cable) -- each cell is (word, title, footnote)
+    ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
+     [('CADR', 15050, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
+      ('QUUX', 17105, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
+     [('yes', '', ''), ('yes', 'The board&rsquo;s own card slot.', ''), ('text', '', 'HDMI'), ('yes', '', '')]),
+    ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
+     [('CADR', 14024, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
+     [('yes', '', ''), ('yes', 'The board&rsquo;s own card slot.', ''),
+      ('no', 'The board has no display connector.', ''),
+      ('no', 'The board has no USB host port, so the image leaves the program out.', '')]),
+    ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR', '4 x Arm Cortex-A53, Linux',
+     [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
+     [('yes', '', ''),
+      ('yes', 'The slot is a USB mass-storage reader behind the first USB controller: the loader reads the card as a USB disk.', ''),
+      ('no', 'The board&rsquo;s one video connector is the processing system&rsquo;s DisplayPort, and its output is not built yet.', ''),
+      ('yes', '', '')]),
+    ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
+     [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
+      ('QUUX', 18912, 46800, 'ALMs', 191, 358, 'M20K blocks')],
+     [('yes', '', ''),
+      ('yes', 'The board&rsquo;s own card slot. This part has no card configuration scheme, so the flash carries the first stage and the card carries everything else.', ''),
+      ('text', '', 'HDMI'), ('yes', '', '')]),
 ]
+
+def resource_bars(rows):
+    """A bar for each machine: the share of the part used, its percentage inside
+    the outline, in the filled part where there is room (40% and over) and just
+    after the fill where there is not, and the figures in small text under it."""
+    out = ''
+    for machine, used, total, unit in rows:
+        pct = round(100.0 * used / total, 1)
+        place = ('right:calc(100%% - %s%%)' % num(pct)) if pct >= 40 else ('left:calc(%s%% + 3px)' % num(pct))
+        out += ('<div class="rb"><span class="rb-m">%s</span><span class="rb-wrap"><span class="rb-bar"><i style="width:%s%%"></i>'
+                '<b style="%s">%.1f%%</b></span><span class="pc">%s / %s %s</span></span></div>'
+                % (machine, num(pct), place, pct, format(used, ','), format(total, ','), unit))
+    return out
+
+def board_table():
+    head = ('<thead>\n          <tr>\n            <th scope="col" class="board">Board</th>\n'
+            '            <th scope="col">Fabric logic</th>\n            <th scope="col">Block memory</th>\n'
+            '            <th scope="col">Ethernet</th>\n            <th scope="col">microSD</th>\n            <th scope="col">Display</th>\n'
+            '            <th scope="col">USB input</th>\n          </tr>\n        </thead>\n')
+    body = ''
+    for fname, name, product, part, maker, url, machines, cpu, fits, cells in BOARD_ROWS:
+        body += '          <tr>\n'
+        body += ('            <th scope="row" class="board"><a href="%s">%s</a><span class="pc">%s</span><span class="pc">%s</span>'
+                 '<span class="pc">made by <a href="%s">%s</a></span></th>\n' % (fname, name, product, part, url, maker))
+        body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, lu, lt, un) for m, lu, lt, un, *_ in fits])
+        body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, mu, mt, un) for m, _, _, _, mu, mt, un in fits])
+        if fname == 'kria-kr260.html':
+            body += '            <!-- TODO(K10): the Display cell becomes DisplayPort, plain text, once the KR260\'s monitor output works. -->\n'
+            body += ('            <!-- TODO(K5): the Kria KR260\'s two bars are the CADR fit of the K4 slice; replace them with the K5 full fit\'s'
+                     ' LUTs and block RAM tiles if it differs. -->\n')
+        for word, title, foot in cells:
+            if word == 'text':      # a connector's name, and not a yes or a no
+                body += '            <td class="st plain"%s>%s</td>\n' % (' title="%s"' % title if title else '', foot)
+                continue
+            body += ('            <td class="st%s"%s>%s%s</td>\n'
+                     % (' no' if word == 'no' else '', ' title="%s"' % title if title else '', word,
+                        '<span class="pc">%s</span>' % foot if foot else ''))
+        body += '          </tr>\n'
+    return ('    <div class="table-scroll" tabindex="0" role="region" aria-label="What each board is and what it runs">\n'
+            '      <table class="boardtable">\n        ' + head + '        <tbody>\n' + body + '        </tbody>\n      </table>\n    </div>\n')
 
 
 # ---------------------------------------------------------------- the chrome
@@ -529,27 +503,28 @@ def site_terms(html):
 # the page has it after site_terms(), a page is named by the boards that carry
 # the label, and a label that is not there stops the run.
 A, C, D = 'arty-z7-20.html', 'cora-z7-07s.html', 'de25-nano.html'
+K = 'kria-kr260.html'
 def _t(cls, x, y, anchor, words):
     return '<text class="%s" x="%s" y="%s"%s>%s</text>' % (cls, x, y, ' text-anchor="middle"' if anchor else '', words)
 LABELS = [
-    ((A, C, D), '>for the other machines<', '>for other machines<'),
-    ((A, C, D), '>the console and JTAG<', '>console and JTAG<'),
-    ((A, C), '>one micro-USB socket,<', '>micro-USB socket,<'),
+    ((A, C, D, K), '>for the other machines<', '>for other machines<'),
+    ((A, C, D, K), '>the console and JTAG<', '>console and JTAG<'),
+    ((A, C, K), '>one micro-USB socket,<', '>micro-USB socket,<'),
     ((A, C), '>PL masters, 64 bits, AXI3<', '>PL masters, 64-bit AXI3<'),
     ((A, C), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits')),
-    ((A, C, D), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
-    ((A, C, D), '>the debugger<', '>debugger<'),
-    ((A, C, D), '>Vcc open at both sides<', '>Vcc open both sides<'),
+    ((A, C, D, K), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
+    ((A, C, D, K), '>the debugger<', '>debugger<'),
+    ((A, C, D, K), '>Vcc open at both sides<', '>Vcc open both sides<'),
     ((A, C, D), '>U-Boot, the CADR&rsquo;s bitstream,<', '>U-Boot, CADR bitstream,<'),
-    ((A, C, D), '>Linux and its root filesystem,<', '>Linux, root filesystem,<'),
-    ((A, C, D), '>and the disk packs, a file a drive<', '>disk packs, a file each<'),
+    ((A, C, D, K), '>Linux and its root filesystem,<', '>Linux, root filesystem,<'),
+    ((A, C, D, K), '>and the disk packs, a file a drive<', '>disk packs, a file each<'),
     # the boxes of the lower row take three lines of a body and one of a name,
     # so a body that ran to four lines is written in three
-    ((A, C, D), _t('d-s', 599, 586, 1, 'the CADR&rsquo;s serial line') + '\n          ' + _t('d-s', 599, 600, 1, 'on a TCP socket,') + '\n          '
+    ((A, C, D, K), _t('d-s', 599, 586, 1, 'the CADR&rsquo;s serial line') + '\n          ' + _t('d-s', 599, 600, 1, 'on a TCP socket,') + '\n          '
      + _t('d-s', 599, 622, 1, 'as muir-sim offers it'),
      _t('d-s', 599, 586, 1, 'serial line on a') + '\n          ' + _t('d-s', 599, 600, 1, 'TCP socket, as') + '\n          '
      + _t('d-s', 599, 614, 1, 'muir-sim does')),
-    ((A, C, D), _t('d-s', 746, 586, 1, 'a drive&rsquo;s blocks as a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'one file a drive') + '\n          '
+    ((A, C, D, K), _t('d-s', 746, 586, 1, 'a drive&rsquo;s blocks as a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'one file a drive') + '\n          '
      + _t('d-s', 746, 622, 1, 'staged into DDR'),
      _t('d-s', 746, 586, 1, 'a drive is a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'its blocks staged') + '\n          '
      + _t('d-s', 746, 614, 1, 'into DDR')),
@@ -561,10 +536,10 @@ LABELS = [
      + _t('d-s', 893, 622, 1, 'a Unibus master'),
      _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
      + _t('d-s', 893, 614, 1, 'LWH2F') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
-    ((A, C, D), '>four registers, and the channel<', '>four registers, the channel<'),
-    ((A, C, D), '>a second display board,<', '>second display board:<'),
-    ((A, C, D), '>576 &times; 454, 4 bits a pixel<', '>576 &times; 454 &times; 4 bits<'),
-    ((A, D), _t('d-s', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s', 1040, 600, 1, 'onto the I/O board') + '\n          '
+    ((A, C, D, K), '>four registers, and the channel<', '>four registers, the channel<'),
+    ((A, C, D, K), '>a second display board,<', '>second display board:<'),
+    ((A, C, D, K), '>576 &times; 454, 4 bits a pixel<', '>576 &times; 454 &times; 4 bits<'),
+    ((A, D, K), _t('d-s', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s', 1040, 600, 1, 'onto the I/O board') + '\n          '
      + _t('d-s', 1040, 622, 1, 'through the terminal'),
      _t('d-s', 1040, 586, 1, 'the keyboard and') + '\n          ' + _t('d-s', 1040, 600, 1, 'mouse, onto the') + '\n          '
      + _t('d-s', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s', 1040, 628, 1, 'via the terminal')),
@@ -574,8 +549,13 @@ LABELS = [
      + _t('d-s d-absent-t', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s d-absent-t', 1040, 628, 1, 'via the terminal')),
     ((D,), '>2 &times; Cortex-A76<', '>2&times;Cortex-A76<'),
     ((D,), '>2 &times; Cortex-A55<', '>2&times;Cortex-A55<'),
-    ((A, C, D), '<text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>',
+    ((A, C, D, K), '<text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>',
      '<text class="d-s" x="1066" y="214" text-anchor="end">Unibus, 16 bits,</text>\n          <text class="d-s" x="1066" y="228" text-anchor="end">open collector</text>'),
+    ((K,), '>boot.scr, the CADR&rsquo;s bitstream,<', '>boot.scr, bitstream,<'),
+    ((K,), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over HPM1') + '\n          '
+     + _t('d-s', 893, 622, 1, 'a Unibus master'),
+     _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
+     + _t('d-s', 893, 614, 1, 'HPM1') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
     # the HDMI box is 100 wide and takes 14 letters a line, so its four lines
     # start one line higher than the three they replace
     ((A, D), _t('d-s', -233, 330, 1, 'the display,') + '\n          ' + _t('d-s', -233, 344, 1, 'from the fabric,') + '\n          '
@@ -671,15 +651,10 @@ def docs_link(text, path, anchor=''):
 # ================================================================ front page
 
 def build_index():
-    base = open(os.path.join(BASE, 'index.html')).read()
-    table = re.search(r'    <!-- One row a board\..*?</table>\n    </div>\n', base, re.S).group(0)
-    for o, n in INDEX_FIT:
-        table = sub(table, o, n)
-    # The table's own classes are kept; the site's style.css styles them.
-    table = table.replace('<div class="tablescroll" tabindex="0"', '<div class="table-scroll" tabindex="0"')
+    table = board_table()
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
-                  'What runs on each of three small boards.',
+                  'What runs on each of four small boards.',
                   keys=keys(('#boards', 'The boards'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
                   side='''<div class="side">
@@ -702,14 +677,14 @@ RUNS      its processor and clocks within
 </div>
 <div class="prose">
 <p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
-<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S builds the CADR alone. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
+<p>The same fabric is built as QUUX too, the CADR evolved: a card&rsquo;s <code>fpgarc</code> says which machine its bitstream is, with <code>--machine cadr</code> or <code>--machine quux</code> (<a href="https://github.com/metebalci/muir-fpga/blob/main/docs/fpgarc.md">docs/fpgarc.md</a>). QUUX runs on the Arty Z7-20 and the DE25-Nano, and the Cora Z7-07S and the Kria KR260 run the CADR. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. A CADR band gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host; a QUUX card does not start it.</p>
 <p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
-<div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
+<div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
 </div>
 '''))
 
-    P.append(section('boards', '02 / THE BOARDS', 'Three boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
+    P.append(section('boards', '02 / THE BOARDS', 'Four boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
     P.append(section('machine', '03 / THE MACHINES THEMSELVES', 'The real<br><em>machines.</em>', '', '''<div class="prose">
 <p>What the two machines are, their processors, buses and devices, is on their own pages: QUUX, the CADR evolved, and the CADR, MIT&rsquo;s machine as it was built, board by board. It is worth knowing what a machine is before looking at a drawing of it inside a chip.</p>
@@ -759,7 +734,7 @@ RUNS      its processor and clocks within
 </div>
 ''', label='About'))
     page('index.html', 'muir-fpga &mdash; the MIT CADR and QUUX in fabric',
-         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S and the DE25-Nano.',
+         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S, the Kria KR260 and the DE25-Nano.',
          P)
 
 # ================================================================ board pages
@@ -864,15 +839,14 @@ def board_svg(fname):
     svg = svgs(fname)[0]
     for o, n in {'arty-z7-20.html': ARTY_FIT, 'cora-z7-07s.html': CORA_FIT}[fname]:
         svg = sub(svg, o, n)
-    return frame(svg, fname, *{'arty-z7-20.html': ('XC7Z020-1CLG400C', 'Xilinx Zynq 7020'),
-                               'cora-z7-07s.html': ('XC7Z007S-1CLG400C', 'Xilinx Zynq 7007S')}[fname])
+    return frame(svg, fname, *{'arty-z7-20.html': ('XC7Z020-1CLG400C', 'AMD Zynq 7020'),
+                               'cora-z7-07s.html': ('XC7Z007S-1CLG400C', 'AMD Zynq 7007S')}[fname])
 
-# Every board page lists the other boards among its keys, the upcoming one last.
-BOARD_KEYS = {
-    'arty-z7-20.html': ('cora-z7-07s.html', 'Cora Z7-07S'),
-    'cora-z7-07s.html': ('arty-z7-20.html', 'Arty Z7-20'),
-}
-DE25_KEY = ('de25-nano.html', 'DE25-Nano')
+# Every board page lists the other boards among its keys, in the site's order:
+# the Arty Z7-20, the Cora Z7-07S, the Kria KR260, the DE25-Nano.
+BOARD_NAV = [('arty-z7-20.html', 'Arty Z7-20'), ('cora-z7-07s.html', 'Cora Z7-07S'),
+             ('kria-kr260.html', 'Kria KR260'), ('de25-nano.html', 'DE25-Nano')]
+BOARD_KEYS = dict((f, tuple(b for b in BOARD_NAV if b[0] != f)) for f, _ in BOARD_NAV)
 
 # ozd AND muir ARE ORANGE, AND SO IS U-Boot.  All three are programs carried
 # here rather than built here, and drawing them the way the memory and the
@@ -886,26 +860,37 @@ DE25_KEY = ('de25-nano.html', 'DE25-Nano')
 BOARD_EYEBROW = {
     'arty-z7-20.html': 'muir-fpga &middot; Digilent &middot; Zynq 7020',
     'cora-z7-07s.html': 'muir-fpga &middot; Digilent &middot; Zynq 7007S',
+    'kria-kr260.html': 'muir-fpga &middot; AMD &middot; Zynq UltraScale+',
     'de25-nano.html': 'muir-fpga &middot; Terasic &middot; Agilex 5 E-series',
 }
 
-def build_board(fname, name, lede, corner_label, other, maker):
+def build_board(fname, name, lede, corner_label, other, maker, body='', figlabel=None, quux=None):
     svg = board_svg(fname)
     title = re.search(r'<title>([^<]*)</title>', open(os.path.join(BASE, fname)).read()).group(1)
     board_page(fname, name, title, DESC[fname], lede, corner_label,
-               (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable'), other, DE25_KEY),
-               maker, svg)
+               (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS[fname],
+               maker, svg, body=body, figlabel=figlabel, quux=quux)
 
-def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg):
+def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None):
     # The board's name, the one line naming its FPGA, the keys to the other
     # pages with the maker's own page last, and the drawing, which is the
-    # whole point of the page.  The corner character is gone; corner_label is
-    # kept in the signature so that the calls below read as they did.
-    P = [hero(BOARD_EYEBROW[fname], name, lede,
-              keys=keys(*(tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
-         '<section class="section wrap tight" aria-label="%s, the drawing">\n' % name,
-         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % name.upper(), name=name).replace('<figcaption></figcaption>\n', ''),
+    # whole point of the page.  A board that runs QUUX has a second drawing
+    # after the CADR's, in the same style: "QUUX mapped onto" the board.  The
+    # corner character is gone; corner_label is kept in the signature so that
+    # the calls below read as they did.
+    own = (('#cadr', 'The CADR&rsquo;s drawing'), ('#quux', 'QUUX&rsquo;s drawing')) if quux else ()
+    cores = [r[7] for r in BOARD_ROWS if r[0] == fname]
+    if cores:
+        body = '<p class="hero-description">The processing system: %s.</p>\n' % cores[0].replace(' x ', ' &times; ').replace(', Linux', ', running Linux') + body
+    P = [hero(BOARD_EYEBROW[fname], name, lede, body=body,
+              keys=keys(*(own + tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
+         '<section id="cadr" class="section wrap tight" aria-label="%s, the CADR&rsquo;s drawing">\n' % name,
+         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', THE CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
          '</section>\n']
+    if quux:
+        P += ['<section id="quux" class="section wrap tight" aria-label="%s, QUUX&rsquo;s drawing">\n' % name,
+              figure(quux, '', cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
+              '</section>\n']
     page(fname, title, desc, P)
 
 # THE DE25-NANO'S PAGE.  Its drawing is the Arty Z7-20's, generated from it
@@ -965,7 +950,7 @@ NUMBER = ('zero one two three four five six seven eight nine ten eleven twelve t
 DE25_RENAME = {'S_AXI_HP0': 'F2SDRAM', 'S_AXI_HP2': 'F2SDRAM', 'S_AXI_HP3': 'F2SDRAM',
                'M_AXI_GP0': 'H2F', 'M_AXI_GP1': 'LWH2F'}
 
-def de25_status():
+def de25_status(status=None, rename=None):
     """Which of the DE25-Nano's blocks are done, in sentences, from
     DE25_STATUS: one sentence naming the blocks that are done and drawn green,
     one naming those that are not and carry no color, and one for the parts
@@ -979,7 +964,9 @@ def de25_status():
     twenty-one blocks, twenty-one are done" says the number twice and promises
     a remainder that never arrives, so it becomes "All twenty-one blocks ...
     are done" and the second sentence is simply not there."""
-    named = [(DE25_RENAME.get(name, name), s) for name, _, s in DE25_STATUS]
+    status = DE25_STATUS if status is None else status
+    rename = DE25_RENAME if rename is None else rename
+    named = [(rename.get(name, name), s) for name, _, s in status]
     by_name = {}
     order = []
     for name, s in named:
@@ -1188,7 +1175,7 @@ def de25_svg():
     colored = re.findall(r'class="[^"]*\bd-done\b(?![^"]*\bd-key\b)[^"]*"', svg)
     assert len(colored) == sum(1 for *_, s in DE25_STATUS if s), colored
     # (2) the chip
-    svg = sub(svg, '<text class="d-s" x="-164" y="24">Xilinx Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
+    svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
               '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (DE25_PART[1], DE25_PART[0]))
     # (3) the memory
     svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>
@@ -1323,14 +1310,507 @@ def build_de25():
                de25_description(),
                'QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
                "muir-fpga's board, waving",
-               (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable'),
-                ('arty-z7-20.html', 'Arty Z7-20'), ('cora-z7-07s.html', 'Cora Z7-07S')),
-               TERASIC_DE25, de25_svg())
+               (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS['de25-nano.html'],
+               TERASIC_DE25, de25_svg(), quux=quux_svg('de25-nano'))
+
+# ============================================================ THE KRIA KR260
+
+# THE KRIA KR260'S PAGE.  Its drawing is the Arty Z7-20's, generated from it as
+# the DE25-Nano's is, and nothing moves that the board does not change.  What
+# the board changes, from muir-fpga's boards/kria-kr260/ and its K2 to K4 runs
+# (the card, Linux, the PS8's ports and the top level): (1) the part is a
+# Zynq UltraScale+ XCK26 and its processing system four Cortex-A53 cores; (2)
+# the factory U-Boot in the board's flash is left alone, so what stood for the
+# Arty Z7-20's own first stage is the flash, gray, and U-Boot is gray too, a
+# part of the board as it comes and not a program carried onto it; (3) the
+# tick is the carrier's 25 MHz through an MMCM; (4) every port is 128 bits
+# wide and the fabric's adapters meet it at that width; main memory is on
+# S_AXI_HP0_FPD and the pack side on S_AXI_HP2_FPD, the faces on
+# M_AXI_HPM0_FPD and the console and debug window on M_AXI_HPM1_FPD; (5) the
+# board has no HDMI: its one video connector is the processing system's
+# DisplayPort, and the display output, its port and the debug cable adapter
+# carry no color, which is what a block not done on a board looks like here;
+# (6) the card is a USB disk to the loader, and the keyboard is on the other
+# USB controller; (7) the lamps are UF1 and UF2, there is no button and no
+# switch, and the SOM's fan is its own box; (8) the debug cable is PMOD1.
+KR260_PART = ('XCK26-SFVC784-2LV-C', 'AMD Zynq UltraScale+')
+KR260_RENAME = {'S_AXI_HP0': 'S_AXI_HP0_FPD', 'S_AXI_HP2': 'S_AXI_HP2_FPD', 'S_AXI_HP3': 'the display port',
+                'M_AXI_GP0': 'M_AXI_HPM0_FPD', 'M_AXI_GP1': 'M_AXI_HPM1_FPD'}
+KR260_STATUS = [(n, g, ('' if n in ('display output', 'S_AXI_HP3', 'debug cable adapter') else s))
+                for n, g, s in DE25_STATUS if n != 'SPL']
+
+def kr260_aria():
+    return ('The CADR mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260. '
+            + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED) + ' '
+            'The fabric&rsquo;s clock is the carrier&rsquo;s 25 megahertz through a clock manager, 100 megahertz, ten nanoseconds a tick. '
+            'Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. '
+            'Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. '
+            'The board has no HDMI: its video connector is the processing system&rsquo;s DisplayPort, so the display output, its port and the debug cable adapter carry no color. '
+            'The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. '
+            'The two lamps, UF1 and UF2, carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. '
+            'The debug cable is on PMOD1. '
+            'Beside muir, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. '
+            'It runs on a host of its own today, and no line reaches its block. '
+            'The parts drawn gray are components of the board, and muir, ozd and U-Boot are drawn orange, '
+            'as programs other projects carry onto this board.')
+
+def kr260_comment():
+    import textwrap
+    text = ("The Arty Z7-20's drawing, generated for the Kria KR260. "
+            + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED)
+            + " The loader is the board's own, in its flash, and is gray. The display output, the port it would use and the debug"
+            " cable adapter carry no color. TODO(K5): the fit's two bars under the fabric's label, from the CADR's full fit on the part;"
+            " TODO(K5): the lamps' color, UF1 and UF2, which is not recorded; TODO(K5): the board run's result.")
+    assert '--' not in text
+    return textwrap.fill(text, width=78, initial_indent='          <!-- ', subsequent_indent=' ' * 15,
+                         fix_sentence_endings=True, break_on_hyphens=False) + ' -->\n'
+
+def kr260_description():
+    return ('The Kria KR260, a board for muir-fpga with one AMD Zynq UltraScale+ XCK26: the Arty Z7-20&rsquo;s architecture drawing, '
+            'with this project&rsquo;s own blocks colored green where they are done on this board.')
+
+def kr260_svg():
+    svg = board_svg('arty-z7-20.html')
+    # the comments first, as they are the Arty Z7-20's record of what that board has shown
+    svg, n = re.subn(r'\n[ \t]*<!--.*?-->[ \t]*(?=\n)', '', svg, flags=re.S)
+    assert '<!--' not in svg
+    # (1) the fit figures come off, and the machine's own text takes their place
+    i = svg.index('          <text class="d-s" x="-164" y="68">LUTs 15,050 of 53,200</text>')
+    end = '          <text class="d-s" x="-164" y="140">worst setup +0.222 ns</text>\n'
+    assert svg.count(end) == 1
+    j = svg.index(end) + len(end)
+    assert svg[i:j].count('28.3%') == 1 and svg[i:j].count('32.9%') == 1
+    svg = svg[:i] + '''          <text class="d-s" x="-164" y="68">adapters in the fabric</text>
+          <text class="d-s" x="-164" y="82">meet every port at</text>
+          <text class="d-s" x="-164" y="96">128 bits</text>
+''' + svg[j:]
+    # (2) the loader: the flash and the factory U-Boot are the board's own
+    svg = sub(svg, '''          <rect class="d-box d-done" x="61" y="527" width="44" height="30"/>
+          <text class="d-t" x="83" y="547" text-anchor="middle">SPL</text>
+''', '''          <rect class="d-box d-ext" x="61" y="527" width="44" height="30"/>
+          <text class="d-t" x="83" y="547" text-anchor="middle">QSPI</text>
+''')
+    svg = sub(svg, '<rect class="d-dot d-part" x="56" y="522" width="54" height="124"/>',
+              '<rect class="d-dot d-ext" x="56" y="522" width="54" height="124"/>')
+    # (3) colors from KR260_STATUS
+    stripped = []
+    def strip(m):
+        stripped.append(m.group(1))
+        return '<rect class="d-box" %s/>' % m.group(1)
+    svg, n = re.subn(r'<rect class="d-box d-done" ([^/>]*)/>', strip, svg)
+    assert n == 22, n
+    assert sorted(stripped) == sorted(g for _, g, _ in KR260_STATUS), 'KR260_STATUS is not the Arty Z7-20\'s green blocks'
+    for name, geom, status in KR260_STATUS:
+        rect = '<rect class="d-box" %s/>' % geom
+        assert re.search(re.escape(rect) + r'\n[ \t]*<text class="d-[tm]"[^>]*>%s</text>' % re.escape(name), svg), name
+        if status:
+            svg = sub(svg, rect, '<rect class="d-box %s" %s/>' % (status, geom))
+    # (4) the chip and the clock
+    svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
+              '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (KR260_PART[1], KR260_PART[0]))
+    svg = sub(svg, '''          <text class="d-s" x="96" y="142" text-anchor="middle">100 MHz,</text>
+          <text class="d-s" x="96" y="156" text-anchor="middle">10 ns a tick</text>
+          <text class="d-s" x="96" y="176" text-anchor="middle">15 ticks=150 ns</text>
+''', '''          <text class="d-s" x="96" y="138" text-anchor="middle">25 MHz in,</text>
+          <text class="d-s" x="96" y="152" text-anchor="middle">MMCM, 100 MHz,</text>
+          <text class="d-s" x="96" y="166" text-anchor="middle">10 ns a tick</text>
+          <text class="d-s" x="96" y="180" text-anchor="middle">15 ticks=150 ns</text>
+''')
+    # (5) the display: DisplayPort, not HDMI, and none of it drawn green
+    svg = sub(svg, '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">over the first; TMDS to HDMI</text>
+''', '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">over the first, and hands</text>
+          <text class="d-s" x="-70" y="374" text-anchor="middle">them to the DisplayPort</text>
+''')
+    svg = sub(svg, '''          <text class="d-t" x="-233" y="310" text-anchor="middle">HDMI out</text>
+          <text class="d-s" x="-233" y="330" text-anchor="middle">the display,</text>
+          <text class="d-s" x="-233" y="344" text-anchor="middle">from the fabric,</text>
+          <text class="d-s" x="-233" y="358" text-anchor="middle">1280 &times; 1024, 60 Hz</text>
+''', '''          <text class="d-t" x="-233" y="310" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-233" y="330" text-anchor="middle">J6, 1.2a,</text>
+          <text class="d-s" x="-233" y="344" text-anchor="middle">from the PS,</text>
+          <text class="d-s" x="-233" y="358" text-anchor="middle">1920 &times; 1080</text>
+''')
+    # (6) the ports: 128 bits, and the part's own names
+    for o, n in (('>S_AXI_HP3</text>', '>an HP port</text>'), ('>S_AXI_HP0</text>', '>S_AXI_HP0_FPD</text>'),
+                 ('>S_AXI_HP2</text>', '>S_AXI_HP2_FPD</text>'), ('>M_AXI_GP0</text>', '>M_AXI_HPM0_FPD</text>'),
+                 ('>M_AXI_GP1</text>', '>M_AXI_HPM1_FPD</text>')):
+        svg = sub(svg, o, n)
+    svg = sub(svg, 'text-anchor="middle">PL masters, 64 bits, AXI3</text>', 'text-anchor="middle">PL masters, 128 bits</text>', 3)
+    svg = sub(svg, '<text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>',
+              '<text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 128 bits, the faces in 32-bit lanes</text>')
+    svg = sub(svg, '<text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>',
+              '<text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 128 bits</text>')
+    svg = sub(svg, '<text class="d-s" x="893" y="600" text-anchor="middle">over M_AXI_GP1</text>',
+              '<text class="d-s" x="893" y="600" text-anchor="middle">over HPM1</text>')
+    svg = sub(svg, '<text class="d-s" x="1162" y="152" text-anchor="middle">registers at GP1 + 0x1000</text>',
+              '<text class="d-s" x="1162" y="152" text-anchor="middle">registers at HPM1 + 0x1000</text>')
+    # (7) the processing system, the memory and the foot
+    svg = sub(svg, '''          <text class="d-t" x="-7" y="566" text-anchor="middle">2 &times; Cortex-A9</text>
+          <text class="d-s" x="-7" y="586" text-anchor="middle">650 MHz, Linux</text>
+''', '''          <text class="d-t" x="-7" y="566" text-anchor="middle">4&times;Cortex-A53</text>
+          <text class="d-s" x="-7" y="586" text-anchor="middle">up to 1.33 GHz</text>
+          <text class="d-s" x="-7" y="600" text-anchor="middle">Linux</text>
+''')
+    svg = sub(svg, '<text class="d-s" x="87" y="684" text-anchor="middle">four ports, arbitrated in hardware</text>',
+              '<text class="d-s" x="87" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>')
+    svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>''',
+              '''          <text class="d-t" x="87" y="738" text-anchor="middle">4 GB DDR4</text>''')
+    svg = sub(svg, '&mdash; and 384 MB left to Linux</text>', '&mdash; and the rest left to Linux</text>')
+    svg = sub(svg, '<text class="d-s" x="453" y="684" text-anchor="middle">gigabit Ethernet</text>',
+              '<text class="d-s" x="453" y="684" text-anchor="middle">J10C, gigabit Ethernet</text>')
+    svg = sub(svg, '''          <text class="d-t" x="746" y="670" text-anchor="middle">SD host</text>
+          <text class="d-s" x="746" y="684" text-anchor="middle">the card</text>''',
+              '''          <text class="d-t" x="746" y="670" text-anchor="middle">USB 0</text>
+          <text class="d-s" x="746" y="684" text-anchor="middle">the card, as a USB disk</text>''')
+    svg = sub(svg, '''          <text class="d-t" x="1040" y="670" text-anchor="middle">USB host</text>''',
+              '''          <text class="d-t" x="1040" y="670" text-anchor="middle">USB 1</text>''')
+    svg = sub(svg, '''          <text class="d-t" x="746" y="738" text-anchor="middle">microSD</text>
+          <text class="d-s" x="746" y="758" text-anchor="middle">U-Boot, the CADR&rsquo;s bitstream,</text>''',
+              '''          <text class="d-t" x="746" y="738" text-anchor="middle">microSD, J11</text>
+          <text class="d-s" x="746" y="758" text-anchor="middle">boot.scr, the CADR&rsquo;s bitstream,</text>''')
+    svg = sub(svg, '<text class="d-s" x="1040" y="760" text-anchor="middle">a keyboard and a mouse,</text>',
+              '<text class="d-s" x="1040" y="760" text-anchor="middle">a keyboard and a mouse,</text>')
+    # (8) the right column: the Pmod, the two lamps, the fan; no button, no switch
+    svg = sub(svg, '<text class="d-t" x="1441" y="110" text-anchor="middle">Pmod JA</text>',
+              '<text class="d-t" x="1441" y="110" text-anchor="middle">PMOD1</text>')
+    a = svg.index('          <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>')
+    endm = '          <path class="d-line" d="M1351,243 L1366,243"/>\n'
+    assert svg.count(endm) == 1
+    z = svg.index(endm) + len(endm)
+    svg = svg[:a] + '''          <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>
+          <circle cx="1380" cy="283" r="8" fill="none" stroke="currentColor" stroke-width="1" stroke-opacity="0.5"/>
+          <circle class="d-lamp-fast" cx="1380" cy="283" r="4.5" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1"/>
+          <text class="d-s" x="1394" y="287">UF1 &mdash; microcycles</text>
+          <circle cx="1380" cy="309" r="4.5" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1"/>
+          <text class="d-s" x="1394" y="313">UF2 &mdash; error halt</text>
+          <path class="d-line" d="M1351,297 L1366,297"/>
+          <rect class="d-box d-ext" x="1366" y="336" width="150" height="48"/>
+          <text class="d-t" x="1441" y="356" text-anchor="middle">Fan</text>
+          <text class="d-s" x="1441" y="372" text-anchor="middle">driven on, low is on</text>
+          <path class="d-line" d="M1351,360 L1366,360"/>
+''' + svg[z:]
+    # (9) the aria-label, and the comment at the head
+    svg, n = re.subn(r'aria-label="[^"]*"', 'aria-label="%s"' % kr260_aria(), svg, count=1)
+    assert n == 1
+    svg = sub(svg, '''">
+
+          <rect class="d-box d-done d-key"''', '''">
+
+%s          <rect class="d-box d-done d-key"''' % kr260_comment())
+    # the fit and the machine's run: for K5 to fill
+    svg = sub(svg, '          <text class="d-s" x="-164" y="68">adapters in the fabric</text>',
+              '''          <!-- TODO(K5): the fit of the CADR on the part, as fit_bars() draws it for the other boards: lookup tables and block RAM tiles, and the worst setup slack. -->
+          <text class="d-s" x="-164" y="68">adapters in the fabric</text>''')
+    return svg
+
+KR260_BODY = '''<div class="hero-description">
+<p>The CADR is the machine on this board. The board&rsquo;s own loader, in its flash, is left alone: it reads the microSD card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there.</p>
+<p>The tick is 10&nbsp;ns, from the carrier&rsquo;s 25&nbsp;MHz clock through a clock manager. Main memory is on the first high-performance port, every port is 128 bits wide, and the two user LEDs, UF1 and UF2, carry the lamps.</p>
+<!-- TODO(K5): the board run's result, in a sentence or two: the CADR booted, to what, and for how long. -->
+<!-- TODO(K5): the release is one zip, cadr-kria-kr260.zip, as the other boards' are. -->
+<!-- TODO(K5): on this board the machine is LISPM-4, at Chaosnet address 177204. -->
+<!-- TODO(K6): QUUX's drawing for this board, after the CADR's, as the Arty Z7-20's and the DE25-Nano's pages have; board_page() takes it as quux=. -->
+</div>
+'''
+
+def build_kr260():
+    board_page('kria-kr260.html', 'Kria KR260', 'muir-fpga — the MIT CADR on a Kria KR260',
+               kr260_description(),
+               'The CADR mapped onto one AMD Zynq UltraScale+ XCK26, on a Kria KR260.',
+               "muir-fpga's board, waving",
+               (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS['kria-kr260.html'],
+               AMD_KR260, kr260_svg(), body=KR260_BODY)
+
+# ============================================================ QUUX ON A BOARD
+
+# THE QUUX DRAWINGS, one for each board that runs QUUX, shown after the CADR's.
+# They are in the CADR's style and conventions --- green is this project's work
+# and built and checked, orange another project's program, gray the board's own
+# parts --- on the same frame, the same ports and the same foot, and what they
+# draw is what muir-fpga builds for QUUX (`MACHINE=quux`) at the revision that
+# runs today, 12: the 32-bit word.  Read from `rtl/machine/quux_*.sv`,
+# `rtl/plumbing/quux_*.sv`, the boards' tops and their docs:
+#   - the processor: the word is 32 bits, the control store 16K words of 48,
+#     the PDL buffer 16K words, MUL and DIV one instruction each, the map two
+#     levels with 2,048 entries in the second (`quux_feature_page.sv`'s words 1
+#     to 7 at revision 12); the microcycle is K = 4 ticks of 10 ns on both
+#     boards (`cadr_arty.sv` SYNC_K, "four ticks, 40 ns, to revision 12";
+#     docs/fits.md);
+#   - the memory port and the cache (`quux_mem_port.sv`, `quux_cache.sv`): one
+#     requester, a cycle going to the memory bus, to a device register or
+#     nowhere; 4,096 words, two ways, write-through, lines of four words;
+#     `quux_axi_master.sv` is the master of main memory on the memory port,
+#     which fills a line of four words in two 64-bit beats (`cadr_arty.sv`,
+#     "Two 64-bit beats of a line, and revision 13's five");
+#   - the register page, the last page of the physical space, `17777400` up
+#     (`quux_feature_page.sv`): the feature words, the interrupt status, the
+#     three interval timers (`quux_clocks.sv`) and the real-time clock
+#     (`quux_rtc.sv`); keyboard and mouse (`quux_input.sv`); block-disk
+#     (`quux_block_disk.sv`); the file device (`quux_file_device.sv`); and the
+#     video controller (`quux_video.sv`), whose frame buffer is on the memory
+#     bus, in DDR at the display's base, and whose raster the display output
+#     scans out of DDR;
+#   - what is not there: no bus interface and no Xbus or Unibus, no I/O board,
+#     no serial line, no Chaosnet, no color board and no debug cable (QUUX has
+#     no Unibus: S86cadr-serial and the debug-cable refusal in S80cadr-disk-
+#     packs say so), and no ozd, which a QUUX card does not start (S84ozd);
+#   - on the processing system's side, the programs QUUX needs: the terminal
+#     (its screen is the video controller, 1280 by 1024), quux-file-device
+#     (S81), the disk packs, the console and the USB input; and the files
+#     docs/file-device.md names for the host's face, the fifth page of the
+#     faces' port;
+#   - the memory is the CADR's 128 MB at both revisions up to this one
+#     (docs/linux.md), so the foot says what the CADR's does.
+QUUX_K = {'arty-z7-20': 4, 'de25-nano': 4}
+QUUX_FITS = {   # docs/fits.md: revision 12, the fits of aec5f54, the latest that meet timing
+    'arty-z7-20': (('LUTs 17,105 of 53,200', 17105 / 53200), ('BRAM 279 KB of 630 KB', 62 / 140), '+0.776'),
+    'de25-nano': (('ALM 18,912 of 46,800', 18912 / 46800), ('M20K 478 KB of 895 KB', 191 / 358), '+2.112'),
+}
+
+def quux_aria(board):
+    arty = board == 'arty-z7-20'
+    return ('QUUX mapped onto %s: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
+            % ('one AMD Zynq 7020, part XC7Z020-1CLG400C' if arty else 'one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS')
+            + 'In the %s: the clock, a microcycle of %d ticks of ten nanoseconds; the processor, with a 32-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels; '
+              'the memory port, one requester, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of four words; '
+              'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
+              'Under the page: the memory master, block-disk, the video controller, the file device and the keyboard and mouse. '
+              'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has the file device. '
+              'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
+              % ('programmable logic' if arty else 'FPGA fabric', QUUX_K[board]))
+
+def quux_svg(board):
+    arty = board == 'arty-z7-20'
+    K = QUUX_K[board]
+    base = board_svg('arty-z7-20.html')
+    base, n = re.subn(r'\n[ \t]*<!--.*?-->[ \t]*(?=\n)', '', base, flags=re.S)
+    assert '<!--' not in base
+    # the head: the key, the outline, the chip, the display output and its port, the HDMI box
+    i = base.index('          <text class="d-s" x="-164" y="48">Programmable Logic</text>\n')
+    head = base[:i]
+    i2 = base.index('          <path class="d-dash" d="M-170,450 L-150,450')
+    tail = base[i2:]
+    # (1) head
+    head = re.sub(r'aria-label="[^"]*"', 'aria-label="%s"' % quux_aria(board), head, count=1)
+    head = sub(head, '''          <text class="d-s" x="-70" y="318" text-anchor="middle">scans both screens out of</text>
+          <text class="d-s" x="-70" y="332" text-anchor="middle">DDR at the monitor&rsquo;s rate,</text>
+          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">over the first; TMDS to HDMI</text>
+''', '''          <text class="d-s" x="-70" y="318" text-anchor="middle">scans the frame buffer</text>
+          <text class="d-s" x="-70" y="332" text-anchor="middle">out of DDR at the</text>
+          <text class="d-s" x="-70" y="346" text-anchor="middle">monitor&rsquo;s rate;</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">TMDS to HDMI</text>
+''')
+    head = sub(head, '          <path class="d-line" d="M470,274 L470,256 L-70,256 L-70,274"/>\n', '')
+    # (2) the fabric
+    fit_label, fit_label2, slack = QUUX_FITS[board][0], QUUX_FITS[board][1], QUUX_FITS[board][2]
+    fabric = ('          <text class="d-s" x="-164" y="48">%s</text>\n' % ('Programmable Logic' if arty else 'FPGA fabric logic')
+              + fit_bars([fit_label, fit_label2]) + slack_block(slack) + '\n')
+    fabric += '''          <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
+          <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
+          <text class="d-n" x="996" y="120" text-anchor="middle">quux_phase_gen</text>
+          <text class="d-s" x="996" y="142" text-anchor="middle">100 MHz,</text>
+          <text class="d-s" x="996" y="156" text-anchor="middle">10 ns a tick</text>
+          <text class="d-s" x="996" y="176" text-anchor="middle">%d ticks=%d ns</text>
+
+          <rect class="d-box d-done" x="40" y="62" width="224" height="84"/>
+          <text class="d-t" x="152" y="84" text-anchor="middle">processor</text>
+          <text class="d-s" x="152" y="102" text-anchor="middle">32-bit word, MUL and DIV,</text>
+          <text class="d-s" x="152" y="116" text-anchor="middle">control store 16K &times; 48,</text>
+          <text class="d-s" x="152" y="130" text-anchor="middle">PDL buffer 16K words</text>
+          <rect class="d-box d-done" x="40" y="146" width="224" height="44"/>
+          <text class="d-t" x="152" y="164" text-anchor="middle">the map</text>
+          <text class="d-s" x="152" y="178" text-anchor="middle">two levels, 2,048 in the second</text>
+
+          <rect class="d-box d-done" x="290" y="62" width="150" height="128"/>
+          <text class="d-t" x="365" y="84" text-anchor="middle">memory port</text>
+          <text class="d-s" x="365" y="104" text-anchor="middle">one requester;</text>
+          <text class="d-s" x="365" y="118" text-anchor="middle">a cycle goes to</text>
+          <text class="d-s" x="365" y="132" text-anchor="middle">the memory bus,</text>
+          <text class="d-s" x="365" y="146" text-anchor="middle">a device register</text>
+          <text class="d-s" x="365" y="160" text-anchor="middle">or nowhere</text>
+          <rect class="d-box d-done" x="470" y="62" width="150" height="128"/>
+          <text class="d-t" x="545" y="84" text-anchor="middle">cache</text>
+          <text class="d-s" x="545" y="104" text-anchor="middle">4,096 words,</text>
+          <text class="d-s" x="545" y="118" text-anchor="middle">two ways,</text>
+          <text class="d-s" x="545" y="132" text-anchor="middle">write-through,</text>
+          <text class="d-s" x="545" y="146" text-anchor="middle">lines of 4 words</text>
+          <line class="d-line" x1="264" y1="104" x2="290" y2="104"/>
+          <line class="d-line" x1="440" y1="126" x2="470" y2="126"/>
+          <path class="d-line" d="M365,62 L365,46 L777,46 L777,62"/>
+          <text class="d-s" x="571" y="40" text-anchor="middle">device cycles</text>
+
+          <rect class="d-box d-done" x="650" y="62" width="254" height="128"/>
+          <text class="d-t" x="777" y="84" text-anchor="middle">register page</text>
+          <text class="d-n" x="777" y="102" text-anchor="middle">17777400 to 17777777</text>
+          <text class="d-s" x="777" y="122" text-anchor="middle">the feature words, read only;</text>
+          <text class="d-s" x="777" y="136" text-anchor="middle">the interrupt status, errors,</text>
+          <text class="d-s" x="777" y="150" text-anchor="middle">three interval timers and</text>
+          <text class="d-s" x="777" y="164" text-anchor="middle">the real-time clock</text>
+
+          <rect class="d-box d-done" x="1068" y="96" width="188" height="64"/>
+          <text class="d-t" x="1162" y="118" text-anchor="middle">console</text>
+          <text class="d-s" x="1162" y="138" text-anchor="middle">boot, halt, step, status</text>
+          <text class="d-s" x="1162" y="152" text-anchor="middle">the registers on %s</text>
+          <path class="d-line" d="M1162,160 L1162,428"/>
+
+          <path class="d-line" d="M545,190 L545,214 L118,214 L118,274"/>
+          <path class="d-line" d="M777,190 L777,238"/>
+          <line class="d-bus" x1="310" y1="238" x2="885" y2="238"/>
+          <text class="d-s" x="310" y="228">device registers</text>
+          <path class="d-line" d="M310,238 L310,274 M497,238 L497,274 M657,238 L657,274 M885,238 L885,274"/>
+
+          <rect class="d-box d-done" x="40" y="274" width="156" height="112"/>
+          <text class="d-t" x="118" y="300" text-anchor="middle">memory master</text>
+          <text class="d-s" x="118" y="320" text-anchor="middle">lines of 4 words in</text>
+          <text class="d-s" x="118" y="334" text-anchor="middle">two 64-bit beats</text>
+          <text class="d-n" x="118" y="356" text-anchor="middle">quux_axi_master</text>
+          <text class="d-s" x="118" y="376" text-anchor="middle">an AXI4 master</text>
+
+          <rect class="d-box d-done" x="210" y="274" width="200" height="112"/>
+          <text class="d-t" x="310" y="300" text-anchor="middle">block-disk</text>
+          <text class="d-s" x="310" y="320" text-anchor="middle">four registers, 200 to 203;</text>
+          <text class="d-s" x="310" y="334" text-anchor="middle">blocks to and from a pack</text>
+          <text class="d-n" x="310" y="356" text-anchor="middle">quux_block_disk</text>
+          <text class="d-s" x="310" y="376" text-anchor="middle">the pack side, a master</text>
+
+          <rect class="d-box d-done" x="424" y="274" width="146" height="112"/>
+          <text class="d-t" x="497" y="300" text-anchor="middle">video controller</text>
+          <text class="d-s" x="497" y="320" text-anchor="middle">one-bit frame buffer,</text>
+          <text class="d-s" x="497" y="334" text-anchor="middle">1280 &times; 1024, a mode</text>
+          <text class="d-n" x="497" y="356" text-anchor="middle">quux_video</text>
+          <text class="d-s" x="497" y="376" text-anchor="middle">the buffer is in DDR</text>
+
+          <rect class="d-box d-done" x="584" y="274" width="146" height="112"/>
+          <text class="d-t" x="657" y="300" text-anchor="middle">file device</text>
+          <text class="d-s" x="657" y="320" text-anchor="middle">two rings in main</text>
+          <text class="d-s" x="657" y="334" text-anchor="middle">memory; registers</text>
+          <text class="d-n" x="657" y="356" text-anchor="middle">quux_file_device</text>
+          <text class="d-s" x="657" y="376" text-anchor="middle">its host face on %s</text>
+
+          <rect class="d-box d-done" x="780" y="274" width="210" height="112"/>
+          <text class="d-t" x="885" y="300" text-anchor="middle">keyboard and mouse</text>
+          <text class="d-s" x="885" y="320" text-anchor="middle">a FIFO of 64 key words,</text>
+          <text class="d-s" x="885" y="334" text-anchor="middle">the mouse&rsquo;s counts, buttons</text>
+          <text class="d-n" x="885" y="356" text-anchor="middle">quux_input</text>
+          <text class="d-s" x="885" y="376" text-anchor="middle">the cable, not the protocol</text>
+
+          <path class="d-line" d="M118,386 L118,428 M310,386 L310,428 M657,386 L657,428 M885,386 L885,428"/>
+
+''' % (K, K * 10, 'GP1' if arty else 'LWH2F', 'GP0' if arty else 'H2F')
+    # (3) the tail: the programs, the memory, no Pmod
+    tail = sub(tail, '''          <path class="d-line" d="M845,466 L845,494 M305,494 L1040,494 M305,494 L305,542 M452,494 L452,542 M599,494 L599,542 M746,494 L746,542 M893,494 L893,542 M1040,494 L1040,542"/>''',
+               '''          <path class="d-line" d="M845,466 L845,494 M452,494 L1040,494 M452,494 L452,542 M599,494 L599,542 M746,494 L746,542 M893,494 L893,542 M1040,494 L1040,542"/>''')
+    # the six program slots: the first is empty, the file device takes the third
+    def prog(x, title, lines):
+        out = ('          <rect class="d-plate" x="%d" y="542" width="130" height="96"/>\n'
+               '          <rect class="d-box d-done" x="%d" y="542" width="130" height="96"/>\n'
+               '          <text class="d-t" x="%d" y="566" text-anchor="middle">%s</text>\n' % (x, x, x + 65, title))
+        for y, s in lines:
+            out += '          <text class="d-s" x="%d" y="%d" text-anchor="middle">%s</text>\n' % (x + 65, y, s)
+        return out
+    a = tail.index('          <rect class="d-plate" x="240" y="542" width="130" height="96"/>')
+    b = tail.index('          <path class="d-line" d="M118,466 L118,652"/>')
+    tail = tail[:a] + (
+        prog(387, 'terminal', [(586, 'an RFB server: the screen,'), (600, 'the keys and the mouse')])
+        + prog(534, 'file device', [(586, 'serves HOST and'), (600, 'sets the clock,'), (614, 'from the card')])
+        + prog(681, 'disk packs', [(586, 'a drive&rsquo;s blocks as a file,'), (600, 'one file a drive'), (622, 'staged into DDR')])
+        + prog(828, 'console', [(586, 'halt, step and inspect'), (600, 'over %s' % ('M_AXI_GP1' if arty else 'LWH2F')), (622, 'the registers')])
+        + prog(975, 'USB input', [(586, 'the keyboard and'), (600, 'mouse, onto the'), (614, 'register page'), (628, 'via the terminal')])
+        + '\n') + tail[b:]
+    # Arty's lines from the program boxes to the controllers: the terminal to the MAC,
+    # the file device to the SD host with a jog, the packs to the SD host, the console to the
+    # UART, the USB input to the USB host
+    tail = sub(tail, '''          <path class="d-line" d="M305,638 L305,652 M452,638 L452,652 M599,638 L599,652 M746,638 L746,652"/>''',
+               '''          <path class="d-line" d="M452,638 L452,652 M599,638 L599,645 L700,645 L700,652 M746,638 L746,652"/>''')
+    # no Pmod
+    a = tail.index('          <rect class="d-box d-ext" x="1366" y="88" width="150" height="98"/>')
+    b = tail.index('          <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>')
+    tail = tail[:a] + tail[b:]
+    tail = sub(tail, '          <path class="d-line" d="M1256,120 L1366,120"/>\n', '') if '<path class="d-line" d="M1256,120 L1366,120"/>' in tail else tail
+    tail = sub(tail, '<text class="d-s" x="746" y="758" text-anchor="middle">U-Boot, the CADR&rsquo;s bitstream,</text>',
+               '<text class="d-s" x="746" y="758" text-anchor="middle">U-Boot, the bitstream,</text>')
+    tail = sub(tail, '''          <text class="d-s" x="453" y="762" text-anchor="middle">the terminal is a VNC client; Chaosnet reaches</text>
+          <text class="d-s" x="453" y="778" text-anchor="middle">other machines; the serial line is a TCP socket</text>
+''', '''          <text class="d-s" x="453" y="768" text-anchor="middle">the terminal is a VNC client</text>
+''')
+    svg = head + fabric + tail
+    if not arty:
+        svg = quux_de25(svg)
+    return svg
+
+def quux_de25(svg):
+    """The Arty-based QUUX drawing, for the DE25-Nano: the same changes
+    de25_svg() makes to the CADR's, to the blocks the two drawings share."""
+    svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
+              '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (DE25_PART[1], DE25_PART[0]))
+    svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>
+          <text class="d-s" x="87" y="762" text-anchor="middle">64 MB reserved for main memory,</text>
+          <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
+          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
+''', '''          <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
+''')
+    lamps = re.findall(r'<circle [^>]*cx="1380"[^>]*/>', svg)
+    assert len(lamps) == 8, len(lamps)
+    for c in lamps:
+        svg = sub(svg, c, re.sub(r'(fill|stroke)="#(?:d1495b|0969da)"', r'\1="#2da44e"', c))
+    svg = sub(svg, 'text-anchor="middle">PL masters, 64 bits, AXI3</text>', 'text-anchor="middle">FPGA masters, 64 bits, AXI3</text>', 3)
+    svg = sub(svg, 'text-anchor="middle">PS masters, 32 bits, AXI3</text>', 'text-anchor="middle">HPS masters, AXI4</text>', 2)
+    svg = sub(svg, '<text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>', '<text class="d-s" x="-164" y="520.4">HPS &mdash; Arm</text>')
+    svg = sub(svg, '''          <text class="d-t" x="-7" y="566" text-anchor="middle">2 &times; Cortex-A9</text>
+          <text class="d-s" x="-7" y="586" text-anchor="middle">650 MHz, Linux</text>
+''', '''          <text class="d-t" x="-7" y="560" text-anchor="middle">2 &times; Cortex-A76</text>
+          <text class="d-s" x="-7" y="574" text-anchor="middle">up to 1.4 GHz</text>
+          <text class="d-t" x="-7" y="594" text-anchor="middle">2 &times; Cortex-A55</text>
+          <text class="d-s" x="-7" y="608" text-anchor="middle">up to 1.25 GHz</text>
+          <text class="d-s" x="-7" y="628" text-anchor="middle">Linux</text>
+''')
+    # the one memory port, F2SDRAM, in the place of the three HP boxes
+    svg = sub(svg, '''          <rect class="d-plate" x="-150" y="428" width="160" height="38"/>
+          <rect class="d-box d-done" x="-150" y="428" width="160" height="38"/>
+          <text class="d-m" x="-70" y="446" text-anchor="middle">S_AXI_HP3</text>
+          <text class="d-s" x="-70" y="460" text-anchor="middle">FPGA masters, 64 bits, AXI3</text>
+''', '''          <rect class="d-plate" x="-150" y="428" width="540" height="38"/>
+          <rect class="d-box d-done" x="-150" y="428" width="540" height="38"/>
+          <text class="d-m" x="120" y="446" text-anchor="middle">F2SDRAM</text>
+          <text class="d-s" x="120" y="460" text-anchor="middle">fabric masters, 64 bits, AXI4, one port shared by burst</text>
+''')
+    svg = sub(svg, '''          <rect class="d-plate" x="38" y="428" width="160" height="38"/>
+          <rect class="d-box d-done" x="38" y="428" width="160" height="38"/>
+          <text class="d-m" x="118" y="446" text-anchor="middle">S_AXI_HP0</text>
+          <text class="d-s" x="118" y="460" text-anchor="middle">FPGA masters, 64 bits, AXI3</text>
+''', '')
+    svg = sub(svg, '''          <rect class="d-box d-done" x="230" y="428" width="160" height="38"/>
+          <text class="d-m" x="310" y="446" text-anchor="middle">S_AXI_HP2</text>
+          <text class="d-s" x="310" y="460" text-anchor="middle">FPGA masters, 64 bits, AXI3</text>
+''', '')
+    svg = sub(svg, '<path class="d-line" d="M-70,466 L-70,652"/>', '<path class="d-line" d="M120,466 L120,652"/>')
+    svg = sub(svg, '          <path class="d-line" d="M118,466 L118,652"/>\n', '')
+    svg = sub(svg, '          <path class="d-line" d="M240,466 L240,494 L170,494 L170,652"/>\n', '')
+    svg = sub(svg, '<path class="d-dash" d="M-170,450 L-150,450 M10,450 L38,450 M198,450 L230,450 M390,450 L640,450 M1050,450 L1092,450 M1232,450 L1351,450"/>',
+              '<path class="d-dash" d="M-170,450 L-150,450 M390,450 L640,450 M1050,450 L1092,450 M1232,450 L1351,450"/>')
+    svg = sub(svg, '<text class="d-m" x="845" y="446" text-anchor="middle">M_AXI_GP0</text>', '<text class="d-m" x="845" y="446" text-anchor="middle">H2F</text>')
+    svg = sub(svg, '<text class="d-m" x="1162" y="446" text-anchor="middle">M_AXI_GP1</text>', '<text class="d-m" x="1162" y="446" text-anchor="middle">LWH2F</text>')
+    svg = sub(svg, 'over the first; TMDS to HDMI</text>', 'over the first; to the ADV7513</text>') if 'over the first; TMDS to HDMI' in svg else sub(svg, '<text class="d-s" x="-70" y="360" text-anchor="middle">TMDS to HDMI</text>', '<text class="d-s" x="-70" y="360" text-anchor="middle">to the ADV7513</text>')
+    svg = sub(svg, '          <text class="d-s" x="87" y="684" text-anchor="middle">four ports, arbitrated in hardware</text>\n', '')
+    svg = sub(svg, '>BTN0 &mdash; BOOT</text>', '>KEY0 &mdash; BOOT</text>')
+    svg = sub(svg, '>BTN1 &mdash; RESET</text>', '>KEY1 &mdash; RESET</text>')
+    for n in range(6):
+        svg = sub(svg, '>LD%d &mdash; ' % n, '>LEDR%d &mdash; ' % n)
+    svg = sub(svg, '''          <text class="d-t" x="897" y="738" text-anchor="middle">USB-UART</text>
+          <text class="d-t" x="897" y="756" text-anchor="middle">/ JTAG</text>
+          <text class="d-s" x="897" y="778" text-anchor="middle">one micro-USB socket,</text>''',
+              '''          <text class="d-t" x="897" y="738" text-anchor="middle">USB-Blaster III</text>
+          <text class="d-s" x="897" y="778" text-anchor="middle">one USB-C socket,</text>''')
+    return svg
+
 
 DESC = {}
 for _f in ('arty-z7-20.html', 'cora-z7-07s.html'):
     DESC[_f] = re.search(r'<meta name="description" content="([^"]*)">', open(os.path.join(BASE, _f)).read()).group(1)
-DESC['cora-z7-07s.html'] = sub(DESC['cora-z7-07s.html'], 'where the two meet on the smaller part.', 'where the two meet.')
+DESC['cora-z7-07s.html'] = sub(DESC['cora-z7-07s.html'], 'where the two meet on the smaller part.', 'where the two meet. It runs the CADR only.')
 # The board runs the design, so it is not "proposed"; the words are the Cora
 # Z7-07S's.
 DESC['arty-z7-20.html'] = sub(DESC['arty-z7-20.html'], 'The proposed architecture for running the MIT CADR Lisp Machine in fabric',
@@ -1571,7 +2051,7 @@ def build_cadr():
     leads to the same drawing there."""
     P = [hero('muir-fpga &middot; the CADR', 'The CADR',
               'What the CADR is, board by board, is on its own page among the machines.',
-              body='<p class="hero-description">muir-fpga puts it in the fabric of <a href="index.html#boards">three boards</a>; the drawings of the machine itself, read from MIT&rsquo;s own files, are on the CADR&rsquo;s page.</p>\n',
+              body='<p class="hero-description">muir-fpga puts it in the fabric of <a href="index.html#boards">four boards</a>; the drawings of the machine itself, read from MIT&rsquo;s own files, are on the CADR&rsquo;s page.</p>\n',
               keys=keys(('../cadr/', 'The CADR'), ('index.html', 'The boards')))]
     items = [('whole', 'The whole machine'), ('processor', 'The processor'), ('word', 'The microinstruction'),
              ('macro', 'The macroinstruction'), ('map', 'The map'), ('where', 'What is where'),
@@ -1670,10 +2150,11 @@ def main(out):
     os.makedirs(OUT, exist_ok=True)
     del WRITTEN[:]
     build_index()
-    build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one Xilinx Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
-                ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY)
-    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one Xilinx Zynq 7007S, the XC7Z007S. This board builds the CADR alone; QUUX is built for the Arty Z7-20 and the DE25-Nano.', "muir-fpga's board, waving",
-                ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA)
+    build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one AMD Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
+                ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY, quux=quux_svg('arty-z7-20'))
+    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one AMD Zynq 7007S, the XC7Z007S. This board runs the CADR only: the CADR takes 97.4% of its lookup tables, and QUUX does not fit.', "muir-fpga's board, waving",
+                ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA, figlabel='CORA Z7-07S, THE CADR ONLY')
+    build_kr260()
     build_de25()
     build_booting()
     build_debugging()
