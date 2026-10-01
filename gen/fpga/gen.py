@@ -1519,6 +1519,23 @@ def kr260_svg():
           <rect class="d-box d-ext" x="-72" y="652" width="325" height="40"/>
           <text class="d-t" x="90.5" y="670" text-anchor="middle">DDR controller</text>
           <text class="d-s" x="90.5" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>''')
+    # THE CHIP'S LEFT BORDER MOVES OUT BY SIXTY.  The line from the display
+    # output to the DisplayPort controller runs down the left margin and keeps
+    # clear room either side, and the border stands well to the left of the
+    # connector's box below the chip, so that the two edges do not read as one
+    # line.  The labels in the column at the border's left go out with it (the
+    # chip's name, the fabric's label, the bars and the notes under them); the
+    # processing system's label stands to the right of the line.
+    svg = sub(svg, '<rect class="d-box" x="-170" y="28" width="1521" height="668.5"/>',
+              '<rect class="d-box" x="-230" y="28" width="1581" height="668.5"/>')
+    svg = sub(svg, 'd="M-170,450 L-150,450', 'd="M-230,450 L-150,450')
+    svg = sub(svg, 'd="M-160,360 L-166,360 L-166,632 L-121,632', 'd="M-160,360 L-195,360 L-195,632 L-121,632')
+    def out(m):
+        x, y = float(m.group(1)), float(m.group(2))
+        if -170 < x < -100 and (y <= 200 or y == 520.4):
+            return 'x="%s" y="%s"' % (num(round(x - 60, 1)) if y <= 200 else '-183', m.group(2))
+        return m.group(0)
+    svg = re.sub(r'x="(-?[\d.]+)" y="([\d.]+)"', out, svg)
     return svg
 
 KR260_BODY = '''<div class="hero-description">
