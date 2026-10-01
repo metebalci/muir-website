@@ -491,8 +491,10 @@ LABELS = [
     ((A, C, D, K), '>for the other machines<', '>for other machines<'),
     ((A, C, D, K), '>the console and JTAG<', '>console and JTAG<'),
     ((A, C, K), '>one micro-USB socket,<', '>micro-USB socket,<'),
-    ((A, C), '>PL masters, 64 bits, AXI3<', '>PL masters, 64-bit AXI3<'),
-    ((A, C), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits')),
+    ((A, C), '>PL masters, 64 bits, AXI3<', '>FPGA masters, 64-bit<'),
+    ((A, C), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'Arm masters, 32-bit')),
+    ((A, C), '>PS masters, 32 bits, AXI3<', '>Arm masters, 32 bits, AXI3<'),
+    ((A, C, K), '>on the PS,<', '>on Linux,<'),
     ((A, C, D, K), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
     ((A, C, D, K), '>the debugger<', '>debugger<'),
     ((A, C, D, K), '>Vcc open at both sides<', '>Vcc open both sides<'),
@@ -1336,7 +1338,7 @@ def kr260_aria():
             'Under the fabric&rsquo;s label, 14,014 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 2.848 nanoseconds. '
             'Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. '
             'Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. '
-            'The board has no HDMI: its video connector is the processing system&rsquo;s DisplayPort, so the display output, its port and the debug cable adapter carry no color. '
+            'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system, 1920 by 1080. The display output in the fabric, which would send that controller its pixels by a line, its port and the debug cable adapter carry no color. '
             'The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. '
             'The two lamps, UF1 and UF2, are green and carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. '
             'The debug cable is on PMOD1. '
@@ -1412,27 +1414,43 @@ def kr260_svg():
           <text class="d-s" x="-70" y="360" text-anchor="middle">over the first; TMDS to HDMI</text>
 ''', '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
           <text class="d-s" x="-70" y="360" text-anchor="middle">over the first, and hands</text>
-          <text class="d-s" x="-70" y="374" text-anchor="middle">them to the DisplayPort</text>
+          <text class="d-s" x="-70" y="374" text-anchor="middle">them to the DisplayPort controller</text>
 ''')
-    svg = sub(svg, '''          <text class="d-t" x="-233" y="310" text-anchor="middle">HDMI out</text>
+    # The DisplayPort controller is the processing system's own, so it is drawn
+    # gray in the processing system's row of controllers, and J6 below the chip
+    # like the other connectors.  The display output in the fabric, which is
+    # not built and carries no color, sends it pixels by a line down the left
+    # margin into its top.  The connector box the Arty Z7-20's drawing has at
+    # the chip's left edge comes off.
+    svg = sub(svg, '''          <path class="d-line" d="M-160,330 L-183,330"/>\n''', '')
+    svg = sub(svg, '''          <rect class="d-box d-ext" x="-283" y="288" width="100" height="84"/>
+          <text class="d-t" x="-233" y="310" text-anchor="middle">HDMI out</text>
           <text class="d-s" x="-233" y="330" text-anchor="middle">the display,</text>
           <text class="d-s" x="-233" y="344" text-anchor="middle">from the fabric,</text>
           <text class="d-s" x="-233" y="358" text-anchor="middle">1280 &times; 1024, 60 Hz</text>
-''', '''          <text class="d-t" x="-233" y="310" text-anchor="middle">DisplayPort</text>
-          <text class="d-s" x="-233" y="330" text-anchor="middle">J6, 1.2a,</text>
-          <text class="d-s" x="-233" y="344" text-anchor="middle">from the PS,</text>
-          <text class="d-s" x="-233" y="358" text-anchor="middle">1920 &times; 1080</text>
+''', '''          <path class="d-line" d="M-160,360 L-166,360 L-166,632 L-121,632 L-121,652"/>
+          <rect class="d-plate" x="-164" y="652" width="86" height="40"/>
+          <rect class="d-box d-ext" x="-164" y="652" width="86" height="40"/>
+          <text class="d-t" x="-121" y="670" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-121" y="684" text-anchor="middle">controller</text>
+          <path class="d-line" d="M-121,692 L-121,712"/>
+          <rect class="d-box d-ext" x="-190" y="712" width="102" height="84"/>
+          <text class="d-t" x="-139" y="738" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-139" y="762" text-anchor="middle">J6, 1.2a,</text>
+          <text class="d-s" x="-139" y="776" text-anchor="middle">1920 &times; 1080</text>
 ''')
+    svg = sub(svg, '<text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>',
+              '<text class="d-s" x="-156" y="520.4">PS &mdash; Arm</text>')
     # (6) the ports: 128 bits, and the part's own names
     for o, n in (('>S_AXI_HP3</text>', '>an HP port</text>'), ('>S_AXI_HP0</text>', '>S_AXI_HP0_FPD</text>'),
                  ('>S_AXI_HP2</text>', '>S_AXI_HP2_FPD</text>'), ('>M_AXI_GP0</text>', '>M_AXI_HPM0_FPD</text>'),
                  ('>M_AXI_GP1</text>', '>M_AXI_HPM1_FPD</text>')):
         svg = sub(svg, o, n)
-    svg = sub(svg, 'text-anchor="middle">PL masters, 64 bits, AXI3</text>', 'text-anchor="middle">PL masters, 128 bits</text>', 3)
+    svg = sub(svg, 'text-anchor="middle">PL masters, 64 bits, AXI3</text>', 'text-anchor="middle">FPGA masters, 128 bits</text>', 3)
     svg = sub(svg, '<text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>',
-              '<text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 128 bits, the faces in 32-bit lanes</text>')
+              '<text class="d-s" x="845" y="460" text-anchor="middle">Arm masters, 128 bits, the faces in 32-bit lanes</text>')
     svg = sub(svg, '<text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 32 bits, AXI3</text>',
-              '<text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 128 bits</text>')
+              '<text class="d-s" x="1162" y="460" text-anchor="middle">Arm masters, 128-bit</text>')
     svg = sub(svg, '<text class="d-s" x="893" y="600" text-anchor="middle">over M_AXI_GP1</text>',
               '<text class="d-s" x="893" y="600" text-anchor="middle">over HPM1</text>')
     svg = sub(svg, '<text class="d-s" x="1162" y="152" text-anchor="middle">registers at GP1 + 0x1000</text>',
@@ -1491,6 +1509,16 @@ def kr260_svg():
           <rect class="d-box d-done d-key"''', '''">
 
 %s          <rect class="d-box d-done d-key"''' % kr260_comment())
+    # the DDR controller gives the DisplayPort controller its width: its left edge
+    # moves right by seven, and its two lines of text stay on the box's middle
+    svg = sub(svg, '''          <rect class="d-plate" x="-79" y="652" width="332" height="40"/>
+          <rect class="d-box d-ext" x="-79" y="652" width="332" height="40"/>
+          <text class="d-t" x="87" y="670" text-anchor="middle">DDR controller</text>
+          <text class="d-s" x="87" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>''',
+              '''          <rect class="d-plate" x="-72" y="652" width="325" height="40"/>
+          <rect class="d-box d-ext" x="-72" y="652" width="325" height="40"/>
+          <text class="d-t" x="90.5" y="670" text-anchor="middle">DDR controller</text>
+          <text class="d-s" x="90.5" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>''')
     return svg
 
 KR260_BODY = '''<div class="hero-description">

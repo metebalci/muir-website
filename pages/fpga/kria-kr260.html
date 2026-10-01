@@ -33,7 +33,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 01 &mdash; KRIA KR260</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 1: Kria KR260">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="The CADR mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260. Of the twenty-two blocks this project builds for this board, nineteen are done and drawn green: clock, ICMEM board, CADR board, bus interface, Xbus to DDR, disk controller, TV, Color TV, I/O board, S_AXI_HP0_FPD, S_AXI_HP2_FPD, M_AXI_HPM0_FPD, M_AXI_HPM1_FPD, terminal, Chaosnet, serial, disk packs, console and USB input. The other three are not done and carry no color: display output, the display port and debug cable adapter. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board. The fabric&rsquo;s clock is the carrier&rsquo;s 25 megahertz through a clock manager, 100 megahertz, ten nanoseconds a tick. Under the fabric&rsquo;s label, 14,014 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 2.848 nanoseconds. Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. The board has no HDMI: its video connector is the processing system&rsquo;s DisplayPort, so the display output, its port and the debug cable adapter carry no color. The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. The two lamps, UF1 and UF2, are green and carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. The debug cable is on PMOD1. Beside muir-sim, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. It runs on a host of its own today, and no line reaches its block. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board.">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="The CADR mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260. Of the twenty-two blocks this project builds for this board, nineteen are done and drawn green: clock, ICMEM board, CADR board, bus interface, Xbus to DDR, disk controller, TV, Color TV, I/O board, S_AXI_HP0_FPD, S_AXI_HP2_FPD, M_AXI_HPM0_FPD, M_AXI_HPM1_FPD, terminal, Chaosnet, serial, disk packs, console and USB input. The other three are not done and carry no color: display output, the display port and debug cable adapter. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board. The fabric&rsquo;s clock is the carrier&rsquo;s 25 megahertz through a clock manager, 100 megahertz, ten nanoseconds a tick. Under the fabric&rsquo;s label, 14,014 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 2.848 nanoseconds. Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system, 1920 by 1080. The display output in the fabric, which would send that controller its pixels by a line, its port and the debug cable adapter carry no color. The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. The two lamps, UF1 and UF2, are green and carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. The debug cable is on PMOD1. Beside muir-sim, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. It runs on a host of its own today, and no line reaches its block. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board.">
 
           <!-- The Arty Z7-20's drawing, generated for the Kria KR260. Of the
                twenty-two blocks this project builds for this board, nineteen
@@ -66,20 +66,24 @@
           <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color</text>
           <text class="d-s" x="-70" y="360" text-anchor="middle">one over the first, and</text>
           <text class="d-s" x="-70" y="374" text-anchor="middle">hands them to the</text>
-          <text class="d-s" x="-70" y="388" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-70" y="388" text-anchor="middle">DisplayPort controller</text>
           <path class="d-line" d="M470,274 L470,256 L-70,256 L-70,274"/>
           <path class="d-line" d="M-70,392 L-70,428"/>
-          <path class="d-line" d="M-160,330 L-183,330"/>
           <rect class="d-plate" x="-150" y="428" width="160" height="38"/>
           <rect class="d-box" x="-150" y="428" width="160" height="38"/>
           <text class="d-m" x="-70" y="446" text-anchor="middle">an HP port</text>
-          <text class="d-s" x="-70" y="460" text-anchor="middle">PL masters, 128 bits</text>
+          <text class="d-s" x="-70" y="460" text-anchor="middle">FPGA masters, 128 bits</text>
           <path class="d-line" d="M-70,466 L-70,652"/>
-          <rect class="d-box d-ext" x="-283" y="288" width="100" height="84"/>
-          <text class="d-t" x="-233" y="310" text-anchor="middle">DisplayPort</text>
-          <text class="d-s" x="-233" y="330" text-anchor="middle">J6, 1.2a,</text>
-          <text class="d-s" x="-233" y="344" text-anchor="middle">from the PS,</text>
-          <text class="d-s" x="-233" y="358" text-anchor="middle">1920 &times; 1080</text>
+          <path class="d-line" d="M-160,360 L-166,360 L-166,632 L-121,632 L-121,652"/>
+          <rect class="d-plate" x="-164" y="652" width="86" height="40"/>
+          <rect class="d-box d-ext" x="-164" y="652" width="86" height="40"/>
+          <text class="d-t" x="-121" y="670" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-121" y="684" text-anchor="middle">controller</text>
+          <path class="d-line" d="M-121,692 L-121,712"/>
+          <rect class="d-box d-ext" x="-190" y="712" width="102" height="84"/>
+          <text class="d-t" x="-139" y="738" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-139" y="762" text-anchor="middle">J6, 1.2a,</text>
+          <text class="d-s" x="-139" y="776" text-anchor="middle">1920 &times; 1080</text>
 
           <text class="d-s" x="-164" y="48">Programmable Logic</text>
           <text class="d-s" x="-164" y="68">LUTs 14,014 of 117,120</text>
@@ -192,18 +196,18 @@
           <rect class="d-plate" x="38" y="428" width="160" height="38"/>
           <rect class="d-box d-done" x="38" y="428" width="160" height="38"/>
           <text class="d-m" x="118" y="446" text-anchor="middle">S_AXI_HP0_FPD</text>
-          <text class="d-s" x="118" y="460" text-anchor="middle">PL masters, 128 bits</text>
+          <text class="d-s" x="118" y="460" text-anchor="middle">FPGA masters, 128 bits</text>
           <rect class="d-box d-done" x="230" y="428" width="160" height="38"/>
           <text class="d-m" x="310" y="446" text-anchor="middle">S_AXI_HP2_FPD</text>
-          <text class="d-s" x="310" y="460" text-anchor="middle">PL masters, 128 bits</text>
+          <text class="d-s" x="310" y="460" text-anchor="middle">FPGA masters, 128 bits</text>
           <rect class="d-box d-done" x="640" y="428" width="410" height="38"/>
           <text class="d-m" x="845" y="446" text-anchor="middle">M_AXI_HPM0_FPD</text>
-          <text class="d-s" x="845" y="460" text-anchor="middle">PS masters, 128 bits, the faces in 32-bit lanes</text>
+          <text class="d-s" x="845" y="460" text-anchor="middle">Arm masters, 128 bits, the faces in 32-bit lanes</text>
           <rect class="d-box d-done" x="1092" y="428" width="140" height="38"/>
           <text class="d-m" x="1162" y="446" text-anchor="middle">M_AXI_HPM1_FPD</text>
-          <text class="d-s" x="1162" y="460" text-anchor="middle">PS masters, 128 bits</text>
+          <text class="d-s" x="1162" y="460" text-anchor="middle">Arm masters, 128-bit</text>
 
-          <text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>
+          <text class="d-s" x="-156" y="520.4">PS &mdash; Arm</text>
           <rect class="d-dot" x="220" y="522" width="1097" height="124"/>
           <text class="d-s" x="230" y="536">Linux &mdash; Buildroot</text>
           <path class="d-line" d="M845,466 L845,494 M305,494 L1040,494 M305,494 L305,542 M452,494 L452,542 M599,494 L599,542 M746,494 L746,542 M893,494 L893,542 M1040,494 L1040,542"/>
@@ -266,7 +270,7 @@
           <rect class="d-plate" x="1122" y="542" width="80" height="96"/>
           <rect class="d-box d-part" x="1122" y="542" width="80" height="96"/>
           <text class="d-t" x="1162" y="566" text-anchor="middle">muir-sim</text>
-          <text class="d-s" x="1162" y="586" text-anchor="middle">on the PS,</text>
+          <text class="d-s" x="1162" y="586" text-anchor="middle">on Linux,</text>
           <text class="d-s" x="1162" y="600" text-anchor="middle">running CC</text>
           <text class="d-s" x="1162" y="622" text-anchor="middle">debugger</text>
 
@@ -280,10 +284,10 @@
 
           <path class="d-line" d="M118,466 L118,652"/>
           <path class="d-line" d="M240,466 L240,494 L170,494 L170,652"/>
-          <rect class="d-plate" x="-79" y="652" width="332" height="40"/>
-          <rect class="d-box d-ext" x="-79" y="652" width="332" height="40"/>
-          <text class="d-t" x="87" y="670" text-anchor="middle">DDR controller</text>
-          <text class="d-s" x="87" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>
+          <rect class="d-plate" x="-72" y="652" width="325" height="40"/>
+          <rect class="d-box d-ext" x="-72" y="652" width="325" height="40"/>
+          <text class="d-t" x="90.5" y="670" text-anchor="middle">DDR controller</text>
+          <text class="d-s" x="90.5" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>
           <path class="d-line" d="M-7,638 L-7,652"/>
           <path class="d-line" d="M87,692 L87,712"/>
           <path class="d-line" d="M305,638 L305,652 M452,638 L452,652 M599,638 L599,652 M746,638 L746,652"/>
