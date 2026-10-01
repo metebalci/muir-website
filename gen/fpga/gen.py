@@ -371,6 +371,7 @@ ARTY_FIT += DISPLAY_2026_09_21
 # them apart.  What a cell still cannot carry goes in this note, in sentences,
 # rather than into a fourth word or a mark nobody follows.
 BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the Cora Z7-07S and the Kria KR260 the CADR. '
+               'Every board has run with its Ethernet port and its microSD card, so the table leaves them out. '
                'A cell says yes where that board itself has run the thing and no where it has not, '
                'and the display column names the connector the board shows its screen on. '
                'A bar is the share of the part a machine&rsquo;s fabric uses, with the memory, the disk and the display boards in it, '
@@ -411,28 +412,23 @@ BOARDS_NOTE = ('The Arty Z7-20 and the DE25-Nano run QUUX and the CADR, and the 
 BOARD_ROWS = [
     # (file, name, product, part, maker, maker's page, machines, cpu,
     #  [(machine, logic used, logic total, logic unit, memory used, memory total, memory unit)],
-    #  ethernet, microSD, display, USB input, debug cable) -- each cell is (word, title, footnote)
+    #  display, USB input) -- each cell is (word, title, footnote)
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
      [('CADR', 15050, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
       ('QUUX', 17105, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
-     [('yes', '', ''), ('yes', 'The board&rsquo;s own card slot.', ''), ('text', '', 'HDMI'), ('yes', '', '')]),
+     [('text', '', 'HDMI'), ('yes', '', '')]),
     ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
      [('CADR', 14024, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
-     [('yes', '', ''), ('yes', 'The board&rsquo;s own card slot.', ''),
-      ('no', 'The board has no display connector.', ''),
+     [('no', 'The board has no display connector.', ''),
       ('no', 'The board has no USB host port, so the image leaves the program out.', '')]),
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR', '4 x Arm Cortex-A53, Linux',
      [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
-     [('yes', '', ''),
-      ('yes', 'The slot is a USB mass-storage reader behind the first USB controller: the loader reads the card as a USB disk.', ''),
-      ('text', '', 'DisplayPort'),
+     [('text', '', 'DisplayPort'),
       ('yes', '', '')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
      [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
       ('QUUX', 18912, 46800, 'ALMs', 191, 358, 'M20K blocks')],
-     [('yes', '', ''),
-      ('yes', 'The board&rsquo;s own card slot. This part has no card configuration scheme, so the flash carries the first stage and the card carries everything else.', ''),
-      ('text', '', 'HDMI'), ('yes', '', '')]),
+     [('text', '', 'HDMI'), ('yes', '', '')]),
 ]
 
 def resource_bars(rows):
@@ -451,7 +447,7 @@ def resource_bars(rows):
 def board_table():
     head = ('<thead>\n          <tr>\n            <th scope="col" class="board">Board</th>\n'
             '            <th scope="col">Fabric logic</th>\n            <th scope="col">Block memory</th>\n'
-            '            <th scope="col">Ethernet</th>\n            <th scope="col">microSD</th>\n            <th scope="col">Display</th>\n'
+            '            <th scope="col">Display</th>\n'
             '            <th scope="col">USB input</th>\n          </tr>\n        </thead>\n')
     body = ''
     for fname, name, product, part, maker, url, machines, cpu, fits, cells in BOARD_ROWS:
