@@ -1428,16 +1428,16 @@ def kr260_svg():
           <text class="d-s" x="-233" y="330" text-anchor="middle">the display,</text>
           <text class="d-s" x="-233" y="344" text-anchor="middle">from the fabric,</text>
           <text class="d-s" x="-233" y="358" text-anchor="middle">1280 &times; 1024, 60 Hz</text>
-''', '''          <path class="d-line" d="M-160,360 L-166,360 L-166,632 L-121,632 L-121,652"/>
-          <rect class="d-plate" x="-164" y="652" width="86" height="40"/>
-          <rect class="d-box d-ext" x="-164" y="652" width="86" height="40"/>
-          <text class="d-t" x="-121" y="670" text-anchor="middle">DisplayPort</text>
-          <text class="d-s" x="-121" y="684" text-anchor="middle">controller</text>
-          <path class="d-line" d="M-121,692 L-121,712"/>
-          <rect class="d-box d-ext" x="-190" y="712" width="102" height="84"/>
-          <text class="d-t" x="-139" y="738" text-anchor="middle">DisplayPort</text>
-          <text class="d-s" x="-139" y="762" text-anchor="middle">J6, 1.2a,</text>
-          <text class="d-s" x="-139" y="776" text-anchor="middle">1920 &times; 1080</text>
+''', '''          <path class="d-line" d="M-160,360 L-195,360 L-195,632 L-137,632 L-137,652"/>
+          <rect class="d-plate" x="-180" y="652" width="86" height="40"/>
+          <rect class="d-box d-ext" x="-180" y="652" width="86" height="40"/>
+          <text class="d-t" x="-137" y="670" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-137" y="684" text-anchor="middle">controller</text>
+          <path class="d-line" d="M-137,692 L-137,712"/>
+          <rect class="d-box d-ext" x="-180" y="712" width="86" height="84"/>
+          <text class="d-t" x="-137" y="738" text-anchor="middle">DisplayPort</text>
+          <text class="d-s" x="-137" y="762" text-anchor="middle">J6, 1.2a,</text>
+          <text class="d-s" x="-137" y="776" text-anchor="middle">1920 &times; 1080</text>
 ''')
     svg = sub(svg, '<text class="d-s" x="-164" y="520.4">PS &mdash; Arm</text>',
               '<text class="d-s" x="-156" y="520.4">PS &mdash; Arm</text>')
@@ -1509,16 +1509,6 @@ def kr260_svg():
           <rect class="d-box d-done d-key"''', '''">
 
 %s          <rect class="d-box d-done d-key"''' % kr260_comment())
-    # the DDR controller gives the DisplayPort controller its width: its left edge
-    # moves right by seven, and its two lines of text stay on the box's middle
-    svg = sub(svg, '''          <rect class="d-plate" x="-79" y="652" width="332" height="40"/>
-          <rect class="d-box d-ext" x="-79" y="652" width="332" height="40"/>
-          <text class="d-t" x="87" y="670" text-anchor="middle">DDR controller</text>
-          <text class="d-s" x="87" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>''',
-              '''          <rect class="d-plate" x="-72" y="652" width="325" height="40"/>
-          <rect class="d-box d-ext" x="-72" y="652" width="325" height="40"/>
-          <text class="d-t" x="90.5" y="670" text-anchor="middle">DDR controller</text>
-          <text class="d-s" x="90.5" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>''')
     # THE CHIP'S LEFT BORDER MOVES OUT BY SIXTY.  The line from the display
     # output to the DisplayPort controller runs down the left margin and keeps
     # clear room either side, and the border stands well to the left of the
@@ -1529,7 +1519,6 @@ def kr260_svg():
     svg = sub(svg, '<rect class="d-box" x="-170" y="28" width="1521" height="668.5"/>',
               '<rect class="d-box" x="-230" y="28" width="1581" height="668.5"/>')
     svg = sub(svg, 'd="M-170,450 L-150,450', 'd="M-230,450 L-150,450')
-    svg = sub(svg, 'd="M-160,360 L-166,360 L-166,632 L-121,632', 'd="M-160,360 L-195,360 L-195,632 L-121,632')
     def out(m):
         x, y = float(m.group(1)), float(m.group(2))
         if -170 < x < -100 and (y <= 200 or y == 520.4):
