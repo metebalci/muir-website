@@ -443,9 +443,6 @@ def board_table():
                  '<span class="pc">made by <a href="%s">%s</a></span></th>\n' % (fname, name, product, part, url, maker))
         body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, lu, lt, un) for m, lu, lt, un, *_ in fits])
         body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, mu, mt, un) for m, _, _, _, mu, mt, un in fits])
-        if fname == 'kria-kr260.html':
-            body += ('            <!-- TODO(K5): the Kria KR260\'s two bars are the CADR fit of the K4 slice; replace them with the K5 full fit\'s'
-                     ' LUTs and block RAM tiles if it differs. -->\n')
         for word, title, foot in cells:
             if word == 'text':      # a connector's name, and not a yes or a no
                 label, _, size = foot.partition('|')
@@ -1112,8 +1109,11 @@ def fit_bars(rows, y=68):
         out += ('          <text class="d-s" x="-164" y="%d">%s</text>\n'
                 '          <rect class="d-box" x="-164" y="%d" width="136" height="13"/>\n'
                 '          <rect x="-164" y="%d" width="%s" height="13" fill="currentColor" fill-opacity="0.42"/>\n'
-                '          <text class="d-n" x="-158" y="%d">%.1f%%</text>\n'
-                % (y, label, y + 6, y + 6, num(round(136 * used, 1)), y + 16, round(100 * used, 1)))
+                '          <text class="d-n" x="%s" y="%d">%.1f%%</text>\n'
+                % (y, label, y + 6, y + 6, num(round(136 * used, 1)),
+                   # a fill too short to hold its percentage has it after the fill
+                   num(round(-164 + 136 * used + 6, 1)) if 136 * used < 36.5 else '-158',
+                   y + 16, round(100 * used, 1)))
         y += 36
     return out
 
@@ -1324,15 +1324,21 @@ KR260_RENAME = {'S_AXI_HP0': 'S_AXI_HP0_FPD', 'S_AXI_HP2': 'S_AXI_HP2_FPD', 'S_A
 KR260_STATUS = [(n, g, ('' if n in ('display output', 'S_AXI_HP3', 'debug cable adapter') else s))
                 for n, g, s in DE25_STATUS if n != 'SPL']
 
+KR260_FIT = [
+    ('LUTs 14,014 of 117,120', 14014 / 117120),
+    ('BRAM 171 KB of 648 KB', 38 / 144),
+]
+
 def kr260_aria():
     return ('The CADR mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260. '
             + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED) + ' '
             'The fabric&rsquo;s clock is the carrier&rsquo;s 25 megahertz through a clock manager, 100 megahertz, ten nanoseconds a tick. '
+            'Under the fabric&rsquo;s label, 14,014 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 2.848 nanoseconds. '
             'Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. '
             'Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. '
             'The board has no HDMI: its video connector is the processing system&rsquo;s DisplayPort, so the display output, its port and the debug cable adapter carry no color. '
             'The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. '
-            'The two lamps, UF1 and UF2, carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. '
+            'The two lamps, UF1 and UF2, are green and carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. '
             'The debug cable is on PMOD1. '
             'Beside muir, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. '
             'It runs on a host of its own today, and no line reaches its block. '
@@ -1344,8 +1350,7 @@ def kr260_comment():
     text = ("The Arty Z7-20's drawing, generated for the Kria KR260. "
             + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED)
             + " The loader is the board's own, in its flash, and is gray. The display output, the port it would use and the debug"
-            " cable adapter carry no color. TODO(K5): the fit's two bars under the fabric's label, from the CADR's full fit on the part;"
-            " TODO(K5): the lamps' color, UF1 and UF2, which is not recorded; TODO(K5): the board run's result.")
+            " cable adapter carry no color. The lamps UF1 and UF2 are green.")
     assert '--' not in text
     return textwrap.fill(text, width=78, initial_indent='          <!-- ', subsequent_indent=' ' * 15,
                          fix_sentence_endings=True, break_on_hyphens=False) + ' -->\n'
@@ -1365,10 +1370,11 @@ def kr260_svg():
     assert svg.count(end) == 1
     j = svg.index(end) + len(end)
     assert svg[i:j].count('28.3%') == 1 and svg[i:j].count('32.9%') == 1
-    svg = svg[:i] + '''          <text class="d-s" x="-164" y="68">adapters in the fabric</text>
-          <text class="d-s" x="-164" y="82">meet every port at</text>
-          <text class="d-s" x="-164" y="96">128 bits</text>
-''' + svg[j:]
+    svg = (svg[:i] + fit_bars(KR260_FIT) + slack_block('+2.848') + '''
+          <text class="d-s" x="-164" y="170">adapters in the fabric</text>
+          <text class="d-s" x="-164" y="184">meet every port at</text>
+          <text class="d-s" x="-164" y="198">128 bits</text>
+''' + svg[j:])
     # (2) the loader: the flash and the factory U-Boot are the board's own
     svg = sub(svg, '''          <rect class="d-box d-done" x="61" y="527" width="44" height="30"/>
           <text class="d-t" x="83" y="547" text-anchor="middle">SPL</text>
@@ -1465,10 +1471,11 @@ def kr260_svg():
     assert svg.count(endm) == 1
     z = svg.index(endm) + len(endm)
     svg = svg[:a] + '''          <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>
-          <circle cx="1380" cy="283" r="8" fill="none" stroke="currentColor" stroke-width="1" stroke-opacity="0.5"/>
-          <circle class="d-lamp-fast" cx="1380" cy="283" r="4.5" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="283" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
+          <circle class="d-lamp-fast" cx="1380" cy="283" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="287">UF1 &mdash; microcycles</text>
-          <circle cx="1380" cy="309" r="4.5" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="309" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
+          <circle class="d-lamp-slow" cx="1380" cy="309" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="313">UF2 &mdash; error halt</text>
           <path class="d-line" d="M1351,297 L1366,297"/>
           <rect class="d-box d-ext" x="1366" y="336" width="150" height="48"/>
@@ -1484,18 +1491,13 @@ def kr260_svg():
           <rect class="d-box d-done d-key"''', '''">
 
 %s          <rect class="d-box d-done d-key"''' % kr260_comment())
-    # the fit and the machine's run: for K5 to fill
-    svg = sub(svg, '          <text class="d-s" x="-164" y="68">adapters in the fabric</text>',
-              '''          <!-- TODO(K5): the fit of the CADR on the part, as fit_bars() draws it for the other boards: lookup tables and block RAM tiles, and the worst setup slack. -->
-          <text class="d-s" x="-164" y="68">adapters in the fabric</text>''')
     return svg
 
 KR260_BODY = '''<div class="hero-description">
 <p>The CADR is the machine on this board. The board&rsquo;s own loader, in its flash, is left alone: it reads the microSD card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there.</p>
-<p>The tick is 10&nbsp;ns, from the carrier&rsquo;s 25&nbsp;MHz clock through a clock manager. Main memory is on the first high-performance port, every port is 128 bits wide, and the two user LEDs, UF1 and UF2, carry the lamps.</p>
-<!-- TODO(K5): the board run's result, in a sentence or two: the CADR booted, to what, and for how long. -->
-<!-- TODO(K5): the release is one zip, cadr-kria-kr260.zip, as the other boards' are. -->
-<!-- TODO(K5): on this board the machine is LISPM-4, at Chaosnet address 177204. -->
+<p>The tick is 10&nbsp;ns, from the carrier&rsquo;s 25&nbsp;MHz clock through a clock manager. Main memory is on the first high-performance port and every port is 128 bits wide. The two user LEDs carry the lamps: UF1 shows the microcycles, and UF2 the error halt, or a slow blink while the machine boots.</p>
+<p>The CADR boots System 1001 from its disk pack, as MIT Lisp Machine Four, LISPM-4, at Chaosnet address 177204, with ozd on the board as its file and time host. A USB keyboard and mouse at the board reach the machine, and Ctrl-Alt-Del from that keyboard cold-boots it.</p>
+<p>The release is one file, cadr-kria-kr260.zip.</p>
 <!-- TODO(K6): QUUX's drawing for this board, after the CADR's, as the Arty Z7-20's and the DE25-Nano's pages have; board_page() takes it as quux=. -->
 </div>
 '''
