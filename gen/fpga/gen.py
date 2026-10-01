@@ -642,20 +642,21 @@ def build_index():
                   keys=keys(('#boards', 'The boards'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
                   side='''<div class="side">
-<p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machine:</p>
+<p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines:</p>
 <pre>HELD TO   muir-sim, <b>tick for tick</b>
-          and microcycle for microcycle
-BOOTS     MIT&rsquo;s own system software,
-          off a disk pack
-PAINTS    the window system, on a screen
-RUNS      its processor and clocks within
-          about 5% of the CADR&rsquo;s speed</pre>
+BOOTS     its system: MIT&rsquo;s for the CADR,
+          the updated one for QUUX
+SHOWS     its screen on a monitor
+          or in a viewer
+RUNS      the CADR within about 5% of
+          MIT&rsquo;s speed, QUUX at 40 ns
+          a microcycle</pre>
 </div>
 '''))
 
     # The two speech bubbles this section had are plain sentences now, in
     # the same words.
-    P.append(section('what', '01 / WHAT IT IS', 'A CADR<br>in the <em>fabric.</em>', '', '''<div class="cols">
+    P.append(section('what', '01 / WHAT IT IS', 'QUUX and the CADR<br>in the <em>fabric.</em>', '', '''<div class="cols">
 <div class="prose">
 <p>muir-fpga puts QUUX and the CADR in the fabric of an FPGA. The CADR is the Lisp Machine MIT designed around 1978, and muir-fpga&rsquo;s CADR is <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
 </div>
