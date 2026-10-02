@@ -753,11 +753,11 @@ def build_index():
 </div>
 ''' % {'s': SZ}
     steps = [
-        ('Format a microSD card.', 'One FAT32 partition with an MBR partition table, not exFAT, which cards over 32&nbsp;GB get by default. Name the volume <code>CADR</code>: the Kria KR260 needs that name. A card of 1&nbsp;GB is plenty.'),
+        ('Format a microSD card.', 'One FAT32 partition with an MBR partition table, not exFAT, which cards over 32&nbsp;GB get by default. Any volume name will do. A card of 1&nbsp;GB is plenty.'),
         ('Unzip the zip onto it.', 'Your board&rsquo;s zip, onto the root of the card. A zip works only on the board it is named for.'),
         ('Add the system.', 'The disk as <code>packs/disk-pack-0.img</code>, and the <code>sys</code> and <code>site</code> folders as <code>sys/</code> and <code>site/</code>, from the downloads above.'),
-        ('Set the date.', 'The boards keep no time while switched off. Open <code>fpgarc</code> on the card and replace the two lines <code>#--date yyyyMMdd</code> and <code>#--time HHmm</code> with today&rsquo;s date and the time in UTC, for example <code>--date 20261002</code> and <code>--time 1430</code>. Without them the machine starts in 1970.'),
-        ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. On the Kria KR260 and the Cora Z7-07S the VNC viewer is the only screen; on the Kria KR260 the network port is J10C. On the Arty Z7-20, the Cora Z7-07S and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
+        ('Set the date.', 'The boards keep no time while switched off. With a network, a board sets its clock by NTP at boot, from <code>pool.ntp.org</code>, before the machine starts; <code>--ntp-server</code> in <code>fpgarc</code> names another server and <code>--no-ntp</code> turns it off. Without a network, open <code>fpgarc</code> on the card and replace the two lines <code>#--date yyyyMMdd</code> and <code>#--time HHmm</code> with today&rsquo;s date and the time in UTC, for example <code>--date 20261002</code> and <code>--time 1430</code>. With neither, the machine starts in 1970.'),
+        ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. On the Kria KR260 and the Cora Z7-07S the VNC viewer is the only screen; on the Kria KR260 the network port is J10C, and its USB ports are for the keyboard and the mouse, with no other USB storage plugged in. On the Arty Z7-20, the Cora Z7-07S and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
         ('Switch the board on.', 'Linux starts, and the machine boots from its disk by itself in about a minute. The first time the machine reads a file it asks you to log in; any name will do, for example <code>lispm</code>.'),
     ]
     stepsh = '<div class="steps-list">\n' + ''.join(
@@ -767,6 +767,7 @@ def build_index():
                      'Ready-made files for a microSD card, one zip for each board and machine. Nothing has to be built.',
                      zips + systems + stepsh +
                      '<p class="small-print">The machine is Chaosnet address 177201, LISPM-1; a second board on the same network takes 177202, LISPM-2, and so on to 177207. '
+                     'The machine has 32 memory boards by default; <code>--main-memory-boards</code> in <code>fpgarc</code> says another count from 1 to 60, and System 1003 and later use more. '
                      'The <a href="https://github.com/metebalci/muir-fpga/releases/tag/latest">release page</a> lists the digests of the zips, and each of muir-sys&rsquo;s releases has a <code>SHA256SUMS</code> beside its files.</p>\n',
                      label='Using it'))
 
