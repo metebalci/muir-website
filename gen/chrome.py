@@ -69,7 +69,7 @@ def header(root, section):
     for sid, label, _, _ in (GUIDE + (None,),) + tuple(s for s in SECTIONS if s[0] not in NOT_IN_HEADER_OR_FOOTER):
         cur = ' aria-current="page"' if sid == section or (sid == GUIDE[0] and section in MACHINES) else ''
         items.append('<a href="%s"%s>%s</a>' % (href(root, sid + '/'), cur, label))
-    repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-website')
+    repo = dict((s[0], s[3]) for s in SECTIONS).get(section, GH + 'muir-sim')
     return ('<a class="skip" href="#main">Skip to content</a>\n'
             '<header class="header wrap"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
             '<span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span>'
