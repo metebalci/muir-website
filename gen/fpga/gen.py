@@ -689,7 +689,7 @@ def build_index():
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
                   'What runs on each of four small boards.',
-                  keys=keys(('#boards', 'The boards'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
+                  keys=keys(('#boards', 'The boards'), ('#using', 'Using it'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
                   side='''<div class="side">
 <p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines:</p>
@@ -721,7 +721,57 @@ RUNS      the CADR within about 5% of
 
     P.append(section('boards', '02 / THE BOARDS', 'Four boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
-    P.append(section('machine', '03 / THE MACHINES THEMSELVES', 'The real<br><em>machines.</em>', '', '''<div class="prose">
+    # USING IT: the files and the card, from the release notes of muir-fpga's
+    # `latest` release and muir-sys's `latest-cadr` and `latest-quux`.
+    FZ = 'https://github.com/metebalci/muir-fpga/releases/download/latest/'
+    SZ = 'https://github.com/metebalci/muir-sys/releases/download/'
+    def zip_cell(machine, board):
+        name = '%s-%s.zip' % (machine, board)
+        return '<td><a href="%s%s"><code>%s</code></a></td>' % (FZ, name, name)
+    zrows = ''
+    for board, slug, quux in (('Arty Z7-20', 'arty-z7-20', True), ('DE25-Nano', 'de25-nano', True),
+                              ('Kria KR260', 'kria-kr260', False), ('Cora Z7-07S', 'cora-z7-07s', False)):
+        zrows += '<tr><th scope="row" class="board">%s</th>%s%s</tr>\n' % (
+            board, zip_cell('cadr', slug), zip_cell('quux', slug) if quux else '<td class="st no">not supported</td>')
+    zips = ('<div class="table-scroll" tabindex="0" role="region" aria-label="The zip for each board and machine"><table>\n'
+            '<thead><tr><th scope="col" class="board">Board</th><th scope="col">CADR</th><th scope="col">QUUX</th></tr></thead>\n'
+            '<tbody>\n%s</tbody>\n</table></div>\n' % zrows)
+    systems = '''<div class="cols">
+<div class="prose">
+<p><b>The CADR</b>, System 1002, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-cadr">muir-sys&rsquo;s latest-cadr</a>:</p>
+<ul>
+<li><a href="%(s)slatest-cadr/cadr-pack.img.gz"><code>cadr-pack.img.gz</code></a>, uncompressed and copied to the card as <code>packs/disk-pack-0.img</code>.</li>
+<li><a href="%(s)slatest-cadr/cadr-sys.tar.gz"><code>cadr-sys.tar.gz</code></a>, unpacked; its <code>sys</code> and <code>site</code> folders go onto the card&rsquo;s <code>sys/</code> and <code>site/</code>.</li>
+</ul>
+</div>
+<div class="prose">
+<p><b>QUUX</b>, System 2000, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-quux">muir-sys&rsquo;s latest-quux</a>:</p>
+<ul>
+<li><a href="%(s)slatest-quux/quux-disk.vhd.gz"><code>quux-disk.vhd.gz</code></a>, uncompressed and copied to the card as <code>packs/disk-pack-0.img</code>.</li>
+<li><a href="%(s)slatest-quux/quux-sys.tar.gz"><code>quux-sys.tar.gz</code></a>, unpacked and copied the same way.</li>
+</ul>
+</div>
+</div>
+''' % {'s': SZ}
+    steps = [
+        ('Format a microSD card.', 'One FAT32 partition with an MBR partition table, not exFAT, which cards over 32&nbsp;GB get by default. Name the volume <code>CADR</code>: the Kria KR260 needs that name. A card of 1&nbsp;GB is plenty.'),
+        ('Unzip the zip onto it.', 'Your board&rsquo;s zip, onto the root of the card. A zip works only on the board it is named for.'),
+        ('Add the system.', 'The disk as <code>packs/disk-pack-0.img</code>, and the <code>sys</code> and <code>site</code> folders as <code>sys/</code> and <code>site/</code>, from the downloads above.'),
+        ('Set the date.', 'The boards keep no time while switched off. Open <code>fpgarc</code> on the card and replace the two lines <code>#--date yyyyMMdd</code> and <code>#--time HHmm</code> with today&rsquo;s date and the time in UTC, for example <code>--date 20261002</code> and <code>--time 1430</code>. Without them the machine starts in 1970.'),
+        ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. On the Kria KR260 and the Cora Z7-07S the VNC viewer is the only screen; on the Kria KR260 the network port is J10C. On the Arty Z7-20, the Cora Z7-07S and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
+        ('Switch the board on.', 'Linux starts, and the machine boots from its disk by itself in about a minute. The first time the machine reads a file it asks you to log in; any name will do, for example <code>lispm</code>.'),
+    ]
+    stepsh = '<div class="steps-list">\n' + ''.join(
+        '<article class="step"><div class="step-heading"><span class="step-number">%02d</span><h3>%s</h3></div><p>%s</p></article>\n' % (i + 1, h, t)
+        for i, (h, t) in enumerate(steps)) + '</div>\n'
+    P.append(section('using', '03 / USING IT', 'From a card<br>to a <em>prompt.</em>',
+                     'Ready-made files for a microSD card, one zip for each board and machine. Nothing has to be built.',
+                     zips + systems + stepsh +
+                     '<p class="small-print">The machine is Chaosnet address 177201, LISPM-1; a second board on the same network takes 177202, LISPM-2, and so on to 177207. '
+                     'The <a href="https://github.com/metebalci/muir-fpga/releases/tag/latest">release page</a> lists the digests of the zips, and each of muir-sys&rsquo;s releases has a <code>SHA256SUMS</code> beside its files.</p>\n',
+                     label='Using it'))
+
+    P.append(section('machine', '04 / THE MACHINES THEMSELVES', 'The real<br><em>machines.</em>', '', '''<div class="prose">
 <p>What the two machines are, their processors, buses and devices, is on their own pages: QUUX, the CADR evolved, and the CADR, MIT&rsquo;s machine as it was built, board by board. It is worth knowing what a machine is before looking at a drawing of it inside a chip.</p>
 <div class="actions"><a class="text-link" href="../cadr/">The CADR</a><a class="button" href="../quux/">QUUX</a></div>
 </div>
@@ -751,7 +801,7 @@ RUNS      the CADR within about 5% of
          'not in the repository; muir-sim carries them, recovered from the ITS backup tapes and unmodified'),
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td>%s</td></tr>\n' % r for r in rows)
-    P.append(section('license', '04 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
+    P.append(section('license', '05 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
                      'The long form is %s.' % docs_link('docs/license.md', 'license.md'),
                      '''<div class="table-scroll" tabindex="0" role="region" aria-label="License and third-party material"><table class="terms">
 <thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
@@ -760,7 +810,7 @@ RUNS      the CADR within about 5% of
 </table></div>
 ''' % trs, label='License and third-party material'))
 
-    P.append(section('colophon', '05 / ABOUT', 'MIT&rsquo;s machine, and<br>what muir-fpga <em>adds.</em>', '', '''<div class="prose">
+    P.append(section('colophon', '06 / ABOUT', 'MIT&rsquo;s machine, and<br>what muir-fpga <em>adds.</em>', '', '''<div class="prose">
 <p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is. The fabric, its checks and their reference traces, the programs beside the machine on the board and the documents are this project&rsquo;s.</p>
 <p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR and of QUUX, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
