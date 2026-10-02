@@ -54,8 +54,8 @@ RUNS      the CADR within about 5% of
         <thead>
           <tr>
             <th scope="col" class="board">Board</th>
-            <th scope="col">Fabric logic</th>
-            <th scope="col">Block memory</th>
+            <th scope="col">CADR</th>
+            <th scope="col">QUUX</th>
             <th scope="col">Display</th>
             <th scope="col">USB input</th>
           </tr>
@@ -63,29 +63,30 @@ RUNS      the CADR within about 5% of
         <tbody>
           <tr>
             <th scope="row" class="board"><a href="arty-z7-20.html">Arty Z7-20</a><span class="pc">AMD Zynq 7020</span><span class="pc">XC7Z020</span><span class="pc">made by <a href="https://digilent.com/shop/arty-z7-zynq-7000-soc-development-board/">Digilent</a></span></th>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:28.3%"></i><b style="left:calc(28.3% + 3px)">28.3%</b></span><span class="pc">15,050 / 53,200 LUTs</span></span></div><div class="rb"><span class="rb-m">QUUX</span><span class="rb-wrap"><span class="rb-bar"><i style="width:32.2%"></i><b style="left:calc(32.2% + 3px)">32.2%</b></span><span class="pc">17,105 / 53,200 LUTs</span></span></div></td>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:32.9%"></i><b style="left:calc(32.9% + 3px)">32.9%</b></span><span class="pc">46 / 140 block RAM tiles</span></span></div><div class="rb"><span class="rb-m">QUUX</span><span class="rb-wrap"><span class="rb-bar"><i style="width:44.3%"></i><b style="right:calc(100% - 44.3%)">44.3%</b></span><span class="pc">62 / 140 block RAM tiles</span></span></div></td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">LUTs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:28.3%"></i><b style="left:calc(28.3% + 3px)">28.3%</b></span><span class="pc">15,048 / 53,200 LUTs</span></span></div><div class="rb"><span class="rb-m">BRAM</span><span class="rb-wrap"><span class="rb-bar"><i style="width:32.9%"></i><b style="left:calc(32.9% + 3px)">32.9%</b></span><span class="pc">46 / 140 block RAM tiles</span></span></div></td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">LUTs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:31.7%"></i><b style="left:calc(31.7% + 3px)">31.7%</b></span><span class="pc">16,888 / 53,200 LUTs</span></span></div><div class="rb"><span class="rb-m">BRAM</span><span class="rb-wrap"><span class="rb-bar"><i style="width:44.3%"></i><b style="right:calc(100% - 44.3%)">44.3%</b></span><span class="pc">62 / 140 block RAM tiles</span></span></div></td>
             <td class="st plain">HDMI<span class="pc">1280&times;1024</span></td>
             <td class="st plain">Keyboard<br>Mouse</td>
           </tr>
           <tr>
             <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">AMD Zynq 7007S</span><span class="pc">XC7Z007S</span><span class="pc">made by <a href="https://digilent.com/shop/cora-z7-zynq-7000-single-core-for-arm-fpga-soc-development/">Digilent</a></span></th>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:97.4%"></i><b style="right:calc(100% - 97.4%)">97.4%</b></span><span class="pc">14,024 / 14,400 LUTs</span></span></div></td>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:86%"></i><b style="right:calc(100% - 86%)">86.0%</b></span><span class="pc">43 / 50 block RAM tiles</span></span></div></td>
-            <td class="st no" title="The board has no display connector.">no</td>
-            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">LUTs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:96.9%"></i><b style="right:calc(100% - 96.9%)">96.9%</b></span><span class="pc">13,952 / 14,400 LUTs</span></span></div><div class="rb"><span class="rb-m">BRAM</span><span class="rb-wrap"><span class="rb-bar"><i style="width:86%"></i><b style="right:calc(100% - 86%)">86.0%</b></span><span class="pc">43 / 50 block RAM tiles</span></span></div></td>
+            <td class="st no" title="QUUX does not fit this part.">not supported</td>
+            <td class="st no" title="The board has no display connector.">No display<br>output</td>
+            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">No USB<br>input</td>
           </tr>
           <tr>
             <th scope="row" class="board"><a href="kria-kr260.html">Kria KR260</a><span class="pc">AMD Zynq UltraScale+ K26</span><span class="pc">XCK26</span><span class="pc">made by <a href="https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit.html">AMD</a></span></th>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:12%"></i><b style="left:calc(12% + 3px)">12.0%</b></span><span class="pc">14,014 / 117,120 LUTs</span></span></div></td>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:26.4%"></i><b style="left:calc(26.4% + 3px)">26.4%</b></span><span class="pc">38 / 144 block RAM tiles</span></span></div></td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">LUTs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:12%"></i><b style="left:calc(12% + 3px)">12.0%</b></span><span class="pc">14,017 / 117,120 LUTs</span></span></div><div class="rb"><span class="rb-m">BRAM</span><span class="rb-wrap"><span class="rb-bar"><i style="width:26.4%"></i><b style="left:calc(26.4% + 3px)">26.4%</b></span><span class="pc">38 / 144 block RAM tiles</span></span></div></td>
+            <!-- TODO(K6): QUUX is not on this board yet; the cell becomes the machine's two bars from its fit once it is. -->
+            <td class="st no">not supported</td>
             <td class="st plain">DisplayPort<span class="pc">1920&times;1080</span></td>
             <td class="st plain">Keyboard<br>Mouse</td>
           </tr>
           <tr>
             <th scope="row" class="board"><a href="de25-nano.html">DE25-Nano</a><span class="pc">Altera Agilex 5 E-series</span><span class="pc">A5EB013B</span><span class="pc">made by <a href="https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=115&amp;No=1384">Terasic</a></span></th>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:35.2%"></i><b style="left:calc(35.2% + 3px)">35.2%</b></span><span class="pc">16,451 / 46,800 ALMs</span></span></div><div class="rb"><span class="rb-m">QUUX</span><span class="rb-wrap"><span class="rb-bar"><i style="width:40.4%"></i><b style="right:calc(100% - 40.4%)">40.4%</b></span><span class="pc">18,912 / 46,800 ALMs</span></span></div></td>
-            <td class="num rbs"><div class="rb"><span class="rb-m">CADR</span><span class="rb-wrap"><span class="rb-bar"><i style="width:37.7%"></i><b style="left:calc(37.7% + 3px)">37.7%</b></span><span class="pc">135 / 358 M20K blocks</span></span></div><div class="rb"><span class="rb-m">QUUX</span><span class="rb-wrap"><span class="rb-bar"><i style="width:53.4%"></i><b style="right:calc(100% - 53.4%)">53.4%</b></span><span class="pc">191 / 358 M20K blocks</span></span></div></td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">ALMs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:35.2%"></i><b style="left:calc(35.2% + 3px)">35.2%</b></span><span class="pc">16,480 / 46,800 ALMs</span></span></div><div class="rb"><span class="rb-m">M20K</span><span class="rb-wrap"><span class="rb-bar"><i style="width:37.7%"></i><b style="left:calc(37.7% + 3px)">37.7%</b></span><span class="pc">135 / 358 M20K blocks</span></span></div></td>
+            <td class="num rbs"><div class="rb"><span class="rb-m">ALMs</span><span class="rb-wrap"><span class="rb-bar"><i style="width:39.7%"></i><b style="left:calc(39.7% + 3px)">39.7%</b></span><span class="pc">18,598 / 46,800 ALMs</span></span></div><div class="rb"><span class="rb-m">M20K</span><span class="rb-wrap"><span class="rb-bar"><i style="width:53.4%"></i><b style="right:calc(100% - 53.4%)">53.4%</b></span><span class="pc">191 / 358 M20K blocks</span></span></div></td>
             <td class="st plain">HDMI<span class="pc">1280&times;1024</span></td>
             <td class="st plain">Keyboard<br>Mouse</td>
           </tr>

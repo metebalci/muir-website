@@ -74,22 +74,45 @@ def slack_block(ns):
             '               fraction of. -->\n'
             '          <text class="d-s" x="-164" y="140">worst setup %s ns</text>' % ns)
 
+# THE MEMORY BOXES under the chip.  The CADR reserves 16 MB of main memory,
+# 1 MB for the display and 128 KB for the disk pack program's records (the
+# layout table of rtl/plumbing/cadr_ddr_map.sv and of docs/linux.md, muir-fpga;
+# the same on every board), and Linux has the rest: the MemTotal docs/linux.md
+# measures after that change, 493,976 kB on the Arty Z7-20 and the Cora Z7-07S,
+# 938,276 kB on the DE25-Nano and 3,990,556 kB on the Kria KR260.  QUUX to
+# revision 12 uses the CADR's areas (docs/linux.md, "Each machine's
+# reservation"), and its boxes say so.
+MEM_OLD = """          <text class="d-s" x="87" y="762" text-anchor="middle">64 MB reserved for main memory,</text>
+          <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
+          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
+"""
+MEMTOTAL = {'arty': '493,976', 'cora': '493,976', 'kria': '3,990,556', 'de25': '938,276'}
+def mem_block(board, quux=False):
+    if quux:
+        l1, l2 = 'the CADR&rsquo;s areas, which QUUX shares:', '16 MB main memory, 1 MB display, 128 KB packs'
+    else:
+        l1, l2 = '16 MB reserved for main memory,', '1 MB for the display, 128 KB for disk packs'
+    l3 = '&mdash; and Linux has the rest, %s kB' % MEMTOTAL[board]
+    return ''.join('          <text class="d-s" x="87" y="%d" text-anchor="middle">%s</text>\n' % (y, s)
+                   for y, s in ((762, l1), (776, l2), (790, l3)))
+
 ARTY_FIT = [
     ('The CADR mapped onto one XC7Z020.', 'The CADR mapped onto one AMD Zynq 7020, part XC7Z020-1CLG400C.'),
-    ('Slices 5,441 of 13,300', 'LUTs 15,050 of 53,200'),
+    ('Slices 5,441 of 13,300', 'LUTs 15,048 of 53,200'),
     ('<rect x="-164" y="74" width="55.6" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="74" width="38.5" height="13" fill="currentColor" fill-opacity="0.42"/>'),
     ('<text class="d-n" x="-158" y="84">40.9%</text>', '<text class="d-n" x="-158" y="84">28.3%</text>'),
     ('5,441 of the 13,300 slices occupied, 40.9 per cent, which is a conservative figure since a fuller design packs tighter',
-     '15,050 of the 53,200 lookup tables in use, 28.3 per cent'),
+     '15,048 of the 53,200 lookup tables in use, 28.3 per cent'),
     ('and 205 KB of the 630 KB of block RAM, 32.5 per cent; and the timing of this build, which is met --- the fabric runs at 100 megahertz with a tick of 10 nanoseconds, worst slack plus 0.176 nanoseconds against that, and none of its 54,072 endpoints failing. ',
-     'and 207 KB of the 630 KB of block RAM, 32.9 per cent. Under those two figures, the worst setup slack of this build, plus 0.222 nanoseconds. '),
+     'and 207 KB of the 630 KB of block RAM, 32.9 per cent. Under those two figures, the worst setup slack of this build, plus 0.126 nanoseconds. '),
     ('<text class="d-s" x="-164" y="104">BRAM 205 KB of 630 KB</text>',
      '<text class="d-s" x="-164" y="104">BRAM 207 KB of 630 KB</text>'),
     ('<rect x="-164" y="110" width="44.2" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="110" width="44.7" height="13" fill="currentColor" fill-opacity="0.42"/>'),
+    (MEM_OLD, mem_block('arty')),
     ('<text class="d-n" x="-158" y="120">32.5%</text>',
-     '<text class="d-n" x="-158" y="120">32.9%</text>\n' + slack_block('+0.222')),
+     '<text class="d-n" x="-158" y="120">32.9%</text>\n' + slack_block('+0.126')),
     ("""          <!-- Slack is a build's figure and not the design's, and it moves by a
                quarter of a nanosecond between builds of identical logic ---
                measured, at two commits whose RTL is identical. It is here at
@@ -127,15 +150,14 @@ ARTY_FIT = [
                Two rows,""",
      """          <!-- What the machine costs on the part: the memory-on board with the
                disk and both display boards in it, place and routed with DDR=1,
-               HDMI=1 and LMTV=1, which is the fabric the board runs.  Built from the
-               working tree on ab41da7 with the change that gives QUUX's
-               control store an explicit block RAM enable, as muir-fpga's
+               HDMI=1 and LMTV=1, which is the fabric the board runs.  Built from d708429,
+               the combined tree, as muir-fpga's
                docs/fits.md records it; the Cora Z7-07S's
                drawing carries that board's figures from the same fits.  The
                46 block RAM tiles include the display output's two band
                buffers, which is the gap between this board's 46 and the Cora
                Z7-07S's 43, that board having no display output in it.  Timing
-               is met on both edges: +0.222 ns of setup and +0.042 ns of hold.
+               is met on both edges: +0.126 ns of setup and +0.021 ns of hold.
                Two rows,"""),
     # THE ROW'S UNIT CHANGED FROM OCCUPIED SLICES TO LOOKUP TABLES, and the
     # rationale in the base page argued for the one it no longer carries, so
@@ -166,7 +188,7 @@ ARTY_FIT = [
 ]
 CORA_FIT = [
     ('The CADR mapped onto one XC7Z007S, the small Zynq on a Cora Z7-07S.',
-     'The CADR mapped onto one AMD Zynq 7007S, part XC7Z007S-1CLG400C. This board runs the CADR only: the CADR takes 97.4 per cent of its lookup tables, and QUUX does not fit.'),
+     'The CADR mapped onto one AMD Zynq 7007S, part XC7Z007S-1CLG400C. This board runs the CADR only: the CADR takes 96.9 per cent of its lookup tables, and QUUX does not fit.'),
     ("MIT's own CC, running in the Lisp world of the CADR in the larger board's fabric,",
      "MIT's own CC, running in the Lisp world of the CADR in the Arty Z7-20's fabric,"),
     ('two lamps cannot carry what six carry on the larger board:', 'two lamps cannot carry what six carry on the Arty Z7-20:'),
@@ -183,18 +205,19 @@ CORA_FIT = [
                its own size, and its six rows are the larger board's six.''',
      '''The block is the Arty Z7-20's, at its own place and
                its own size, and its six rows are the Arty Z7-20's six.'''),
-    ('Slices 4,228 of 4,400', 'LUTs 14,024 of 14,400'),
+    ('Slices 4,228 of 4,400', 'LUTs 13,952 of 14,400'),
     ('<rect x="-164" y="74" width="130.7" height="13" fill="currentColor" fill-opacity="0.42"/>',
-     '<rect x="-164" y="74" width="132.4" height="13" fill="currentColor" fill-opacity="0.42"/>'),
-    ('<text class="d-n" x="-158" y="84">96.1%</text>', '<text class="d-n" x="-158" y="84">97.4%</text>'),
+     '<rect x="-164" y="74" width="131.8" height="13" fill="currentColor" fill-opacity="0.42"/>'),
+    ('<text class="d-n" x="-158" y="84">96.1%</text>', '<text class="d-n" x="-158" y="84">96.9%</text>'),
     ('3,999 of the 4,400 slices occupied, 90.9 per cent; and 187 KB of the 225 KB of block RAM, 83.0 per cent. The machine spends the same 41.5 block RAM tiles here as it does on the larger part, so what changes between the two boards is the denominator.',
-     '14,024 of the 14,400 lookup tables in use, 97.4 per cent; and 194 KB of the 225 KB of block RAM, 86.0 per cent. The machine spends 43 block RAM tiles here. Under those two figures, the worst setup slack of this build, plus 0.210 nanoseconds.'),
+     '13,952 of the 14,400 lookup tables in use, 96.9 per cent; and 194 KB of the 225 KB of block RAM, 86.0 per cent. The machine spends 43 block RAM tiles here. Under those two figures, the worst setup slack of this build, plus 0.158 nanoseconds.'),
     ('<text class="d-s" x="-164" y="104">BRAM 191 KB of 225 KB</text>',
      '<text class="d-s" x="-164" y="104">BRAM 194 KB of 225 KB</text>'),
     ('<rect x="-164" y="110" width="115.6" height="13" fill="currentColor" fill-opacity="0.42"/>',
      '<rect x="-164" y="110" width="117" height="13" fill="currentColor" fill-opacity="0.42"/>'),
     ('<text class="d-n" x="-158" y="120">85.0%</text>',
-     '<text class="d-n" x="-158" y="120">86.0%</text>\n' + slack_block('+0.210')),
+     '<text class="d-n" x="-158" y="120">86.0%</text>\n' + slack_block('+0.158')),
+    (MEM_OLD, mem_block('cora')),
     ('The timing of this build is met: the fabric runs at 100 megahertz with a tick of 10 nanoseconds, worst slack plus 0.494 nanoseconds against that, and none of its 47,909 endpoints failing. ', ''),
     ("""          <!-- Slack is a build's figure and not the design's, and it moves by a
                quarter of a nanosecond between builds of identical logic ---
@@ -225,9 +248,9 @@ CORA_FIT = [
                Built from the color TV change on top of 261547d before it was
                committed; that change landed at 653ca22 with its fabric unchanged,
                so 653ca22 is the commit these figures are of.""",
-     """               placed on this part: 14,024 slice lookup tables of 14,400,
-               4,325 occupied slices of 4,400 and 43 block RAM tiles of 50.
-               Timing is met on both edges: +0.210 ns of setup and +0.041 ns
+     """               placed on this part: 13,952 slice lookup tables of 14,400,
+               4,335 occupied slices of 4,400 and 43 block RAM tiles of 50.
+               Timing is met on both edges: +0.158 ns of setup and +0.036 ns
                of hold.
                THE COLOR TV FITS AND CLOSES HERE, WHICH IS WHAT DECIDED THAT
                THIS BOARD KEEPS IT.  When that was decided, at d55b436, the same
@@ -375,12 +398,14 @@ BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves
 
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
-# runs, in that part's own terms, from docs/fits.md of muir-fpga: the CADR's
-# are the clean fit of 74c2cf9 for the Arty Z7-20, the Cora Z7-07S and the
-# DE25-Nano, which are the figures their drawings carry; the QUUX figures are
-# those of revision 12, the QUUX that runs today, from the fits of aec5f54, the
-# latest of that revision that meet timing; the Kria KR260's is the CADR's fit of the K4 slice
-# (xck26-sfvc784-2LV-c, DDR=1, Vivado 2026.1).  A bar is the percentage of the
+# runs, in that part's own terms, from docs/fits.md of muir-fpga, its first
+# table under "From a clean tree": the combined tree's fits, built from
+# d708429 with the CADR's smaller memory and QUUX without the debug cable.  The
+# rows used are the Arty Z7-20's QUUX and CADR rows, the Cora Z7-07S's CADR
+# row, the Kria KR260's CADR row and the DE25-Nano's QUUX and CADR rows; the
+# QUUX rows are the plain "QUUX" ones, the revision the site shows, and not the
+# "revision 13" rows (xc7z020clg400-1, xc7z007sclg400-1, xck26-sfvc784-2LV-c,
+# A5EB013BB23BE4SCS).  A bar is the percentage of the
 # part used, and the percentage is the figure that compares across the rows:
 # lookup tables and block RAM tiles on the Zynq boards, ALMs and M20K blocks on
 # the DE25-Nano, which are different units (Altera's own conversion guide puts
@@ -401,20 +426,20 @@ BOARD_ROWS = [
     #  [(machine, logic used, logic total, logic unit, memory used, memory total, memory unit)],
     #  display, USB input) -- each cell is (word, title, footnote)
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
-     [('CADR', 15050, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
-      ('QUUX', 17105, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
+     [('CADR', 15048, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
+      ('QUUX', 16888, 53200, 'LUTs', 62, 140, 'block RAM tiles')],
      [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
     ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
-     [('CADR', 14024, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
-     [('no', 'The board has no display connector.', ''),
-      ('no', 'The board has no USB host port, so the image leaves the program out.', '')]),
+     [('CADR', 13952, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
+     [('no', 'The board has no display connector.', 'No display<br>output'),
+      ('no', 'The board has no USB host port, so the image leaves the program out.', 'No USB<br>input')]),
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR', '4 x Arm Cortex-A53, Linux',
-     [('CADR', 14014, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
+     [('CADR', 14017, 117120, 'LUTs', 38, 144, 'block RAM tiles')],
      [('text', '', 'DisplayPort|1920&times;1080'),
       ('text', '', 'Keyboard<br>Mouse')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
-     [('CADR', 16451, 46800, 'ALMs', 135, 358, 'M20K blocks'),
-      ('QUUX', 18912, 46800, 'ALMs', 191, 358, 'M20K blocks')],
+     [('CADR', 16480, 46800, 'ALMs', 135, 358, 'M20K blocks'),
+      ('QUUX', 18598, 46800, 'ALMs', 191, 358, 'M20K blocks')],
      [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
 ]
 
@@ -433,7 +458,7 @@ def resource_bars(rows):
 
 def board_table():
     head = ('<thead>\n          <tr>\n            <th scope="col" class="board">Board</th>\n'
-            '            <th scope="col">Fabric logic</th>\n            <th scope="col">Block memory</th>\n'
+            '            <th scope="col">CADR</th>\n            <th scope="col">QUUX</th>\n'
             '            <th scope="col">Display</th>\n'
             '            <th scope="col">USB input</th>\n          </tr>\n        </thead>\n')
     body = ''
@@ -441,13 +466,28 @@ def board_table():
         body += '          <tr>\n'
         body += ('            <th scope="row" class="board"><a href="%s">%s</a><span class="pc">%s</span><span class="pc">%s</span>'
                  '<span class="pc">made by <a href="%s">%s</a></span></th>\n' % (fname, name, product, part, url, maker))
-        body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, lu, lt, un) for m, lu, lt, un, *_ in fits])
-        body += '            <td class="num rbs">%s</td>\n' % resource_bars([(m, mu, mt, un) for m, _, _, _, mu, mt, un in fits])
+        for machine in ('CADR', 'QUUX'):
+            mine = [f for f in fits if f[0] == machine]
+            if mine:
+                _, lu, lt, lun, mu, mt, mun = mine[0]
+                bars = resource_bars([(lun, lu, lt, lun),
+                                      ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)])
+                body += '            <td class="num rbs">%s</td>\n' % bars
+                continue
+            if fname == 'kria-kr260.html':
+                body += ('            <!-- TODO(K6): QUUX is not on this board yet; the cell becomes the machine\'s two bars'
+                         ' from its fit once it is. -->\n')
+            body += ('            <td class="st no"%s>not supported</td>\n'
+                     % (' title="QUUX does not fit this part."' if fname == 'cora-z7-07s.html' else ''))
         for word, title, foot in cells:
             if word == 'text':      # a connector's name, and not a yes or a no
                 label, _, size = foot.partition('|')
                 body += ('            <td class="st plain"%s>%s%s</td>\n'
                          % (' title="%s"' % title if title else '', label, '<span class="pc">%s</span>' % size if size else ''))
+                continue
+            if word == 'no':        # a no, in the words that say what is missing
+                body += ('            <td class="st no"%s>%s</td>\n'
+                         % (' title="%s"' % title if title else '', foot or 'no'))
                 continue
             body += ('            <td class="st%s"%s>%s%s</td>\n'
                      % (' no' if word == 'no' else '', ' title="%s"' % title if title else '', word,
@@ -570,7 +610,18 @@ LABELS += [
      '<text class="d-s" x="377" y="672" text-anchor="middle">S80: the card mounted read-write,</text>\n          <text class="d-s" x="377" y="686" text-anchor="middle">the clock back from the bay</text>'),
     (BOOTING, '>uEnv.txt again &mdash; the card&rsquo;s server, not the lease&rsquo;s<', '>uEnv.txt again: the card&rsquo;s server, not the lease&rsquo;s<'),
     (BOOTING, '<text class="d-s" x="583" y="818">login on the serial console</text>', '<text class="d-s" x="583" y="818">serial console login</text>'),
-    (BOOTING, '<text class="d-s" x="413" y="706">384 MB &mdash; 0x18000000 and up is the CADR&rsquo;s</text>', '<text class="d-s" x="413" y="706">384 MB; the CADR&rsquo;s from 0x18000000</text>'),
+    (BOOTING, '<text class="d-s" x="413" y="706">384 MB &mdash; 0x18000000 and up is the CADR&rsquo;s</text>', '<text class="d-s" x="413" y="706">Linux 493,976 kB; the CADR&rsquo;s from 0x1B000000</text>'),
+    # THE CADR'S RESERVATION IS 17.125 MB, at 0x1B000000 on the Zynq boards and 0xB3000000 on the DE25-Nano
+    # (rtl/plumbing/cadr_ddr_map.sv, docs/linux.md of muir-fpga), and Linux has the rest: 493,976 kB and 938,276 kB.
+    (BOOTING, '<text class="d-s" x="578" y="596">384 MB &mdash; 0x18000000 and up is the CADR&rsquo;s</text>',
+     '<text class="d-s" x="578" y="596">Linux 493,976 kB &mdash; 0x1B000000 to 0x1C11FFFF is the CADR&rsquo;s</text>'),
+    (BOOTING, 'the CADR&rsquo;s 128 MB reserved</text>', 'the CADR&rsquo;s 17.125 MB reserved</text>'),
+    (BOOTING, '128 MB reserved at 0xB0000000</text>', '17.125 MB reserved at 0xB3000000</text>'),
+    (BOOTING, '&mdash; 128 MB reserved</text>', '&mdash; 17.125 MB reserved</text>'),
+    (BOOTING, '1 GiB &mdash; 0xB0000000 to 0xB7FFFFFF is the CADR&rsquo;s</text>', 'Linux 938,276 kB &mdash; 0xB3000000 to 0xB411FFFF is the CADR&rsquo;s</text>'),
+    (BOOTING, "with the CADR's 128 MB kept from it.", "with the CADR's 17.125 MB kept from it."),
+    (BOOTING, "with the CADR's 128 MB reserved at 0xB0000000.", "with the CADR's 17.125 MB reserved at 0xB3000000."),
+    (BOOTING, "with the CADR's 128 MB reserved, and the boot", "with the CADR's 17.125 MB reserved, and the boot"),
     # a note that ran on to the right of the drawing goes under the one beside it
     (BOOTING, '<text class="d-s" x="560" y="884" fill-opacity="0.62">the times down', '<text class="d-s" x="10" y="898" fill-opacity="0.62">the times down'),
 ]
@@ -915,8 +966,8 @@ def de25_aria():
             'HPS means Hard Processor System. '
             'Beside muir, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. '
             'It runs on a host of its own today, and no line reaches its block, because running it on this board&rsquo;s own processing system, so that a card by itself is a whole site, would be a path on the board and there is none yet. '
-            'Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,451 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. '
-            'Under those two, the worst setup slack of this build, plus 1.663 nanoseconds. '
+            'Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,480 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. '
+            'Under those two, the worst setup slack of this build, plus 2.422 nanoseconds. '
             'Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names and buses, the debug window&rsquo;s bridge, the HDMI transmitter, the buttons&rsquo; and the lamps&rsquo; names, the lamps&rsquo; color, the USB-Blaster III and its socket, and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.')
 
 NUMBER = ('zero one two three four five six seven eight nine ten eleven twelve thirteen '
@@ -1083,11 +1134,10 @@ DE25_STATUS = [
 # 136 units wide and its fill and per cent are rounded to one decimal, as the
 # Arty Z7-20's are.  They stand at zero until this board has a build.
 DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the faces and the
-               display output, the fit of the working tree on ab41da7 with
-               the change that gives QUUX's control store an explicit block RAM
-               enable, as muir-fpga's docs/fits.md records it.  Timing is met, the worst being +1.663 ns of setup, on an
-               HDMI output pin, and 0.000 ns of hold.
-               16,451 ALMs and 135 M20K blocks.
+               display output, the fit of the combined tree d708429, as
+               muir-fpga's docs/fits.md records it.  Timing is met: +2.422 ns
+               of setup and +0.001 ns of hold.
+               16,480 ALMs and 135 M20K blocks.
                A5E 013B: 46,800 ALMs, and 358 M20K blocks of 20 Kbit each,
                895 KB, the same convention as the Zynq boards' block RAM row.
                Source: Altera Agilex 5 E-Series Product Table, 2026.08.07, p. 3:
@@ -1097,7 +1147,7 @@ DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the face
                slices. -->
 '''
 DE25_FIT = [
-    ('ALM 16,451 of 46,800', 16451 / 46800),
+    ('ALM 16,480 of 46,800', 16480 / 46800),
     ('M20K 338 KB of 895 KB', 135 / 358),
 ]
 
@@ -1128,10 +1178,10 @@ def de25_svg():
     # The assertions name every figure inside the span, so a figure that moves
     # out of it stops the run rather than being carried over.
     i = svg.index('          <!-- What the machine costs on the part:')
-    end = '          <text class="d-s" x="-164" y="140">worst setup +0.222 ns</text>\n'
+    end = '          <text class="d-s" x="-164" y="140">worst setup +0.126 ns</text>\n'
     assert svg.count(end) == 1
     j = svg.index(end) + len(end)
-    assert svg[i:j].count('LUTs 15,050 of 53,200') == 1 and svg[i:j].count('BRAM 207 KB of 630 KB') == 1
+    assert svg[i:j].count('LUTs 15,048 of 53,200') == 1 and svg[i:j].count('BRAM 207 KB of 630 KB') == 1
     assert svg[i:j].count('<text class="d-n" x="-158" y="120">32.9%</text>') == 1
     svg = svg[:i] + svg[j:]
     # No drawn slack label survives.  The Arty Z7-20's aria-label still names
@@ -1165,12 +1215,9 @@ def de25_svg():
     svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
               '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (DE25_PART[1], DE25_PART[0]))
     # (3) the memory
-    svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>
-          <text class="d-s" x="87" y="762" text-anchor="middle">64 MB reserved for main memory,</text>
-          <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
-          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
-''', '''          <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
-''')
+    svg = sub(svg, mem_block('arty'), mem_block('de25'))
+    svg = sub(svg, '<text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>',
+              '<text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>')
     # (3b) the lamps: every user LED on this board is green (the rev B user
     # manual, section 3.7.1), so no lamp is drawn red or blue.
     lamps = re.findall(r'<circle [^>]*cx="1380"[^>]*/>', svg)
@@ -1284,7 +1331,7 @@ def de25_svg():
     # (1) the fit bars, after (4) so that their note stays
     label = '          <text class="d-s" x="-164" y="48">FPGA fabric logic</text>\n'
     svg = sub(svg, label, label + DE25_FIT_NOTE + fit_bars(DE25_FIT)
-                   + slack_block('+1.663') + '\n')
+                   + slack_block('+2.422') + '\n')
     svg = sub(svg, '''">
 
           <rect class="d-box d-done d-key"''', '''">
@@ -1327,7 +1374,7 @@ KR260_STATUS = [(n, g, ('' if n in ('display output', 'S_AXI_HP3', 'debug cable 
                 for n, g, s in DE25_STATUS if n != 'SPL']
 
 KR260_FIT = [
-    ('LUTs 14,014 of 117,120', 14014 / 117120),
+    ('LUTs 14,017 of 117,120', 14017 / 117120),
     ('BRAM 171 KB of 648 KB', 38 / 144),
 ]
 
@@ -1335,7 +1382,7 @@ def kr260_aria():
     return ('The CADR mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260. '
             + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED) + ' '
             'The fabric&rsquo;s clock is the carrier&rsquo;s 25 megahertz through a clock manager, 100 megahertz, ten nanoseconds a tick. '
-            'Under the fabric&rsquo;s label, 14,014 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 2.848 nanoseconds. '
+            'Under the fabric&rsquo;s label, 14,017 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 3.528 nanoseconds. '
             'Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. '
             'Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. '
             'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system, 1920 by 1080. The display output in the fabric, which would send that controller its pixels by a line, its port and the debug cable adapter carry no color. '
@@ -1367,12 +1414,12 @@ def kr260_svg():
     svg, n = re.subn(r'\n[ \t]*<!--.*?-->[ \t]*(?=\n)', '', svg, flags=re.S)
     assert '<!--' not in svg
     # (1) the fit figures come off, and the machine's own text takes their place
-    i = svg.index('          <text class="d-s" x="-164" y="68">LUTs 15,050 of 53,200</text>')
-    end = '          <text class="d-s" x="-164" y="140">worst setup +0.222 ns</text>\n'
+    i = svg.index('          <text class="d-s" x="-164" y="68">LUTs 15,048 of 53,200</text>')
+    end = '          <text class="d-s" x="-164" y="140">worst setup +0.126 ns</text>\n'
     assert svg.count(end) == 1
     j = svg.index(end) + len(end)
     assert svg[i:j].count('28.3%') == 1 and svg[i:j].count('32.9%') == 1
-    svg = (svg[:i] + fit_bars(KR260_FIT) + slack_block('+2.848') + '''
+    svg = (svg[:i] + fit_bars(KR260_FIT) + slack_block('+3.528') + '''
           <text class="d-s" x="-164" y="170">adapters in the fabric</text>
           <text class="d-s" x="-164" y="184">meet every port at</text>
           <text class="d-s" x="-164" y="198">128 bits</text>
@@ -1466,7 +1513,7 @@ def kr260_svg():
               '<text class="d-s" x="87" y="684" text-anchor="middle">HP0 shares a port with the DisplayPort DMA</text>')
     svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>''',
               '''          <text class="d-t" x="87" y="738" text-anchor="middle">4 GB DDR4</text>''')
-    svg = sub(svg, '&mdash; and 384 MB left to Linux</text>', '&mdash; and the rest left to Linux</text>')
+    svg = sub(svg, mem_block('arty'), mem_block('kria'))
     svg = sub(svg, '<text class="d-s" x="453" y="684" text-anchor="middle">gigabit Ethernet</text>',
               '<text class="d-s" x="453" y="684" text-anchor="middle">J10C, gigabit Ethernet</text>')
     svg = sub(svg, '''          <text class="d-t" x="746" y="670" text-anchor="middle">SD host</text>
@@ -1585,9 +1632,9 @@ def build_kr260():
 #   - the memory is the CADR's 128 MB at both revisions up to this one
 #     (docs/linux.md), so the foot says what the CADR's does.
 QUUX_K = {'arty-z7-20': 4, 'de25-nano': 4}
-QUUX_FITS = {   # docs/fits.md: revision 12, the fits of aec5f54, the latest that meet timing
-    'arty-z7-20': (('LUTs 17,105 of 53,200', 17105 / 53200), ('BRAM 279 KB of 630 KB', 62 / 140), '+0.776'),
-    'de25-nano': (('ALM 18,912 of 46,800', 18912 / 46800), ('M20K 478 KB of 895 KB', 191 / 358), '+2.112'),
+QUUX_FITS = {   # docs/fits.md, first table: the QUUX rows of the combined tree, d708429 (revision 12)
+    'arty-z7-20': (('LUTs 16,888 of 53,200', 16888 / 53200), ('BRAM 279 KB of 630 KB', 62 / 140), '+0.089'),
+    'de25-nano': (('ALM 18,598 of 46,800', 18598 / 46800), ('M20K 478 KB of 895 KB', 191 / 358), '+2.343'),
 }
 
 def quux_aria(board):
@@ -1599,8 +1646,13 @@ def quux_aria(board):
               'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
               'Under the page: the memory master, block-disk, the video controller, the file device and the keyboard and mouse. '
               'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
+              'Under the fabric&rsquo;s label, %s in use, %.1f per cent, and %s of block memory, %.1f per cent; under those two figures, the worst setup slack of this build, plus %s nanoseconds. '
+              'Under the chip the memory box says the areas are the CADR&rsquo;s, which QUUX shares. '
               'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
-              % ('programmable logic' if arty else 'FPGA fabric', QUUX_K[board]))
+              % ('programmable logic' if arty else 'FPGA fabric', QUUX_K[board],
+                 QUUX_FITS[board][0][0].split(' ', 1)[1].replace(' of ', ' of the ') + (' lookup tables' if arty else ' adaptive logic modules'),
+                 100 * QUUX_FITS[board][0][1], QUUX_FITS[board][1][0].split(' ', 1)[1].replace(' of ', ' of the '),
+                 100 * QUUX_FITS[board][1][1], QUUX_FITS[board][2].lstrip('+')))
 
 def quux_svg(board):
     arty = board == 'arty-z7-20'
@@ -1613,6 +1665,7 @@ def quux_svg(board):
     head = base[:i]
     i2 = base.index('          <path class="d-dash" d="M-170,450 L-150,450')
     tail = base[i2:]
+    tail = sub(tail, mem_block('arty'), mem_block('arty', True))
     # (1) head
     head = re.sub(r'aria-label="[^"]*"', 'aria-label="%s"' % quux_aria(board), head, count=1)
     head = sub(head, '''          <text class="d-s" x="-70" y="318" text-anchor="middle">scans both screens out of</text>
@@ -1767,12 +1820,9 @@ def quux_de25(svg):
     de25_svg() makes to the CADR's, to the blocks the two drawings share."""
     svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
               '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (DE25_PART[1], DE25_PART[0]))
-    svg = sub(svg, '''          <text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>
-          <text class="d-s" x="87" y="762" text-anchor="middle">64 MB reserved for main memory,</text>
-          <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
-          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
-''', '''          <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
-''')
+    svg = sub(svg, mem_block('arty', True), mem_block('de25', True))
+    svg = sub(svg, '<text class="d-t" x="87" y="738" text-anchor="middle">512 MB DDR3</text>',
+              '<text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>')
     lamps = re.findall(r'<circle [^>]*cx="1380"[^>]*/>', svg)
     assert len(lamps) == 8, len(lamps)
     for c in lamps:
@@ -2173,7 +2223,7 @@ def main(out):
     build_index()
     build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one AMD Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
                 ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY, quux=quux_svg('arty-z7-20'))
-    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one AMD Zynq 7007S, the XC7Z007S. This board runs the CADR only: the CADR takes 97.4% of its lookup tables, and QUUX does not fit.', "muir-fpga's board, waving",
+    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one AMD Zynq 7007S, the XC7Z007S. This board runs the CADR only: the CADR takes 96.9% of its lookup tables, and QUUX does not fit.', "muir-fpga's board, waving",
                 ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA, figlabel='CORA Z7-07S, THE CADR ONLY')
     build_kr260()
     build_de25()

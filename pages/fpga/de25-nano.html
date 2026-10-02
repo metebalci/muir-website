@@ -26,7 +26,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 01 &mdash; DE25-NANO, THE CADR</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 1: DE25-Nano">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="The Arty Z7-20&rsquo;s architecture drawing, drawn for the DE25-Nano, whose FPGA is one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS. All twenty-one blocks this project builds for this board are done and drawn green: display output, F2SDRAM, clock, ICMEM board, CADR board, bus interface, debug cable adapter, Xbus to DDR, disk controller, TV, Color TV, I/O board, H2F, LWH2F, SPL, terminal, Chaosnet, serial, disk packs, console and USB input. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board. The lamps at its right are drawn in the color each one lights, which on this board is green for every one of them, as its user LEDs are, and the debug cable is drawn on a GPIO header, since the board has no Pmod. HPS means Hard Processor System. Beside muir-sim, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. It runs on a host of its own today, and no line reaches its block, because running it on this board&rsquo;s own processing system, so that a card by itself is a whole site, would be a path on the board and there is none yet. Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,451 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. Under those two, the worst setup slack of this build, plus 1.663 nanoseconds. Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names and buses, the debug window&rsquo;s bridge, the HDMI transmitter, the buttons&rsquo; and the lamps&rsquo; names, the lamps&rsquo; color, the USB-Blaster III and its socket, and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="The Arty Z7-20&rsquo;s architecture drawing, drawn for the DE25-Nano, whose FPGA is one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS. All twenty-one blocks this project builds for this board are done and drawn green: display output, F2SDRAM, clock, ICMEM board, CADR board, bus interface, debug cable adapter, Xbus to DDR, disk controller, TV, Color TV, I/O board, H2F, LWH2F, SPL, terminal, Chaosnet, serial, disk packs, console and USB input. The parts drawn gray are components of the board, and muir-sim, ozd and U-Boot are drawn orange, as programs other projects carry onto this board. The lamps at its right are drawn in the color each one lights, which on this board is green for every one of them, as its user LEDs are, and the debug cable is drawn on a GPIO header, since the board has no Pmod. HPS means Hard Processor System. Beside muir-sim, at the right end of the Linux outline, stands ozd, the associated machine a site of these machines takes its files, its time and its host table from over Chaosnet. It runs on a host of its own today, and no line reaches its block, because running it on this board&rsquo;s own processing system, so that a card by itself is a whole site, would be a path on the board and there is none yet. Under the fabric&rsquo;s label, two figures for the board with its memory, the disk and the display in it: 16,480 of the part&rsquo;s 46,800 adaptive logic modules in use, 35.2 per cent; and 135 of its 358 M20K blocks, 37.7 per cent. Under those two, the worst setup slack of this build, plus 2.422 nanoseconds. Apart from the FPGA fabric and HPS terminology, the chip&rsquo;s label, the CPU cores and their maximum clocks, the memory, the one memory port and the two processor ports&rsquo; own names and buses, the debug window&rsquo;s bridge, the HDMI transmitter, the buttons&rsquo; and the lamps&rsquo; names, the lamps&rsquo; color, the USB-Blaster III and its socket, and the cable&rsquo;s connector, the labels are the Arty Z7-20&rsquo;s and have not been redrawn for this board.">
 
           <!-- The Arty Z7-20's drawing, generated for the DE25-Nano.  All
                twenty-one blocks this project builds for this board are done
@@ -77,11 +77,10 @@
 
           <text class="d-s" x="-164" y="48">FPGA fabric logic</text>
           <!-- From the Quartus fit of the CADR with the faces and the
-               display output, the fit of the working tree on ab41da7 with
-               the change that gives QUUX's control store an explicit block RAM
-               enable, as muir-fpga's docs/fits.md records it.  Timing is met, the worst being +1.663 ns of setup, on an
-               HDMI output pin, and 0.000 ns of hold.
-               16,451 ALMs and 135 M20K blocks.
+               display output, the fit of the combined tree d708429, as
+               muir-fpga's docs/fits.md records it.  Timing is met: +2.422 ns
+               of setup and +0.001 ns of hold.
+               16,480 ALMs and 135 M20K blocks.
                A5E 013B: 46,800 ALMs, and 358 M20K blocks of 20 Kbit each,
                895 KB, the same convention as the Zynq boards' block RAM row.
                Source: Altera Agilex 5 E-Series Product Table, 2026.08.07, p. 3:
@@ -89,9 +88,9 @@
                The small memories are counted inside the ALMs, as the
                lookup-table memory on the Zynq boards is counted inside the
                slices. -->
-          <text class="d-s" x="-164" y="68">ALM 16,451 of 46,800</text>
+          <text class="d-s" x="-164" y="68">ALM 16,480 of 46,800</text>
           <rect class="d-box" x="-164" y="74" width="136" height="13"/>
-          <rect x="-164" y="74" width="47.8" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <rect x="-164" y="74" width="47.9" height="13" fill="currentColor" fill-opacity="0.42"/>
           <text class="d-n" x="-158" y="84">35.2%</text>
           <text class="d-s" x="-164" y="104">M20K 338 KB of 895 KB</text>
           <rect class="d-box" x="-164" y="110" width="136" height="13"/>
@@ -103,7 +102,7 @@
                on the same row pitch the two bars keep and carries no
                bar of its own, because a slack has no total to be a
                fraction of. -->
-          <text class="d-s" x="-164" y="140">worst setup +1.663 ns</text>
+          <text class="d-s" x="-164" y="140">worst setup +2.422 ns</text>
 
           <rect class="d-box d-done" x="40" y="62" width="112" height="128"/>
           <text class="d-t" x="96" y="100" text-anchor="middle">clock</text>
@@ -300,6 +299,9 @@
 
           <rect class="d-box d-ext" x="-79" y="712" width="332" height="84"/>
           <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
+          <text class="d-s" x="87" y="762" text-anchor="middle">16 MB reserved for main memory,</text>
+          <text class="d-s" x="87" y="776" text-anchor="middle">1 MB for the display, 128 KB for disk packs</text>
+          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and Linux has the rest, 938,276 kB</text>
           <rect class="d-box d-ext" x="1366" y="88" width="150" height="98"/>
           <text class="d-t" x="1441" y="110" text-anchor="middle">GPIO header</text>
           <text class="d-t" x="1441" y="128" text-anchor="middle">Debug cable</text>
@@ -373,7 +375,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; DE25-NANO, QUUX</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: DE25-Nano, QUUX">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, a microcycle of 4 ticks of ten nanoseconds; the processor, with a 32-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels; the memory port, one requester, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of four words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, a microcycle of 4 ticks of ten nanoseconds; the processor, with a 32-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels; the memory port, one requester, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of four words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 18,598 of the 46,800 adaptive logic modules in use, 39.7 per cent, and 478 KB of the 895 KB of block memory, 53.4 per cent; under those two figures, the worst setup slack of this build, plus 2.343 nanoseconds. Under the chip the memory box says the areas are the CADR&rsquo;s, which QUUX shares. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
 
           <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
           <text class="d-s" x="753.9" y="861">this project</text>
@@ -406,10 +408,10 @@
           <text class="d-s" x="-233" y="368" text-anchor="middle">at 60 Hz</text>
 
           <text class="d-s" x="-164" y="48">FPGA fabric logic</text>
-          <text class="d-s" x="-164" y="68">ALM 18,912 of 46,800</text>
+          <text class="d-s" x="-164" y="68">ALM 18,598 of 46,800</text>
           <rect class="d-box" x="-164" y="74" width="136" height="13"/>
-          <rect x="-164" y="74" width="55" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-158" y="84">40.4%</text>
+          <rect x="-164" y="74" width="54" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-158" y="84">39.7%</text>
           <text class="d-s" x="-164" y="104">M20K 478 KB of 895 KB</text>
           <rect class="d-box" x="-164" y="110" width="136" height="13"/>
           <rect x="-164" y="110" width="72.6" height="13" fill="currentColor" fill-opacity="0.42"/>
@@ -420,7 +422,7 @@
                on the same row pitch the two bars keep and carries no
                bar of its own, because a slack has no total to be a
                fraction of. -->
-          <text class="d-s" x="-164" y="140">worst setup +2.112 ns</text>
+          <text class="d-s" x="-164" y="140">worst setup +2.343 ns</text>
           <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
           <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
           <text class="d-n" x="996" y="120" text-anchor="middle">quux_phase_gen</text>
@@ -594,6 +596,9 @@
 
           <rect class="d-box d-ext" x="-79" y="712" width="332" height="84"/>
           <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
+          <text class="d-s" x="87" y="762" text-anchor="middle">the CADR&rsquo;s areas, which QUUX shares:</text>
+          <text class="d-s" x="87" y="776" text-anchor="middle">16 MB main memory, 1 MB display, 128 KB packs</text>
+          <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and Linux has the rest, 938,276 kB</text>
           <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>
           <rect x="1376" y="275" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="283">KEY0 &mdash; BOOT</text>
