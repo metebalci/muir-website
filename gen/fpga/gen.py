@@ -641,13 +641,13 @@ def page(fname, title, desc, parts, css=()):
     open(os.path.join(OUT, fname), 'w', encoding='utf-8').write(html)
     WRITTEN.append(fname)
 
-def hero(eyebrow, title, lede, body='', keys='', side=''):
+def hero(eyebrow, title, lede, body='', keys='', side='', cls=''):
     """The top of a page: its eyebrow, its title, its lede and anything
     under it, and the keys to the pages it leads to."""
     return ('<section class="page-hero wrap%s">\n<div>\n'
             '<p class="eyebrow"><span class="dot"></span>%s</p>\n<h1>%s</h1>\n'
             '<p class="intro">%s</p>\n%s%s</div>\n%s</section>\n'
-            % ('' if side else ' solo', eyebrow, title, lede, body, keys, side))
+            % (('' if side else ' solo') + (' ' + cls if cls else ''), eyebrow, title, lede, body, keys, side))
 
 def keys(*ks, first='key'):
     """The keys to other pages, as the design's links: a button for the
@@ -684,25 +684,24 @@ def docs_link(text, path, anchor=''):
 
 # ================================================================ front page
 
+# The herald is a crop of rows 1 to 129 and columns 1 to 638 of the Kria KR260's screen
+# after a cold boot of System 1002 (768 x 963, white on black), unscaled.
+HERALD = '''<figure class="fig herald">
+<div class="fig-top"><span>THE CADR ON THE KRIA KR260</span><span>MUIR-FPGA</span></div>
+<img src="kr260-herald.png" width="638" height="129" alt="The CADR&rsquo;s screen on the Kria KR260 after a cold boot: [Loading error table for microcode version 1000]; MIT System, band 1 of LISPM-1.; 2048K physical memory, 16127K virtual memory.; Experimental System 1002; Microcode 1000; MIT Lisp Machine Four, with associated machine OZ.; ;Reading at top level in Lisp Listener 1.; ;Reading in base 10 in package USER with standard traditional syntax readtable.">
+<figcaption>The CADR&rsquo;s herald on the Kria KR260: System 1002, cold-booted, from its screen.</figcaption>
+</figure>
+'''
+
 def build_index():
     table = board_table()
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
                   'What runs on each of four small boards.',
+                  body='<p class="hero-description">Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines, tick for tick. The CADR runs within about 5% of MIT&rsquo;s speed, and QUUX at a 40&nbsp;ns microcycle.</p>\n',
                   keys=keys(('#boards', 'The boards'), ('#using', 'Using it'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
-                            ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;')),
-                  side='''<div class="side">
-<p>Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines:</p>
-<pre>HELD TO   muir-sim, <b>tick for tick</b>
-BOOTS     its system: MIT&rsquo;s for the CADR,
-          the updated one for QUUX
-SHOWS     its screen on a monitor
-          or in a viewer
-RUNS      the CADR within about 5% of
-          MIT&rsquo;s speed, QUUX at 40 ns
-          a microcycle</pre>
-</div>
-'''))
+                            ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;'))
+                       + HERALD, cls='has-herald'))
 
     # The two speech bubbles this section had are plain sentences now, in
     # the same words.

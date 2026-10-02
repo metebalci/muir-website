@@ -99,3 +99,21 @@ svg text { text-rendering: geometricPrecision; }
 /* The one red text on these drawings: the debug cable's supply pins, open at
    both ends. */
 .d-warn, .d-s.d-warn, .d-x.d-warn { fill: var(--st-absent); font-weight: 500; }
+
+/* The herald on the front page of muir-fpga: a crop of the Kria KR260's
+   screen under the hero's text, at its own size (one image pixel to one
+   screen pixel, so hard pixels are exact) in a black frame of padding like
+   the screen's, and scaled down only where the column is narrower. */
+.fig.herald { margin: 36px 0 0; max-width: 658px; }
+.fig.herald img { display: block; box-sizing: border-box; width: 658px; max-width: 100%; height: auto; padding: 12px 10px; image-rendering: pixelated; background: #000; }
+/* Below the width where the herald no longer fits at its own size it is
+   scaled by a fraction, which smooth scaling keeps legible. */
+@media (max-width: 700px) {
+  .fig.herald img { image-rendering: auto; }
+}
+/* The hero that ends in the herald keeps less room under its caption than
+   the other heroes keep under their text. */
+.page-hero.has-herald { padding-bottom: 24px; }
+@media (max-width: 700px) {
+  .page-hero.has-herald { padding-bottom: 20px; }
+}
