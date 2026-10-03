@@ -340,118 +340,172 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-cable-on-one-connector-of-eight-pins">the cable on one connector of eight pins</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-ribbon-can-be-made-the-wrong-way-round-and-one-was">the ribbon made the wrong way round</a>.</p>
 </figure>
 </section>
-<section id="kria" class="section wrap" aria-label="The cable on the Kria KR260.">
-<div class="section-heading"><div><p class="eyebrow">04 / PMOD1, THE FIRST OF FOUR</p><h2>The cable on<br>the <em>Kria KR260.</em></h2></div></div>
-<p class="lead">The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers: eight signal pins in bank 45 at 3.3 V, each with a pull-down, so an unplugged connector reads zero.</p>
+<section id="pmod" class="section wrap" aria-label="The cable on the Pmod boards.">
+<div class="section-heading"><div><p class="eyebrow">04 / THE THREE PMOD BOARDS</p><h2>The cable on<br>the <em>Pmod boards.</em></h2></div></div>
+<p class="lead">The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On all three the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.</p>
 <div class="cols">
 <div class="prose">
-<p>The eight signals are on PMOD1&rsquo;s pins 1 to 4 and 7 to 10, in the order the Zynq boards use, so a ribbon between PMOD1 and a Zynq board&rsquo;s JA joins each signal to its counterpart. A mirrored ribbon is the one made the wrong way up, which the debugger finds.</p>
-<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground on both connectors and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. Neither supply pin is a fabric pin, so nothing in the design can drive one.</p>
+<p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s and the Cora&rsquo;s package pins are the same ones, from Digilent&rsquo;s files; the Kria&rsquo;s are AMD&rsquo;s.</p>
+<p>A mirrored ribbon is one pressed on the other way up, which joins each row to the other, and the debugger finds it under <code>auto</code>.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of the three boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
 </div>
 <div>
-<p class="callout">The pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
-<div class="prose"><p>The package pins and the order of the eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
+<p class="callout">The Arty and the Cora have run this cable.</p>
+<div class="prose"><p>A ribbon between their two JA connectors has carried the link, each board running Lisp throughout; the table below says what it carried.</p></div>
+<p class="callout">The Kria&rsquo;s pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
+<div class="prose"><p>The Kria&rsquo;s package pins and the order of its eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
 </div>
 </div>
 <figure class="fig">
-<div class="fig-top"><span>FIG. 04 &mdash; THE CABLE ON THE KRIA KR260</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 4: The cable on the Kria KR260">
-        <svg viewBox="0 0 1060 400" role="img" aria-label="The debug cable on the Kria KR260, drawn as its connector PMOD1: twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. For each pin, its package pin, what it carries, and the pin of the Arty Z7-20&rsquo;s JA that it meets on a straight ribbon and on a mirrored one. Pin 1, package pin H12, debugger strobe, meets JA 1 straight and JA 7 mirrored. Pin 2, package pin E10, guard, driven low, meets JA 2 straight and JA 8 mirrored. Pin 3, package pin D10, debugger data, meets JA 3 straight and JA 9 mirrored. Pin 4, package pin C11, guard, driven low, meets JA 4 straight and JA 10 mirrored. Pin 5, no package pin, ground, meets JA 5 straight and JA 11 mirrored, and the cable joins the two grounds. Pin 6 carries 3.3 V and is open at both ends. Pin 7, package pin B10, debuggee strobe, meets JA 7 straight and JA 1 mirrored. Pin 8, package pin E12, guard, driven low, meets JA 8 straight and JA 2 mirrored. Pin 9, package pin D11, debuggee data, meets JA 9 straight and JA 3 mirrored. Pin 10, package pin B11, guard, driven low, meets JA 10 straight and JA 4 mirrored. Pin 11, no package pin, ground, meets JA 11 straight and JA 5 mirrored, and the cable joins the two grounds. Pin 12 carries 3.3 V and is open at both ends. The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.">
-          <text class="d-t" x="10" y="18">the debug cable on the Kria KR260</text>
-          <text class="d-s" x="10" y="36">PMOD1, with the Arty Z7-20&rsquo;s JA pin each pin meets on a straight ribbon and on a mirrored one</text>
-          <rect class="d-box" x="50" y="84" width="160" height="118"/>
+<div class="fig-top"><span>FIG. 04 &mdash; THE CABLE ON THE PMOD BOARDS</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 4: The cable on the Pmod boards">
+        <svg viewBox="0 0 1060 516" role="img" aria-label="The debug cable on a Pmod, drawn as its twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. For each pin, what it carries, its package pin on the Arty Z7-20&rsquo;s JA, the Cora Z7-07S&rsquo;s JA and the Kria KR260&rsquo;s PMOD1, and the pin of the far Pmod that it meets on a straight ribbon and on a mirrored one. Pin 1, debugger strobe (Arty JA Y18; Cora JA Y18; Kria PMOD1 H12), meets pin 1 straight and pin 7 mirrored. Pin 2, guard, driven low (Arty JA Y19; Cora JA Y19; Kria PMOD1 E10), meets pin 2 straight and pin 8 mirrored. Pin 3, debugger data (Arty JA Y16; Cora JA Y16; Kria PMOD1 D10), meets pin 3 straight and pin 9 mirrored. Pin 4, guard, driven low (Arty JA Y17; Cora JA Y17; Kria PMOD1 C11), meets pin 4 straight and pin 10 mirrored. Pin 5, ground (no package pin), meets pin 5 straight and pin 11 mirrored, and the cable joins the two grounds. Pin 6 carries 3.3 V and is open at both ends. Pin 7, debuggee strobe (Arty JA U18; Cora JA U18; Kria PMOD1 B10), meets pin 7 straight and pin 1 mirrored. Pin 8, guard, driven low (Arty JA U19; Cora JA U19; Kria PMOD1 E12), meets pin 8 straight and pin 2 mirrored. Pin 9, debuggee data (Arty JA W18; Cora JA W18; Kria PMOD1 D11), meets pin 9 straight and pin 3 mirrored. Pin 10, guard, driven low (Arty JA W19; Cora JA W19; Kria PMOD1 B11), meets pin 10 straight and pin 4 mirrored. Pin 11, ground (no package pin), meets pin 11 straight and pin 5 mirrored, and the cable joins the two grounds. Pin 12 carries 3.3 V and is open at both ends.">
+          <text class="d-t" x="10" y="18">the debug cable on a Pmod</text>
+          <text class="d-s" x="10" y="36">JA on the Arty Z7-20 and the Cora Z7-07S, PMOD1 on the Kria KR260; the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one</text>
+          <rect class="d-box" x="50" y="84" width="160" height="166"/>
           <text class="d-t" x="130" y="108" text-anchor="middle">pin 1</text>
-          <text class="d-s" x="130" y="130" text-anchor="middle">H12</text>
-          <text class="d-x" x="130" y="148" text-anchor="middle">debugger strobe</text>
-          <path class="d-line" d="M60,160 H200" stroke-opacity="0.3"/>
-          <text class="d-x" x="130" y="176" text-anchor="middle">straight: JA 1</text>
-          <text class="d-x" x="130" y="190" text-anchor="middle">mirrored: JA 7</text>
-          <rect class="d-box" x="210" y="84" width="160" height="118"/>
+          <text class="d-x" x="130" y="126" text-anchor="middle">debugger strobe</text>
+          <path class="d-line" d="M60,136 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="62" y="154">Arty JA</text>
+          <text class="d-s" x="198" y="154" text-anchor="end">Y18</text>
+          <text class="d-x" x="62" y="170">Cora JA</text>
+          <text class="d-s" x="198" y="170" text-anchor="end">Y18</text>
+          <text class="d-x" x="62" y="186">Kria PMOD1</text>
+          <text class="d-s" x="198" y="186" text-anchor="end">H12</text>
+          <path class="d-line" d="M60,196 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="130" y="216" text-anchor="middle">straight: pin 1</text>
+          <text class="d-x" x="130" y="230" text-anchor="middle">mirrored: pin 7</text>
+          <rect class="d-box" x="210" y="84" width="160" height="166"/>
           <text class="d-t" x="290" y="108" text-anchor="middle">pin 2</text>
-          <text class="d-s" x="290" y="130" text-anchor="middle">E10</text>
-          <text class="d-x" x="290" y="148" text-anchor="middle">guard, driven low</text>
-          <path class="d-line" d="M220,160 H360" stroke-opacity="0.3"/>
-          <text class="d-x" x="290" y="176" text-anchor="middle">straight: JA 2</text>
-          <text class="d-x" x="290" y="190" text-anchor="middle">mirrored: JA 8</text>
-          <rect class="d-box" x="370" y="84" width="160" height="118"/>
+          <text class="d-x" x="290" y="126" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M220,136 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="222" y="154">Arty JA</text>
+          <text class="d-s" x="358" y="154" text-anchor="end">Y19</text>
+          <text class="d-x" x="222" y="170">Cora JA</text>
+          <text class="d-s" x="358" y="170" text-anchor="end">Y19</text>
+          <text class="d-x" x="222" y="186">Kria PMOD1</text>
+          <text class="d-s" x="358" y="186" text-anchor="end">E10</text>
+          <path class="d-line" d="M220,196 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="290" y="216" text-anchor="middle">straight: pin 2</text>
+          <text class="d-x" x="290" y="230" text-anchor="middle">mirrored: pin 8</text>
+          <rect class="d-box" x="370" y="84" width="160" height="166"/>
           <text class="d-t" x="450" y="108" text-anchor="middle">pin 3</text>
-          <text class="d-s" x="450" y="130" text-anchor="middle">D10</text>
-          <text class="d-x" x="450" y="148" text-anchor="middle">debugger data</text>
-          <path class="d-line" d="M380,160 H520" stroke-opacity="0.3"/>
-          <text class="d-x" x="450" y="176" text-anchor="middle">straight: JA 3</text>
-          <text class="d-x" x="450" y="190" text-anchor="middle">mirrored: JA 9</text>
-          <rect class="d-box" x="530" y="84" width="160" height="118"/>
+          <text class="d-x" x="450" y="126" text-anchor="middle">debugger data</text>
+          <path class="d-line" d="M380,136 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="382" y="154">Arty JA</text>
+          <text class="d-s" x="518" y="154" text-anchor="end">Y16</text>
+          <text class="d-x" x="382" y="170">Cora JA</text>
+          <text class="d-s" x="518" y="170" text-anchor="end">Y16</text>
+          <text class="d-x" x="382" y="186">Kria PMOD1</text>
+          <text class="d-s" x="518" y="186" text-anchor="end">D10</text>
+          <path class="d-line" d="M380,196 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="450" y="216" text-anchor="middle">straight: pin 3</text>
+          <text class="d-x" x="450" y="230" text-anchor="middle">mirrored: pin 9</text>
+          <rect class="d-box" x="530" y="84" width="160" height="166"/>
           <text class="d-t" x="610" y="108" text-anchor="middle">pin 4</text>
-          <text class="d-s" x="610" y="130" text-anchor="middle">C11</text>
-          <text class="d-x" x="610" y="148" text-anchor="middle">guard, driven low</text>
-          <path class="d-line" d="M540,160 H680" stroke-opacity="0.3"/>
-          <text class="d-x" x="610" y="176" text-anchor="middle">straight: JA 4</text>
-          <text class="d-x" x="610" y="190" text-anchor="middle">mirrored: JA 10</text>
-          <rect class="d-tint" x="690" y="84" width="160" height="118"/>
-          <rect class="d-box" x="690" y="84" width="160" height="118"/>
+          <text class="d-x" x="610" y="126" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M540,136 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="542" y="154">Arty JA</text>
+          <text class="d-s" x="678" y="154" text-anchor="end">Y17</text>
+          <text class="d-x" x="542" y="170">Cora JA</text>
+          <text class="d-s" x="678" y="170" text-anchor="end">Y17</text>
+          <text class="d-x" x="542" y="186">Kria PMOD1</text>
+          <text class="d-s" x="678" y="186" text-anchor="end">C11</text>
+          <path class="d-line" d="M540,196 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="610" y="216" text-anchor="middle">straight: pin 4</text>
+          <text class="d-x" x="610" y="230" text-anchor="middle">mirrored: pin 10</text>
+          <rect class="d-tint" x="690" y="84" width="160" height="166"/>
+          <rect class="d-box" x="690" y="84" width="160" height="166"/>
           <text class="d-t" x="770" y="108" text-anchor="middle">pin 5</text>
-          <text class="d-s" x="770" y="130" text-anchor="middle">&mdash;</text>
-          <text class="d-x" x="770" y="148" text-anchor="middle">ground</text>
-          <path class="d-line" d="M700,160 H840" stroke-opacity="0.3"/>
-          <text class="d-x" x="770" y="176" text-anchor="middle">straight: JA 5, joined</text>
-          <text class="d-x" x="770" y="190" text-anchor="middle">mirrored: JA 11, joined</text>
-          <rect class="d-absent" x="850" y="84" width="160" height="118"/>
+          <text class="d-x" x="770" y="126" text-anchor="middle">ground</text>
+          <path class="d-line" d="M700,136 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="154" text-anchor="middle">no package pin</text>
+          <path class="d-line" d="M700,164 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="184" text-anchor="middle">straight: pin 5, joined</text>
+          <text class="d-x" x="770" y="198" text-anchor="middle">mirrored: pin 11, joined</text>
+          <rect class="d-absent" x="850" y="84" width="160" height="166"/>
           <text class="d-t" x="930" y="108" text-anchor="middle">pin 6</text>
-          <text class="d-s" x="930" y="130" text-anchor="middle">&mdash;</text>
-          <text class="d-x" x="930" y="148" text-anchor="middle">3.3 V</text>
-          <path class="d-line" d="M860,160 H1000" stroke-opacity="0.3"/>
-          <text class="d-x d-warn" x="930" y="176" text-anchor="middle">OPEN</text>
-          <text class="d-x" x="930" y="190" text-anchor="middle">at both ends</text>
-          <rect class="d-box" x="50" y="214" width="160" height="118"/>
-          <text class="d-t" x="130" y="238" text-anchor="middle">pin 7</text>
-          <text class="d-s" x="130" y="260" text-anchor="middle">B10</text>
-          <text class="d-x" x="130" y="278" text-anchor="middle">debuggee strobe</text>
-          <path class="d-line" d="M60,290 H200" stroke-opacity="0.3"/>
-          <text class="d-x" x="130" y="306" text-anchor="middle">straight: JA 7</text>
-          <text class="d-x" x="130" y="320" text-anchor="middle">mirrored: JA 1</text>
-          <rect class="d-box" x="210" y="214" width="160" height="118"/>
-          <text class="d-t" x="290" y="238" text-anchor="middle">pin 8</text>
-          <text class="d-s" x="290" y="260" text-anchor="middle">E12</text>
-          <text class="d-x" x="290" y="278" text-anchor="middle">guard, driven low</text>
-          <path class="d-line" d="M220,290 H360" stroke-opacity="0.3"/>
-          <text class="d-x" x="290" y="306" text-anchor="middle">straight: JA 8</text>
-          <text class="d-x" x="290" y="320" text-anchor="middle">mirrored: JA 2</text>
-          <rect class="d-box" x="370" y="214" width="160" height="118"/>
-          <text class="d-t" x="450" y="238" text-anchor="middle">pin 9</text>
-          <text class="d-s" x="450" y="260" text-anchor="middle">D11</text>
-          <text class="d-x" x="450" y="278" text-anchor="middle">debuggee data</text>
-          <path class="d-line" d="M380,290 H520" stroke-opacity="0.3"/>
-          <text class="d-x" x="450" y="306" text-anchor="middle">straight: JA 9</text>
-          <text class="d-x" x="450" y="320" text-anchor="middle">mirrored: JA 3</text>
-          <rect class="d-box" x="530" y="214" width="160" height="118"/>
-          <text class="d-t" x="610" y="238" text-anchor="middle">pin 10</text>
-          <text class="d-s" x="610" y="260" text-anchor="middle">B11</text>
-          <text class="d-x" x="610" y="278" text-anchor="middle">guard, driven low</text>
-          <path class="d-line" d="M540,290 H680" stroke-opacity="0.3"/>
-          <text class="d-x" x="610" y="306" text-anchor="middle">straight: JA 10</text>
-          <text class="d-x" x="610" y="320" text-anchor="middle">mirrored: JA 4</text>
-          <rect class="d-tint" x="690" y="214" width="160" height="118"/>
-          <rect class="d-box" x="690" y="214" width="160" height="118"/>
-          <text class="d-t" x="770" y="238" text-anchor="middle">pin 11</text>
-          <text class="d-s" x="770" y="260" text-anchor="middle">&mdash;</text>
-          <text class="d-x" x="770" y="278" text-anchor="middle">ground</text>
-          <path class="d-line" d="M700,290 H840" stroke-opacity="0.3"/>
-          <text class="d-x" x="770" y="306" text-anchor="middle">straight: JA 11, joined</text>
-          <text class="d-x" x="770" y="320" text-anchor="middle">mirrored: JA 5, joined</text>
-          <rect class="d-absent" x="850" y="214" width="160" height="118"/>
-          <text class="d-t" x="930" y="238" text-anchor="middle">pin 12</text>
-          <text class="d-s" x="930" y="260" text-anchor="middle">&mdash;</text>
-          <text class="d-x" x="930" y="278" text-anchor="middle">3.3 V</text>
-          <path class="d-line" d="M860,290 H1000" stroke-opacity="0.3"/>
-          <text class="d-x d-warn" x="930" y="306" text-anchor="middle">OPEN</text>
-          <text class="d-x" x="930" y="320" text-anchor="middle">at both ends</text>
-          <text class="d-s" x="50" y="360">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground on both connectors and the cable joins them;</text>
-          <text class="d-s" x="50" y="376">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>
-          <text class="d-s" x="50" y="392">The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.</text>
+          <text class="d-x" x="930" y="126" text-anchor="middle">3.3 V</text>
+          <path class="d-line" d="M860,136 H1000" stroke-opacity="0.3"/>
+          <text class="d-x" x="930" y="154" text-anchor="middle">no package pin</text>
+          <path class="d-line" d="M860,164 H1000" stroke-opacity="0.3"/>
+          <text class="d-x d-warn" x="930" y="184" text-anchor="middle">OPEN</text>
+          <text class="d-x" x="930" y="198" text-anchor="middle">at both ends</text>
+          <rect class="d-box" x="50" y="274" width="160" height="166"/>
+          <text class="d-t" x="130" y="298" text-anchor="middle">pin 7</text>
+          <text class="d-x" x="130" y="316" text-anchor="middle">debuggee strobe</text>
+          <path class="d-line" d="M60,326 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="62" y="344">Arty JA</text>
+          <text class="d-s" x="198" y="344" text-anchor="end">U18</text>
+          <text class="d-x" x="62" y="360">Cora JA</text>
+          <text class="d-s" x="198" y="360" text-anchor="end">U18</text>
+          <text class="d-x" x="62" y="376">Kria PMOD1</text>
+          <text class="d-s" x="198" y="376" text-anchor="end">B10</text>
+          <path class="d-line" d="M60,386 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="130" y="406" text-anchor="middle">straight: pin 7</text>
+          <text class="d-x" x="130" y="420" text-anchor="middle">mirrored: pin 1</text>
+          <rect class="d-box" x="210" y="274" width="160" height="166"/>
+          <text class="d-t" x="290" y="298" text-anchor="middle">pin 8</text>
+          <text class="d-x" x="290" y="316" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M220,326 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="222" y="344">Arty JA</text>
+          <text class="d-s" x="358" y="344" text-anchor="end">U19</text>
+          <text class="d-x" x="222" y="360">Cora JA</text>
+          <text class="d-s" x="358" y="360" text-anchor="end">U19</text>
+          <text class="d-x" x="222" y="376">Kria PMOD1</text>
+          <text class="d-s" x="358" y="376" text-anchor="end">E12</text>
+          <path class="d-line" d="M220,386 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="290" y="406" text-anchor="middle">straight: pin 8</text>
+          <text class="d-x" x="290" y="420" text-anchor="middle">mirrored: pin 2</text>
+          <rect class="d-box" x="370" y="274" width="160" height="166"/>
+          <text class="d-t" x="450" y="298" text-anchor="middle">pin 9</text>
+          <text class="d-x" x="450" y="316" text-anchor="middle">debuggee data</text>
+          <path class="d-line" d="M380,326 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="382" y="344">Arty JA</text>
+          <text class="d-s" x="518" y="344" text-anchor="end">W18</text>
+          <text class="d-x" x="382" y="360">Cora JA</text>
+          <text class="d-s" x="518" y="360" text-anchor="end">W18</text>
+          <text class="d-x" x="382" y="376">Kria PMOD1</text>
+          <text class="d-s" x="518" y="376" text-anchor="end">D11</text>
+          <path class="d-line" d="M380,386 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="450" y="406" text-anchor="middle">straight: pin 9</text>
+          <text class="d-x" x="450" y="420" text-anchor="middle">mirrored: pin 3</text>
+          <rect class="d-box" x="530" y="274" width="160" height="166"/>
+          <text class="d-t" x="610" y="298" text-anchor="middle">pin 10</text>
+          <text class="d-x" x="610" y="316" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M540,326 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="542" y="344">Arty JA</text>
+          <text class="d-s" x="678" y="344" text-anchor="end">W19</text>
+          <text class="d-x" x="542" y="360">Cora JA</text>
+          <text class="d-s" x="678" y="360" text-anchor="end">W19</text>
+          <text class="d-x" x="542" y="376">Kria PMOD1</text>
+          <text class="d-s" x="678" y="376" text-anchor="end">B11</text>
+          <path class="d-line" d="M540,386 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="610" y="406" text-anchor="middle">straight: pin 10</text>
+          <text class="d-x" x="610" y="420" text-anchor="middle">mirrored: pin 4</text>
+          <rect class="d-tint" x="690" y="274" width="160" height="166"/>
+          <rect class="d-box" x="690" y="274" width="160" height="166"/>
+          <text class="d-t" x="770" y="298" text-anchor="middle">pin 11</text>
+          <text class="d-x" x="770" y="316" text-anchor="middle">ground</text>
+          <path class="d-line" d="M700,326 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="344" text-anchor="middle">no package pin</text>
+          <path class="d-line" d="M700,354 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="374" text-anchor="middle">straight: pin 11, joined</text>
+          <text class="d-x" x="770" y="388" text-anchor="middle">mirrored: pin 5, joined</text>
+          <rect class="d-absent" x="850" y="274" width="160" height="166"/>
+          <text class="d-t" x="930" y="298" text-anchor="middle">pin 12</text>
+          <text class="d-x" x="930" y="316" text-anchor="middle">3.3 V</text>
+          <path class="d-line" d="M860,326 H1000" stroke-opacity="0.3"/>
+          <text class="d-x" x="930" y="344" text-anchor="middle">no package pin</text>
+          <path class="d-line" d="M860,354 H1000" stroke-opacity="0.3"/>
+          <text class="d-x d-warn" x="930" y="374" text-anchor="middle">OPEN</text>
+          <text class="d-x" x="930" y="388" text-anchor="middle">at both ends</text>
+          <text class="d-s" x="50" y="476">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground and the cable joins them;</text>
+          <text class="d-s" x="50" y="492">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>
         </svg>
 </div>
-<figcaption>Each pin with its package pin and what it carries, and the pin of the Arty Z7-20&rsquo;s JA it meets on a straight ribbon and on a mirrored one.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-kria-kr260s-connector-is-pmod1">the Kria KR260&rsquo;s connector is PMOD1</a>.</p>
+<figcaption>Each pin with what it carries, its package pin on the three boards, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.</figcaption>
+<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#which-four-pins-are-this-boards">the pins, per board</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-kria-kr260s-connector-is-pmod1">the Kria KR260&rsquo;s connector is PMOD1</a>.</p>
 </figure>
 </section>
 <section id="de25" class="section wrap" aria-label="The cable on the DE25-Nano.">
@@ -810,7 +864,7 @@
             <tr><th scope="row">one CADR debugging another</th><td><code>docs/debug-cable.md</code>; MIT&rsquo;s own <code>sys/cc/ldbg.lisp</code>, which lists the four addresses and the modifier bits, and <code>lcadrd.lisp</code></td></tr>
             <tr><th scope="row">the same cable in the fabric</th><td><code>rtl/machine/cadr_dbgin.sv</code>, <code>cadr_busint_regs.sv</code>, <code>rtl/plumbing/cadr_debug_window.sv</code>, <code>cadr_dbg_join.sv</code>; <code>docs/console.md</code></td></tr>
             <tr><th scope="row">the cable</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, and each board&rsquo;s own <code>.xdc</code>, whose pins come from Digilent&rsquo;s published files</td></tr>
-            <tr><th scope="row">the cable on the Kria KR260</th><td><code>boards/kria-kr260/cadr_kr260.xdc</code> for the pins, which are AMD&rsquo;s; <code>docs/debug-cable.md</code> for the roles</td></tr>
+            <tr><th scope="row">the cable on the Pmod boards</th><td><code>boards/arty-z7-20/cadr_arty.xdc</code> and <code>boards/cora-z7-07s/cadr_cora.xdc</code> for the Arty&rsquo;s and the Cora&rsquo;s pins, which are Digilent&rsquo;s; <code>boards/kria-kr260/cadr_kr260.xdc</code> for the Kria&rsquo;s, which are AMD&rsquo;s; <code>docs/debug-cable.md</code> for the roles</td></tr>
             <tr><th scope="row">the cable on the DE25-Nano</th><td><code>boards/de25-nano/de25_nano_pins.tcl</code> and <code>cadr_de25.sv</code> for the pins, <code>docs/debug-cable.md</code> for the roles; that board&rsquo;s user manual, Figure 3-18 for the header and Figure 2-1 for where it sits on the board</td></tr>
             <tr><th scope="row">one frame on the wire</th><td><code>rtl/plumbing/cadr_dbg_tx.sv</code> and <code>cadr_dbg_rx.sv</code>: the marker, the parity, the beats and the gap</td></tr>
             <tr><th scope="row">what the frame carries</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, which packs both frames in one expression, counted off <code>BUSINT.netlist</code></td></tr>

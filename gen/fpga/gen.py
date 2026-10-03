@@ -2039,31 +2039,48 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
          'How each board here comes up, in four sequences: a Zynq board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.',
          P)
 
-# ============================================== the Kria KR260's debug cable
+# ============================================== the debug cable on the Pmod boards
 
-# PMOD1's twelve pins: the package pin and what each carries, from the KR260
-# section of muir-fpga's docs/debug-cable.md; and the Arty Z7-20's JA pin each
-# meets on a straight ribbon and on a mirrored one.  The Cora Z7-07S's JA has
-# the same pin numbers, so the same table holds for it.
-KR260_PMOD1 = {
-    1: ('H12', 'debugger strobe'), 2: ('E10', 'guard, driven low'),
-    3: ('D10', 'debugger data'), 4: ('C11', 'guard, driven low'),
-    5: (None, 'ground'), 6: (None, '3.3 V'),
-    7: ('B10', 'debuggee strobe'), 8: ('E12', 'guard, driven low'),
-    9: ('D11', 'debuggee data'), 10: ('B11', 'guard, driven low'),
-    11: (None, 'ground'), 12: (None, '3.3 V'),
+# The twelve pins of a Pmod, what each carries, and each board's package pin,
+# from the Arty Z7-20's and the Cora Z7-07S's .xdc (Digilent's files; the two
+# boards use the same package pins) and the Kria KR260's PMOD1 section of
+# muir-fpga's docs/debug-cable.md and boards/kria-kr260/cadr_kr260.xdc (AMD's
+# board files).  A ribbon between any two of these Pmods joins pin n to pin n
+# (straight) or to the other row's pin (mirrored).
+PMOD_BOARDS = (('arty', 'Arty JA'), ('cora', 'Cora JA'), ('kria', 'Kria PMOD1'))
+PMOD_PINS = {
+    1: ('debugger strobe', {'arty': 'Y18', 'cora': 'Y18', 'kria': 'H12'}),
+    2: ('guard, driven low', {'arty': 'Y19', 'cora': 'Y19', 'kria': 'E10'}),
+    3: ('debugger data', {'arty': 'Y16', 'cora': 'Y16', 'kria': 'D10'}),
+    4: ('guard, driven low', {'arty': 'Y17', 'cora': 'Y17', 'kria': 'C11'}),
+    5: ('ground', None), 6: ('3.3 V', None),
+    7: ('debuggee strobe', {'arty': 'U18', 'cora': 'U18', 'kria': 'B10'}),
+    8: ('guard, driven low', {'arty': 'U19', 'cora': 'U19', 'kria': 'E12'}),
+    9: ('debuggee data', {'arty': 'W18', 'cora': 'W18', 'kria': 'D11'}),
+    10: ('guard, driven low', {'arty': 'W19', 'cora': 'W19', 'kria': 'B11'}),
+    11: ('ground', None), 12: ('3.3 V', None),
 }
 
 KR260_CABLE_CAPTION = ('The pin order is AMD&rsquo;s, from the KR260&rsquo;s board files, and has not been checked on a wire. '
                        'The Kria&rsquo;s cable has not been run on the boards.')
 
-def kria_cable_svg():
-    cw, ch, x0, ys = 160, 118, 50, (84, 214)
+def pmod_cable_svg(boards=('arty', 'cora', 'kria')):
+    """The Pmod's twelve pins: for each, what it carries, the package pin on
+    each board in `boards`, and the pin it meets at the far Pmod on a straight
+    ribbon and on a mirrored one."""
+    names = dict(PMOD_BOARDS)
+    nb = len(boards)
+    cw, x0 = 160, 50
+    sig_h = 118 + 16 * nb      # pin, role, one line a board, straight, mirrored
+    ch = sig_h
+    ys = (84, 84 + ch + 24)
     out = []
-    aria = ('The debug cable on the Kria KR260, drawn as its connector PMOD1: twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. '
-            'For each pin, its package pin, what it carries, and the pin of the Arty Z7-20&rsquo;s JA that it meets on a straight ribbon and on a mirrored one. ')
+    onboards = ' and '.join(names[b] for b in boards) if nb < 3 else 'the Arty Z7-20&rsquo;s JA, the Cora Z7-07S&rsquo;s JA and the Kria KR260&rsquo;s PMOD1'
+    aria = ('The debug cable on a Pmod, drawn as its twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. '
+            'For each pin, what it carries, its package pin on %s, and the pin of the far Pmod that it meets on a straight ribbon and on a mirrored one. ') % (
+            'the Kria KR260&rsquo;s PMOD1' if boards == ('kria',) else onboards)
     for n in range(1, 13):
-        pad, role = KR260_PMOD1[n]
+        role, pads = PMOD_PINS[n]
         x, y = x0 + ((n - 1) % 6) * cw, ys[(n - 1) // 6]
         cx = x + cw // 2
         straight = n
@@ -2074,36 +2091,51 @@ def kria_cable_svg():
             out.append('          <rect class="d-tint" x="%d" y="%d" width="%d" height="%d"/>' % (x, y, cw, ch))
         out.append('          <rect class="%s" x="%d" y="%d" width="%d" height="%d"/>' % (cls, x, y, cw, ch))
         out.append('          <text class="d-t" x="%d" y="%d" text-anchor="middle">pin %d</text>' % (cx, y + 24, n))
-        out.append('          <text class="d-s" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, y + 46, pad or '&mdash;'))
-        out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, y + 64, role))
-        out.append('          <path class="d-line" d="M%d,%d H%d" stroke-opacity="0.3"/>' % (x + 10, y + 76, x + cw - 10))
+        out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, y + 42, role))
+        out.append('          <path class="d-line" d="M%d,%d H%d" stroke-opacity="0.3"/>' % (x + 10, y + 52, x + cw - 10))
+        if pads:
+            for i, b in enumerate(boards):
+                ly = y + 70 + 16 * i
+                out.append('          <text class="d-x" x="%d" y="%d">%s</text>' % (x + 12, ly, names[b]))
+                out.append('          <text class="d-s" x="%d" y="%d" text-anchor="end">%s</text>' % (x + cw - 12, ly, pads[b]))
+        else:
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">no package pin</text>' % (cx, y + 70))
+        ry = y + 70 + 16 * (nb if pads else 1) - 6
+        out.append('          <path class="d-line" d="M%d,%d H%d" stroke-opacity="0.3"/>' % (x + 10, ry, x + cw - 10))
         if supply:
-            out.append('          <text class="d-x d-warn" x="%d" y="%d" text-anchor="middle">OPEN</text>' % (cx, y + 92))
-            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">at both ends</text>' % (cx, y + 106))
+            out.append('          <text class="d-x d-warn" x="%d" y="%d" text-anchor="middle">OPEN</text>' % (cx, ry + 20))
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">at both ends</text>' % (cx, ry + 34))
             aria += 'Pin %d carries 3.3 V and is open at both ends. ' % n
         else:
             joined = ', joined' if role == 'ground' else ''
-            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">straight: JA %d%s</text>' % (cx, y + 92, straight, joined))
-            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">mirrored: JA %d%s</text>' % (cx, y + 106, mirrored, joined))
-            aria += 'Pin %d, %s, %s, meets JA %d straight and JA %d mirrored%s. ' % (
-                n, 'package pin ' + pad if pad else 'no package pin', role, straight, mirrored, ', and the cable joins the two grounds' if role == 'ground' else '')
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">straight: pin %d%s</text>' % (cx, ry + 20, straight, joined))
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">mirrored: pin %d%s</text>' % (cx, ry + 34, mirrored, joined))
+            if pads:
+                where = '; '.join('%s %s' % (names[b], pads[b]) for b in boards)
+            else:
+                where = 'no package pin'
+            aria += 'Pin %d, %s (%s), meets pin %d straight and pin %d mirrored%s. ' % (
+                n, role, where, straight, mirrored, ', and the cable joins the two grounds' if role == 'ground' else '')
     body = '\n'.join(out)
-    return ('<svg viewBox="0 0 1060 400" role="img" aria-label="%s'
-            'The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.">\n'
-            '          <text class="d-t" x="10" y="18">the debug cable on the Kria KR260</text>\n'
-            '          <text class="d-s" x="10" y="36">PMOD1, with the Arty Z7-20&rsquo;s JA pin each pin meets on a straight ribbon and on a mirrored one</text>\n'
+    ty = ys[1] + ch + 36
+    h = ty + 40
+    title = 'the debug cable on a Pmod' if nb > 1 else 'the debug cable on the Kria KR260'
+    sub_ = ('JA on the Arty Z7-20 and the Cora Z7-07S, PMOD1 on the Kria KR260; the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one'
+            if nb > 1 else 'PMOD1, with the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one')
+    return ('<svg viewBox="0 0 1060 %d" role="img" aria-label="%s">\n'
+            '          <text class="d-t" x="10" y="18">%s</text>\n'
+            '          <text class="d-s" x="10" y="36">%s</text>\n'
             '%s\n'
-            '          <text class="d-s" x="50" y="360">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground on both connectors and the cable joins them;</text>\n'
-            '          <text class="d-s" x="50" y="376">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>\n'
-            '          <text class="d-s" x="50" y="392">The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.</text>\n'
-            '        </svg>' % (aria, body))
+            '          <text class="d-s" x="50" y="%d">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground and the cable joins them;</text>\n'
+            '          <text class="d-s" x="50" y="%d">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>\n'
+            '        </svg>' % (h, aria.strip(), title, sub_, body, ty, ty + 16))
 
 def kria_cable_section():
     """The Kria KR260's page: its own section for the cable, the connector as
     the debugging page draws it."""
     return section('cable', 'THE DEBUG CABLE', 'The debug <em>cable.</em>',
-        'The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers. The cable is told on <a href="debugging.html#kria">the debugging page</a>.',
-        figure(kria_cable_svg(), KR260_CABLE_CAPTION, cls='fig dense', label='FIG. 02 &mdash; THE CABLE ON THE KRIA KR260',
+        'The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers. The cable is told on <a href="debugging.html#pmod">the debugging page</a>.',
+        figure(pmod_cable_svg(('kria',)), KR260_CABLE_CAPTION, cls='fig dense', label='FIG. 02 &mdash; THE CABLE ON THE KRIA KR260',
                name='The cable on the Kria KR260'))
 
 # ================================================================ debugging
@@ -2161,25 +2193,31 @@ def build_debugging():
         [('the cable on one connector of eight pins', DC, 'the-cable-on-one-connector-of-eight-pins'),
          ('the ribbon made the wrong way round', DC, 'the-ribbon-can-be-made-the-wrong-way-round-and-one-was')]))
 
-    # THE KRIA KR260'S END, which is a Pmod, PMOD1, the first of four.  The
-    # drawing carries each pin's package pin and role and the Arty's JA pin it
-    # meets, straight and mirrored; the section carries the caveat that the pin
-    # order is AMD's and that nothing of this connector has crossed a wire.
-    P.append(section('kria', '04 / PMOD1, THE FIRST OF FOUR', 'The cable on<br>the <em>Kria KR260.</em>',
-        'The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers: eight signal pins in bank 45 at 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
+    # THE THREE PMOD BOARDS: the Arty Z7-20 and the Cora Z7-07S on JA, the
+    # Kria KR260 on PMOD1.  One drawing carries the twelve pins, each board's
+    # package pin and the pin each meets at the far Pmod; the section carries
+    # what has run (the Arty and the Cora, on a ribbon between their JAs) and
+    # the Kria's caveat (AMD's pin order, not checked on a wire, not run).
+    P.append(section('pmod', '04 / THE THREE PMOD BOARDS', 'The cable on<br>the <em>Pmod boards.</em>',
+        'The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On all three the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
         '''<div class="cols">
 <div class="prose">
-<p>The eight signals are on PMOD1&rsquo;s pins 1 to 4 and 7 to 10, in the order the Zynq boards use, so a ribbon between PMOD1 and a Zynq board&rsquo;s JA joins each signal to its counterpart. A mirrored ribbon is the one made the wrong way up, which the debugger finds.</p>
-<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground on both connectors and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. Neither supply pin is a fabric pin, so nothing in the design can drive one.</p>
+<p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s and the Cora&rsquo;s package pins are the same ones, from Digilent&rsquo;s files; the Kria&rsquo;s are AMD&rsquo;s.</p>
+<p>A mirrored ribbon is one pressed on the other way up, which joins each row to the other, and the debugger finds it under <code>auto</code>.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of the three boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
 </div>
 <div>
-<p class="callout">The pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
-<div class="prose"><p>The package pins and the order of the eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
+<p class="callout">The Arty and the Cora have run this cable.</p>
+<div class="prose"><p>A ribbon between their two JA connectors has carried the link, each board running Lisp throughout; the table below says what it carried.</p></div>
+<p class="callout">The Kria&rsquo;s pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
+<div class="prose"><p>The Kria&rsquo;s package pins and the order of its eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
 </div>
 </div>
-''' + fig(kria_cable_svg(), 'Each pin with its package pin and what it carries, and the pin of the Arty Z7-20&rsquo;s JA it meets on a straight ribbon and on a mirrored one.',
-          'The cable on the Kria KR260',
-          more=more_line('The long form: %s.' % docs_link('the Kria KR260&rsquo;s connector is PMOD1', DC, 'the-kria-kr260s-connector-is-pmod1')))))
+''' + fig(pmod_cable_svg(), 'Each pin with what it carries, its package pin on the three boards, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.',
+          'The cable on the Pmod boards',
+          more=more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
+              ('the pins, per board', 'which-four-pins-are-this-boards'),
+              ('the Kria KR260&rsquo;s connector is PMOD1', 'the-kria-kr260s-connector-is-pmod1')))))))
 
     # THE DE25-NANO'S END, which is not a Pmod.  This section is where the
     # warning about the supply pins belongs: the front page carries it as a
