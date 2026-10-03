@@ -657,6 +657,12 @@ def page(fname, title, desc, parts, css=()):
     open(os.path.join(OUT, fname), 'w', encoding='utf-8').write(html)
     WRITTEN.append(fname)
 
+def upper(html):
+    """HTML in capitals: its text is upper-cased, its entities and tags are not
+    (&rsquo; upper-cased is &RSQUO;, which is no entity)."""
+    return ''.join(p if i % 2 else p.upper()
+                   for i, p in enumerate(re.split(r'(&#?[A-Za-z0-9]+;|<[^>]*>)', html)))
+
 def hero(eyebrow, title, lede, body='', keys='', side='', cls=''):
     """The top of a page: its eyebrow, its title, its lede and anything
     under it, and the keys to the pages it leads to."""
@@ -1433,15 +1439,16 @@ def build_de25():
 # S_AXI_HP0_FPD and the pack side on S_AXI_HP2_FPD, the faces on
 # M_AXI_HPM0_FPD and the console and debug window on M_AXI_HPM1_FPD; (5) the
 # board has no HDMI: its one video connector is the processing system's
-# DisplayPort, and the display output, its port and the debug cable adapter
-# carry no color, which is what a block not done on a board looks like here;
+# DisplayPort, which the display output feeds through S_AXI_HP3_FPD, and the
+# debug cable adapter carries no color, which is what a block not done on a
+# board looks like here;
 # (6) the card is a USB disk to the loader, and the keyboard is on the other
 # USB controller; (7) the lamps are UF1 and UF2, there is no button and no
 # switch, and the SOM's fan is its own box; (8) the debug cable is PMOD1.
 KR260_PART = ('XCK26-SFVC784-2LV-C', 'AMD Zynq UltraScale+')
-KR260_RENAME = {'S_AXI_HP0': 'S_AXI_HP0_FPD', 'S_AXI_HP2': 'S_AXI_HP2_FPD', 'S_AXI_HP3': 'the display port',
+KR260_RENAME = {'S_AXI_HP0': 'S_AXI_HP0_FPD', 'S_AXI_HP2': 'S_AXI_HP2_FPD', 'S_AXI_HP3': 'S_AXI_HP3_FPD',
                 'M_AXI_GP0': 'M_AXI_HPM0_FPD', 'M_AXI_GP1': 'M_AXI_HPM1_FPD'}
-KR260_STATUS = [(n, g, ('' if n in ('display output', 'S_AXI_HP3', 'debug cable adapter') else s))
+KR260_STATUS = [(n, g, ('' if n == 'debug cable adapter' else s))
                 for n, g, s in DE25_STATUS if n != 'SPL']
 
 KR260_FIT = [
@@ -1456,7 +1463,7 @@ def kr260_aria():
             'Under the fabric&rsquo;s label, 14,017 of the 117,120 lookup tables are in use, 12.0 per cent, and 171 KB of the 648 KB of block RAM, 26.4 per cent; under those two figures, the worst setup slack of this build, plus 3.528 nanoseconds. '
             'Every port to the processing system is 128 bits wide and adapters in the fabric meet it at that width. '
             'Main memory is on the first of the high-performance ports and the disk packs on the third; the faces are on the first master port and the console and the debug window on the second. '
-            'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system, 1920 by 1080. The display output in the fabric, which would send that controller its pixels by a line, its port and the debug cable adapter carry no color. '
+            'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system, 1920 by 1080. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. '
             'The boot loader is the board&rsquo;s own, in its flash, and is left alone: it reads the microSD card, which is a USB disk to it, or a server on the network. '
             'The two lamps, UF1 and UF2, are green and carry the microcycles and the error halt; there is no button and no switch; the fan is driven on. '
             'The debug cable is on PMOD1. '
@@ -1469,8 +1476,7 @@ def kr260_comment():
     import textwrap
     text = ("The Arty Z7-20's drawing, generated for the Kria KR260. "
             + (de25_status(KR260_STATUS, KR260_RENAME) or DE25_NOTHING_STARTED)
-            + " The loader is the board's own, in its flash, and is gray. The display output, the port it would use and the debug"
-            " cable adapter carry no color. The lamps UF1 and UF2 are green.")
+            + " The loader is the board's own, in its flash, and is gray. The lamps UF1 and UF2 are green.")
     assert '--' not in text
     return textwrap.fill(text, width=78, initial_indent='          <!-- ', subsequent_indent=' ' * 15,
                          fix_sentence_endings=True, break_on_hyphens=False) + ' -->\n'
@@ -1495,7 +1501,7 @@ def kria_display(svg):
     # The DisplayPort controller is the processing system's own, so it is drawn
     # gray in the processing system's row of controllers, and J6 below the chip
     # like the other connectors.  The display output in the fabric, which is
-    # not built and carries no color, sends it pixels by a line down the left
+    # built and green, sends it pixels by a line down the left
     # margin into its top.  The connector box the Arty Z7-20's drawing has at
     # the chip's left edge comes off.
     svg = sub(svg, '''          <path class="d-line" d="M-160,330 L-183,330"/>\n''', '')
@@ -1521,7 +1527,7 @@ def kria_display(svg):
 
 def kria_ports(svg):
     """The ports: 128 bits, and the part's own names."""
-    for o, n in (('>S_AXI_HP3</text>', '>an HP port</text>'), ('>S_AXI_HP0</text>', '>S_AXI_HP0_FPD</text>'),
+    for o, n in (('>S_AXI_HP3</text>', '>S_AXI_HP3_FPD</text>'), ('>S_AXI_HP0</text>', '>S_AXI_HP0_FPD</text>'),
                  ('>S_AXI_HP2</text>', '>S_AXI_HP2_FPD</text>'), ('>M_AXI_GP0</text>', '>M_AXI_HPM0_FPD</text>'),
                  ('>M_AXI_GP1</text>', '>M_AXI_HPM1_FPD</text>')):
         svg = sub(svg, o, n)
@@ -1639,12 +1645,13 @@ def kr260_svg():
           <text class="d-s" x="96" y="166" text-anchor="middle">10 ns a tick</text>
           <text class="d-s" x="96" y="180" text-anchor="middle">15 ticks=150 ns</text>
 ''')
-    # (5) the display: DisplayPort, not HDMI, and none of it drawn green
+    # (5) the display: DisplayPort, not HDMI; the two screens side by side at 1:1
     svg = sub(svg, '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
           <text class="d-s" x="-70" y="360" text-anchor="middle">over the first; TMDS to HDMI</text>
-''', '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side, the color one</text>
-          <text class="d-s" x="-70" y="360" text-anchor="middle">over the first, and hands</text>
-          <text class="d-s" x="-70" y="374" text-anchor="middle">them to the DisplayPort controller</text>
+''', '''          <text class="d-s" x="-70" y="346" text-anchor="middle">side by side at 1:1, with</text>
+          <text class="d-s" x="-70" y="360" text-anchor="middle">equal margins, and hands</text>
+          <text class="d-s" x="-70" y="374" text-anchor="middle">them to the DisplayPort</text>
+          <text class="d-s" x="-70" y="388" text-anchor="middle">controller</text>
 ''')
     svg = kria_display(svg)
     svg = kria_ports(svg)
@@ -1673,8 +1680,9 @@ KR260_BODY = '''<div class="hero-description">
 <p>The CADR is the machine on this board. The board&rsquo;s own loader, in its flash, is left alone: it reads the microSD card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there.</p>
 <p>The tick is 10&nbsp;ns, from the carrier&rsquo;s 25&nbsp;MHz clock through a clock manager. Main memory is on the first high-performance port and every port is 128 bits wide. The two user LEDs carry the lamps: UF1 shows the microcycles, and UF2 the error halt, or a slow blink while the machine boots.</p>
 <p>The CADR boots System 1001 from its disk pack, as MIT Lisp Machine Four, LISPM-4, at Chaosnet address 177204, with ozd on the board as its file and time host. A USB keyboard and mouse at the board reach the machine, and Ctrl-Alt-Del from that keyboard cold-boots it.</p>
+<p>A monitor on the board&rsquo;s DisplayPort, J6, shows the machine at 1920&times;1080, 60&nbsp;Hz: the CADR&rsquo;s main screen and its color TV side by side at 1:1, with equal margins. The color TV is on by default on this board. After an idle time the monitor sleeps, and a key at the board wakes it; that key is swallowed. The boot chord works with the monitor asleep. The link is brought up by <code>cadr-displayport</code>, a small program of this project&rsquo;s, and two of its tables are AMD&rsquo;s, under the MIT License. The published zip does not have the monitor yet.</p>
 <p>The release is one file, cadr-kria-kr260.zip.</p>
-<p>QUUX runs here too, at revision 13: the 40-bit word, at 40&nbsp;ns a microcycle, with 32MW of main memory. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2001. The display is the terminal&rsquo;s VNC viewer for now; the DisplayPort output is not built yet. No QUUX release of this board is published yet.</p>
+<p>QUUX runs here too, at revision 13: the 40-bit word, at 40&nbsp;ns a microcycle, with 32MW of main memory. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2001. Its screen is on the monitor too. No QUUX release of this board is published yet.</p>
 </div>
 '''
 
@@ -1753,7 +1761,7 @@ def quux_aria(board):
                 'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
                 'Under the fabric&rsquo;s label, 22,226 of the 117,120 lookup tables are in use, 19.0 per cent, and 328.5 KB of the 648 KB of block RAM, 50.7 per cent; under those two figures, the worst setup slack of this build, plus 0.810 nanoseconds. '
                 'Under the chip the memory box says the areas are QUUX revision 13&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
-                'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric, which would send that controller its pixels, its port and the controller carry no color, because the display is not built on this board yet; the screen is the terminal&rsquo;s, a VNC viewer over the network. '
+                'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. '
                 'The boot loader is the board&rsquo;s own, in its flash, and is left alone. '
                 'The two lamps, UF1 and UF2, are green; there is no button and no switch; the fan is driven on. '
                 'Every block this project builds that is done on this board is drawn green; the parts drawn gray are components of the board. ')
@@ -1958,13 +1966,6 @@ def quux_kria(svg):
     boards/kria-kr260/cadr_kr260.sv, rtl/machine/quux_cache.sv,
     quux_feature_page.sv, quux_mem_port.sv, cadr_xbus_decode.sv,
     rtl/plumbing/quux_axi_narrow128.sv and docs/linux.md."""
-    # the display output and its port are not built on this board: no color
-    n = [0]
-    def uncolor(m):
-        n[0] += 1
-        return '<rect class="d-box" %s/>%s' % (m.group(1), m.group(2))
-    svg = re.sub(r'<rect class="d-box d-done" ([^/>]*)/>(\n[ \t]*<text class="d-[tm]"[^>]*>(?:display output|S_AXI_HP3)</text>)', uncolor, svg)
-    assert n[0] == 2, n[0]
     svg = kria_loader(svg)
     svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
               '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (KR260_PART[1], KR260_PART[0]))
@@ -2299,7 +2300,7 @@ def build_debugging():
     nfig = [0]
     def fig(svg, caption, title, more=''):
         nfig[0] += 1
-        return figure(svg, caption, more=more, label='FIG. %02d &mdash; %s' % (nfig[0], title.upper()), name=title)
+        return figure(svg, caption, more=more, label='FIG. %02d &mdash; %s' % (nfig[0], upper(title)), name=title)
 
     # The heading carries the site's accent on its last words; the figure's
     # label is the same words without it.
@@ -2308,7 +2309,7 @@ def build_debugging():
 
     def fig_section(n, sid, eyebrow, title, lead, svg, caption, links):
         more = more_line('The long form: %s.' % ', '.join(docs_link(t, p, a) for t, p, a in links))
-        return section(sid, '%02d / %s' % (n - 1, eyebrow.upper()), title, lead, fig(svg, caption, plain(title).rstrip('.'), more))
+        return section(sid, '%02d / %s' % (n - 1, upper(eyebrow)), title, lead, fig(svg, caption, plain(title).rstrip('.'), more))
 
     P.append(fig_section(2, 'mit', 'MIT&rsquo;s way', 'How MIT debugged<br>a <em>CADR.</em>',
         'The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s DBGIN connector on its bus interface board, and a debugger works the cable by writing four registers of its own.',
