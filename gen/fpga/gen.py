@@ -956,7 +956,7 @@ def build_board(fname, name, lede, corner_label, other, maker, body='', figlabel
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS[fname],
                maker, svg, body=body, figlabel=figlabel, quux=quux)
 
-def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None):
+def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None, after='', own_keys=()):
     # The board's name, the one line naming its FPGA, the keys to the other
     # pages with the maker's own page last, and the drawing, which is the
     # whole point of the page.  A board that runs QUUX has a second drawing
@@ -964,6 +964,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     # corner character is gone; corner_label is kept in the signature so that
     # the calls below read as they did.
     own = (('#cadr', 'The CADR&rsquo;s drawing'), ('#quux', 'QUUX&rsquo;s drawing')) if quux else ()
+    own = own + tuple(own_keys)
     cores = [r[7] for r in BOARD_ROWS if r[0] == fname]
     if cores:
         body = '<p class="hero-description">The processing system: %s.</p>\n' % cores[0].replace(' x ', ' &times; ').replace(', Linux', ', running Linux') + body
@@ -976,6 +977,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
         P += ['<section id="quux" class="section wrap tight" aria-label="%s, QUUX&rsquo;s drawing">\n' % name,
               figure(quux, '', cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
               '</section>\n']
+    P.append(after)
     page(fname, title, desc, P)
 
 # THE DE25-NANO'S PAGE.  Its drawing is the Arty Z7-20's, generated from it
@@ -1639,7 +1641,8 @@ def build_kr260():
                'The CADR mapped onto one AMD Zynq UltraScale+ XCK26, on a Kria KR260.',
                "muir-fpga's board, waving",
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS['kria-kr260.html'],
-               AMD_KR260, kr260_svg(), body=KR260_BODY)
+               AMD_KR260, kr260_svg(), body=KR260_BODY,
+               own_keys=(('#cable', 'The cable&rsquo;s connector'),), after=kria_cable_section())
 
 # ============================================================ QUUX ON A BOARD
 
@@ -2036,6 +2039,73 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
          'How each board here comes up, in four sequences: a Zynq board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.',
          P)
 
+# ============================================== the Kria KR260's debug cable
+
+# PMOD1's twelve pins: the package pin and what each carries, from the KR260
+# section of muir-fpga's docs/debug-cable.md; and the Arty Z7-20's JA pin each
+# meets on a straight ribbon and on a mirrored one.  The Cora Z7-07S's JA has
+# the same pin numbers, so the same table holds for it.
+KR260_PMOD1 = {
+    1: ('H12', 'debugger strobe'), 2: ('E10', 'guard, driven low'),
+    3: ('D10', 'debugger data'), 4: ('C11', 'guard, driven low'),
+    5: (None, 'ground'), 6: (None, '3.3 V'),
+    7: ('B10', 'debuggee strobe'), 8: ('E12', 'guard, driven low'),
+    9: ('D11', 'debuggee data'), 10: ('B11', 'guard, driven low'),
+    11: (None, 'ground'), 12: (None, '3.3 V'),
+}
+
+KR260_CABLE_CAPTION = ('The pin order is AMD&rsquo;s, from the KR260&rsquo;s board files, and has not been checked on a wire. '
+                       'The Kria&rsquo;s cable has not been run on the boards.')
+
+def kria_cable_svg():
+    cw, ch, x0, ys = 160, 118, 50, (84, 214)
+    out = []
+    aria = ('The debug cable on the Kria KR260, drawn as its connector PMOD1: twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. '
+            'For each pin, its package pin, what it carries, and the pin of the Arty Z7-20&rsquo;s JA that it meets on a straight ribbon and on a mirrored one. ')
+    for n in range(1, 13):
+        pad, role = KR260_PMOD1[n]
+        x, y = x0 + ((n - 1) % 6) * cw, ys[(n - 1) // 6]
+        cx = x + cw // 2
+        straight = n
+        mirrored = n + 6 if n <= 6 else n - 6
+        supply = role == '3.3 V'
+        cls = 'd-absent' if supply else 'd-box'
+        if role == 'ground':
+            out.append('          <rect class="d-tint" x="%d" y="%d" width="%d" height="%d"/>' % (x, y, cw, ch))
+        out.append('          <rect class="%s" x="%d" y="%d" width="%d" height="%d"/>' % (cls, x, y, cw, ch))
+        out.append('          <text class="d-t" x="%d" y="%d" text-anchor="middle">pin %d</text>' % (cx, y + 24, n))
+        out.append('          <text class="d-s" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, y + 46, pad or '&mdash;'))
+        out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">%s</text>' % (cx, y + 64, role))
+        out.append('          <path class="d-line" d="M%d,%d H%d" stroke-opacity="0.3"/>' % (x + 10, y + 76, x + cw - 10))
+        if supply:
+            out.append('          <text class="d-x d-warn" x="%d" y="%d" text-anchor="middle">OPEN</text>' % (cx, y + 92))
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">at both ends</text>' % (cx, y + 106))
+            aria += 'Pin %d carries 3.3 V and is open at both ends. ' % n
+        else:
+            joined = ', joined' if role == 'ground' else ''
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">straight: JA %d%s</text>' % (cx, y + 92, straight, joined))
+            out.append('          <text class="d-x" x="%d" y="%d" text-anchor="middle">mirrored: JA %d%s</text>' % (cx, y + 106, mirrored, joined))
+            aria += 'Pin %d, %s, %s, meets JA %d straight and JA %d mirrored%s. ' % (
+                n, 'package pin ' + pad if pad else 'no package pin', role, straight, mirrored, ', and the cable joins the two grounds' if role == 'ground' else '')
+    body = '\n'.join(out)
+    return ('<svg viewBox="0 0 1060 400" role="img" aria-label="%s'
+            'The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.">\n'
+            '          <text class="d-t" x="10" y="18">the debug cable on the Kria KR260</text>\n'
+            '          <text class="d-s" x="10" y="36">PMOD1, with the Arty Z7-20&rsquo;s JA pin each pin meets on a straight ribbon and on a mirrored one</text>\n'
+            '%s\n'
+            '          <text class="d-s" x="50" y="360">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground on both connectors and the cable joins them;</text>\n'
+            '          <text class="d-s" x="50" y="376">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>\n'
+            '          <text class="d-s" x="50" y="392">The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.</text>\n'
+            '        </svg>' % (aria, body))
+
+def kria_cable_section():
+    """The Kria KR260's page: its own section for the cable, the connector as
+    the debugging page draws it."""
+    return section('cable', 'THE DEBUG CABLE', 'The debug <em>cable.</em>',
+        'The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers. The cable is told on <a href="debugging.html#kria">the debugging page</a>.',
+        figure(kria_cable_svg(), KR260_CABLE_CAPTION, cls='fig dense', label='FIG. 02 &mdash; THE CABLE ON THE KRIA KR260',
+               name='The cable on the Kria KR260'))
+
 # ================================================================ debugging
 
 def build_debugging():
@@ -2091,13 +2161,33 @@ def build_debugging():
         [('the cable on one connector of eight pins', DC, 'the-cable-on-one-connector-of-eight-pins'),
          ('the ribbon made the wrong way round', DC, 'the-ribbon-can-be-made-the-wrong-way-round-and-one-was')]))
 
+    # THE KRIA KR260'S END, which is a Pmod, PMOD1, the first of four.  The
+    # drawing carries each pin's package pin and role and the Arty's JA pin it
+    # meets, straight and mirrored; the section carries the caveat that the pin
+    # order is AMD's and that nothing of this connector has crossed a wire.
+    P.append(section('kria', '04 / PMOD1, THE FIRST OF FOUR', 'The cable on<br>the <em>Kria KR260.</em>',
+        'The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers: eight signal pins in bank 45 at 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
+        '''<div class="cols">
+<div class="prose">
+<p>The eight signals are on PMOD1&rsquo;s pins 1 to 4 and 7 to 10, in the order the Zynq boards use, so a ribbon between PMOD1 and a Zynq board&rsquo;s JA joins each signal to its counterpart. A mirrored ribbon is the one made the wrong way up, which the debugger finds.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground on both connectors and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. Neither supply pin is a fabric pin, so nothing in the design can drive one.</p>
+</div>
+<div>
+<p class="callout">The pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
+<div class="prose"><p>The package pins and the order of the eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
+</div>
+</div>
+''' + fig(kria_cable_svg(), 'Each pin with its package pin and what it carries, and the pin of the Arty Z7-20&rsquo;s JA it meets on a straight ribbon and on a mirrored one.',
+          'The cable on the Kria KR260',
+          more=more_line('The long form: %s.' % docs_link('the Kria KR260&rsquo;s connector is PMOD1', DC, 'the-kria-kr260s-connector-is-pmod1')))))
+
     # THE DE25-NANO'S END, which is not a Pmod.  This section is where the
     # warning about the supply pins belongs: the front page carries it as a
     # line, and this is the page somebody reads with wire in their hand.  The
     # two things it has to say beyond the pin list are that the guards here
     # rest on a decision rather than on a schematic, and that no cable of this
     # shape exists, so nothing of this connector has been on hardware.
-    P.append(section('de25', '04 / A GPIO HEADER, NOT A PMOD', 'The cable on<br>the <em>DE25-Nano.</em>',
+    P.append(section('de25', '05 / A GPIO HEADER, NOT A PMOD', 'The cable on<br>the <em>DE25-Nano.</em>',
         'That board has no Pmod, so its end of the cable is eight pins of a 2x20 GPIO header: JP1 pins 31 to 38, with the header&rsquo;s own ground on pin 30. The signals are on the odd pins and each guard is the even pin beside its signal.',
         '''<div class="cols">
 <div class="prose">
@@ -2119,7 +2209,7 @@ def build_debugging():
     more = more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
         ('twenty-four beats each way', 'twenty-four-beats-each-way'),
         ('what actually crosses', 'what-actually-crosses-counted-off-the-netlist'))))
-    P.append(section('wire', '05 / FRAMES ON EIGHT PINS', 'The protocol<br>on the <em>wire.</em>',
+    P.append(section('wire', '06 / FRAMES ON EIGHT PINS', 'The protocol<br>on the <em>wire.</em>',
         'Twenty-one wires do not fit on eight pins, so the levels cross as frames: four pins each way, and neither group is ever driven from both ends.',
         fig(f4, 'One signal to a pair of pins, the partner driven low as a guard: twenty-four beats, 162 ticks, a fraction of the 11.05 microseconds a debug cycle is allowed.', 'One frame, on the wire') +
         fig(f5, 'Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.', 'What crosses, each way', more=more)))
@@ -2139,11 +2229,12 @@ def build_debugging():
         ('A debug cycle over the carrier that runs now', 'A status read typed at the debugger&rsquo;s Listener, both ways round; no register of the far machine crossed', 'yes'),
         ('CC over the carrier that runs now', 'All sixteen of the far machine&rsquo;s diagnostic registers read over the guarded ribbon at one halt, each equal to the far board&rsquo;s own console, and the machine stepped and started over it; CC&rsquo;s own sequences typed at a Listener, and not the program run', 'yes'),
         ('A write over the ribbon', 'MD written over the ribbon by CC&rsquo;s own CC-WRITE-MD; the far board&rsquo;s own console read 0xa53c5ac3 where it read 0x0a0005c2 before and after the restore, and no microcycle was spent', 'yes'),
+        ('The Kria KR260&rsquo;s connector', 'Nothing. No ribbon has joined PMOD1 to another board, so its eight pins have crossed nothing; the console reads a debuggee on it with nothing attached', 'not yet'),
         ('The DE25-Nano&rsquo;s connector', 'Nothing. No cable from a 2x20 header to a Pmod has been made, so those eight pins have crossed nothing; what reads them is lint and a check on the pin map', 'not yet'),
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td class="st%s">%s</td></tr>\n'
                   % (a, b, '' if c == 'yes' else ' no', c) for a, b, c in rows)
-    P.append(section('shown', '06 / ON SILICON', 'What has run<br>on a <em>board.</em>',
+    P.append(section('shown', '07 / ON SILICON', 'What has run<br>on a <em>board.</em>',
         'All three pieces have run on silicon: the window, the ribbon, and CC across the ribbon, both ways round. A write has crossed it since, into a register of the far machine rather than into its memory. CC itself ran on the earlier carrier, and what has crossed the guarded one is every cycle such a session is built out of.',
         '''<div class="table-scroll" tabindex="0" role="region" aria-label="What has run on a board"><table>
 <thead><tr><th scope="col">What</th><th scope="col">How it was shown</th><th scope="col">Shown</th></tr></thead>
@@ -2154,7 +2245,7 @@ def build_debugging():
 ''' % (trs, docs_link('what two boards have shown', DC, 'what-two-boards-have-shown'),
        docs_link('the debugger over the cable', 'board.md', 'the-debugger-over-the-cable'))))
 
-    P.append(section('sources', '07 / SOURCES', 'Where each drawing<br><em>came from.</em>',
+    P.append(section('sources', '08 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Each figure above was read from the sources listed here. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
         '''<div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>

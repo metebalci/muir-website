@@ -340,8 +340,122 @@
 <p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-cable-on-one-connector-of-eight-pins">the cable on one connector of eight pins</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-ribbon-can-be-made-the-wrong-way-round-and-one-was">the ribbon made the wrong way round</a>.</p>
 </figure>
 </section>
+<section id="kria" class="section wrap" aria-label="The cable on the Kria KR260.">
+<div class="section-heading"><div><p class="eyebrow">04 / PMOD1, THE FIRST OF FOUR</p><h2>The cable on<br>the <em>Kria KR260.</em></h2></div></div>
+<p class="lead">The board&rsquo;s end of the cable is PMOD1, the first of its four Pmod headers: eight signal pins in bank 45 at 3.3 V, each with a pull-down, so an unplugged connector reads zero.</p>
+<div class="cols">
+<div class="prose">
+<p>The eight signals are on PMOD1&rsquo;s pins 1 to 4 and 7 to 10, in the order the Zynq boards use, so a ribbon between PMOD1 and a Zynq board&rsquo;s JA joins each signal to its counterpart. A mirrored ribbon is the one made the wrong way up, which the debugger finds.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground on both connectors and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. Neither supply pin is a fabric pin, so nothing in the design can drive one.</p>
+</div>
+<div>
+<p class="callout">The pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
+<div class="prose"><p>The package pins and the order of the eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
+</div>
+</div>
+<figure class="fig">
+<div class="fig-top"><span>FIG. 04 &mdash; THE CABLE ON THE KRIA KR260</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 4: The cable on the Kria KR260">
+        <svg viewBox="0 0 1060 400" role="img" aria-label="The debug cable on the Kria KR260, drawn as its connector PMOD1: twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. For each pin, its package pin, what it carries, and the pin of the Arty Z7-20&rsquo;s JA that it meets on a straight ribbon and on a mirrored one. Pin 1, package pin H12, debugger strobe, meets JA 1 straight and JA 7 mirrored. Pin 2, package pin E10, guard, driven low, meets JA 2 straight and JA 8 mirrored. Pin 3, package pin D10, debugger data, meets JA 3 straight and JA 9 mirrored. Pin 4, package pin C11, guard, driven low, meets JA 4 straight and JA 10 mirrored. Pin 5, no package pin, ground, meets JA 5 straight and JA 11 mirrored, and the cable joins the two grounds. Pin 6 carries 3.3 V and is open at both ends. Pin 7, package pin B10, debuggee strobe, meets JA 7 straight and JA 1 mirrored. Pin 8, package pin E12, guard, driven low, meets JA 8 straight and JA 2 mirrored. Pin 9, package pin D11, debuggee data, meets JA 9 straight and JA 3 mirrored. Pin 10, package pin B11, guard, driven low, meets JA 10 straight and JA 4 mirrored. Pin 11, no package pin, ground, meets JA 11 straight and JA 5 mirrored, and the cable joins the two grounds. Pin 12 carries 3.3 V and is open at both ends. The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.">
+          <text class="d-t" x="10" y="18">the debug cable on the Kria KR260</text>
+          <text class="d-s" x="10" y="36">PMOD1, with the Arty Z7-20&rsquo;s JA pin each pin meets on a straight ribbon and on a mirrored one</text>
+          <rect class="d-box" x="50" y="84" width="160" height="118"/>
+          <text class="d-t" x="130" y="108" text-anchor="middle">pin 1</text>
+          <text class="d-s" x="130" y="130" text-anchor="middle">H12</text>
+          <text class="d-x" x="130" y="148" text-anchor="middle">debugger strobe</text>
+          <path class="d-line" d="M60,160 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="130" y="176" text-anchor="middle">straight: JA 1</text>
+          <text class="d-x" x="130" y="190" text-anchor="middle">mirrored: JA 7</text>
+          <rect class="d-box" x="210" y="84" width="160" height="118"/>
+          <text class="d-t" x="290" y="108" text-anchor="middle">pin 2</text>
+          <text class="d-s" x="290" y="130" text-anchor="middle">E10</text>
+          <text class="d-x" x="290" y="148" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M220,160 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="290" y="176" text-anchor="middle">straight: JA 2</text>
+          <text class="d-x" x="290" y="190" text-anchor="middle">mirrored: JA 8</text>
+          <rect class="d-box" x="370" y="84" width="160" height="118"/>
+          <text class="d-t" x="450" y="108" text-anchor="middle">pin 3</text>
+          <text class="d-s" x="450" y="130" text-anchor="middle">D10</text>
+          <text class="d-x" x="450" y="148" text-anchor="middle">debugger data</text>
+          <path class="d-line" d="M380,160 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="450" y="176" text-anchor="middle">straight: JA 3</text>
+          <text class="d-x" x="450" y="190" text-anchor="middle">mirrored: JA 9</text>
+          <rect class="d-box" x="530" y="84" width="160" height="118"/>
+          <text class="d-t" x="610" y="108" text-anchor="middle">pin 4</text>
+          <text class="d-s" x="610" y="130" text-anchor="middle">C11</text>
+          <text class="d-x" x="610" y="148" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M540,160 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="610" y="176" text-anchor="middle">straight: JA 4</text>
+          <text class="d-x" x="610" y="190" text-anchor="middle">mirrored: JA 10</text>
+          <rect class="d-tint" x="690" y="84" width="160" height="118"/>
+          <rect class="d-box" x="690" y="84" width="160" height="118"/>
+          <text class="d-t" x="770" y="108" text-anchor="middle">pin 5</text>
+          <text class="d-s" x="770" y="130" text-anchor="middle">&mdash;</text>
+          <text class="d-x" x="770" y="148" text-anchor="middle">ground</text>
+          <path class="d-line" d="M700,160 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="176" text-anchor="middle">straight: JA 5, joined</text>
+          <text class="d-x" x="770" y="190" text-anchor="middle">mirrored: JA 11, joined</text>
+          <rect class="d-absent" x="850" y="84" width="160" height="118"/>
+          <text class="d-t" x="930" y="108" text-anchor="middle">pin 6</text>
+          <text class="d-s" x="930" y="130" text-anchor="middle">&mdash;</text>
+          <text class="d-x" x="930" y="148" text-anchor="middle">3.3 V</text>
+          <path class="d-line" d="M860,160 H1000" stroke-opacity="0.3"/>
+          <text class="d-x d-warn" x="930" y="176" text-anchor="middle">OPEN</text>
+          <text class="d-x" x="930" y="190" text-anchor="middle">at both ends</text>
+          <rect class="d-box" x="50" y="214" width="160" height="118"/>
+          <text class="d-t" x="130" y="238" text-anchor="middle">pin 7</text>
+          <text class="d-s" x="130" y="260" text-anchor="middle">B10</text>
+          <text class="d-x" x="130" y="278" text-anchor="middle">debuggee strobe</text>
+          <path class="d-line" d="M60,290 H200" stroke-opacity="0.3"/>
+          <text class="d-x" x="130" y="306" text-anchor="middle">straight: JA 7</text>
+          <text class="d-x" x="130" y="320" text-anchor="middle">mirrored: JA 1</text>
+          <rect class="d-box" x="210" y="214" width="160" height="118"/>
+          <text class="d-t" x="290" y="238" text-anchor="middle">pin 8</text>
+          <text class="d-s" x="290" y="260" text-anchor="middle">E12</text>
+          <text class="d-x" x="290" y="278" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M220,290 H360" stroke-opacity="0.3"/>
+          <text class="d-x" x="290" y="306" text-anchor="middle">straight: JA 8</text>
+          <text class="d-x" x="290" y="320" text-anchor="middle">mirrored: JA 2</text>
+          <rect class="d-box" x="370" y="214" width="160" height="118"/>
+          <text class="d-t" x="450" y="238" text-anchor="middle">pin 9</text>
+          <text class="d-s" x="450" y="260" text-anchor="middle">D11</text>
+          <text class="d-x" x="450" y="278" text-anchor="middle">debuggee data</text>
+          <path class="d-line" d="M380,290 H520" stroke-opacity="0.3"/>
+          <text class="d-x" x="450" y="306" text-anchor="middle">straight: JA 9</text>
+          <text class="d-x" x="450" y="320" text-anchor="middle">mirrored: JA 3</text>
+          <rect class="d-box" x="530" y="214" width="160" height="118"/>
+          <text class="d-t" x="610" y="238" text-anchor="middle">pin 10</text>
+          <text class="d-s" x="610" y="260" text-anchor="middle">B11</text>
+          <text class="d-x" x="610" y="278" text-anchor="middle">guard, driven low</text>
+          <path class="d-line" d="M540,290 H680" stroke-opacity="0.3"/>
+          <text class="d-x" x="610" y="306" text-anchor="middle">straight: JA 10</text>
+          <text class="d-x" x="610" y="320" text-anchor="middle">mirrored: JA 4</text>
+          <rect class="d-tint" x="690" y="214" width="160" height="118"/>
+          <rect class="d-box" x="690" y="214" width="160" height="118"/>
+          <text class="d-t" x="770" y="238" text-anchor="middle">pin 11</text>
+          <text class="d-s" x="770" y="260" text-anchor="middle">&mdash;</text>
+          <text class="d-x" x="770" y="278" text-anchor="middle">ground</text>
+          <path class="d-line" d="M700,290 H840" stroke-opacity="0.3"/>
+          <text class="d-x" x="770" y="306" text-anchor="middle">straight: JA 11, joined</text>
+          <text class="d-x" x="770" y="320" text-anchor="middle">mirrored: JA 5, joined</text>
+          <rect class="d-absent" x="850" y="214" width="160" height="118"/>
+          <text class="d-t" x="930" y="238" text-anchor="middle">pin 12</text>
+          <text class="d-s" x="930" y="260" text-anchor="middle">&mdash;</text>
+          <text class="d-x" x="930" y="278" text-anchor="middle">3.3 V</text>
+          <path class="d-line" d="M860,290 H1000" stroke-opacity="0.3"/>
+          <text class="d-x d-warn" x="930" y="306" text-anchor="middle">OPEN</text>
+          <text class="d-x" x="930" y="320" text-anchor="middle">at both ends</text>
+          <text class="d-s" x="50" y="360">Pins 1 to 4 and 7 to 10 are the eight signals. Pins 5 and 11 are ground on both connectors and the cable joins them;</text>
+          <text class="d-s" x="50" y="376">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>
+          <text class="d-s" x="50" y="392">The Cora Z7-07S&rsquo;s JA has the same pin numbers as the Arty&rsquo;s, so the same table holds for a cable to it.</text>
+        </svg>
+</div>
+<figcaption>Each pin with its package pin and what it carries, and the pin of the Arty Z7-20&rsquo;s JA it meets on a straight ribbon and on a mirrored one.</figcaption>
+<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-kria-kr260s-connector-is-pmod1">the Kria KR260&rsquo;s connector is PMOD1</a>.</p>
+</figure>
+</section>
 <section id="de25" class="section wrap" aria-label="The cable on the DE25-Nano.">
-<div class="section-heading"><div><p class="eyebrow">04 / A GPIO HEADER, NOT A PMOD</p><h2>The cable on<br>the <em>DE25-Nano.</em></h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">05 / A GPIO HEADER, NOT A PMOD</p><h2>The cable on<br>the <em>DE25-Nano.</em></h2></div></div>
 <p class="lead">That board has no Pmod, so its end of the cable is eight pins of a 2x20 GPIO header: JP1 pins 31 to 38, with the header&rsquo;s own ground on pin 30. The signals are on the odd pins and each guard is the even pin beside its signal.</p>
 <div class="cols">
 <div class="prose">
@@ -354,8 +468,8 @@
 </div>
 </div>
 <figure class="fig">
-<div class="fig-top"><span>FIG. 04 &mdash; THE CABLE ON THE DE25-NANO</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 4: The cable on the DE25-Nano">
+<div class="fig-top"><span>FIG. 05 &mdash; THE CABLE ON THE DE25-NANO</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 5: The cable on the DE25-Nano">
         <svg viewBox="0 0 1060 944" role="img" aria-label="The debug cable on the DE25-Nano, in three parts. First, the board from above, drawn roughly: a landscape board with a mounting hole at each corner, the Agilex 5 in the middle, the DC 5 V power jack and the HDMI socket on the left edge, two USB Type-C sockets and the Ethernet socket on the right edge, and the switches, buttons and LEDs along the bottom. The board carries two 2x20 headers, one along the top edge and one along the bottom. JP1, the one this cable uses, is the top one, on the edge between the power jack and the USB sockets; the bottom one is JP2 and nothing here uses it. JP1 is drawn as its twenty pin-pairs, with pin 1 at the power-jack end and the four pairs carrying pins 31 to 38 marked near the other end, with pins 39 and 40 the last pair beyond them. Second, the twelve pins at that end at a readable size, as six pin-pairs: pin 29 is 3.3 V and is crossed off, pin 30 is the ground the cable joins, pins 31, 33, 35 and 37 are the debugger strobe, the debugger data, the debuggee strobe and the debuggee data, pins 32, 34, 36 and 38 are each a guard driven low beside the signal before it, and pins 39 and 40 are unused. Each pin is labeled with what it answers at the far end: Pmod 1, 3, 7 and 9 for the signals, Pmod 2, 4, 8 and 10 for the guards, and the Pmod's ground for pin 30. Third, the warnings. Pin 11 is 5 V and pin 29 is 3.3 V and neither is ever joined to anything: only the ground on pin 30 is joined, and a manufactured ribbon joins every conductor unless it is stopped. The guards are a decision rather than a measurement: on the Zynq boards the maker's schematics show those pins routed as coupled pairs, no schematic is published for this board, and the arrangement was carried across for consistency. And no such cable exists: the far end is a Pmod, this end is a 2x20 header, nobody has made the adapter, and nothing of this connector has run on hardware.">
           <text class="d-t" x="10" y="18">the debug cable on the DE25-Nano</text>
           <text class="d-s" x="10" y="36">JP1 pins 31 to 38, with the header&rsquo;s ground on pin 30 &mdash; the same eight signals the Zynq boards put on one Pmod</text>
@@ -508,11 +622,11 @@
 </figure>
 </section>
 <section id="wire" class="section wrap" aria-label="The protocol on the wire.">
-<div class="section-heading"><div><p class="eyebrow">05 / FRAMES ON EIGHT PINS</p><h2>The protocol<br>on the <em>wire.</em></h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">06 / FRAMES ON EIGHT PINS</p><h2>The protocol<br>on the <em>wire.</em></h2></div></div>
 <p class="lead">Twenty-one wires do not fit on eight pins, so the levels cross as frames: four pins each way, and neither group is ever driven from both ends.</p>
 <figure class="fig">
-<div class="fig-top"><span>FIG. 05 &mdash; ONE FRAME, ON THE WIRE</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 5: One frame, on the wire">
+<div class="fig-top"><span>FIG. 06 &mdash; ONE FRAME, ON THE WIRE</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 6: One frame, on the wire">
         <svg viewBox="0 0 1060 300" role="img" aria-label="One frame on the wire. A strobe line and a data line, drawn as twenty-four beats. The strobe changes level at every beat and is never a clock. The data line carries one slot a beat, most significant first: beat 0 and beat 1 are the two-bit marker reading 01, beat 2 is the parity bit over the payload, and beats 3 to 23 are the twenty-one payload bits, numbered 20 down to 0. After the last beat the lines are left alone for the gap, which is what tells a receiver where the next frame begins. Six ticks a beat and eighteen of silence after the last; any interval longer than twelve ticks with no transition is between frames. The snapshot is taken once, at the first beat, and the receiver moves its outputs once, at the last, so a frame is presented whole or not at all.">
           <text class="d-t" x="10" y="18">one frame on the wire</text>
           <text class="d-s" x="10" y="36">one strobe and one data line each way, twenty-four beats, and the gap after them</text>
@@ -617,8 +731,8 @@
 <figcaption>One signal to a pair of pins, the partner driven low as a guard: twenty-four beats, 162 ticks, a fraction of the 11.05 microseconds a debug cycle is allowed.</figcaption>
 </figure>
 <figure class="fig">
-<div class="fig-top"><span>FIG. 06 &mdash; WHAT CROSSES, EACH WAY</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 6: What crosses, each way">
+<div class="fig-top"><span>FIG. 07 &mdash; WHAT CROSSES, EACH WAY</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 7: What crosses, each way">
         <svg viewBox="0 0 1060 360" role="img" aria-label="What the frame carries, drawn as two bars of twenty-one bits each. The debugger's frame is the role bit at bit 20, the request at 19, the write line at 18, the two address bits at 17 and 16, and the sixteen data lines at 15 down to 0. The debuggee's frame is the role bit at 20, a spare bit that goes out as zero at 19, the acknowledgment at 18, two bits at 17 and 16 saying which bytes of the data lines this end is driving, and the sixteen data lines at 15 down to 0. The fields are drawn to the space their names need rather than to their width in bits. The bus enable and its direction do not cross the cable: they are made on the debugger's own board. The twenty-first bit each way is the carrier's own and says whether the board that sent the frame is the debugger.">
           <text class="d-t" x="10" y="18">what the frame carries</text>
 
@@ -663,7 +777,7 @@
 </figure>
 </section>
 <section id="shown" class="section wrap" aria-label="What has run on a board.">
-<div class="section-heading"><div><p class="eyebrow">06 / ON SILICON</p><h2>What has run<br>on a <em>board.</em></h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">07 / ON SILICON</p><h2>What has run<br>on a <em>board.</em></h2></div></div>
 <p class="lead">All three pieces have run on silicon: the window, the ribbon, and CC across the ribbon, both ways round. A write has crossed it since, into a register of the far machine rather than into its memory. CC itself ran on the earlier carrier, and what has crossed the guarded one is every cycle such a session is built out of.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="What has run on a board"><table>
 <thead><tr><th scope="col">What</th><th scope="col">How it was shown</th><th scope="col">Shown</th></tr></thead>
@@ -681,13 +795,14 @@
 <tr><th scope="row">A debug cycle over the carrier that runs now</th><td>A status read typed at the debugger&rsquo;s Listener, both ways round; no register of the far machine crossed</td><td class="st">yes</td></tr>
 <tr><th scope="row">CC over the carrier that runs now</th><td>All sixteen of the far machine&rsquo;s diagnostic registers read over the guarded ribbon at one halt, each equal to the far board&rsquo;s own console, and the machine stepped and started over it; CC&rsquo;s own sequences typed at a Listener, and not the program run</td><td class="st">yes</td></tr>
 <tr><th scope="row">A write over the ribbon</th><td>MD written over the ribbon by CC&rsquo;s own CC-WRITE-MD; the far board&rsquo;s own console read 0xa53c5ac3 where it read 0x0a0005c2 before and after the restore, and no microcycle was spent</td><td class="st">yes</td></tr>
+<tr><th scope="row">The Kria KR260&rsquo;s connector</th><td>Nothing. No ribbon has joined PMOD1 to another board, so its eight pins have crossed nothing; the console reads a debuggee on it with nothing attached</td><td class="st no">not yet</td></tr>
 <tr><th scope="row">The DE25-Nano&rsquo;s connector</th><td>Nothing. No cable from a 2x20 header to a Pmod has been made, so those eight pins have crossed nothing; what reads them is lint and a check on the pin map</td><td class="st no">not yet</td></tr>
 </tbody>
 </table></div>
 <p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board. Every reading, with its numbers, is in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-two-boards-have-shown">what two boards have shown</a> and <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/board.md#the-debugger-over-the-cable">the debugger over the cable</a>.</p>
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
-<div class="section-heading"><div><p class="eyebrow">07 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
+<div class="section-heading"><div><p class="eyebrow">08 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
 <p class="lead">Each figure above was read from the sources listed here. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from"><table>
 <thead><tr><th scope="col">Figure</th><th scope="col">Read from</th></tr></thead>
@@ -695,6 +810,7 @@
             <tr><th scope="row">one CADR debugging another</th><td><code>docs/debug-cable.md</code>; MIT&rsquo;s own <code>sys/cc/ldbg.lisp</code>, which lists the four addresses and the modifier bits, and <code>lcadrd.lisp</code></td></tr>
             <tr><th scope="row">the same cable in the fabric</th><td><code>rtl/machine/cadr_dbgin.sv</code>, <code>cadr_busint_regs.sv</code>, <code>rtl/plumbing/cadr_debug_window.sv</code>, <code>cadr_dbg_join.sv</code>; <code>docs/console.md</code></td></tr>
             <tr><th scope="row">the cable</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, and each board&rsquo;s own <code>.xdc</code>, whose pins come from Digilent&rsquo;s published files</td></tr>
+            <tr><th scope="row">the cable on the Kria KR260</th><td><code>boards/kria-kr260/cadr_kr260.xdc</code> for the pins, which are AMD&rsquo;s; <code>docs/debug-cable.md</code> for the roles</td></tr>
             <tr><th scope="row">the cable on the DE25-Nano</th><td><code>boards/de25-nano/de25_nano_pins.tcl</code> and <code>cadr_de25.sv</code> for the pins, <code>docs/debug-cable.md</code> for the roles; that board&rsquo;s user manual, Figure 3-18 for the header and Figure 2-1 for where it sits on the board</td></tr>
             <tr><th scope="row">one frame on the wire</th><td><code>rtl/plumbing/cadr_dbg_tx.sv</code> and <code>cadr_dbg_rx.sv</code>: the marker, the parity, the beats and the gap</td></tr>
             <tr><th scope="row">what the frame carries</th><td><code>rtl/plumbing/cadr_dbg_cable.sv</code>, which packs both frames in one expression, counted off <code>BUSINT.netlist</code></td></tr>
