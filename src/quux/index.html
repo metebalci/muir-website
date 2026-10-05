@@ -8,12 +8,12 @@ css: drawings.css
 <p class="eyebrow"><span class="dot"></span>THE MACHINES &middot; QUUX, THE CADR EVOLVED</p>
 <h1>QUUX</h1>
 <p class="intro">QUUX is the CADR, evolved: the same microinstruction and the same way of running Lisp, with the processor, its memory and its devices rebuilt where a change pays for itself.</p>
-<p class="hero-description">muir-sim runs it as <code>quux</code>, beside <code>cadr</code>, MIT&rsquo;s machine as built; muir-fpga builds it for the Arty Z7-20 and the DE25-Nano.</p>
+<p class="hero-description">muir-sim runs it as <code>quux</code>, beside <code>cadr</code>, MIT&rsquo;s machine as built; muir-fpga builds it for the Arty Z7-20, the Kria KR260 and the DE25-Nano.</p>
 <p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
 <div class="actions"><a class="button" href="#processor">The processor <span>&#8595;</span></a><a class="text-link" href="#changes">What it changes</a><a class="text-link" href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md">The manual&rsquo;s QUUX &#8599;</a></div>
 </div>
 <div class="side">
-<p>QUUX keeps the CADR&rsquo;s microinstruction and its way of running Lisp, and changes the parts that held it back. Three projects make it: <b>muir-sim</b> models each change and holds it to tests; <a href="../system/">muir-sys</a> writes the microcode and builds the Lisp system for it; <a href="../fpga/">muir-fpga</a> is the machine on an FPGA board, where the same flag chooses it. The CADR stays MIT&rsquo;s machine; QUUX runs muir-sys&rsquo;s microcode 2000 and System 2000.</p>
+<p>QUUX keeps the CADR&rsquo;s microinstruction and its way of running Lisp, and changes the parts that held it back. Three projects make it: <b>muir-sim</b> models each change and holds it to tests; <a href="../system/">muir-sys</a> writes the microcode and builds the Lisp system for it; <a href="../fpga/">muir-fpga</a> is the machine on an FPGA board, where the same flag chooses it. The CADR stays MIT&rsquo;s machine; QUUX runs muir-sys&rsquo;s microcode 2001 and System 2001.</p>
 </div>
 </section>
 
@@ -22,7 +22,7 @@ css: drawings.css
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 01 &mdash; THE PROCESSOR</span><span>QUUX</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 1: The processor">
-        <svg viewBox="0 0 1340 780" role="img" aria-label="QUUX&rsquo;s processor, drawn on the CADR processor&rsquo;s geometry, with QUUX&rsquo;s changes tinted. There are no boards: one enclosure, QUUX revision 12. The boot PROM is 1,024 words at 36000 to 37777 of the control store, read only and never overlaid, and reset starts there. The PDL buffer is 16,384 words with 14-bit pointer and index. Multiply and divide, ALU functions 42 and 43, sit beside the ALU: MUL in one microcycle and DIV in ten, driving the output bus and loading Q. The map&rsquo;s first level is 2,048 entries of six bits and its second 2,048 entries; the sixth bit is written from VMA bit 24 and read back in MAP(MD) bit 29. The functional sources add 15, the microsecond clock, and 16, MACHINE-ID. The jump condition&rsquo;s interrupt is INT from word 100 of the register page, and INTERRUPT-CONTROL&rsquo;s bit 28 drives nothing. A clock of 4 ticks of 10 ns, 40 ns, replaces the delay lines and the speed bits. The physical address and MD go to the memory port, which sends main memory and the frame buffer through the cache, 4K words, unified, write-through, 2-way, with lines of 4 words and a one-word write buffer, onto the memory bus; a device register through the register decode, never cached, in two microcycles, to the register page; and anything else fails at once, setting word 101&rsquo;s NXM bit. Functional destinations 5 to 7 write the MACRO-DISPATCH register and the MACRO DISPATCH MEMORY of 1,024 entries, which let a return to the main loop go to the next macroinstruction&rsquo;s handler. Everything else is the CADR&rsquo;s: the IR and microinstruction, the next PC selector, the SPC stack and dispatch memory, A and M memory, the ALU, rotator and masker, Q, LC, VMA and MD.">
+        <svg viewBox="0 0 1340 780" role="img" aria-label="QUUX&rsquo;s processor, drawn on the CADR processor&rsquo;s geometry, with QUUX&rsquo;s changes tinted. There are no boards: one enclosure, QUUX revision 13. Its word is 40 bits, a tag in bits 39 to 32 over a field in bits 31 to 0. The boot PROM is 1,024 words at 36000 to 37777 of the control store, read only and never overlaid, and reset starts there; the control store stays 16,384 words of 48 bits. The dispatch memory is 4,096 words of 17 bits, addressed by IR bits 23 to 12. A memory is 1,024 words of 40 bits, M memory 32, and the A bus, the M bus, the output bus, Q, VMA and MD are 40 bits wide. The PDL buffer is 16,384 words of 40 bits with 14-bit pointer and index. The ALU&rsquo;s logical functions act on all 40 bits, and its arithmetic and the multiply and divide steps on the 32-bit field, the result&rsquo;s tag being M&rsquo;s; a jump condition tests the field&rsquo;s fixnum overflow. Multiply and divide, ALU functions 42 and 43, sit beside the ALU and act on the field: MUL in one microcycle and DIV in ten, driving the output bus and loading Q. The rotator is a ring of 40, rotating M left by 0 to 39, by IR bits 5 to 0, plus LC&rsquo;s byte offset on an LDB with IR bit 24; the masker takes its length from IR bits 11 to 6. LC is a 30-bit byte address. The map&rsquo;s first level is 8,192 entries of seven bits, indexed by address bits 27 to 15, and its second 4,096 entries of 28 bits, over pages of 1024 words; MAP(MD) reads the level-1 entry in bits 38 to 32. The functional sources add 15, the microsecond clock, and 16, MACHINE-ID. The jump condition&rsquo;s interrupt is INT from word 100 of the register page, and INTERRUPT-CONTROL&rsquo;s bit 36 drives nothing. A clock of 4 ticks of 10 ns, 40 ns, replaces the delay lines and the speed bits; the Arty Z7-20 runs revision 13 at 5 ticks, 50 ns. The 28-bit physical address and MD go to the memory port, which sends main memory and the frame buffer through the cache, 4K words, unified, write-through, 2-way, with lines of 8 words and a one-word write buffer, onto the memory bus; a device register through the register decode, never cached, in two microcycles, to the register page; and anything else fails at once, setting word 101&rsquo;s NXM bit. Functional destinations 5 to 7 write the MACRO-DISPATCH register and the MACRO DISPATCH MEMORY of 1,024 entries, which let a return to the main loop go to the next macroinstruction&rsquo;s handler. Everything else is the CADR&rsquo;s: the IR and microinstruction, the next PC selector, the PC, the OPCs, the IWR and the SPC stack.">
           <defs>
             <marker id="p2arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
@@ -42,7 +42,7 @@ css: drawings.css
 
           <!-- No boards: one enclosure, the processor. -->
           <rect class="d-dash" x="12" y="40" width="1204" height="728"/>
-          <text class="d-s" x="20" y="56">QUUX, revision 12</text>
+          <text class="d-s" x="20" y="56">QUUX, revision 13</text>
 
           <!-- The control store, with the boot PROM as a band: over its bottom on the CADR, at 36000-37777 of its own on QUUX. -->
           <rect class="d-box" x="24" y="66" width="198" height="150"/>
@@ -103,13 +103,14 @@ css: drawings.css
           <path class="d-line" d="M430,400 V294" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M254,440 H280" marker-end="url(#p2arr)"/>
           <text class="d-s" x="250" y="444" text-anchor="end">L, destination 15</text>
+          <rect class="d-tint" x="280" y="490" width="160" height="66"/>
           <rect class="d-box" x="280" y="490" width="160" height="66"/>
           <text class="d-t" x="360" y="510" text-anchor="middle">dispatch memory</text>
-          <text class="d-s" x="360" y="528" text-anchor="middle">2,048 words of 17 bits:</text>
+          <text class="d-s" x="360" y="528" text-anchor="middle">4,096 words of 17 bits:</text>
           <text class="d-s" x="360" y="542" text-anchor="middle">a PC and N, P, R</text>
           <path class="d-line" d="M440,523 H456 V294" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M254,504 H280"/>
-          <text class="d-n" x="250" y="508" text-anchor="end">IR&lt;22:12&gt;</text>
+          <text class="d-n" x="250" y="508" text-anchor="end">IR&lt;23:12&gt;</text>
           <path class="d-line" d="M254,526 H280" marker-end="url(#p2arr)"/>
           <text class="d-s" x="250" y="530" text-anchor="end">rotated M, up to 7 bits</text>
           <path class="d-line" d="M254,548 H280" marker-end="url(#p2arr)"/>
@@ -126,34 +127,37 @@ css: drawings.css
           <rect class="d-tint" x="24" y="700" width="200" height="58"/>
           <rect class="d-box" x="24" y="700" width="200" height="58"/>
           <text class="d-t" x="124" y="720" text-anchor="middle">clock</text>
-          <text class="d-s" x="124" y="738" text-anchor="middle">sync: 4 ticks of 10 ns, 40 ns</text>
-          <text class="d-s" x="124" y="752" text-anchor="middle">no delay lines, no speed bits</text>
-          <rect class="d-tint" x="280" y="610" width="190" height="132"/>
-          <rect class="d-box" x="280" y="610" width="190" height="132"/>
+          <text class="d-s" x="124" y="738" text-anchor="middle">4 ticks of 10 ns, 40 ns;</text>
+          <text class="d-s" x="124" y="752" text-anchor="middle">5 on the Arty; no delay lines</text>
+          <rect class="d-tint" x="280" y="610" width="190" height="146"/>
+          <rect class="d-box" x="280" y="610" width="190" height="146"/>
           <text class="d-t" x="375" y="630" text-anchor="middle">jump condition</text>
-          <text class="d-s" x="375" y="648" text-anchor="middle">M &lt; A, M &lt;= A, M = A, from</text>
-          <text class="d-s" x="375" y="662" text-anchor="middle">the ALU; a bit of the</text>
-          <text class="d-s" x="375" y="676" text-anchor="middle">rotated M; page fault, from</text>
-          <text class="d-s" x="375" y="690" text-anchor="middle">the map; interrupt pending:</text>
-          <text class="d-s" x="375" y="704" text-anchor="middle">INT, from the register</text>
-          <text class="d-s" x="375" y="718" text-anchor="middle">page's word 100, and &lt;27&gt;;</text>
-          <text class="d-s" x="375" y="732" text-anchor="middle">sequence break, &lt;26&gt;; always</text>
+          <text class="d-s" x="375" y="648" text-anchor="middle">M &lt; A, M &lt;= A, M = A and</text>
+          <text class="d-s" x="375" y="662" text-anchor="middle">fixnum overflow, from the</text>
+          <text class="d-s" x="375" y="676" text-anchor="middle">ALU; a bit of the rotated</text>
+          <text class="d-s" x="375" y="690" text-anchor="middle">M; page fault, from the</text>
+          <text class="d-s" x="375" y="704" text-anchor="middle">map; interrupt pending:</text>
+          <text class="d-s" x="375" y="718" text-anchor="middle">INT, from the register</text>
+          <text class="d-s" x="375" y="732" text-anchor="middle">page's word 100, and &lt;35&gt;;</text>
+          <text class="d-s" x="375" y="746" text-anchor="middle">sequence break, &lt;34&gt;; always</text>
           <path class="d-dot" d="M470,650 H478 V240 H470" marker-end="url(#p2arr)"/>
 
           <!-- The data paths. The A bus is driven from the A memory alone; the M bus from the M memory and the functional sources. -->
+          <rect class="d-tint" x="510" y="66" width="160" height="54"/>
           <rect class="d-box" x="510" y="66" width="160" height="54"/>
           <text class="d-t" x="590" y="86" text-anchor="middle">A memory</text>
-          <text class="d-s" x="590" y="104" text-anchor="middle">1,024 words of 32 bits</text>
+          <text class="d-s" x="590" y="104" text-anchor="middle">1,024 words of 40 bits</text>
           <path class="d-dot" d="M560,46 V66"/>
           <text class="d-n" x="566" y="56">IR&lt;41:32&gt;</text>
           <path class="d-bus" d="M670,93 H910 V150" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M745,93 V150" marker-end="url(#p2arr)"/>
           <text class="d-s" x="680" y="86">A bus</text>
-          <text class="d-n" x="840" y="86">32</text>
+          <text class="d-n" x="840" y="86">40</text>
+          <rect class="d-tint" x="510" y="150" width="160" height="62"/>
           <rect class="d-box" x="510" y="150" width="160" height="62"/>
           <text class="d-t" x="590" y="170" text-anchor="middle">M memory</text>
-          <text class="d-s" x="590" y="188" text-anchor="middle">32 words, a copy of</text>
-          <text class="d-s" x="590" y="202" text-anchor="middle">A's first 32</text>
+          <text class="d-s" x="590" y="188" text-anchor="middle">32 words of 40 bits,</text>
+          <text class="d-s" x="590" y="202" text-anchor="middle">a copy of A's first 32</text>
           <path class="d-dot" d="M620,128 V150"/>
           <text class="d-n" x="626" y="138">IR&lt;31:26&gt;</text>
           <rect class="d-tint" x="510" y="232" width="160" height="126"/>
@@ -169,7 +173,7 @@ css: drawings.css
           <rect class="d-tint" x="510" y="370" width="160" height="76"/>
           <rect class="d-box" x="510" y="370" width="160" height="76"/>
           <text class="d-t" x="590" y="390" text-anchor="middle">PDL buffer</text>
-          <text class="d-s" x="590" y="408" text-anchor="middle">16,384 words of 32</text>
+          <text class="d-s" x="590" y="408" text-anchor="middle">16,384 words of 40</text>
           <text class="d-s" x="590" y="422" text-anchor="middle">bits; pointer and</text>
           <text class="d-s" x="590" y="436" text-anchor="middle">index, 14 bits each</text>
           <path class="d-dot" d="M586,466 V446"/>
@@ -181,15 +185,16 @@ css: drawings.css
           <path class="d-bus" d="M670,291 H690" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M670,408 H690" marker-end="url(#p2arr)"/>
           <text class="d-s" x="684" y="494" text-anchor="end">M bus</text>
-          <text class="d-n" x="684" y="508" text-anchor="end">32</text>
+          <text class="d-n" x="684" y="508" text-anchor="end">40</text>
 
           <!-- The ALU, and on QUUX multiply and divide beside it; the rotator and the masker. -->
+          <rect class="d-tint" x="714" y="150" width="130" height="84"/>
           <rect class="d-box" x="714" y="150" width="130" height="84"/>
           <text class="d-t" x="779" y="170" text-anchor="middle">ALU</text>
-          <text class="d-s" x="779" y="188" text-anchor="middle">32 bits: boolean,</text>
-          <text class="d-s" x="779" y="202" text-anchor="middle">add, subtract, and</text>
-          <text class="d-s" x="779" y="216" text-anchor="middle">the multiply and</text>
-          <text class="d-s" x="779" y="230" text-anchor="middle">divide steps</text>
+          <text class="d-s" x="779" y="188" text-anchor="middle">logic on 40 bits;</text>
+          <text class="d-s" x="779" y="202" text-anchor="middle">add, subtract and</text>
+          <text class="d-s" x="779" y="216" text-anchor="middle">the steps on the</text>
+          <text class="d-s" x="779" y="230" text-anchor="middle">32-bit field</text>
           <path class="d-bus" d="M690,210 H714" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M800,126 V150"/>
           <text class="d-n" x="806" y="122">IR&lt;8:3&gt;, IR&lt;2&gt;</text>
@@ -202,22 +207,25 @@ css: drawings.css
           <path class="d-bus" d="M690,293 H714" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M844,293 H860"/>
           <circle cx="860" cy="293" r="4" fill="currentColor"/>
+          <rect class="d-tint" x="714" y="344" width="130" height="62"/>
           <rect class="d-box" x="714" y="344" width="130" height="62"/>
           <text class="d-t" x="779" y="364" text-anchor="middle">rotator</text>
-          <text class="d-s" x="779" y="382" text-anchor="middle">rotates M left</text>
-          <text class="d-s" x="779" y="396" text-anchor="middle">by 0 to 31</text>
+          <text class="d-s" x="779" y="382" text-anchor="middle">a ring of 40: M</text>
+          <text class="d-s" x="779" y="396" text-anchor="middle">left by 0 to 39</text>
           <path class="d-bus" d="M690,375 H714" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M780,432 V406"/>
-          <text class="d-n" x="726" y="444">IR&lt;4:0&gt;, or LC's</text>
-          <text class="d-n" x="726" y="458">when IR&lt;11:10&gt; = 3</text>
+          <text class="d-n" x="726" y="444">IR&lt;5:0&gt;, plus LC's</text>
+          <text class="d-n" x="726" y="458">on LDB by IR&lt;24&gt;</text>
+          <rect class="d-tint" x="714" y="470" width="130" height="70"/>
           <rect class="d-box" x="714" y="470" width="130" height="70"/>
           <text class="d-t" x="779" y="490" text-anchor="middle">Q</text>
-          <text class="d-s" x="779" y="508" text-anchor="middle">32 bits, for</text>
+          <text class="d-s" x="779" y="508" text-anchor="middle">40 bits, for</text>
           <text class="d-s" x="779" y="522" text-anchor="middle">multiply and</text>
           <text class="d-s" x="779" y="536" text-anchor="middle">divide</text>
           <path class="d-bus" d="M714,501 H690" marker-end="url(#p2arr)"/>
           <path class="d-dot" d="M740,552 V540"/>
           <text class="d-n" x="746" y="558">IR&lt;1:0&gt;</text>
+          <rect class="d-tint" x="876" y="150" width="140" height="112"/>
           <rect class="d-box" x="876" y="150" width="140" height="112"/>
           <text class="d-t" x="946" y="170" text-anchor="middle">masker</text>
           <text class="d-s" x="946" y="188" text-anchor="middle">a mask of any length</text>
@@ -227,11 +235,12 @@ css: drawings.css
           <text class="d-s" x="946" y="244" text-anchor="middle">deposit byte,</text>
           <text class="d-s" x="946" y="258" text-anchor="middle">selective deposit</text>
           <path class="d-dot" d="M960,126 V150"/>
-          <text class="d-n" x="966" y="122">IR&lt;9:5&gt;</text>
+          <text class="d-n" x="966" y="122">IR&lt;11:6&gt;</text>
 
           <!-- The rotated M goes up to the masker, under the ALU's output. -->
           <path class="d-bus" d="M844,375 H854"/>
           <path class="d-bus" d="M866,375 H910 V262" marker-end="url(#p2arr)"/>
+          <rect class="d-tint" x="866" y="410" width="160" height="76"/>
           <rect class="d-box" x="866" y="410" width="160" height="76"/>
           <text class="d-t" x="946" y="430" text-anchor="middle">output bus selector</text>
           <text class="d-s" x="946" y="448" text-anchor="middle">the masker, the ALU,</text>
@@ -256,7 +265,7 @@ css: drawings.css
           <path class="d-bus" d="M1032,298 H1050" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,531 H1050" marker-end="url(#p2arr)"/>
           <text class="d-s" x="1026" y="90" text-anchor="end">OB</text>
-          <text class="d-n" x="1026" y="104" text-anchor="end">32</text>
+          <text class="d-n" x="1026" y="104" text-anchor="end">40</text>
           <path class="d-dot" d="M946,622 V602"/>
           <text class="d-n" x="952" y="630">IR&lt;25:14&gt;</text>
           <rect class="d-box" x="876" y="540" width="140" height="62"/>
@@ -283,53 +292,56 @@ css: drawings.css
           <text class="d-s" x="828" y="748" text-anchor="middle">next macroinstruction&rsquo;s handler</text>
 
           <!-- The functional destinations, and the memory side. -->
+          <rect class="d-tint" x="1050" y="66" width="146" height="90"/>
           <rect class="d-box" x="1050" y="66" width="146" height="90"/>
           <text class="d-t" x="1123" y="86" text-anchor="middle">LC</text>
-          <text class="d-s" x="1123" y="104" text-anchor="middle">26 bits, the byte</text>
+          <text class="d-s" x="1123" y="104" text-anchor="middle">30 bits, the byte</text>
           <text class="d-s" x="1123" y="118" text-anchor="middle">address of the next</text>
           <text class="d-s" x="1123" y="132" text-anchor="middle">instruction unit;</text>
           <text class="d-s" x="1123" y="146" text-anchor="middle">LC/4 to VMA on fetch</text>
           <rect class="d-tint" x="1050" y="172" width="146" height="98"/>
           <rect class="d-box" x="1050" y="172" width="146" height="98"/>
           <text class="d-t" x="1123" y="192" text-anchor="middle">INTERRUPT-CONTROL</text>
-          <text class="d-s" x="1123" y="210" text-anchor="middle">&lt;26&gt; sequence break,</text>
-          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;27&gt; interrupt</text>
-          <text class="d-s" x="1123" y="238" text-anchor="middle">enable, &lt;28&gt; drives</text>
-          <text class="d-s" x="1123" y="252" text-anchor="middle">nothing, &lt;29&gt; byte</text>
+          <text class="d-s" x="1123" y="210" text-anchor="middle">&lt;34&gt; sequence break,</text>
+          <text class="d-s" x="1123" y="224" text-anchor="middle">&lt;35&gt; interrupt</text>
+          <text class="d-s" x="1123" y="238" text-anchor="middle">enable, &lt;36&gt; drives</text>
+          <text class="d-s" x="1123" y="252" text-anchor="middle">nothing, &lt;37&gt; byte</text>
           <text class="d-s" x="1123" y="266" text-anchor="middle">mode</text>
           <path class="d-dot" d="M1080,172 V156" marker-end="url(#p2arr)"/>
-          <text class="d-n" x="1086" y="168">&lt;29&gt;</text>
+          <text class="d-n" x="1086" y="168">&lt;37&gt;</text>
+          <rect class="d-tint" x="1050" y="280" width="146" height="52"/>
           <rect class="d-box" x="1050" y="280" width="146" height="52"/>
           <text class="d-t" x="1123" y="300" text-anchor="middle">VMA</text>
-          <text class="d-s" x="1123" y="318" text-anchor="middle">32 bits, 24 used</text>
+          <text class="d-s" x="1123" y="318" text-anchor="middle">40 bits, 28 mapped</text>
           <rect class="d-tint" x="1050" y="358" width="146" height="140"/>
           <rect class="d-box" x="1050" y="358" width="146" height="140"/>
           <text class="d-t" x="1123" y="378" text-anchor="middle">the map</text>
           <text class="d-s" x="1123" y="396" text-anchor="middle">from VMA starting a</text>
           <text class="d-s" x="1123" y="410" text-anchor="middle">cycle, else from MD;</text>
-          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 2,048 × 6</text>
-          <text class="d-s" x="1123" y="438" text-anchor="middle">bits, by &lt;23:13&gt;;</text>
-          <text class="d-s" x="1123" y="452" text-anchor="middle">level 2: 2,048</text>
-          <text class="d-s" x="1123" y="466" text-anchor="middle">entries; the sixth</text>
-          <text class="d-s" x="1123" y="480" text-anchor="middle">bit from VMA&lt;24&gt;,</text>
-          <text class="d-s" x="1123" y="494" text-anchor="middle">read in MAP(MD)&lt;29&gt;</text>
+          <text class="d-s" x="1123" y="424" text-anchor="middle">level 1: 8,192 × 7</text>
+          <text class="d-s" x="1123" y="438" text-anchor="middle">bits, by &lt;27:15&gt;;</text>
+          <text class="d-s" x="1123" y="452" text-anchor="middle">level 2: 4,096 × 28</text>
+          <text class="d-s" x="1123" y="466" text-anchor="middle">bits; pages of 1024</text>
+          <text class="d-s" x="1123" y="480" text-anchor="middle">words; level 1 read</text>
+          <text class="d-s" x="1123" y="494" text-anchor="middle">in MAP(MD)&lt;38:32&gt;</text>
+          <rect class="d-tint" x="1050" y="512" width="146" height="50"/>
           <rect class="d-box" x="1050" y="512" width="146" height="50"/>
           <text class="d-t" x="1123" y="532" text-anchor="middle">MD</text>
-          <text class="d-s" x="1123" y="550" text-anchor="middle">32 bits</text>
+          <text class="d-s" x="1123" y="550" text-anchor="middle">40 bits</text>
           <path class="d-bus" d="M1032,104 H1050" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,217 H1050" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,306 H1050" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1032,537 H1050" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M1100,332 V358" marker-end="url(#p2arr)"/>
-          <text class="d-n" x="1106" y="350">24</text>
+          <text class="d-n" x="1106" y="350">28</text>
           <path class="d-bus" d="M1100,512 V498" marker-end="url(#p2arr)"/>
           <path class="d-line" d="M1196,142 H1204 V306 H1196" marker-end="url(#p2arr)"/>
 
           <!-- Out of the processor: the physical address and MD. -->
           <path class="d-line" d="M1196,420 H1228" marker-end="url(#p2arr)"/>
           <path class="d-bus" d="M1196,537 H1228" marker-start="url(#p2arr)" marker-end="url(#p2arr)"/>
-          <text class="d-n" x="1206" y="412" text-anchor="middle">22</text>
-          <text class="d-n" x="1206" y="529" text-anchor="middle">32</text>
+          <text class="d-n" x="1206" y="412" text-anchor="middle">28</text>
+          <text class="d-n" x="1206" y="529" text-anchor="middle">40</text>
           <rect class="d-tint" x="1228" y="396" width="106" height="168"/>
           <rect class="d-box" x="1228" y="396" width="106" height="168"/>
           <text class="d-t" x="1281" y="416" text-anchor="middle">memory port</text>
@@ -351,7 +363,7 @@ css: drawings.css
           <text class="d-s" x="1281" y="314" text-anchor="middle">unified,</text>
           <text class="d-s" x="1281" y="328" text-anchor="middle">write-through,</text>
           <text class="d-s" x="1281" y="342" text-anchor="middle">2-way, lines of</text>
-          <text class="d-s" x="1281" y="356" text-anchor="middle">4 words, a</text>
+          <text class="d-s" x="1281" y="356" text-anchor="middle">8 words, a</text>
           <text class="d-s" x="1281" y="370" text-anchor="middle">one-word write</text>
           <text class="d-s" x="1281" y="384" text-anchor="middle">buffer</text>
           <path class="d-bus" d="M1281,262 V230" marker-end="url(#p2arr)"/>
@@ -371,7 +383,7 @@ css: drawings.css
           <text class="d-s" x="1281" y="720" text-anchor="middle">page</text>
         </svg>
 </div>
-<figcaption>QUUX&rsquo;s processor is the <a href="../cadr/#processor">CADR&rsquo;s</a>, drawn on the same plan, with the tinted parts changed: a fixed 40&nbsp;ns microcycle; the boot PROM in addresses of its own; a 16K-word PDL buffer; a wider map; multiply and divide in one instruction; a microsecond clock; and memory reached through a cache on a port of its own.</figcaption>
+<figcaption>QUUX&rsquo;s processor is the <a href="../cadr/#processor">CADR&rsquo;s</a>, drawn on the same plan, with the tinted parts changed: the 40-bit word, an 8-bit tag over a 32-bit field, through every data path; a fixed microcycle of 40&nbsp;ns, 50 on the Arty Z7-20; the boot PROM in addresses of its own; a 16K-word PDL buffer; a dispatch memory of 4,096 words; a wider map over 1024-word pages; multiply and divide in one instruction; a microsecond clock; and memory reached through a cache on a port of its own. The microinstruction stays the CADR&rsquo;s 48 bits.</figcaption>
 </figure>
 </section>
 <section id="machine" class="section wrap" aria-label="The whole machine.">
@@ -380,7 +392,7 @@ css: drawings.css
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; THE WHOLE MACHINE</span><span>QUUX</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: The whole machine">
-        <svg viewBox="0 0 1340 1014" role="img" aria-label="The QUUX machine. The processor, QUUX revision 12 with the microsecond clock, MUL and DIV, a 16K PDL, a six-bit map and the boot PROM at 36000, has one port, the memory port, over a 22-bit address and 32-bit data; it is the only requester and fails at once where nothing answers. Through the cache, 4K words and write-through, the memory bus reaches main memory, two million words by default, 380 ns a line fill and 290 a write, and the frame buffer, from 17000000 up to the video controller&rsquo;s end, cached. Through the register decode, never cached and two microcycles a register, the memory port reaches the register page, 17777400 to 17777777, the last page of the physical space: word 210 the video controller&rsquo;s one register; 200 to 203 block-disk, a numbered block of 256 words by direct memory access; 160 to 171 the file device, two rings in main memory with bytes by direct memory access; 140 to 145 the network, the Chaosnet interface&rsquo;s five registers; 120 to 123 the keyboard and mouse; 110 to 115 the three interval timers, timer 0 the tick; 100 to 104 the page&rsquo;s own words, interrupt status, error status, mode, the real-time clock and RESET-DEVICES; and 0 to 77 the feature page, what the machine has, read only. There is no device bus. The video controller&rsquo;s scanout reads the frame buffer; block-disk and the file device move their data to main memory themselves; word 100 is the interrupt, back to the processor. The console reads the diagnostic registers. At the right, what stands behind each device in muir-sim and on an FPGA board: main memory is the model&rsquo;s own, in 64K-word units, or DDR; the frame buffer the model&rsquo;s own, or DDR scanned out on its own port; the video controller the terminal, an RFB server, or HDMI and the RFB terminal; block-disk a disk file, raw or VHD with a GPT, or disk-pack-0.img on the card served by Linux; the file device folders of the host, or the Linux program quux-file-device; the network CHUDP over UDP, or the CADR&rsquo;s Chaosnet interface in the fabric and its Linux half; the keyboard and mouse the terminal&rsquo;s VNC client, or the CADR&rsquo;s lines driven from Linux; the timers are in the machine or the fabric; the real-time clock the host&rsquo;s time, or kept by quux-file-device; the console muir-sim&rsquo;s prompt and checkpoints, or the console face over AXI from Linux.">
+        <svg viewBox="0 0 1340 1014" role="img" aria-label="The QUUX machine. The processor, QUUX revision 13 with the 40-bit word, MUL and DIV, the microsecond clock, a 16K PDL, a seven-bit map and the boot PROM at 36000, has one port, the memory port, over a 28-bit address and 40-bit data; it is the only requester and fails at once where nothing answers. Through the cache, 4K words and write-through, the memory bus reaches main memory, 32 million words by default, whose line fill takes the slower board&rsquo;s time and 30 ns more, and the frame buffer, from 1760000000 up to the video controller&rsquo;s end, cached. Through the register decode, never cached and two microcycles a register, the memory port reaches the register page, 1777777400 to 1777777777, the last page of the physical space: word 210 the video controller&rsquo;s one register; 200 to 203 block-disk, a page of 1024 words by direct memory access, as 5 blocks of 1 KiB packed or 4 at 4 bytes a word; 160 to 171 the file device, two rings in main memory with bytes by direct memory access; 140 to 145 the network, the Chaosnet interface&rsquo;s five registers; 120 to 123 the keyboard and mouse; 110 to 115 the three interval timers, timer 0 the tick; 100 to 104 the page&rsquo;s own words, interrupt status, error status, mode, the real-time clock and RESET-DEVICES; and 0 to 77 the feature page, what the machine has, read only, words 20 to 24 the board&rsquo;s name. There is no device bus. The video controller&rsquo;s scanout reads the frame buffer; block-disk and the file device move their data to main memory themselves; word 100 is the interrupt, back to the processor. The console reads the diagnostic registers. At the right, what stands behind each device in muir-sim and on an FPGA board: main memory is the model&rsquo;s own, given in megawords, or DDR, packed at 5 bytes a word; the frame buffer the model&rsquo;s own, or DDR scanned out on its own port; the video controller the terminal, an RFB server, or HDMI or DisplayPort and the RFB terminal; block-disk a disk file, raw or VHD with a GPT, or disk-pack-0.img on the card served by Linux; the file device folders of the host, or the Linux program quux-file-device; the network CHUDP over UDP, or the CADR&rsquo;s Chaosnet interface in the fabric and its Linux half; the keyboard and mouse the terminal&rsquo;s VNC client, or the CADR&rsquo;s lines driven from Linux; the timers are in the machine or the fabric; the real-time clock the host&rsquo;s time, or kept by quux-file-device; the console muir-sim&rsquo;s prompt and checkpoints, or the console face over AXI from Linux.">
           <defs>
             <marker id="m2arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
               <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
@@ -403,15 +415,15 @@ css: drawings.css
           <!-- The processor, and its one port. -->
           <rect class="d-box" x="20" y="70" width="180" height="104"/>
           <text class="d-t" x="110" y="90" text-anchor="middle">processor</text>
-          <text class="d-s" x="110" y="108" text-anchor="middle">QUUX, revision 12: the</text>
-          <text class="d-s" x="110" y="122" text-anchor="middle">microsecond clock, MUL and</text>
-          <text class="d-s" x="110" y="136" text-anchor="middle">DIV, a 16K PDL, a six-bit</text>
-          <text class="d-s" x="110" y="150" text-anchor="middle">map, the boot PROM at</text>
-          <text class="d-s" x="110" y="164" text-anchor="middle">36000</text>
+          <text class="d-s" x="110" y="108" text-anchor="middle">QUUX, revision 13: the</text>
+          <text class="d-s" x="110" y="122" text-anchor="middle">40-bit word, MUL and DIV,</text>
+          <text class="d-s" x="110" y="136" text-anchor="middle">the microsecond clock, a</text>
+          <text class="d-s" x="110" y="150" text-anchor="middle">16K PDL, a seven-bit map,</text>
+          <text class="d-s" x="110" y="164" text-anchor="middle">the boot PROM at 36000</text>
           <path class="d-line" d="M200,96 H250" marker-end="url(#m2arr)"/>
-          <text class="d-n" x="225" y="90" text-anchor="middle">22</text>
+          <text class="d-n" x="225" y="90" text-anchor="middle">28</text>
           <path class="d-bus" d="M200,130 H250" marker-start="url(#m2arr)" marker-end="url(#m2arr)"/>
-          <text class="d-n" x="225" y="124" text-anchor="middle">32</text>
+          <text class="d-n" x="225" y="124" text-anchor="middle">40</text>
           <rect class="d-box" x="250" y="70" width="120" height="98"/>
           <text class="d-t" x="310" y="90" text-anchor="middle">memory port</text>
           <text class="d-s" x="310" y="108" text-anchor="middle">one requester,</text>
@@ -431,12 +443,12 @@ css: drawings.css
           <text class="d-s" x="530" y="92">the memory bus</text>
           <rect class="d-box" x="680" y="70" width="180" height="70"/>
           <text class="d-t" x="770" y="90" text-anchor="middle">main memory</text>
-          <text class="d-s" x="770" y="108" text-anchor="middle">two million words by</text>
-          <text class="d-s" x="770" y="122" text-anchor="middle">default; 380 ns a line</text>
-          <text class="d-s" x="770" y="136" text-anchor="middle">fill, 290 a write</text>
+          <text class="d-s" x="770" y="108" text-anchor="middle">32MW by default; a line</text>
+          <text class="d-s" x="770" y="122" text-anchor="middle">fill the slower board&rsquo;s</text>
+          <text class="d-s" x="770" y="136" text-anchor="middle">time and 30 ns more</text>
           <rect class="d-box" x="680" y="146" width="180" height="62"/>
           <text class="d-t" x="770" y="166" text-anchor="middle">frame buffer</text>
-          <text class="d-s" x="770" y="184" text-anchor="middle">17000000 up to the video</text>
+          <text class="d-s" x="770" y="184" text-anchor="middle">1760000000 up to the video</text>
           <text class="d-s" x="770" y="198" text-anchor="middle">controller's end; cached</text>
 
           <!-- Every device register is on one page, reached through the register decode; there is no device bus. -->
@@ -447,8 +459,8 @@ css: drawings.css
           <text class="d-s" x="462" y="346" text-anchor="middle">microcycles a</text>
           <text class="d-s" x="462" y="360" text-anchor="middle">register</text>
           <text class="d-t" x="556" y="250">the register page</text>
-          <text class="d-s" x="556" y="266">17777400-17777777, 256 words,</text>
-          <text class="d-s" x="556" y="280">the physical space&rsquo;s last page</text>
+          <text class="d-s" x="556" y="266">1777777400-1777777777, 256</text>
+          <text class="d-s" x="556" y="280">words, the space&rsquo;s last page</text>
           <path class="d-line" d="M540,323 V867"/>
           <rect class="d-box" x="556" y="294" width="100" height="70"/>
           <path class="d-line" d="M540,329 H556" marker-end="url(#m2arr)"/>
@@ -475,8 +487,8 @@ css: drawings.css
           <path class="d-line" d="M656,401 H680"/>
           <rect class="d-box" x="680" y="370" width="180" height="62"/>
           <text class="d-t" x="770" y="390" text-anchor="middle">block-disk</text>
-          <text class="d-s" x="770" y="408" text-anchor="middle">a numbered block of 256</text>
-          <text class="d-s" x="770" y="422" text-anchor="middle">words, by DMA</text>
+          <text class="d-s" x="770" y="408" text-anchor="middle">a page in 5 or 4 blocks</text>
+          <text class="d-s" x="770" y="422" text-anchor="middle">of 1 KiB, by DMA</text>
           <text class="d-n" x="606" y="479" text-anchor="middle">160-171</text>
           <path class="d-line" d="M656,475 H680"/>
           <rect class="d-box" x="680" y="444" width="180" height="62"/>
@@ -513,7 +525,8 @@ css: drawings.css
           <text class="d-s" x="606" y="878" text-anchor="middle">the feature</text>
           <text class="d-s" x="606" y="892" text-anchor="middle">page</text>
           <text class="d-s" x="672" y="864">what this machine has,</text>
-          <text class="d-s" x="672" y="878">read only</text>
+          <text class="d-s" x="672" y="878">read only; 20 to 24 the</text>
+          <text class="d-s" x="672" y="892">board&rsquo;s name</text>
 
           <!-- The frame buffer is scanned out; block-disk and the file device move their bulk data to main memory themselves. -->
           <path class="d-dash" d="M760,208 V300" marker-end="url(#m2arr)"/>
@@ -529,10 +542,11 @@ css: drawings.css
 
           <!-- What stands behind each device: in muir-sim, and on a board. -->
           <path class="d-hair" d="M860,101 H890"/>
-          <text class="d-s" x="896" y="91">the model's own memory, in</text>
-          <text class="d-s" x="896" y="105">64K-word units</text>
-          <text class="d-n" x="896" y="119">--main-memory-boards</text>
-          <text class="d-s" x="1116" y="105">DDR</text>
+          <text class="d-s" x="896" y="91">the model's own memory,</text>
+          <text class="d-s" x="896" y="105">in megawords</text>
+          <text class="d-n" x="896" y="119">--main-memory-size</text>
+          <text class="d-s" x="1116" y="98">DDR, packed: 5 bytes</text>
+          <text class="d-s" x="1116" y="112">a word</text>
           <path class="d-hair" d="M860,177 H869 M879,177 H890"/>
           <text class="d-s" x="896" y="181">the model's own memory</text>
           <text class="d-s" x="1116" y="174">DDR, at the display's base,</text>
@@ -540,8 +554,9 @@ css: drawings.css
           <path class="d-hair" d="M860,329 H869 M879,329 H890"/>
           <text class="d-s" x="896" y="326">the terminal, an RFB server</text>
           <text class="d-s" x="896" y="340">a VNC client reads</text>
-          <text class="d-s" x="1116" y="326">HDMI, scanned out by the</text>
-          <text class="d-s" x="1116" y="340">fabric; and the RFB terminal</text>
+          <text class="d-s" x="1116" y="326">HDMI or DisplayPort,</text>
+          <text class="d-s" x="1116" y="340">scanned out by the fabric;</text>
+          <text class="d-s" x="1116" y="354">and the RFB terminal</text>
           <path class="d-hair" d="M860,401 H869 M879,401 H890"/>
           <text class="d-s" x="896" y="391">a disk file: raw, fixed or</text>
           <text class="d-s" x="896" y="405">dynamic VHD, with a GPT</text>
@@ -591,25 +606,26 @@ css: drawings.css
 <figcaption>QUUX has no bus between its devices. Main memory and the frame buffer are on a port of their own through a cache, every device register is on one page, and each device moves its bulk data to memory itself. The I/O board, the Unibus, the bus interface and the debug cable are gone. What stands behind a device is the host&rsquo;s in muir-sim, and Linux&rsquo;s on a board.</figcaption>
 </figure>
 </section>
-<section id="changes" class="section wrap" aria-label="What QUUX changes"><div class="section-heading"><div><p class="eyebrow">03 / WHAT QUUX CHANGES</p><h2>Rebuilt where<br>it <em>pays.</em></h2></div><p>QUUX reports its hardware revision, now 12, in a word only it answers, its <b>MACHINE-ID</b>; each revision contains the last up to revision 9, revision 10 puts interval timers on the register page in place of revision 5&rsquo;s one, revision 11 moves the register page and puts block-disk and the video controller on it, and revision 12 adds the fused return, with functional destinations 5 to 7 and feature word 17. Software reads that word first, then a page of device registers that lists the machine&rsquo;s sizes.</p></div>
+<section id="changes" class="section wrap" aria-label="What QUUX changes"><div class="section-heading"><div><p class="eyebrow">03 / WHAT QUUX CHANGES</p><h2>Rebuilt where<br>it <em>pays.</em></h2></div><p>QUUX reports its hardware revision, now 13, in a word only it answers, its <b>MACHINE-ID</b>; each revision contains the last up to revision 9, revision 10 puts interval timers on the register page in place of revision 5&rsquo;s one, revision 11 moves the register page and puts block-disk and the video controller on it, revision 12 adds the fused return, with functional destinations 5 to 7 and feature word 17, and revision 13 widens the word to 40 bits, with 28-bit addresses and pages of 1024 words, and contains no earlier revision. Software reads that word first, then a page of device registers that lists the machine&rsquo;s sizes.</p></div>
 <div class="cards">
-<article class="card"><div class="card-label"><span>THE MAP</span><span>REVISION 1</span></div><p class="card-num">63</p><p class="card-sub">regions mapped at once, against 31</p><p>A six-bit level-1 map entry where the CADR&rsquo;s is five: 64 blocks of level-2 entries, 2,048 in all. The sixth bit travels on two bits the CADR leaves spare.</p><p>Measured: 11% fewer microcycles over thirteen workloads, 31% fewer interning symbols, 27% scrolling the listener, 21% compiling.</p></article>
+<article class="card"><div class="card-label"><span>THE MAP</span><span>REVISIONS 1 AND 13</span></div><p class="card-num">127</p><p class="card-sub">regions of 32K words mapped at once, against 31 of 8K</p><p>A seven-bit level-1 map entry where the CADR&rsquo;s is five: 128 blocks of 32 level-2 entries, 4,096 in all, block 177 the invalid one, and each entry a page of 1024 words. Revision 1 made the entry six bits, 63 regions of 8K words; revision 13 made it seven.</p><p>Measured, revision 1&rsquo;s six bits: 11% fewer microcycles over thirteen workloads, 31% fewer interning symbols, 27% scrolling the listener, 21% compiling.</p></article>
 <article class="card"><div class="card-label"><span>THE PDL BUFFER</span><span>REVISION 2</span></div><p class="card-num">16K</p><p class="card-sub">words, against 1K</p><p>Its pointer and index are 14 bits where the CADR&rsquo;s are 10. It needs QUUX&rsquo;s own boot PROM, and microcode that knows the size: MIT&rsquo;s 323 does not run on it.</p><p>Measured: 4% fewer microcycles over thirteen workloads, 29% fewer in deep recursion.</p></article>
 <article class="card"><div class="card-label"><span>MULTIPLY AND DIVIDE</span><span>REVISION 3</span></div><p class="card-num">1 and 10</p><p class="card-sub">microcycles, multiply and divide, against 32 steps each</p><p>ALU functions 42 and 43, each bit for bit what the CADR&rsquo;s step sequence gives. A multiply takes one microcycle; a divide ten: its own and nine held, counted from when its operands are ready.</p><p>Measured: 20% fewer microcycles a macroinstruction multiplying and dividing, 7% in floating point.</p></article>
 <article class="card"><div class="card-label"><span>CLOCKS OF ITS OWN</span><span>REVISIONS 5 AND 10</span></div><p class="card-num">3</p><p class="card-sub">interval timers, and a microsecond clock in the processor</p><p>The CADR&rsquo;s clock is its display&rsquo;s vertical interrupt, and its microsecond clock and interval timer are on the I/O board. QUUX&rsquo;s processor reads a microsecond clock in one microinstruction, and its register page has three interval timers, periodic or one-shot, each interrupting under its own enable. Timer 0 is the tick, the machine&rsquo;s 60-cycle clock, whose period the boot PROM writes.</p></article>
-<article class="card"><div class="card-label"><span>THE VIDEO CONTROLLER</span><span>THE DISPLAY</span></div><p class="card-num">1280&times;1024</p><p class="card-sub">one bit a pixel, by default</p><p>A plain frame buffer and one register in place of the CADR&rsquo;s TV boards: no sync program, no color map, no interrupt. It can be any size up to 1920 by 1080, and System 2000 sizes its screen from the feature page.</p></article>
-<article class="card"><div class="card-label"><span>BLOCK-DISK</span><span>THE DISK</span></div><p class="card-num">2<sup>28</sup></p><p class="card-sub">blocks, addressed by number</p><p>The CADR disk controller&rsquo;s registers and command lists with the drive&rsquo;s cylinders, heads and sectors taken out: read or write a numbered block of 256 words. It is QUUX&rsquo;s only disk, and muir-sys&rsquo;s boot PROM, microcode and System 2000 boot from it.</p></article>
+<article class="card"><div class="card-label"><span>THE VIDEO CONTROLLER</span><span>THE DISPLAY</span></div><p class="card-num">1920&times;1080</p><p class="card-sub">at most, one bit a pixel</p><p>A plain frame buffer and one register in place of the CADR&rsquo;s TV boards: no sync program, no color map, no interrupt. Each board&rsquo;s bitstream fixes its size: 1280 by 1024 on the Arty Z7-20 and the DE25-Nano, 1920 by 1080 on the Kria KR260. muir-sim&rsquo;s is 1280 by 1024 unless <code>--video-size</code> gives another. System 2001 reads the size from the feature page at boot, so one band runs on each.</p></article>
+<article class="card"><div class="card-label"><span>BLOCK-DISK</span><span>THE DISK</span></div><p class="card-num">2<sup>28</sup></p><p class="card-sub">blocks, addressed by number</p><p>The CADR disk controller&rsquo;s registers and command lists with the drive&rsquo;s cylinders, heads and sectors taken out: read or write numbered blocks of 1,024 bytes, a page of 1024 words at a time, as 5 blocks packed or as 4 at 4 bytes a word for byte data. It is QUUX&rsquo;s only disk, and muir-sys&rsquo;s boot PROM, microcode and System 2001 boot from it.</p></article>
 <article class="card"><div class="card-label"><span>NO UNIBUS</span><span>THE I/O BOARD</span></div><p class="card-num">0</p><p class="card-sub">Unibus cycles, and no I/O board</p><p>The keyboard and mouse, the Chaosnet interface and the interrupt and error status moved to QUUX&rsquo;s register page, the microsecond clock into the processor and the interval timers onto the page; the serial port was dropped, and the Unibus went with them. The debug cable, a Unibus master, went too: the console&rsquo;s registers are the host&rsquo;s port alone.</p></article>
-<article class="card"><div class="card-label"><span>THE MEMORY PORT</span><span>REVISION 7</span></div><p class="card-num">4K</p><p class="card-sub">words of cache, always</p><p>Main memory is off the Xbus it shared with the devices: the processor reaches it, and the frame buffer, on a port of its own through a write-through cache, a line fill no sooner than 380&nbsp;ns and a write 290&nbsp;ns, the slower of the two FPGA boards&rsquo; memories. The CADR&rsquo;s bus interface has nothing left to do, and QUUX has none.</p></article>
+<article class="card"><div class="card-label"><span>THE MEMORY PORT</span><span>REVISION 7</span></div><p class="card-num">4K</p><p class="card-sub">words of cache, always</p><p>Main memory is off the Xbus it shared with the devices: the processor reaches it, and the frame buffer, on a port of its own through a write-through cache of 8-word lines. It is 32MW by default, and muir-sim times it as the DE25-Nano&rsquo;s, the slower of the boards measured. The CADR&rsquo;s bus interface has nothing left to do, and QUUX has none.</p></article>
 <article class="card"><div class="card-label"><span>DEVICE REGISTERS</span><span>REVISIONS 8 AND 11</span></div><p class="card-num">2</p><p class="card-sub">microcycles a register, and no bus</p><p>The processor reaches its devices&rsquo; registers through its own register decode, all of them on one register page: the video controller&rsquo;s and block-disk&rsquo;s with the rest. Registers carry control and small data; bulk data moves between a device and memory by itself. An address nothing answers fails at once, where the CADR&rsquo;s Xbus waits microseconds for a timeout.</p></article>
 <article class="card"><div class="card-label"><span>THE REAL-TIME CLOCK</span><span>REVISION 9</span></div><p class="card-num">1970</p><p class="card-sub">and whole seconds since, in one word</p><p>Word 103 of the register page reads the real time as Unix seconds, an unsigned 32-bit number that lasts to 2106. It is live: the host keeps it, and the machine never sets it. <code>--rtc</code> fixes its start for runs that repeat.</p></article>
 <article class="card"><div class="card-label"><span>THE FILE DEVICE</span><span>REVISION 9</span></div><p class="card-num">HOST</p><p class="card-sub">folders of the host, as one pathname host</p><p>QUUX reads and writes files on its host through a device of its own: commands and responses in two rings in main memory, the bytes moved by direct memory access, and the registers carrying control and the rings&rsquo; indexes. <code>--file-root</code> names the folders.</p></article>
 <article class="card"><div class="card-label"><span>A STANDARD DISK</span><span>THE DISK FILE</span></div><p class="card-num">VHD</p><p class="card-sub">or a raw image, with a GPT partition table</p><p>QUUX&rsquo;s disk is a raw image, a fixed VHD or a dynamic VHD, of any size, partitioned by GPT and made and filled with standard tools. A partition&rsquo;s GPT name is its own four-character name, <code>LOD4</code>, a space and its comment; the current microcode and band are marked by attribute bits. The CADR keeps MIT&rsquo;s pack and label.</p></article>
 <article class="card"><div class="card-label"><span>THE FUSED RETURN</span><span>REVISION 12</span></div><p class="card-num">2</p><p class="card-sub">microcycles sooner for a return to the main loop</p><p>A return to the main loop goes straight to the next macroinstruction&rsquo;s handler, from a 1,024-entry MACRO DISPATCH MEMORY and a MACRO-DISPATCH register that enables it: functional destinations 5 to 7, which write only M below revision 12 and on the CADR. Feature word 17 says it is there.</p><p>Measured: 13% fewer microcycles over twelve workloads on System 2000, from 1% consing to 29% in array work.</p></article>
+<article class="card"><div class="card-label"><span>THE 40-BIT WORD</span><span>REVISION 13</span></div><p class="card-num">40</p><p class="card-sub">bits a word, against 32</p><p>A tag in bits 39 to 32 over a 32-bit field. A and M memory, the PDL buffer, <code>Q</code>, <code>VMA</code>, <code>MD</code> and main memory carry 40 bits; the logical functions act on all of them, and arithmetic, <code>MUL</code> and <code>DIV</code> on the field, with a jump condition for fixnum overflow. The rotator is a ring of 40, the dispatch memory has 4,096 entries, addresses are 28 bits and a page is 1024 words. The microinstruction stays 48 bits.</p><p>Measured: System 2001 on revision 13 takes 6.75% less time than System 2000 on revision 12 over twelve workloads, at 2MW of main memory and the Arty Z7-20&rsquo;s memory timing, and 15.02% less at 32MW.</p></article>
 </div>
 </section>
 
-<section id="faster" class="section wrap" aria-label="How fast"><div class="section-heading"><div><p class="eyebrow">04 / HOW FAST</p><h2>A 40&nbsp;ns microcycle<br>and a <em>cache.</em></h2></div><p>The CADR takes a microcycle as a string of delay-line phases, 145&nbsp;ns at its normal speed, and its memory board answers a request 458&nbsp;ns later. QUUX drops the delay lines: every microcycle is a fixed number of 10&nbsp;ns ticks, four by default, and a cache stands in front of memory.</p></div>
+<section id="faster" class="section wrap" aria-label="How fast"><div class="section-heading"><div><p class="eyebrow">04 / HOW FAST</p><h2>A 40&nbsp;ns microcycle<br>and a <em>cache.</em></h2></div><p>The CADR takes a microcycle as a string of delay-line phases, 145&nbsp;ns at its normal speed, and its memory board answers a request 458&nbsp;ns later. QUUX drops the delay lines: every microcycle is a fixed number of 10&nbsp;ns ticks, four by default and five on the Arty Z7-20 at revision 13, and a cache stands in front of memory.</p></div>
 <div class="cols"><div class="table-scroll" tabindex="0" role="region" aria-label="Ten workloads, in the machine&rsquo;s own time"><table><thead><tr><th>Ten workloads, in the machine&rsquo;s own time</th><th>Seconds</th><th>Faster</th></tr></thead><tbody>
 <tr><td>The CADR&rsquo;s delay lines, 145&nbsp;ns, the baseline</td><td class="num">72.7</td><td class="num">1.00&times;</td></tr>
 <tr><td>&hellip; and a cache of 4K words</td><td class="num">58.6</td><td class="num">1.24&times;</td></tr>
@@ -620,44 +636,50 @@ css: drawings.css
 <tr><td>40&nbsp;ns microcycle, the DE25-Nano&rsquo;s memory</td><td class="num">26.4</td><td class="num">2.75&times;</td></tr>
 <tr><td>&hellip; and the cache</td><td class="num">16.2</td><td class="num">4.48&times;</td></tr>
 </tbody></table></div>
-<div class="prose"><p>Nothing the microcode sees changes but the time. QUUX&rsquo;s own main memory is timed as the slower board&rsquo;s, the last row. That is the same microcode doing the same work: the memory times are measured on the two FPGA boards, and the rest is muir-sim&rsquo;s model of them.</p><p>Modeled in muir-sim, on <code>rtl</code>, with System 1001 and muir-sys&rsquo;s microcode for revision 4. Four ticks, 40&nbsp;ns, meets timing on both boards in muir-fpga&rsquo;s fits: the Arty Z7-20 with +0.117&nbsp;ns to spare and the DE25-Nano with +2.294&nbsp;ns. The cache&rsquo;s 20&nbsp;ns hit is met on both. QUUX runs System 2000 on both boards. Past 4K words the cache gains little: 16K words gives 3.90&times; where 4K gives 3.84&times;, both without the write buffer.</p></div></div>
+<div class="prose"><p>Nothing the microcode sees changes but the time. QUUX&rsquo;s own main memory is timed as the slower board&rsquo;s, the last row. That is the same microcode doing the same work: the memory times are measured on two of the FPGA boards, and the rest is muir-sim&rsquo;s model of them.</p><p>Modeled in muir-sim, on <code>rtl</code>, at four ticks, with System 1001 and muir-sys&rsquo;s microcode for revision 4. Past 4K words the cache gains little: 16K words gives 3.90&times; where 4K gives 3.84&times;, both without the write buffer.</p><p>Revision 13 meets four ticks, 40&nbsp;ns, on the DE25-Nano and the Kria KR260 in muir-fpga&rsquo;s fits, with +1.613&nbsp;ns and +1.473&nbsp;ns to spare, and five, 50&nbsp;ns, on the Arty Z7-20, with +0.183&nbsp;ns: there its map misses four ticks by about a nanosecond. QUUX runs System 2001 on all three boards.</p></div></div>
+<div class="cols"><div class="table-scroll" tabindex="0" role="region" aria-label="Revision 13 against revision 12"><table><thead><tr><th>Twelve workloads, revision 13 against 12</th><th>Arty Z7-20&rsquo;s memory</th><th>DE25-Nano&rsquo;s memory</th></tr></thead><tbody>
+<tr><td>Revision 12, System 2000, 2MW, the baseline</td><td class="num">16.61&nbsp;s</td><td class="num">17.45&nbsp;s</td></tr>
+<tr><td>Revision 13, System 2001, 2MW</td><td class="num">15.49&nbsp;s, &minus;6.75%</td><td class="num">16.17&nbsp;s, &minus;7.30%</td></tr>
+<tr><td>Revision 13, System 2001, 32MW</td><td class="num">14.11&nbsp;s, &minus;15.02%</td><td class="num">14.88&nbsp;s, &minus;14.69%</td></tr>
+</tbody></table></div>
+<div class="prose"><p>The 40-bit machine and its system against the 32-bit ones, in the machine&rsquo;s own time: muir-sim on <code>rtl</code>, four ticks on both, a cache of 4K words and the fused return filled by the microcode, over the profile harness&rsquo;s twelve timed workloads: <code>compile</code>, <code>calls-ack</code>, <code>calls-fib</code>, <code>cons</code>, <code>arith-muldiv</code>, <code>float</code>, <code>array</code>, <code>sort</code>, <code>bignum</code>, <code>intern</code>, <code>print-scroll</code> and <code>compile-again</code>. The Arty Z7-20 runs revision 13 at five ticks, which this leaves out.</p><p>Revision 12 takes at most 3MW of main memory. With the Arty&rsquo;s memory, <code>cons</code> takes 4.2% more time than on revision 12 at 2MW and 56% less at 32MW, <code>compile-again</code> 9.6% and 29% less, and <code>float</code> 35% less at 2MW. A thirteenth workload, <code>bitblt</code>, is slower on revision 13 at 2MW: 9.0% with the Arty&rsquo;s memory and 8.6% with the DE25-Nano&rsquo;s, from more misses in the cache.</p></div></div>
 </section>
 
 <section id="everything" class="section wrap" aria-label="Everything QUUX changes"><div class="section-heading"><div><p class="eyebrow">05 / ALL OF IT</p><h2>Everything<br>QUUX <em>changes.</em></h2></div><p>The whole difference, the small parts with the large. Anything not named here is the CADR&rsquo;s.</p></div>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Everything QUUX changes"><table class="wide"><thead><tr><th>Change</th><th>The CADR</th><th>QUUX</th></tr></thead><tbody>
-<tr><th scope="row">Level-1 map entry</th><td>Five bits: 32 blocks of level-2 entries, 1,024 in all, block 37 the invalid one, so 31 regions of 8K words mapped at once</td><td>Six bits: 64 blocks, 2,048 entries, block 77 invalid, 63 regions. The sixth bit reads back in <code>MAP(MD)&lt;29&gt;</code>, always 0 on the CADR, and is written from <code>VMA&lt;24&gt;</code>, which reaches no map write on the CADR. Revision 1</td></tr>
-<tr><th scope="row">MACHINE-ID, functional source 16</th><td>Unassigned: nothing drives the M bus, and it reads all ones (<b>unverified</b> on a real CADR)</td><td>One microinstruction, no bus cycle: the signature <code>0x5155</code> in bits 31:16, the hardware revision in 15:4, processor type 4 in 3:0. Revisions 1 the six-bit map, 2 the 16K PDL buffer, 3 multiply and divide, 4 the tick, 5 the clocks, 6 the register page and the PROM at 36000, 7 the memory port, 8 the device registers, 9 the real-time clock and the file device, 10 the interval timers and reset devices, 11 the register page at <code>17777400</code> with block-disk and the video controller on it, word 100 in its final order, 12 the fused return; each containing the last up to 9, 10 dropping revision 5&rsquo;s interval timer for the page&rsquo;s, and 11 moving the page; 12 contains 11</td></tr>
-<tr><th scope="row">The feature page, <code>17777400</code>&ndash;<code>17777477</code></th><td>Nothing answers: a read times out and sets the Unibus NXM bit</td><td>Read-only device registers, through the map. Word 0 the MACHINE-ID; 1 to 7 the level-1 entry&rsquo;s 6 bits, 2,048 level-2 entries, 16,384 PDL words, 16,384 control-store words, 1,024 A-memory words, 2,048 dispatch words, and multiply and divide, 3; 10 the tick, timer 0, 1; 11 to 13 the main screen&rsquo;s width and height, bits a pixel and words a line, and first address; 14 the microsecond clock, 1; 15 the optional devices, a bit each, 3; 16 the number of interval timers, 3; 17 the MACRO DISPATCH MEMORY&rsquo;s entries, 1,024; the rest 0. Software reads source 16 first and the page only on QUUX</td></tr>
-<tr><th scope="row">PDL buffer</th><td>1K words, pointer and index 10 bits</td><td>16K words, 14 bits, read back whole in functional sources 2 and 3. Revision 2</td></tr>
-<tr><th scope="row">The register page, <code>17777400</code>&ndash;<code>17777777</code></th><td>Its registers are the I/O board&rsquo;s and the bus interface&rsquo;s, on the Unibus</td><td>Words 0 to 77 the feature page; 100 the interrupt status, a bit for each source: timer 0, the tick, timer 1, timer 2, block-disk, the keyboard, the mouse, the network, the file device; 101 the error status, a write clearing it; 102 <code>ERRSTOP</code>; 103 the real-time clock; 104 reset devices; 110 to 115 the interval timers; 120 to 123 the keyboard and mouse; 140 to 145 the Chaosnet interface&rsquo;s five registers; 160 to 171 the file device; 200 to 203 block-disk; 210 the video controller; the rest reserved. Revision 6, at <code>17777400</code> since revision 11</td></tr>
-<tr><th scope="row">Boot PROM</th><td>MIT&rsquo;s version 9, over control store 0 until the microcode turns it off with <code>PROMDISABLE</code>. It stops copying A memory in when the PDL index wraps to 0, which a 10-bit index does after 2000 words</td><td>muir-sys&rsquo;s version 2000, 1K words at control store 36000 of its own, read only and never overlaid, so there is nothing to turn off; the machine resets to 36000. It boots from block-disk, finds the microcode through the GPT and saves nothing; for revision 10 it resets the devices and writes timer 0&rsquo;s period. Revision 6</td></tr>
-<tr><th scope="row">Multiply and divide</th><td>A step per bit: <code>MUS</code>, <code>DVS1</code>, <code>DVS</code> and <code>DVREM</code>, ALU functions 40, 51, 41 and 45. Functions 42 and 43 are the 74S181&rsquo;s own</td><td><code>MUL</code>, 42: 32 multiply steps in one ordinary microcycle. <code>DIV</code>, 43: the first divide step and 31 more, ten microcycles, its own and nine held by a <code>-WAIT</code> of QUUX&rsquo;s own once its operands are ready: at once for a register, and for <code>MD</code> once the read&rsquo;s word has landed. Each bit for bit the step sequence; <code>DIVIDE-LAST-STEP</code> and <code>DVREM</code> stay separate. Revision 3</td></tr>
+<tr><th scope="row">Level-1 map entry</th><td>Five bits: 32 blocks of level-2 entries, 1,024 in all, block 37 the invalid one, so 31 regions of 8K words mapped at once</td><td>Seven bits: 128 blocks of 32 level-2 entries, 4,096 in all, block 177 invalid, so 127 regions of 32K words, 32 pages of 1024 words; level 1 has 8,192 entries, indexed by address bits 27 to 15. <code>MAP(MD)</code> reads the level-1 entry in <code>&lt;38:32&gt;</code>, the fault bits in <code>&lt;31:30&gt;</code> and the level-2 entry in <code>&lt;27:0&gt;</code>; a map write takes the same word in <code>VMA</code>, <code>&lt;29&gt;</code> writing level 1 and <code>&lt;28&gt;</code> level 2, both together level 1 alone. An address with <code>&lt;31:28&gt;</code> set reads block 177. Revision 1 made the entry six bits, 63 regions of 8K words; revision 13 seven</td></tr>
+<tr><th scope="row">MACHINE-ID, functional source 16</th><td>Unassigned: nothing drives the M bus, and it reads all ones (<b>unverified</b> on a real CADR)</td><td>One microinstruction, no bus cycle: the signature <code>0x5155</code> in bits 31:16, the hardware revision in 15:4, processor type 4 in 3:0, and 0 in 39:32. Revisions 1 the six-bit map, 2 the 16K PDL buffer, 3 multiply and divide, 4 the tick, 5 the clocks, 6 the register page and the PROM at 36000, 7 the memory port, 8 the device registers, 9 the real-time clock and the file device, 10 the interval timers and reset devices, 11 the register page at <code>17777400</code> with block-disk and the video controller on it, word 100 in its final order, 12 the fused return, 13 the 40-bit word; each containing the last up to 9, 10 dropping revision 5&rsquo;s interval timer for the page&rsquo;s, and 11 moving the page; 12 contains 11, and 13 contains no earlier revision</td></tr>
+<tr><th scope="row">The feature page, <code>1777777400</code>&ndash;<code>1777777477</code></th><td>Nothing answers: a read times out and sets the Unibus NXM bit</td><td>Read-only device registers, through the map. Word 0 the MACHINE-ID; 1 to 7 the level-1 entry&rsquo;s 7 bits, 4,096 level-2 entries, 16,384 PDL words, 16,384 control-store words, 1,024 A-memory words, 4,096 dispatch words, and multiply and divide, 3; 10 the tick, timer 0, 1; 11 to 13 the main screen&rsquo;s width and height, bits a pixel and words a line, and first address, <code>1760000000</code>; 14 the microsecond clock, 1; 15 the optional devices, a bit each, 3; 16 the number of interval timers, 3; 17 the MACRO DISPATCH MEMORY&rsquo;s entries, 1,024; 20 to 24 the board&rsquo;s name, up to 20 characters, 4 a word, which the herald prints; the rest 0. Software reads source 16 first and the page only on QUUX</td></tr>
+<tr><th scope="row">PDL buffer</th><td>1K words, pointer and index 10 bits</td><td>16K words of 40 bits, pointer and index 14 bits, read back whole in functional sources 2 and 3. Revision 2</td></tr>
+<tr><th scope="row">The register page, <code>1777777400</code>&ndash;<code>1777777777</code></th><td>Its registers are the I/O board&rsquo;s and the bus interface&rsquo;s, on the Unibus</td><td>Words 0 to 77 the feature page; 100 the interrupt status, a bit for each source: timer 0, the tick, timer 1, timer 2, block-disk, the keyboard, the mouse, the network, the file device; 101 the error status, a write clearing it; 102 <code>ERRSTOP</code>; 103 the real-time clock; 104 reset devices; 110 to 115 the interval timers; 120 to 123 the keyboard and mouse; 140 to 145 the Chaosnet interface&rsquo;s five registers; 160 to 171 the file device; 200 to 203 block-disk; 210 the video controller; the rest reserved. Every register reads <code>&lt;39:32&gt;</code> as 0 and ignores a write&rsquo;s, and those that hold a physical address take 28 bits. Revision 6, at <code>17777400</code> from revision 11 and at <code>1777777400</code>, the 28-bit space&rsquo;s last page, from revision 13</td></tr>
+<tr><th scope="row">Boot PROM</th><td>MIT&rsquo;s version 9, over control store 0 until the microcode turns it off with <code>PROMDISABLE</code>. It stops copying A memory in when the PDL index wraps to 0, which a 10-bit index does after 2000 words</td><td>muir-sys&rsquo;s version 2001, 1K words at control store 36000 of its own, read only and never overlaid, so there is nothing to turn off; the machine resets to 36000. It boots from block-disk, reading the GPT and the microcode partition by 4-byte transfers, and saves nothing; it resets the devices and writes timer 0&rsquo;s period, and stops at <code>ERROR-A-MEM-SECTION-32-BITS</code> on microcode for the 32-bit machine. Revision 6</td></tr>
+<tr><th scope="row">Multiply and divide</th><td>A step per bit: <code>MUS</code>, <code>DVS1</code>, <code>DVS</code> and <code>DVREM</code>, ALU functions 40, 51, 41 and 45. Functions 42 and 43 are the 74S181&rsquo;s own</td><td><code>MUL</code>, 42: 32 multiply steps in one ordinary microcycle. <code>DIV</code>, 43: the first divide step and 31 more, ten microcycles, its own and nine held by a <code>-WAIT</code> of QUUX&rsquo;s own once its operands are ready: at once for a register, and for <code>MD</code> once the read&rsquo;s word has landed. Each bit for bit the step sequence, on the 32-bit field, the result&rsquo;s bits 39 to 32 being M&rsquo;s; <code>DIVIDE-LAST-STEP</code> and <code>DVREM</code> stay separate. Revision 3</td></tr>
 <tr><th scope="row">Clocks</th><td>No clock in the processor: the clock is the display&rsquo;s vertical interrupt, and the microsecond clock and interval timer are on the I/O board, on the Unibus. Functional destinations 3 to 7 write only M; sources 15 and 17 read all ones</td><td>Source 15 the microseconds since power-on, 32 bits (revision 5). Three identical interval timers on the register page, words 110 to 115: each on or off, periodic or one-shot, a period of 1 to 16,777,215&nbsp;&micro;s, and a flag ORed into the interrupt pending that jump conditions 5 and 6 test under its own enable. Timer 0 is the tick; no timer resets to a period, and the boot PROM writes timer 0&rsquo;s 16,667&nbsp;&micro;s. Destination 3 is timer 0&rsquo;s control, for the microcode that turns its tick on there; destination 4 writes only M and source 17 reads all ones, as on the CADR. Revision 10</td></tr>
 <tr><th scope="row">Reset devices</th><td><code>PROG.UNIBUS.RESET</code> resets the boards on the Unibus</td><td>Word 104: a write with <code>&lt;0&gt;</code> set resets every device &mdash; the interval timers, the file device, block-disk and the network &mdash; and the boot PROM writes it before it reads the disk; <code>PROG.UNIBUS.RESET</code> drives nothing. Revision 10</td></tr>
-<tr><th scope="row">The fused return</th><td>Functional destinations 5 to 7 write only M</td><td>Destination 5 writes the MACRO-DISPATCH register: the main loop&rsquo;s address, the A-memory address of <code>A-LOCALP</code> and the M-memory address of <code>M-AP</code>, and the enable; destination 6 the index of the MACRO DISPATCH MEMORY, 1,024 entries, feature word 17; destination 7 the entry at the index: the handler&rsquo;s address, <code>N</code>, <code>P</code>, <code>R</code> and an operand bit. A return to the main loop that needs no fetch, when the next halfword&rsquo;s entry has <code>R</code> and <code>P</code> clear, goes to the entry&rsquo;s address, two microcycles sooner; on <code>rtl</code>, one that needs a fetch fuses too when the next word is in the line just read, four sooner. Microcode 2000 fills the entries at <code>RESET-MACHINE</code>. Over twelve workloads on <code>rtl</code>, with the Arty Z7-20&rsquo;s memory timing, 12.8% fewer microcycles and 13.1% less time than revision 11. Revision 12</td></tr>
+<tr><th scope="row">The fused return</th><td>Functional destinations 5 to 7 write only M</td><td>Destination 5 writes the MACRO-DISPATCH register: the main loop&rsquo;s address, the A-memory address of <code>A-LOCALP</code> and the M-memory address of <code>M-AP</code>, and the enable; destination 6 the index of the MACRO DISPATCH MEMORY, 1,024 entries, feature word 17; destination 7 the entry at the index: the handler&rsquo;s address, <code>N</code>, <code>P</code>, <code>R</code> and an operand bit. A return to the main loop that needs no fetch, when the next halfword&rsquo;s entry has <code>R</code> and <code>P</code> clear, goes to the entry&rsquo;s address, two microcycles sooner; on <code>rtl</code>, one that needs a fetch fuses too when the next word is in the line just read, four sooner. Microcode 2000 and 2001 fill the entries at <code>RESET-MACHINE</code>. On revision 13 the halfword&rsquo;s index is M 31 rotated by 34. Over twelve workloads on <code>rtl</code>, with the Arty Z7-20&rsquo;s memory timing, 12.8% fewer microcycles and 13.1% less time than revision 11. Revision 12</td></tr>
 <tr><th scope="row">Speed</th><td><code>SPEED1</code> and <code>SPEED0</code> in the mode register choose the read tap, extra slow to fast. Reset leaves extra slow, 220&nbsp;ns, until the microcode asks for normal, 145&nbsp;ns</td><td>No speed bits: a write of bits 1 and 0 goes nowhere, and every microcycle is the same from the boot on</td></tr>
-<tr><th scope="row">No delay lines</th><td>The read tap and a 60&nbsp;ns restart: 145&nbsp;ns at normal speed</td><td>A fixed K ticks of 10&nbsp;ns, always, <code>--sync-cycle-ticks</code>, 4, 40&nbsp;ns, met on both boards in muir-fpga&rsquo;s fits; the CADR&rsquo;s timings refused on QUUX. Only the length of a microcycle changes</td></tr>
-<tr><th scope="row">Main memory</th><td>Memory boards on the Xbus, 458&nbsp;ns from the request to <code>XACK</code>, behind the bus interface</td><td>On the processor&rsquo;s own memory port, off the bus: a line fill no sooner than 380&nbsp;ns and a write 290&nbsp;ns, the DE25-Nano&rsquo;s, the slower board&rsquo;s; a board slower on an access waits. <code>--memory-timing</code> sets other figures, <code>arty</code> the Arty Z7-20&rsquo;s 220 and 120. A line fill&rsquo;s time is <b>unverified</b>. Revision 7</td></tr>
-<tr><th scope="row">Memory cache</th><td>None</td><td>Always fitted, 4K words, <code>--cache &lt;words&gt;</code> another size: unified and write-through, by physical address, main memory and the frame buffer only, nothing past either&rsquo;s end; lines of 4 words, 2-way, the least recently used line going; a hit in 20&nbsp;ns (met on both boards in muir-fpga&rsquo;s fits); a one-word write buffer; a disk transfer leaves no line holding a word it wrote over</td></tr>
+<tr><th scope="row">No delay lines</th><td>The read tap and a 60&nbsp;ns restart: 145&nbsp;ns at normal speed</td><td>A fixed K ticks of 10&nbsp;ns, always, <code>--sync-cycle-ticks</code>, 4, 40&nbsp;ns, met by revision 13 on the DE25-Nano and the Kria KR260 in muir-fpga&rsquo;s fits, and 5, 50&nbsp;ns, on the Arty Z7-20; the CADR&rsquo;s timings refused on QUUX. Only the length of a microcycle changes</td></tr>
+<tr><th scope="row">Main memory</th><td>Memory boards on the Xbus, 458&nbsp;ns from the request to <code>XACK</code>, behind the bus interface</td><td>On the processor&rsquo;s own memory port, off the bus: 32MW by default, <code>--main-memory-size</code> another amount from 1MW to 64MW, where revision 12 takes 1MW to 3MW; on the boards 32MW, packed at 5 bytes a word in DDR. A line fill no sooner than 380&nbsp;ns, and 30&nbsp;ns more for revision 13&rsquo;s line of 8 words, and a write 290&nbsp;ns, the DE25-Nano&rsquo;s, the slower board&rsquo;s; a board slower on an access waits. <code>--memory-timing</code> sets other figures, <code>arty</code> the Arty Z7-20&rsquo;s 220 and 120. A line fill&rsquo;s time is <b>unverified</b>. Revision 7</td></tr>
+<tr><th scope="row">Memory cache</th><td>None</td><td>Always fitted, 4K words, <code>--cache &lt;words&gt;</code> another size: unified and write-through, by physical address, main memory and the frame buffer only, nothing past either&rsquo;s end; lines of 8 words, 4 below revision 13, 2-way, the least recently used line going; a hit in 20&nbsp;ns; a one-word write buffer; a disk transfer leaves no line holding a word it wrote over</td></tr>
 <tr><th scope="row">The bus interface</th><td>The board between the processor and both buses: arbitration, the Unibus map and its buffers, the interrupt control and error status, the debug cable</td><td>None: main memory and the frame buffer are on the memory port, the devices&rsquo; registers reached through the processor&rsquo;s register decode, and each register it had is on the register page or gone</td></tr>
-<tr><th scope="row">Device registers</th><td>On the Xbus, 32 bits, shared with memory and the frame buffer; an address nothing answers times out after 4.25 to 5.1&nbsp;&micro;s</td><td>No bus: the processor&rsquo;s register decode reaches every device register on the register page, the video controller&rsquo;s and block-disk&rsquo;s among them, never cached, in two microcycles; an address nothing answers fails at once, reads 0 and sets the NXM bit in word 101, the old page and the old device registers among them. Revisions 8 and 11</td></tr>
+<tr><th scope="row">Device registers</th><td>On the Xbus, 32 bits, shared with memory and the frame buffer; an address nothing answers times out after 4.25 to 5.1&nbsp;&micro;s</td><td>No bus: the processor&rsquo;s register decode reaches every device register on the register page, the video controller&rsquo;s and block-disk&rsquo;s among them, never cached, in two microcycles; an address nothing answers fails at once, reads 0 and sets the NXM bit in word 101, the old page and the old device registers among them. A register reads <code>&lt;39:32&gt;</code> as 0 on revision 13. Revisions 8 and 11</td></tr>
 <tr><th scope="row">The Unibus and the I/O board</th><td>The Unibus, 16 bits, with the I/O board: keyboard, mouse, clocks, the serial port and the Chaosnet interface</td><td>None. The keyboard is a FIFO of 64 key words and the mouse its counts on the register page; the microsecond clock is in the processor and the interval timers on the register page; the Chaosnet interface is on the register page, its registers in the I/O board&rsquo;s order; the serial port is dropped</td></tr>
 <tr><th scope="row">Real-time clock</th><td>None</td><td>Word 103 of the register page: whole seconds since 1970-01-01 00:00 UTC, unsigned, 32 bits, read only; the host&rsquo;s time, kept current by the host, or from <code>--rtc &lt;s&gt;</code> counting the machine&rsquo;s own time. Revision 9</td></tr>
-<tr><th scope="row">File device</th><td>None: files come over the Chaosnet from a file server</td><td>Folders of the host served under one pathname host, <code>HOST</code>: commands and responses in two rings in main memory, the bytes moved by direct memory access, words 160 to 171 its registers; <code>--file-root</code>. Revision 9</td></tr>
+<tr><th scope="row">File device</th><td>None: files come over the Chaosnet from a file server</td><td>Folders of the host served under one pathname host, <code>HOST</code>: commands and responses in two rings in main memory, the bytes moved by direct memory access, words 160 to 171 its registers; on revision 13 the rings and buffers at 28-bit addresses on an 8-word line, 4 data bytes a word; <code>--file-root</code>. Revision 9</td></tr>
 <tr><th scope="row">Debugging</th><td>The console&rsquo;s registers on the Unibus, and a debug cable from one machine&rsquo;s bus interface to another&rsquo;s: MIT&rsquo;s CC</td><td>The console&rsquo;s registers are the host&rsquo;s port alone: muir-sim&rsquo;s prompt and checkpoints, the FPGA board&rsquo;s Linux. No debug cable</td></tr>
-<tr><th scope="row">Display</th><td>The TV board: 768 by 963 at 24 words a line, a sync program, a color map and the vertical interrupt</td><td>The video controller, its memory the frame buffer, on the memory bus and cached, the display reading it from memory by direct memory access: 1280 by 1024, one bit a pixel, 40 words a line at <code>17000000</code>, or the size <code>--video-size</code> gives, the width a multiple of 32, at most 1920 by 1080. One register, word 210 of the register page, the mode: bit 2 black-on-white; 211 to 217 reserved. No interrupt. It is <code>quux</code>&rsquo;s only display</td></tr>
-<tr><th scope="row">Disk</th><td>The disk controller: cylinder, head, sector and unit; ten commands; the drive&rsquo;s seeks and rotation</td><td>Block-disk, QUUX&rsquo;s only disk: the same registers and command list, the disk address a block number in <code>&lt;27:0&gt;</code>, 256 words a block; read and write only; one pack, unit 0; 100&nbsp;&micro;s a block (<b>unverified</b>). The CADR&rsquo;s controller is <code>cadr</code>&rsquo;s alone</td></tr>
+<tr><th scope="row">Display</th><td>The TV board: 768 by 963 at 24 words a line, a sync program, a color map and the vertical interrupt</td><td>The video controller, its memory the frame buffer, on the memory bus and cached, the display reading it from memory by direct memory access, one bit a pixel: 1280 by 1024, 40 words a line, on the Arty Z7-20 and the DE25-Nano and in muir-sim by default, and 1920 by 1080, 60 words a line, on the Kria KR260; in muir-sim the size <code>--video-size</code> gives, the width a multiple of 32, at most 1920 by 1080. The buffer is at <code>17000000</code> below revision 13, and at <code>1760000000</code> on it, a window of 4 bytes a word. System 2001 reads the size from feature words 11 to 13 at boot. One register, word 210 of the register page, the mode: bit 2 black-on-white; 211 to 217 reserved. No interrupt. It is <code>quux</code>&rsquo;s only display</td></tr>
+<tr><th scope="row">Disk</th><td>The disk controller: cylinder, head, sector and unit; ten commands; the drive&rsquo;s seeks and rotation</td><td>Block-disk, QUUX&rsquo;s only disk: the same registers and command list, the disk address a block number in <code>&lt;27:0&gt;</code>; on revision 13 a block is 1,024 bytes and an entry of the command list a page of 1024 words, moved packed, 5 blocks a page, or 4 bytes a word, 4 blocks a page, as command bit 12 chooses, where a block was 256 words below it; read and write only; one pack, unit 0; 100&nbsp;&micro;s a block (<b>unverified</b>). The CADR&rsquo;s controller is <code>cadr</code>&rsquo;s alone</td></tr>
 <tr><th scope="row">The disk file</th><td>MIT&rsquo;s pack: the blocks one after another, the label in block 0 naming up to 18 partitions, with the drive&rsquo;s geometry</td><td>A raw image, a fixed VHD or a dynamic VHD, of any size, with a GPT partition table, made and filled with standard tools. A partition&rsquo;s GPT name is its four-character name, a space and a comment of up to 31 characters; the current microcode and band are attribute bits. No geometry, no pack name</td></tr>
 <tr><th scope="row">Reading a RAM as it is written</th><td>The RAM&rsquo;s output floats while written, and the answer is a race</td><td>QUUX&rsquo;s definition: the dispatch word a dispatch writes, or the map word right after a map store, reads as it was before the write. Microcode 323 and 2000 never read either</td></tr>
-<tr><th scope="row">Microcode</th><td>MIT&rsquo;s 323</td><td>muir-sys&rsquo;s 2000: reads source 16 at boot; the six-bit read, the two-deposit write and invalid block 77; the reverse first-level map moved to system communication area words 640 to 737 and the swap-out CCWs to 440 to 457; <code>MUL</code> and <code>DIV</code> in <code>MPY</code>, <code>DIV</code> and <code>BIDIV</code>&rsquo;s quotient; the clocks, the register page and block-disk. MIT&rsquo;s 323 does not run on QUUX</td></tr>
-<tr><th scope="row">Lisp system</th><td>MIT&rsquo;s System 100</td><td>muir-sys&rsquo;s System 2000: <code>PROCESSOR-TYPE-CODE</code> 4, the main screen sized from the feature page&rsquo;s words 11 to 13, its devices on the register page and its partitions found by GPT. QUUX runs muir-sys&rsquo;s System 2000 and later; no CADR system runs on it</td></tr>
+<tr><th scope="row">Microcode</th><td>MIT&rsquo;s 323</td><td>muir-sys&rsquo;s 2001, microcode 2000 adapted to the 40-bit word: reads source 16 at boot and halts below revision 13; the seven-bit level-1 entry and invalid block 177; <code>MUL</code> and <code>DIV</code> in <code>MPY</code>, <code>DIV</code> and <code>BIDIV</code>&rsquo;s quotient; the clocks, the register page, block-disk&rsquo;s two transfers and the fused return&rsquo;s entries. Microcode 2000 was revision 12&rsquo;s. MIT&rsquo;s 323 does not run on QUUX</td></tr>
+<tr><th scope="row">Lisp system</th><td>MIT&rsquo;s System 100</td><td>muir-sys&rsquo;s System 2001, for revision 13 alone: <code>PROCESSOR-TYPE-CODE</code> 4, fixnums of 32 bits, the main screen sized from the feature page&rsquo;s words 11 to 13, its devices on the register page, its partitions found by GPT and a <code>PAGE</code> partition of 128MW. Its herald names what runs it from words 20 to 24: Machine Type QUUX on Kria KR260. System 2000 was revision 12&rsquo;s; no CADR system runs on QUUX</td></tr>
 <tr><th scope="row">Engines</th><td><code>micro</code>, <code>rtl</code> and <code>chip</code></td><td><code>micro</code> and <code>rtl</code>; the memory port&rsquo;s timing and the cache on <code>rtl</code> alone. <code>chip</code> is the CADR&rsquo;s boards, netlist for netlist, and <code>--chip</code> is <code>cadr</code>&rsquo;s alone</td></tr>
 </tbody></table></div>
 </section>
 
 <section id="try" class="section wrap" aria-label="Running QUUX">
 <div class="section-heading"><div><p class="eyebrow">06 / RUNNING IT</p><h2>In software,<br>and in <em>fabric.</em></h2></div></div>
-<div class="prose"><p><a href="../simulator/">muir-sim</a> runs QUUX as <code>quux</code>, on the <code>micro</code> and <code>rtl</code> engines: <a href="../simulator/#quux-setup">how to run it</a>. <a href="../fpga/">muir-fpga</a> builds the same fabric as QUUX for the Arty Z7-20 and the DE25-Nano, with <code>--machine quux</code> in a card&rsquo;s <code>fpgarc</code>. Either one needs microcode and a system written for it, from <a href="../system/">muir-sys</a>: MIT&rsquo;s own will not run on it.</p>
+<div class="prose"><p><a href="../simulator/">muir-sim</a> runs QUUX as <code>quux</code>, on the <code>micro</code> and <code>rtl</code> engines: <a href="../simulator/#quux-setup">how to run it</a>. <a href="../fpga/">muir-fpga</a> builds the same fabric as QUUX for the Arty Z7-20, the Kria KR260 and the DE25-Nano, with <code>--machine quux</code> in a card&rsquo;s <code>fpgarc</code>. Either one needs microcode and a system written for it, from <a href="../system/">muir-sys</a>: MIT&rsquo;s own will not run on it.</p>
 <p>Every difference, what each reached in the boot PROM, the microcode and the Lisp system, and what is still unverified, is in <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md">the manual&rsquo;s QUUX</a>.</p></div>
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
@@ -667,8 +689,8 @@ css: drawings.css
 <table>
 <thead><tr><th>Figure</th><th>Read from</th></tr></thead>
 <tbody>
-<tr><td>the processor</td><td>the CADR&rsquo;s processor, above, and muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>: &ldquo;The map&rdquo;, &ldquo;How software tells the two apart&rdquo;, &ldquo;The PDL buffer&rdquo;, &ldquo;Multiply and divide&rdquo;, &ldquo;The clocks&rdquo;, &ldquo;QUUX drops the delay lines&rdquo;, &ldquo;The memory port and the device registers&rdquo;, &ldquo;The memory cache&rdquo;, &ldquo;Its boot PROM, in its own addresses&rdquo; and &ldquo;The register page&rdquo;; muir-sim&rsquo;s <code>src/machine.rs</code> and <code>src/rtl.rs</code>; the headers of muir-fpga&rsquo;s <code>rtl/machine/quux_phase_gen.sv</code>, <code>quux_muldiv.sv</code>, <code>quux_mem_port.sv</code> and <code>quux_cache.sv</code></td></tr>
-<tr><td>the whole machine</td><td>muir-sim&rsquo;s <code>docs/quux.md</code>, from &ldquo;The memory port and the device registers&rdquo; to &ldquo;The network&rdquo;, and <code>docs/manual.md</code> for <code>--main-memory-boards</code>; muir-fpga&rsquo;s <code>quux_mem_port.sv</code>, <code>quux_input.sv</code> and <code>quux_feature_page.sv</code> headers, <code>rtl/plumbing/cadr_display_out.sv</code>, and its <code>docs/fpgarc.md</code>, <code>docs/file-device.md</code>, <code>docs/terminal.md</code>, <code>docs/chaosnet.md</code> and <code>docs/console.md</code></td></tr>
+<tr><td>the processor</td><td>the CADR&rsquo;s processor, above, and muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>: &ldquo;The map&rdquo;, &ldquo;How software tells the two apart&rdquo;, &ldquo;The PDL buffer&rdquo;, &ldquo;Multiply and divide&rdquo;, &ldquo;The clocks&rdquo;, &ldquo;QUUX drops the delay lines&rdquo;, &ldquo;The memory port and the device registers&rdquo;, &ldquo;The memory cache&rdquo;, &ldquo;Its boot PROM, in its own addresses&rdquo;, &ldquo;The register page&rdquo; and &ldquo;Revision 13: the 40-bit word&rdquo;; muir-sim&rsquo;s <code>src/machine.rs</code> and <code>src/rtl.rs</code>; the headers of muir-fpga&rsquo;s <code>rtl/machine/quux_phase_gen.sv</code>, <code>quux_muldiv.sv</code>, <code>quux_mem_port.sv</code> and <code>quux_cache.sv</code></td></tr>
+<tr><td>the whole machine</td><td>muir-sim&rsquo;s <code>docs/quux.md</code>, from &ldquo;The memory port and the device registers&rdquo; to &ldquo;The network&rdquo;, and &ldquo;Revision 13: the 40-bit word&rdquo;, and <code>docs/manual.md</code> for <code>--main-memory-size</code>; muir-fpga&rsquo;s <code>quux_mem_port.sv</code>, <code>quux_input.sv</code> and <code>quux_feature_page.sv</code> headers, <code>rtl/plumbing/cadr_display_out.sv</code>, and its <code>docs/fpgarc.md</code>, <code>docs/file-device.md</code>, <code>docs/terminal.md</code>, <code>docs/chaosnet.md</code>, <code>docs/console.md</code> and <code>docs/linux.md</code></td></tr>
 </tbody>
 </table>
 </div>

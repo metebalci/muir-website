@@ -18,10 +18,43 @@
 <h1>Releases</h1>
 <p class="intro">Every release is a whole band, built from the sources by a clean compile, a new cold load, QLD and a save. There are no patches: a release is replaced by the next one.</p>
 <p class="hero-description">QUUX&rsquo;s releases are numbered from 2000 and made from the repository&rsquo;s <code>main</code> branch; the CADR&rsquo;s are the 1000s, made from its <code>cadr</code> branch. A band runs only on the machine it is for.</p>
-<div class="actions"><a class="text-link" href="#system-2000">System 2000</a><a class="text-link" href="#in-development">In development</a><a class="text-link" href="#system-1002">System 1002</a><a class="text-link" href="#system-1001">System 1001</a><a class="text-link" href="#system-1000">System 1000</a><a class="text-link" href="#running">Running a release</a><a class="text-link" href="https://github.com/metebalci/muir-sys/releases">GitHub &#8599;</a></div>
+<div class="actions"><a class="text-link" href="#system-2001">System 2001</a><a class="text-link" href="#system-2000">System 2000</a><a class="text-link" href="#in-development">In development</a><a class="text-link" href="#system-1003">System 1003</a><a class="text-link" href="#system-1002">System 1002</a><a class="text-link" href="#system-1001">System 1001</a><a class="text-link" href="#system-1000">System 1000</a><a class="text-link" href="#running">Running a release</a><a class="text-link" href="https://github.com/metebalci/muir-sys/releases">GitHub &#8599;</a></div>
 </div>
 </section>
-<section id="system-2000" class="section wrap" aria-label="System 2000"><div class="release-head"><p class="eyebrow">01 / RELEASE &middot; QUUX</p></div>
+<section id="system-2001" class="section wrap" aria-label="System 2001"><div class="release-head"><p class="eyebrow">01 / RELEASE &middot; QUUX</p></div>
+<div class="release-head"><h2>System 2001</h2><span class="date">2026-10-05 &middot; tag <code>release-2001</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-2001">get it</a></span></div>
+<p class="lead">The release for the first 40-bit <a href="../quux/">QUUX</a>, hardware revision 13. It runs only on revision 13, on microcode 2001 and boot PROM 2001: the microcode asks for revision 13 and halts below it.</p>
+<div class="release-part"><p class="eyebrow">WHAT CHANGED</p>
+<div class="prose"><ul>
+          <li><b>The 40-bit word.</b> The microcode, the boot PROM and the cold load are made for it: fixnums of 32 bits with an overflow condition, a rotator that is a ring of 40, a map for 28-bit addresses with a seven-bit level-1 entry, and pages of 1024 words, so the disk is read a page at a time, four blocks of 1 KiB. The micro-assembler assembles for 40 bits when asked, and at its default assembles what it did before.</li>
+          <li><b>A cross build.</b> System 2000&rsquo;s band compiles the system for the 40-bit machine and writes its cold load, and the cold load made on the first 40-bit band is byte for byte the cross build&rsquo;s.</li>
+          <li><b>QUUX&rsquo;s disk has a PAGE partition of 128M words</b>: 655,360 blocks, 131,072 pages. The disk is 853,359 blocks, 873,839,616 bytes, against System 2000&rsquo;s 263,245, and the herald says &ldquo;131072K virtual memory&rdquo;. System 2000&rsquo;s PAGE gave fewer words of virtual memory than revision 13&rsquo;s 32M words of main memory, and at 32M words <code>GC-ON</code> asked &ldquo;Try garbage collecting after all?&rdquo; on a stream a TELNET session never answers.</li>
+          <li><b>The herald names the board</b> QUUX runs on: &ldquo;Machine Type QUUX on Kria KR260&rdquo;, or &ldquo;QUUX&rdquo; alone when the machine names none. A band booted at a screen size other than the one it was saved at keeps its Chaosnet.</li>
+          <li><b>A machine whose <code>sys/</code> holds no <code>ubin/ucadr.tbl</code> boots</b>, on the band&rsquo;s own error table.</li>
+          <li><b>The compiled fonts and <code>SYS: DEMO; TVBGAR</code> are 40-bit files,</b> where the tree held System 100&rsquo;s 32-bit ones, which a 40-bit world refuses to load. The band loads none of them at boot.</li>
+          <li><b>The cold boot</b> unmaps the physical-page-data table&rsquo;s unused tail and stops its memory probe below the frame buffer&rsquo;s window at 1760000000. <b>The page hash table stays spread</b> under the incremental GC at 32M words, where it had slowed it from about 1.5 s to 10 to 19 s for each 100K words consed.</li>
+          <li><b>Faults fixed,</b> all MIT&rsquo;s: a compiled <code>(gcd n)</code> with one argument; <code>(and x t)</code> returning <code>t</code> and <code>(or (values x 2) nil)</code> passing one value; <code>GCD</code> of two bignums never negative; a stack group whose saved registers hold a forwarding word resuming; an interpreted special binding surviving a process switch; a full GC leaving every region in the address space map; interpreted <code>LET</code> and closures seeing the variables in scope; and the Chaosnet sending its oldest queued packet first, and none twice.</li>
+          <li><b>Fixed for 32-bit fixnums:</b> a bignum minus or times &minus;2<sup>31</sup>, the most negative fixnum, is right again, and <code>GCD</code>, <code>\\</code>, <code>LCM</code>, <code>\</code>, <code>REMAINDER</code> and <code>CLI:REM</code> with a float signal the wrong-type error instead of halting the machine.</li>
+          <li><b>Around the system:</b> <code>tools/release-scan</code> finds a private address that ends a sentence, and <code>tools/release-sums</code> takes the rolling releases&rsquo; fixed names.</li>
+        </ul></div></div>
+<div class="release-part"><p class="eyebrow">UPGRADING FROM SYSTEM 2000</p>
+<div class="prose"><p>Nothing carries over between bands: take the new disk. System 2000&rsquo;s disk on revision 13 stops in the boot PROM at <code>ERROR-A-MEM-SECTION-32-BITS</code>, and System 2001&rsquo;s on revision 12 stops in PROM 2000 at <code>ERROR-BAD-ADDRESS</code>.</p></div></div>
+<div class="release-part"><p class="eyebrow">KNOWN FAULTS</p>
+<div class="prose"><p>Not fixed: a warm boot that catches the Chaos Background process running asks &ldquo;Reset it?&rdquo; at the console, and TELNET is refused until it is answered (answered Yes, the boot completes and keeps the world); <code>LISTF</code> over TELNET traps after the listing; video controller sizes above 1920 by 1080 are not supported; writing a file into a <code>HOST:</code> directory that does not exist offers &ldquo;Creates the directory and tries again&rdquo;, which makes the directory and then stops with an invalid proceed type (abort and evaluate the form again, or make the directory first). As in System 2000, and all MIT&rsquo;s: a date printed MM/DD parses as DD/MM outside the United States; <code>(%div 0 0)</code> returns 0; the inspector traps on a symbol that has a function but no value.</p></div></div>
+<div class="release-part"><p class="eyebrow">ASSETS</p>
+<div class="prose"><div class="table-scroll" tabindex="0" role="region" aria-label="System 2001&rsquo;s assets"><table class="assets">
+          <thead><tr><th>File</th><th>Bytes</th><th>SHA-256</th></tr></thead>
+          <tbody>
+            <tr><td><code>release-2001-disk.vhd.gz</code></td><td>6,557,643</td><td><code>6607f93a20854e52ab823eb145cd68de99d9566f2fab77dda45da9b130b2e71e</code></td></tr>
+            <tr><td><code>release-2001-sys.tar.gz</code></td><td>4,761,529</td><td><code>71006884aec9c5a82ec107cd3ade85ef0d5ea187f863eeea9d058cd23997e00c</code></td></tr>
+            <tr><td><code>release-2001-promh.mcr</code></td><td>155,648</td><td><code>5917bae4a5e21806acd40fa9af7bc89a307e45f49cc974ee880c9e4ba002b9ca</code></td></tr>
+            <tr><td><code>SHA256SUMS</code></td><td>358</td><td><code>b3b2d9c9a2d1151f8f643fc5a6b098c99076cf29babead0c75f3fc2966dab9b5</code></td></tr>
+          </tbody>
+        </table></div>
+        <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2001 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>. The tarball unpacks to <code>release-2001/</code>: the repository at the tag, with microcode 2001 and boot PROM 2001 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-2001/docs/release-2001.md"><code>docs/release-2001.md</code></a>.</p></div></div>
+</section>
+
+<section id="system-2000" class="section wrap" aria-label="System 2000"><div class="release-head"><p class="eyebrow">02 / RELEASE &middot; QUUX</p></div>
 <div class="release-head"><h2>System 2000</h2><span class="date">2026-09-29 &middot; tag <code>release-2000</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-2000">get it</a></span></div>
 <p class="lead">The first release for <a href="../quux/">QUUX</a>, the CADR evolved. It runs only on QUUX, on microcode 2000 and boot PROM 2000, and was built on QUUX, every file compiled.</p>
 <div class="release-part"><p class="eyebrow">WHAT CHANGED</p>
@@ -47,12 +80,49 @@
         <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2000 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>; it is muir-sim&rsquo;s built-in QUUX PROM byte for byte. The tarball unpacks to <code>release-2000/</code>: the repository at the tag, with microcode 2000 and boot PROM 2000 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-2000/docs/release-2000.md"><code>docs/release-2000.md</code></a>, its known faults at the end.</p></div></div>
 </section>
 
-<section id="in-development" class="section wrap" aria-label="QUUX&rsquo;s system in development"><div class="release-head"><p class="eyebrow">02 / IN DEVELOPMENT &middot; QUUX</p></div>
+<section id="in-development" class="section wrap" aria-label="QUUX&rsquo;s system in development"><div class="release-head"><p class="eyebrow">03 / IN DEVELOPMENT &middot; QUUX</p></div>
 <div class="release-head"><h2>QUUX&rsquo;s system in development</h2><span class="date">rolling &middot; tag <code>dev-system-for-quux</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/dev-system-for-quux">get it</a></span></div>
 <p class="lead">The latest build of the repository&rsquo;s <code>main</code> branch, published as a pre-release. It is never a fixed release: each new build replaces its files, its <code>README</code> asset names the build and its commit, and its <code>SHA256SUMS</code> covers every file, the <code>README</code> included. For a fixed release, take QUUX&rsquo;s newest.</p>
 </section>
 
-<section id="system-1002" class="section wrap" aria-label="System 1002"><div class="release-head"><p class="eyebrow">03 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1003" class="section wrap" aria-label="System 1003"><div class="release-head"><p class="eyebrow">04 / RELEASE &middot; THE CADR</p></div>
+<div class="release-head"><h2>System 1003</h2><span class="date">2026-10-05 &middot; tag <code>release-1003</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1003">get it</a></span></div>
+<p class="lead">The CADR&rsquo;s system after System 1002: microcode 1001, more of MIT&rsquo;s faults fixed, and main memory up to 60 boards. It runs on the <a href="../cadr/">CADR</a>, not on QUUX.</p>
+<div class="release-part"><p class="eyebrow">MICROCODE 1001</p>
+<div class="prose"><p>System 1002&rsquo;s microcode 1000 with fixes, each of a fault of MIT&rsquo;s:</p><ul>
+          <li><code>GCD</code> of two bignums is never negative, nor are <code>LCM</code> and compiled <code>GCD</code>;</li>
+          <li>a stack group whose saved registers hold a forwarding word resumes, where the machine halted at <code>SWAPIN+12</code> or <code>SGENT1+2</code>;</li>
+          <li>an interpreted special binding survives a process switch, so an interpreted <code>CONDITION-CASE</code> no longer now and then signals &ldquo;The argument CONS was 0, which is not a cons.&rdquo;;</li>
+          <li>a full GC leaves every region in the address space map, so <code>ROOM</code> and the GC no longer signal &ldquo;The argument AREA was NIL&rdquo;;</li>
+          <li>free pages&rsquo; entries in the page hash table are spread by frame, which keeps the table from degenerating under the incremental GC;</li>
+          <li>the Chaosnet sends the oldest queued packet first and none twice; four packets queued back to back had gone out 0, 2, 1, 0.</li>
+        </ul></div></div>
+<div class="release-part"><p class="eyebrow">MEMORY</p>
+<div class="prose"><p>Main memory of up to 60 boards, 3,932,160 words (3840K), all the memory below the I/O space: <code>cadr --main-memory-boards 60</code> in muir-sim, <code>--main-memory-boards</code> in muir-fpga&rsquo;s <code>fpgarc</code>. Bands before System 1003, MIT&rsquo;s System 100 among them, halt in the cold boot on more than 32 boards. The page tables, the wired areas and the cold boot are made for 60 boards; the system now needs at least 2 boards, where System 1002 boots on 1. When a machine has less memory than the tables serve, the herald says how to give the system more.</p></div></div>
+<div class="release-part"><p class="eyebrow">FIXED</p>
+<div class="prose"><ul>
+          <li><b>The compiler:</b> a compiled <code>(gcd n)</code> or <code>(\\ n)</code> with one argument works; <code>(and x t)</code> returns <code>t</code> and <code>(or (values x 2) nil)</code> passes one value, as the interpreter does. These are MIT&rsquo;s.</li>
+          <li><b>The interpreter:</b> an interpreted <code>LET</code> keeps its variables while a closure is made under it, and interpreted closures see the variables in scope.</li>
+          <li><b>A machine whose <code>sys/</code> holds no <code>ubin/ucadr.tbl</code> boots,</b> on the band&rsquo;s own error table.</li>
+        </ul></div></div>
+<div class="release-part"><p class="eyebrow">NEW</p>
+<div class="prose"><ul>
+          <li><b>Around the system:</b> <code>tools/release-build</code> builds a release of this line from one commit; <code>tools/release-scan</code> finds a private address that ends a sentence; <code>tools/release-sums</code> takes the rolling releases&rsquo; fixed names; <code>tools/lispm-check</code> fails at once a case that asks a question.</li>
+        </ul></div></div>
+<div class="release-part"><p class="eyebrow">KNOWN FAULTS</p>
+<div class="prose"><p>Not fixed: a warm boot that catches the Chaos Background process running hangs the network&rsquo;s start, and a cold boot recovers; at 60 boards the page hash table has transient long runs, which heal on their own. System 1002&rsquo;s known faults stand, but for the negative <code>GCD</code>: a date printed MM/DD parses as DD/MM outside the United States; <code>(%div 0 0)</code> returns 0; the boot PROM&rsquo;s <code>PAGE-0-PARITY-FIX</code> touches one word past page 0. The three of System 1002 are MIT&rsquo;s; the cause of the page hash table&rsquo;s long runs is not established.</p></div></div>
+<div class="release-part"><p class="eyebrow">ASSETS</p>
+<div class="prose"><div class="table-scroll" tabindex="0" role="region" aria-label="System 1003&rsquo;s assets"><table class="assets">
+          <thead><tr><th>File</th><th>Bytes</th><th>SHA-256</th></tr></thead>
+          <tbody>
+            <tr><td><code>release-1003-pack.img.gz</code></td><td>6,158,867</td><td><code>cf3632a7a2ab0522043994ee004e02b1766ee93b4ba287170566d149de1aed78</code></td></tr>
+            <tr><td><code>release-1003-sys.tar.gz</code></td><td>4,507,547</td><td><code>83fc38c0236fdb372099641ea2d93e2dd3a9ef905420d8ff1307b3369266b85e</code></td></tr>
+          </tbody>
+        </table></div>
+        <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1003/</code>: the repository at the tag, with microcode 1001 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-1003/docs/release-1003.md"><code>docs/release-1003.md</code></a>.</p></div></div>
+</section>
+
+<section id="system-1002" class="section wrap" aria-label="System 1002"><div class="release-head"><p class="eyebrow">05 / RELEASE &middot; THE CADR</p></div>
 <div class="release-head"><h2>System 1002</h2><span class="date">2026-09-29 &middot; tag <code>release-1002</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1002">get it</a></span></div>
 <p class="lead">The CADR&rsquo;s system after System 1001: MIT&rsquo;s time code made right, FILE dates in UTC on the wire, the CADR&rsquo;s first changed microcode, 1000, and the faults found on the way. It runs on the <a href="../cadr/">CADR</a>, not on QUUX.</p>
 <div class="release-part"><p class="eyebrow">TIME AND DATES</p>
@@ -90,7 +160,7 @@
         <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1002/</code>: the repository at the tag, with microcode 1000 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-1002/docs/release-1002.md"><code>docs/release-1002.md</code></a>.</p></div></div>
 </section>
 
-<section id="system-1001" class="section wrap" aria-label="System 1001"><div class="release-head"><p class="eyebrow">04 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1001" class="section wrap" aria-label="System 1001"><div class="release-head"><p class="eyebrow">06 / RELEASE &middot; THE CADR</p></div>
 <div class="release-head"><h2>System 1001</h2><span class="date">2026-09-23 &middot; tag <code>release-1001</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1001">get it</a></span></div>
 <p class="lead">A deep cleanup of System 1000, and the faults found while making it. What will never be used is gone, not commented out, and git keeps the history.</p>
 <div class="release-part"><p class="eyebrow">REMOVED</p>
@@ -130,7 +200,7 @@
         <p>The tarball unpacks to <code>release-1001/</code>: the whole repository at the tag, with the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1001.md"><code>docs/release-1001.md</code></a>.</p></div></div>
 </section>
 
-<section id="system-1000" class="section wrap" aria-label="System 1000"><div class="release-head"><p class="eyebrow">05 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1000" class="section wrap" aria-label="System 1000"><div class="release-head"><p class="eyebrow">07 / RELEASE &middot; THE CADR</p></div>
 <div class="release-head"><h2>System 1000</h2><span class="date">2026-09-23 &middot; tag <code>release-1000</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1000">get it</a></span></div>
 <p class="lead">System 100 fixed and cleaned up: the same sources and microcode 323, the faults that stopped it rebuilding itself repaired, the material that is not MIT&rsquo;s left out. It continues where System 100 left off.</p>
 <div class="release-part"><p class="eyebrow">WHAT CHANGED</p>
@@ -154,7 +224,7 @@
         <p>The tarball unpacks to <code>release-1000/</code>: <code>sys/</code> and <code>site/</code> with <code>LICENSE</code> and <code>NOTICE</code>, and the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1000.md"><code>docs/release-1000.md</code></a>.</p></div></div>
 </section>
 
-<section id="running" class="section wrap" aria-label="Running a release"><div class="section-heading"><div><p class="eyebrow">06 / RUNNING A RELEASE</p><h2>Running a <em>release.</em></h2></div></div>
+<section id="running" class="section wrap" aria-label="Running a release"><div class="section-heading"><div><p class="eyebrow">08 / RUNNING A RELEASE</p><h2>Running a <em>release.</em></h2></div></div>
 <div class="prose"><p><a href="https://github.com/metebalci/muir-sim/blob/main/tools/README.md">muir-sim&rsquo;s fetch scripts</a> do the first steps for you: <code>tools/fetch-system-for-quux.sh</code> fetches QUUX&rsquo;s current release, <code>tools/fetch-dev-system-for-quux.sh</code> the system in development, and <code>tools/fetch-system-for-cadr.sh</code> the CADR&rsquo;s current release, each checked against its SHA-256 sums. By hand, QUUX&rsquo;s release N with muir-sim&rsquo;s <code>quux</code> needs no file server: its <code>SYS:</code> is on the machine&rsquo;s file device, so its host folder holds <code>sys/</code> and <code>site/</code> from the sources and a home for the login.</p></div>
 <pre><code>gunzip release-N-disk.vhd.gz
 tar -xzf release-N-sys.tar.gz
