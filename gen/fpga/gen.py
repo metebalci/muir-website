@@ -163,7 +163,7 @@ ARTY_FIT = [
                Two rows,""",
      """          <!-- What the machine costs on the part: the memory-on board with the
                disk and both display boards in it, place and routed with DDR=1,
-               HDMI=1 and LMTV=1, which is the fabric the board runs.  Built from 774f360,
+               HDMI=1 and LMTV=1, which is the fabric the board runs.  Built from 94a7771,
                the release commit, as muir-fpga's
                docs/fits.md records it; the Cora Z7-07S's
                drawing carries that board's figures from the same fits.  The
@@ -274,7 +274,7 @@ CORA_FIT = [
                they are left in it, because they are a comparison made at that
                commit and not a reading of this build.  The switch is there for
                a part that cannot afford it; this one can.
-               These are the fit of 774f360, the release commit, as
+               These are the fit of 94a7771, the release commit, as
                muir-fpga's docs/fits.md records it; the Arty
                Z7-20's drawing carries that board's figures from the same
                fits."""),
@@ -410,8 +410,8 @@ BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves
 
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
-# runs, in that part's own terms, from docs/fits.md of muir-fpga at b300ac8,
-# its first table under "From a clean tree": the fits built from 774f360, the
+# runs, in that part's own terms, from docs/fits.md of muir-fpga at 0fb5b3d,
+# its first table under "From a clean tree": the fits built from 94a7771, the
 # release commit, the CADR's and QUUX revision 13's on each board that runs
 # them, the Arty Z7-20's QUUX at five ticks.  Each QUUX cell names the
 # revision under its bars (xc7z020clg400-1, xc7z007sclg400-1, xck26-sfvc784-2LV-c, A5EB013BB23BE4SCS).  A bar is the percentage of the
@@ -467,7 +467,7 @@ def resource_bars(rows):
     return out
 
 # The revision of QUUX a board's QUUX bars are the fit of: revision 13 on
-# every board, the rows of docs/fits.md built from 774f360.
+# every board, the rows of docs/fits.md built from 94a7771.
 QUUX_REVISION = {'arty-z7-20.html': 13, 'de25-nano.html': 13, 'kria-kr260.html': 13}
 
 def board_table():
@@ -1207,7 +1207,7 @@ DE25_STATUS = [
 # 136 units wide and its fill and per cent are rounded to one decimal, as the
 # Arty Z7-20's are.  They stand at zero until this board has a build.
 DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the faces and the
-               display output, the fit of 774f360, the release commit, as
+               display output, the fit of 94a7771, the release commit, as
                muir-fpga's docs/fits.md records it.  Timing is met: +2.380 ns
                of setup and 0.000 ns of hold.
                16,495 ALMs and 135 M20K blocks.
@@ -1735,7 +1735,7 @@ def build_kr260():
 #     CADR's display and records (docs/linux.md, "Each machine's
 #     reservation"), so the foot says so.
 QUUX_K = {'arty-z7-20': 5, 'de25-nano': 4, 'kria-kr260': 4}
-QUUX_FITS = {   # docs/fits.md at b300ac8, first table: QUUX revision 13, built from 774f360 (its figures are those of d0bd127's fits);
+QUUX_FITS = {   # docs/fits.md at 0fb5b3d, first table: QUUX revision 13, built from 94a7771 (its figures are those of 774f360's fits);
     # a block RAM tile is 4.5 KB on the Zynq boards and an M20K 2.5 KB
     'arty-z7-20': (('LUTs 22,608 of 53,200', 22608 / 53200), ('BRAM 378 KB of 630 KB', 84 / 140), '+0.183'),
     'de25-nano': (('ALM 29,779 of 46,800', 29779 / 46800), ('M20K 512.5 KB of 895 KB', 205 / 358), '+1.613'),
