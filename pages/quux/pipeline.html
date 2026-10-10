@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUUX &mdash; the revision 15 pipeline</title>
+<meta name="description" content="Revision 15 is QUUX's next revision, in development and not released: its four-stage microinstruction pipeline drawn, CS, RD, EX and WB of one clock each, with the memory port beneath, and notes on what a wrong guess costs, the fused dispatch, memory, halt and the clock.">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../drawings.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/" aria-current="page">Machines</a><a href="../simulator/">Simulator</a><a href="../fpga/">FPGA</a><a href="../system/">System</a><a class="github" href="https://github.com/metebalci/muir-sim">GitHub <span>&#8599;</span></a></nav></header>
+<nav class="subnav wrap" aria-label="Machines&rsquo; pages"><b>Machines</b><a href="../lisp-machine/">Lisp Machine</a><a href="../lisp-machine/how-it-runs.html">How it runs</a><a href="../cadr/">CADR</a><a href="./">QUUX</a></nav>
+<main id="main">
+<section class="page-hero wrap">
+<div>
+<p class="eyebrow"><span class="dot"></span>THE MACHINES &middot; QUUX &middot; REVISION 15</p>
+<h1>Four stages,<br>one clock <em>each.</em></h1>
+<p class="intro">Each microinstruction takes four stages of one clock each. Data moves left to right; control decisions flow back to the fetch.</p>
+<p class="hero-description">This is the design <a href="../simulator/">muir-sim</a>&rsquo;s <code>rtl</code> models and the <a href="../fpga/">FPGA</a> core matches clock for clock.</p>
+<p class="callout">Revision 15 is QUUX&rsquo;s next revision, in development and not released. System 2002 will run on it; today&rsquo;s released QUUX is revision 13, with System 2001.</p>
+<div class="actions"><a class="button" href="#pipeline">The pipeline <span>&#8595;</span></a><a class="text-link" href="#notes">The notes</a><a class="text-link" href="./">QUUX</a></div>
+</div>
+<div class="side">
+<p>The four stages are <b>CS</b>, fetch; <b>RD</b>, read and decide; <b>EX</b>, execute and check; and <b>WB</b>, write and start. Below the figure, six notes give what a wrong guess costs, why predictions pay, the fused dispatch D, the memory, halt and checkpoint, and the clock today.</p>
+</div>
+</section>
+
+<section id="pipeline" class="section wrap" aria-label="The four stages.">
+<div class="section-heading"><div><p class="eyebrow">01 / THE FOUR STAGES</p><h2>The four <em>stages.</em></h2></div></div>
+<figure class="fig dense wide">
+<div class="fig-top"><span>FIG. 01 &mdash; THE PIPELINE</span><span>QUUX REVISION 15</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 1: The pipeline">
+        <svg viewBox="0 0 1340 640" role="img" aria-label="QUUX revision 15&rsquo;s pipeline: four stages, CS, RD, EX and WB, in a row, one clock each, clocks 1 to 4, with a pipeline register between each pair. CS, fetch, holds the control store of 64-bit microinstructions; the A and PDL read addresses are registered at its end; it holds a word that selects OA-REG-HIGH just written; D&rsquo;s handler enters here. RD, read and decide, receives A and PDL, reads M, chooses the next address by hint and prediction, keeps speculative copies of the SPC top, LC, the PDL pointer and the index, and has a guard that holds a return behind its writer. EX, execute and check, has the ALU, rotator and mask, MUL taking 5 clocks and DIV 18; it checks RD&rsquo;s choice, and on a wrong one squashes and redirects; it samples the interrupt at a check&rsquo;s last clock, and fixes a write&rsquo;s word at its commit. WB, write and start, writes A, M and the PDL buffer, translates and grants memory starts (read, write, fetch), and makes register writes to the device registers. Data flows left to right: the word from CS to RD, plus A and M from RD to EX, the result from EX to WB. Control flows back to the fetch along two dashed paths over the top: RD sends the next address, from jump, call, POPJ, hint or predicted dispatch, to CS; EX sends a redirect to CS on a wrong prediction, costing one bubble, and a squash, with a restore of RD&rsquo;s copies, to RD. Three dotted bypasses forward a result before it is written: d1 into EX; d2, WB&rsquo;s write into RD&rsquo;s operand; and d3, a write held a clock into RD&rsquo;s operand. Under the stages is the memory side. WB sends starts, an address and a write word, to the memory port, which holds three parts: a TLB that maps page to frame, 4,096 entries, serving starts on port A and MAP(MD) on port B, a miss walking the page table; a data cache of memory words, 2 ways, lines of 8 words, 64K words, a hit landing 2 clocks after the grant; and a queue of 8 posted writes, 16 in flight, where reads wait on a line with a write pending. The port fills from main memory, DDR over AXI with one write ID and writes answered in order, and reaches the device registers, timers, disk and file device. Read words land in MD, which feeds EX; port B serves MAP(MD) to EX in both directions; and D&rsquo;s fetched word, along a dashed control path, picks the handler and starts it in CS.">
+          <defs>
+            <marker id="pl-arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <!-- Legend. -->
+          <text class="d-t" x="10" y="18">QUUX revision 15&rsquo;s pipeline</text>
+          <path class="d-bus" d="M262,14 H302"/>
+          <text class="d-s" x="310" y="18">data path</text>
+          <path class="d-dash" d="M400,14 H440"/>
+          <text class="d-s" x="448" y="18">control: next address, redirect, squash</text>
+          <path class="d-dot" d="M730,14 H770"/>
+          <text class="d-s" x="778" y="18">bypass: a result forwarded before it is written</text>
+          <rect class="d-fill" x="1105" y="7" width="6" height="14"/>
+          <text class="d-s" x="1119" y="18">pipeline register</text>
+          <!-- Control: RD chooses the next address; EX redirects. -->
+          <path class="d-dash" d="M782,150 V66 H110 V148" marker-end="url(#pl-arr)"/>
+          <text class="d-s" x="118" y="60">redirect on a wrong prediction (one bubble)</text>
+          <path class="d-dash" d="M456,150 V108 H190 V148" marker-end="url(#pl-arr)"/>
+          <text class="d-s" x="198" y="102">next address: jump, call, POPJ, hint, predicted dispatch</text>
+          <!-- The four stages and the pipeline registers between them. -->
+          <rect class="d-box" x="40" y="150" width="270" height="200"/>
+          <rect class="d-box" x="366" y="150" width="270" height="200"/>
+          <rect class="d-box" x="692" y="150" width="270" height="200"/>
+          <rect class="d-box" x="1018" y="150" width="270" height="200"/>
+          <rect class="d-fill" x="335" y="158" width="6" height="176"/>
+          <rect class="d-fill" x="661" y="158" width="6" height="176"/>
+          <rect class="d-fill" x="987" y="158" width="6" height="176"/>
+          <text class="d-t" x="54" y="174">CS</text>
+          <text class="d-s" x="78" y="174">FETCH</text>
+          <text class="d-s" x="296" y="174" text-anchor="end">clock 1</text>
+          <text class="d-s" x="54" y="200">control store</text>
+          <text class="d-s" x="54" y="216">64-bit microinstruction</text>
+          <text class="d-s" x="54" y="240">A, PDL read addresses</text>
+          <text class="d-s" x="54" y="257">registered at its end</text>
+          <text class="d-s" x="54" y="281">holds a word that selects</text>
+          <text class="d-s" x="54" y="298">OA-REG-HIGH just written</text>
+          <text class="d-s" x="54" y="322">D&rsquo;s handler enters here</text>
+          <text class="d-t" x="380" y="174">RD</text>
+          <text class="d-s" x="404" y="174">READ · DECIDE</text>
+          <text class="d-s" x="622" y="174" text-anchor="end">clock 2</text>
+          <text class="d-s" x="380" y="200">A, PDL arrive; M read</text>
+          <text class="d-s" x="380" y="224">chooses the next address</text>
+          <text class="d-s" x="380" y="240">by hint and prediction</text>
+          <text class="d-s" x="380" y="264">keeps speculative copies:</text>
+          <text class="d-s" x="380" y="280">SPC top, LC, PDL pointer</text>
+          <text class="d-s" x="380" y="296">and index</text>
+          <text class="d-s" x="380" y="320">guard holds a return</text>
+          <text class="d-s" x="380" y="336">behind its writer</text>
+          <text class="d-t" x="706" y="174">EX</text>
+          <text class="d-s" x="730" y="174">EXECUTE · CHECK</text>
+          <text class="d-s" x="948" y="174" text-anchor="end">clock 3</text>
+          <text class="d-s" x="706" y="200">ALU, rotator, mask</text>
+          <text class="d-s" x="706" y="216">MUL 5 clocks, DIV 18</text>
+          <text class="d-s" x="706" y="240">checks RD&rsquo;s choice</text>
+          <text class="d-s" x="706" y="256">wrong: squash, redirect</text>
+          <text class="d-s" x="706" y="280">samples the interrupt</text>
+          <text class="d-s" x="706" y="296">at a check&rsquo;s last clock</text>
+          <text class="d-s" x="706" y="320">fixes a write&rsquo;s word</text>
+          <text class="d-s" x="706" y="336">at its commit</text>
+          <text class="d-t" x="1032" y="174">WB</text>
+          <text class="d-s" x="1056" y="174">WRITE · START</text>
+          <text class="d-s" x="1274" y="174" text-anchor="end">clock 4</text>
+          <text class="d-s" x="1032" y="200">writes A, M and</text>
+          <text class="d-s" x="1032" y="217">the PDL buffer</text>
+          <text class="d-s" x="1032" y="241">translates and grants</text>
+          <text class="d-s" x="1032" y="258">memory starts</text>
+          <text class="d-s" x="1032" y="274">read, write, fetch</text>
+          <text class="d-s" x="1032" y="298">register writes</text>
+          <text class="d-s" x="1032" y="314">to the device registers</text>
+          <!-- Data between the stages. -->
+          <rect class="d-plate" x="315" y="186" width="46" height="14"/>
+          <text class="d-n" x="338" y="198" text-anchor="middle">word</text>
+          <path class="d-bus" d="M310,210 H364" marker-end="url(#pl-arr)"/>
+          <rect class="d-plate" x="641" y="186" width="46" height="14"/>
+          <text class="d-n" x="664" y="198" text-anchor="middle">+A,M</text>
+          <path class="d-bus" d="M636,210 H690" marker-end="url(#pl-arr)"/>
+          <rect class="d-plate" x="967" y="186" width="46" height="14"/>
+          <text class="d-n" x="990" y="198" text-anchor="middle">result</text>
+          <path class="d-bus" d="M962,210 H1016" marker-end="url(#pl-arr)"/>
+          <!-- Control: EX squashes RD and restores its copies. -->
+          <rect class="d-plate" x="641" y="244" width="46" height="14"/>
+          <rect class="d-plate" x="641" y="278" width="46" height="14"/>
+          <text class="d-n" x="664" y="255" text-anchor="middle">squash</text>
+          <text class="d-n" x="664" y="289" text-anchor="middle">restore</text>
+          <path class="d-dash" d="M692,270 H638" marker-end="url(#pl-arr)"/>
+          <!-- Bypasses into EX and into RD. -->
+          <path class="d-dot" d="M932,350 V374 H882 V352" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="907" y="388" text-anchor="middle">d1</text>
+          <path class="d-dot" d="M1078,350 V402 H456 V352" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="466" y="416">d2: WB&rsquo;s write into RD&rsquo;s operand</text>
+          <path class="d-dot" d="M1128,350 V432 H416 V352" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="466" y="446">d3: a write held a clock into RD&rsquo;s operand</text>
+          <!-- The memory port and what is behind it. -->
+          <rect class="d-box" x="366" y="484" width="626" height="140"/>
+          <text class="d-t" x="380" y="507">Memory port</text>
+          <rect class="d-box" x="380" y="520" width="190" height="88"/>
+          <text class="d-t" x="390" y="540">TLB</text>
+          <text class="d-s" x="390" y="558">page to frame, 4,096</text>
+          <text class="d-s" x="390" y="572">entries; A: starts,</text>
+          <text class="d-s" x="390" y="586">B: MAP(MD); a miss</text>
+          <text class="d-s" x="390" y="600">walks the page table</text>
+          <rect class="d-box" x="584" y="520" width="190" height="88"/>
+          <text class="d-t" x="594" y="540">data cache</text>
+          <text class="d-s" x="594" y="558">memory words, 2 ways,</text>
+          <text class="d-s" x="594" y="572">8-word lines, 64K</text>
+          <text class="d-s" x="594" y="586">words; a hit lands</text>
+          <text class="d-s" x="594" y="600">2 clocks after grant</text>
+          <rect class="d-box" x="788" y="520" width="190" height="88"/>
+          <text class="d-t" x="798" y="540">posted writes</text>
+          <text class="d-s" x="798" y="558">queue of 8</text>
+          <text class="d-s" x="798" y="572">16 in flight</text>
+          <text class="d-s" x="798" y="586">reads wait on a line</text>
+          <text class="d-s" x="798" y="600">with a write pending</text>
+          <rect class="d-box" x="1060" y="484" width="228" height="62"/>
+          <text class="d-t" x="1074" y="508">main memory</text>
+          <text class="d-s" x="1074" y="526">DDR over AXI, one write ID,</text>
+          <text class="d-s" x="1074" y="540">writes answered in order</text>
+          <rect class="d-box" x="1060" y="562" width="228" height="62"/>
+          <text class="d-t" x="1074" y="586">device registers</text>
+          <text class="d-s" x="1074" y="604">timers, disk, file device</text>
+          <path class="d-bus" d="M992,515 H1058" marker-end="url(#pl-arr)"/>
+          <rect class="d-plate" x="1011" y="493" width="30" height="14"/>
+          <text class="d-n" x="1026" y="505" text-anchor="middle">fill</text>
+          <path class="d-bus" d="M992,593 H1058" marker-end="url(#pl-arr)"/>
+          <!-- WB grants starts into the port. -->
+          <path class="d-bus" d="M1218,350 V462 H952 V482" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="1095" y="454" text-anchor="middle">starts: address, write word</text>
+          <!-- MD lands in EX; port B serves MAP(MD) to EX. -->
+          <path class="d-bus" d="M772,484 V352" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="764" y="472" text-anchor="end">MD lands</text>
+          <path class="d-bus" d="M842,352 V482" marker-start="url(#pl-arr)" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="850" y="472">port B</text>
+          <!-- D: the fetched word starts the handler in CS. -->
+          <path class="d-dash" d="M366,544 H100 V352" marker-end="url(#pl-arr)"/>
+          <text class="d-n" x="110" y="510">D: fetched word</text>
+          <text class="d-n" x="110" y="524">picks the handler</text>
+        </svg>
+</div>
+<figcaption>The two dashed paths over the top close the loop that sets the clock: RD predicts the next address, and EX overrules it a clock later when the prediction was wrong. Everything below the stages is the memory side, which the core reaches only through WB&rsquo;s grants and MD.</figcaption>
+</figure>
+</section>
+<section id="notes" class="section wrap" aria-label="Notes">
+<div class="section-heading"><div><p class="eyebrow">02 / NOTES</p><h2>Six <em>notes.</em></h2></div></div>
+<div class="cards three">
+<article class="card"><h3>What a wrong guess costs</h3><p>A wrong prediction squashes the words behind the delay slot and restores RD&rsquo;s copies: 1 bubble. A start that page-faults squashes late: 2 bubbles.</p></article>
+<article class="card"><h3>Why predictions pay</h3><p>The profile pass sets each jump&rsquo;s hint and each dispatch&rsquo;s predicted target from the measured majority. On the twelve workloads it cuts the clocks by about 8%.</p></article>
+<article class="card"><h3>D, the fused dispatch</h3><p>A main-loop return can fetch the next macroinstruction and dispatch on it. Its effects wait for the fetched word and start the handler in CS one clock later (L&nbsp;=&nbsp;1). Forced on, it saves about 8% of the clocks; the microcode turns it on next.</p></article>
+<article class="card"><h3>Memory</h3><p>Two different caches sit on the way: the TLB holds address translations (a virtual page to a physical frame), and the data cache holds memory words (64K on the Kria, 16K on the DE25, 4K on the Arty). Writes are posted: WB hands them to the queue and goes on. A word written is fixed when its start&rsquo;s microcycle ends. A read waits only when its line has a write still on its way.</p></article>
+<article class="card"><h3>Halt and checkpoint</h3><p>A halt completes the words in EX and WB, squashes CS and RD, and waits for the port to empty. The machine then stands between two microcycles, as the single-edge simulator would.</p></article>
+<article class="card"><h3>The clock today</h3><p>The routed core closes at about 13&nbsp;ns on the Kria. Its longest path runs from EX&rsquo;s decision back into the next fetch. Timing work comes later; the target is about 11&nbsp;ns.</p></article>
+</div>
+</section>
+<section id="sources" class="section wrap" aria-label="Where the drawing came from.">
+<div class="section-heading"><div><p class="eyebrow">03 / SOURCES</p><h2>Where the drawing<br><em>came from.</em></h2></div></div>
+<p class="lead">The drawing and its notes are read from muir-sim&rsquo;s description of revision 15, as of 10 Oct 2026.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Where the drawing came from">
+<table>
+<thead><tr><th>Figure</th><th>Read from</th></tr></thead>
+<tbody>
+<tr><td>the pipeline</td><td>muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>, &ldquo;<code>rtl</code> is the pipeline&rdquo;, and contract G3 revision 15 with its rulings</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+</body>
+</html>
