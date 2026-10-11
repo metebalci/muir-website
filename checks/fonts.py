@@ -24,7 +24,7 @@ chromium, chromium-browser, google-chrome on the PATH, or Playwright's
 headless shell), and fc-query, from fontconfig.  It prints each character
 missing from its font, with where it is drawn, and exits 1 if there is any;
 it exits 2 if it cannot run."""
-import argparse, glob, json, os, pathlib, re, shutil, subprocess, sys, tempfile, time, unicodedata
+import argparse, base64, glob, json, os, pathlib, re, shutil, subprocess, sys, tempfile, time, unicodedata
 from html.parser import HTMLParser
 
 # The DevTools protocol's name for a page's session, written in two parts so
@@ -156,7 +156,7 @@ class Browser:
                                    'about:blank'], preexec_fn=fds, close_fds=False,
                                   stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.close(to_r), os.close(from_w)
-        self.buf, self.n, self.events = b'', 0, []
+        self.buf, self.n, self.events, self.page = b'', 0, [], None
         target = self.send('Target.createTarget', url='about:blank')['targetId']
         self.session = self.send('Target.attachToTarget', targetId=target, flatten=True)[SESSION]
         self.send('Page.enable', True)
@@ -186,15 +186,32 @@ class Browser:
                 if 'error' in m:
                     raise RuntimeError('%s: %s' % (method, m['error'].get('message')))
                 return m.get('result', {})
-            self.events.append(m)
+            self.note(m)
+
+    def note(self, m):
+        """Keep an event.  A page that forwards its reader (a meta refresh)
+        would leave before it is read, so the browser is handed the page
+        without that tag and reads it as it stands."""
+        self.events.append(m)
+        if m.get('method') == 'Fetch.requestPaused':
+            html = open(self.page, encoding='utf-8').read()
+            body = re.sub(r'<meta http-equiv="refresh"[^>]*>', '', html)
+            self.n += 1
+            msg = {'id': self.n, 'method': 'Fetch.fulfillRequest', SESSION: self.session,
+                   'params': {'requestId': m['params']['requestId'], 'responseCode': 200,
+                              'responseHeaders': [{'name': 'Content-Type', 'value': 'text/html; charset=utf-8'}],
+                              'body': base64.b64encode(body.encode('utf-8')).decode()}}
+            os.write(self.to_w, json.dumps(msg).encode() + b'\0')
 
     def texts(self, page):
         """The page's text with its computed families."""
         self.events = []
+        self.page = page
+        self.send('Fetch.enable', True, patterns=[{'urlPattern': '*.html', 'resourceType': 'Document'}])
         self.send('Page.navigate', True, url=pathlib.Path(page).as_uri())
         deadline = time.time() + 60
         while not any(e.get('method') == 'Page.loadEventFired' for e in self.events):
-            self.events.append(self.receive(deadline))
+            self.note(self.receive(deadline))
         r = self.send('Runtime.evaluate', True, expression=PROBE, returnByValue=True)
         if 'exceptionDetails' in r:
             raise RuntimeError('%s: the probe failed: %s' % (page, r['exceptionDetails'].get('text')))

@@ -111,18 +111,23 @@ def footer(root):
             % (href(root, 'index.html'), GH + 'muir-website', links, GH))
 
 
-def page(path, title, description, main, section=None, css=(), script=False, body_class=None):
+def page(path, title, description, main, section=None, css=(), script=False, body_class=None,
+         refresh=None, canonical=None):
     """A whole page.  `path` is relative to pages/, `main` is what goes
     inside <main>, and `css` names extra stylesheets at the root, such as
-    'drawings.css'."""
+    'drawings.css'.  `refresh` is the address a forwarding page sends the
+    browser to at once, and `canonical` the address of the page that took
+    its place."""
     root = root_of(path)
     links = ''.join('<link rel="stylesheet" href="%s">\n' % href(root, c) for c in ('style.css',) + tuple(css))
     js = '<script src="%s" defer></script>\n' % href(root, 'script.js') if script else ''
     cls = ' class="%s"' % body_class if body_class else ''
+    fwd = ('<meta http-equiv="refresh" content="0; url=%s">\n' % refresh if refresh else '') + \
+          ('<link rel="canonical" href="%s">\n' % canonical if canonical else '')
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            '<title>%s</title>\n<meta name="description" content="%s">\n%s%s</head>\n<body%s>\n'
+            '<title>%s</title>\n<meta name="description" content="%s">\n%s%s%s</head>\n<body%s>\n'
             '%s%s<main id="main">\n%s</main>\n%s</body>\n</html>\n'
-            % (title, description, links, js, cls, header(root, section),
+            % (title, description, fwd, links, js, cls, header(root, section),
                subnav(section, path) if section else '',
                main, footer(root)))

@@ -124,6 +124,8 @@ def main():
              P('pages', 'fpga', 'index.html'), None, 'full-page.html'),
             ('fonts', 'a katakana outside the cut in a drawing label',
              P('pages', 'cadr', 'index.html'), '>the machine, whole</text>', '>the machine, whole \u30b3</text>'),
+            ('fonts', 'a character outside Plex on a page that forwards its reader',
+             P('pages', 'quux', 'pipeline.html'), 'REVISION 15</p>', 'REVISION 15 \u29c9</p>'),
             ('fonts', 'a character outside Plex in a pre',
              P('pages', 'ozd', 'index.html'), '<pre>asking 3060 at', '<pre>asking \u29c9 3060 at'),
         ]
