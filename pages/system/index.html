@@ -33,6 +33,39 @@
 <article class="card"><div class="card-label"><span>IT RUNS ON</span><span>SIMULATOR &middot; FPGA</span></div><h3>muir-sim and muir-fpga</h3><p><a href="../simulator/">muir-sim</a>, the simulator, and <a href="../fpga/">muir-fpga</a>, on an FPGA, with <a href="../ozd/">ozd</a>, the CADR&rsquo;s associated machine, serving the CADR&rsquo;s bands.</p></article>
 <article class="card"><div class="card-label"><span>THE SOURCE</span><span>AGPL-3.0-OR-LATER</span></div><h3>github.com/<wbr>metebalci/<wbr><span class="nowrap">muir-sys</span></h3><p>The source is at <a href="https://github.com/metebalci/muir-sys">github.com/metebalci/muir-sys</a>, under the AGPL, version 3 or later.</p></article>
 </div>
+</section>
+
+<section id="changes" class="section wrap" aria-label="What the CADR&rsquo;s releases changed"><div class="section-heading"><div><p class="eyebrow">02 / THE CADR&rsquo;S RELEASES</p><h2>What they<br><em>changed.</em></h2></div></div>
+<p class="lead">System 100 is LM-3&rsquo;s bring-up of MIT&rsquo;s release 99.32, with microcode 323, and the CADR&rsquo;s releases, System 1000 to System 1003, start from it. These are the features that changed; the number after each is the release.</p>
+<div class="qa"><h3>Removed</h3><div class="prose"><ul>
+<li>The patch system: a release is replaced by the next one. 1000 kept only System patchable; 1001 removed the rest, <code>LOAD-PATCHES</code> and the editor&rsquo;s patch commands among it.</li>
+<li>Numbered file versions; the file server has none. (1000)</li>
+<li>The tape systems, since no target machine has a tape drive. (1000)</li>
+<li>The LMFILE file computer and Distribution. (1000)</li>
+<li>Xerox Dover/Press printing (1000), and XGP hardcopy (1001).</li>
+<li>MIT&rsquo;s site files, since each site supplies its own. (1000)</li>
+<li>The PDP-10 MINI server, whose work ozd does. (1000)</li>
+<li>Lambda and Explorer support, and the Ethernet code with EFTP. (1001)</li>
+<li>File hosts other than UNIX (the ozd file server) and LISPM: Multics, VMS, TOPS-20, Tenex and ITS. (1001)</li>
+<li>Code for other Lisp dialects: MacLisp, NIL and Multics, and <code>STATUS</code> and <code>SSTATUS</code>. (1001)</li>
+<li>The keyboard and PROM firmware tools, and the demos that drove hardware: the Votrax speech synthesizer, the wire-wrap board tester. (1001)</li>
+<li>The US-only summer-time functions. (1002)</li></ul></div></div>
+<div class="qa"><h3>Added</h3><div class="prose"><ul>
+<li>An example site in <code>site/</code>, with its hosts OZ and LISPM-<i>n</i> on Chaos subnet 376. (1000) The site defines LISPM-1 to LISPM-7. (1002)</li>
+<li>A cold load that runs without a console, from the site&rsquo;s <code>COLDRUN</code> script. (1001)</li>
+<li>tzdata zone names in the site&rsquo;s <code>:TIMEZONE</code>, 598 names. (1002)</li>
+<li>Main memory of up to 60 boards, 3840K; the herald says how to give the system more memory. (1003)</li></ul></div></div>
+<div class="qa"><h3>Changed</h3><div class="prose"><ul>
+<li>System numbers start at 1000, and versions print as whole numbers. (1000)</li>
+<li>The host table is a site file, <code>SYS: SITE; HOSTS</code>. (1000)</li>
+<li>A number in <code>:TIMEZONE</code> is a fixed offset with no summer time. MIT applied the US rule of 1967 to 1986 to any number. (1002)</li>
+<li>FILE dates on the wire are UTC, and need ozd&rsquo;s <code>--file-dates utc</code>, its default. (1002)</li></ul></div></div>
+<div class="qa"><h3>Built and released</h3><div class="prose"><ul>
+<li>The system rebuilds itself from source: compile, cold load, boot, load, save a band. The microcode is assembled from its sources. (1000)</li>
+<li>The tree holds sources, not generated output; the only binaries left are the fonts and two files nothing here can remake. (1000)</li>
+<li>Every change to a source file carries a comment in that file saying why. (1000)</li>
+<li>Each release is a boot-ready pack, the sources and <code>SHA256SUMS</code>, built and checked from one commit.</li></ul></div></div>
+<div class="actions"><a class="text-link" href="releases.html">The release notes, for the details of each release</a></div>
 <p class="small-print">The system&rsquo;s sources are MIT&rsquo;s, by way of LM-3; muir-sys&rsquo;s changes, builds and documents are made with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus.</p>
 <p class="small-print"><b>&copy; 2026 Mete Balci.</b> muir-sys is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>; the system&rsquo;s files carry MIT&rsquo;s notices.</p>
 </section>
