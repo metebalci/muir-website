@@ -332,6 +332,14 @@ ARTY_FIT += GRID_10 + FABRIC_LABEL + [
     ("muir's simpletv tick for tick over 77 million ticks", "muir's simpletv tick for tick over 39 million ticks"),
 ]
 CORA_FIT += GRID_10 + FABRIC_LABEL
+# THE CROSSES ON THE TWO ABSENT LAMPS SIT ON THE LAMPS.  The base drawing has
+# them 61 units to the left of their circles, outside the lamps' box, over the
+# dashed boundary line; each goes onto the corners of the square around its
+# circle (cx 1380, r 4.5), as every other cross sits on its box's corners
+# (checks/check_cross_marks.py).
+CORA_FIT += [('<path class="d-absent-x" d="M1314.5,%s L1323.5,%s M1323.5,%s L1314.5,%s"/>' % (y, y + 9, y, y + 9),
+              '<path class="d-absent-x" d="M1375.5,%s L1384.5,%s M1384.5,%s L1375.5,%s"/>' % (y, y + 9, y, y + 9))
+             for y in (439.5, 461.5)]
 
 # THE TWO SCREENS MOVED TO THE RASTER'S TWO EDGES, AND THREE VIDEO MODES
 # BECAME ONE.  Both landed at ad86f45 and the base drawing still describes the
@@ -1823,9 +1831,9 @@ def quux_aria(board):
             + quux_fit_words(board, 'lookup tables' if arty else 'adaptive logic modules')
             + 'Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
               '%s0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and %s1 resets the machine; '
-              '%s0 shows the machine running, not halted, and %s5 is dark, since revision 15 has no PROM select. '
+              '%s0 shows the machine running, not halted, and %s5 is dark, since revision 15 has no PROM select%s. '
               'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
-              % (btn, btn, lamp, lamp))
+              % (btn, btn, lamp, lamp, '' if arty else '; LEDR6, under them, is lit while the memory port is open'))
 
 def quux_svg(board):
     arty = board == 'arty-z7-20'
@@ -2044,6 +2052,18 @@ def quux_svg(board):
         dark = re.findall(r'<circle cx="1380" cy="466" r="4.5" fill="#[0-9a-f]{6}" fill-opacity="1"', svg)
         assert len(dark) == 1, dark
         svg = sub(svg, dark[0], '<circle cx="1380" cy="466" r="4.5" fill="none" fill-opacity="1"')
+    if board == 'de25-nano':
+        # LEDR6, lit while the memory port is open (quux15_de25.sv's header,
+        # "THE LAMPS", and its `led` row, at bbd7f1a): a seventh lamp under
+        # the six, green as every LEDR is, the box one lamp taller.  The Arty
+        # Z7-20 has six lamps and the Kria KR260 two, and neither top lights
+        # one for the port.
+        svg = sub(svg, '<rect class="d-box d-ext" x="1366" y="336" width="150" height="152"/>',
+                  '<rect class="d-box d-ext" x="1366" y="336" width="150" height="174"/>')
+        svg = sub(svg, '          <text class="d-s" x="1394" y="470">LEDR5 &mdash; dark</text>\n',
+                  '          <text class="d-s" x="1394" y="470">LEDR5 &mdash; dark</text>\n'
+                  '          <circle cx="1380" cy="488" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>\n'
+                  '          <text class="d-s" x="1394" y="492">LEDR6 &mdash; memory port open</text>\n')
     return svg
 
 def quux_kria(svg):

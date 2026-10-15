@@ -6,11 +6,25 @@ import os, re, sys
 D = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'pages', 'fpga')
 EPS = 0.75
 
-def arch(t):
-    """The architecture drawing's own <g>, which is one coordinate space."""
-    i = t.index('<g transform="translate(310,36)">')
+def arch(t, n=0):
+    """The page's nth architecture drawing's own <g>, which is one coordinate
+    space: the CADR's first, then QUUX's where the board runs it."""
+    i = -1
+    for _ in range(n + 1):
+        i = t.index('<g transform="translate(310,36)">', i + 1)
     j = t.index('</g>', i)
     return t[i:j]
+
+# Every architecture drawing: (name, page, which on the page).  The CADR's on
+# each board, and QUUX's on the three boards that run it.
+DRAWINGS = (('arty-z7-20', 'arty-z7-20', 0), ('arty-z7-20 quux', 'arty-z7-20', 1),
+            ('cora-z7-07s', 'cora-z7-07s', 0),
+            ('kria-kr260', 'kria-kr260', 0), ('kria-kr260 quux', 'kria-kr260', 1),
+            ('de25-nano', 'de25-nano', 0), ('de25-nano quux', 'de25-nano', 1))
+
+def drawings(d):
+    """[(name, the drawing's <g>)] of every architecture drawing under d."""
+    return [(name, arch(open(os.path.join(d, f + '.html')).read(), n)) for name, f, n in DRAWINGS]
 
 def boxes(g):
     out = []
@@ -67,9 +81,7 @@ def on_segment(p, a, b):
 
 def main():
   bad = 0
-  for f in ('arty-z7-20', 'cora-z7-07s'):
-      t = open(os.path.join(D, f + '.html')).read()
-      g = arch(t)
+  for f, g in drawings(D):
       bs = boxes(g)
       pls = polylines(g)
       ends = 0
@@ -102,7 +114,7 @@ def main():
                   if not contains:
                       print('%s: boxes overlap: %s %s | %s %s' % (f, ca, (ax0,ay0,ax1,ay1), cb, (bx0,by0,bx1,by1)))
                       ov += 1; bad += 1
-      print('%-14s %3d boxes, %3d lines, %3d ends checked, %d overlap(s)' % (f, len(bs), len(pls), ends, ov))
+      print('%-16s %3d boxes, %3d lines, %3d ends checked, %d overlap(s)' % (f, len(bs), len(pls), ends, ov))
   print('geometry:', 'OK' if not bad else '%d problem(s)' % bad)
   sys.exit(1 if bad else 0)
 

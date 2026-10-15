@@ -321,16 +321,16 @@
           <circle class="d-lamp-slow" cx="1380" cy="378" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="382">LEDR1 &mdash; fabric</text>
           <text class="d-s" x="1394" y="396">clock</text>
-          <circle cx="1380" cy="400" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
-          <circle class="d-lamp-fast" cx="1380" cy="400" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="414" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
+          <circle class="d-lamp-fast" cx="1380" cy="414" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="418">LEDR2 &mdash;</text>
           <text class="d-s" x="1394" y="432">microcycles</text>
-          <circle class="d-lamp-disk" cx="1380" cy="422" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle class="d-lamp-disk" cx="1380" cy="450" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="454">LEDR3 &mdash; disk</text>
           <text class="d-s" x="1394" y="468">activity</text>
-          <circle cx="1380" cy="444" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="486" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="490">LEDR4 &mdash; ERRHALT</text>
-          <circle cx="1380" cy="466" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="508" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="512">LEDR5 &mdash; PROMENABLE</text>
           <path class="d-line" d="M1351,412 L1366,412"/>
           <rect class="d-box d-ext" x="1366" y="228" width="150" height="30"/>
@@ -375,7 +375,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; DE25-NANO, QUUX</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: DE25-Nano, QUUX">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 15 mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, the board&rsquo;s 50 MHz in through an I/O PLL, at a period of 22.5 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, a TLB of 4,096 entries with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 16,384 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 37,690 of the 46,800 adaptive logic modules are in use, 80.5 per cent, and 405 KB of the 895 KB of block memory, 45.3 per cent; under those figures, the worst setup slack of this build, plus 0.002 nanoseconds. Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. KEY0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and KEY1 resets the machine; LEDR0 shows the machine running, not halted, and LEDR5 is dark, since revision 15 has no PROM select. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 15 mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, the board&rsquo;s 50 MHz in through an I/O PLL, at a period of 22.5 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, a TLB of 4,096 entries with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 16,384 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 37,690 of the 46,800 adaptive logic modules are in use, 80.5 per cent, and 405 KB of the 895 KB of block memory, 45.3 per cent; under those figures, the worst setup slack of this build, plus 0.002 nanoseconds. Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. KEY0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and KEY1 resets the machine; LEDR0 shows the machine running, not halted, and LEDR5 is dark, since revision 15 has no PROM select; LEDR6, under them, is lit while the memory port is open. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
 
           <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
           <text class="d-s" x="753.9" y="861">this project</text>
@@ -605,24 +605,27 @@
           <rect x="1376" y="307" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="315">KEY1 &mdash; RESET</text>
           <path class="d-line" d="M1351,297 L1366,297"/>
-          <rect class="d-box d-ext" x="1366" y="336" width="150" height="180"/>
+          <rect class="d-box d-ext" x="1366" y="336" width="150" height="216"/>
           <circle cx="1380" cy="356" r="4.5" fill="#2da44e" fill-opacity="0.45" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="360">LEDR0 &mdash; running</text>
           <circle cx="1380" cy="378" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
           <circle class="d-lamp-slow" cx="1380" cy="378" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="382">LEDR1 &mdash; fabric</text>
           <text class="d-s" x="1394" y="396">clock</text>
-          <circle cx="1380" cy="400" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
-          <circle class="d-lamp-fast" cx="1380" cy="400" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="414" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
+          <circle class="d-lamp-fast" cx="1380" cy="414" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="418">LEDR2 &mdash;</text>
           <text class="d-s" x="1394" y="432">microcycles</text>
-          <circle class="d-lamp-disk" cx="1380" cy="422" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle class="d-lamp-disk" cx="1380" cy="450" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="454">LEDR3 &mdash; disk</text>
           <text class="d-s" x="1394" y="468">activity</text>
-          <circle cx="1380" cy="444" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="486" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="490">LEDR4 &mdash; ERRHALT</text>
-          <circle cx="1380" cy="466" r="4.5" fill="none" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <circle cx="1380" cy="508" r="4.5" fill="none" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="512">LEDR5 &mdash; dark</text>
+          <circle cx="1380" cy="530" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <text class="d-s" x="1394" y="534">LEDR6 &mdash; memory</text>
+          <text class="d-s" x="1394" y="548">port open</text>
           <path class="d-line" d="M1351,412 L1366,412"/>
           <rect class="d-box d-ext" x="1366" y="228" width="150" height="30"/>
           <rect x="1375" y="239" width="10" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>

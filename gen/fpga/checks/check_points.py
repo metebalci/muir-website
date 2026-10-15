@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """No coordinate moved: the set of points the drawing's lines are drawn
 through is the same before and after, and every point in a split path was
-already a point in the path it came out of."""
+already a point in the path it came out of.  The crosses on absent boxes
+and lamps are marks, not lines, and are left out: where each sits is
+check_cross_marks.py's to check, on its box's corners."""
 import os, re, sys, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from check_geom import arch
@@ -9,7 +11,7 @@ A, B = sys.argv[1], sys.argv[2]
 def pts(d, f):
     g = arch(open(os.path.join(d, f + '.html')).read())
     c = collections.Counter()
-    for m in re.finditer(r'<(?:path|line)[^>]*?d="([^"]+)"', g):
+    for m in re.finditer(r'<(?:path|line)(?! class="d-absent-x")[^>]*?d="([^"]+)"', g):
         for p in re.finditer(r'[MLml]\s*(-?[\d.]+),(-?[\d.]+)', m.group(1)):
             c[(float(p.group(1)), float(p.group(2)))] += 1
     for m in re.finditer(r'<line[^>]*?x1="(-?[\d.]+)" y1="(-?[\d.]+)" x2="(-?[\d.]+)" y2="(-?[\d.]+)"', g):

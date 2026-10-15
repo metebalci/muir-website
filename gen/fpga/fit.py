@@ -15,7 +15,8 @@ line from the same first baseline at the same line step.
 
   - In a box, the room is the box less MARGIN each side, and it is done only
     where the last line still sits inside the box.  The groups below it in the
-    same box move down by the lines it gained.  If any group of a box cannot
+    same box move down by the lines it gained, and the mark at the head of
+    each, a lamp or a button's square, with it.  If any group of a box cannot
     be fitted the whole box is left as it was and listed in UNFITTED, and
     gen.py's LABELS says what to write instead.
   - Outside any box, the room is what is left of the drawing to its edge, and
@@ -134,6 +135,35 @@ def _move_vertices(d, moves):
     return d
 
 
+# The marks at the head of a label: a lamp or its halo, a button's or a
+# switch's square (a rect with no class), and the cross on an absent lamp.
+MARK = re.compile(r'<(circle)\b[^>]*?\scx="(-?[\d.]+)" cy="(-?[\d.]+)"'
+                  r'|<(rect) x="(-?[\d.]+)" y="(-?[\d.]+)" width="([\d.]+)" height="([\d.]+)"'
+                  r'|<path class="d-absent-x" d="(M[^"]*)"')
+
+
+def _mark_middle(m):
+    """(kind, x, y) of the middle of the mark `m` matched."""
+    if m.group(1):
+        return 'circle', float(m.group(2)), float(m.group(3))
+    if m.group(4):
+        x, y, w, h = map(float, m.group(5, 6, 7, 8))
+        return 'rect', x + w / 2, y + h / 2
+    nums = [float(n) for n in re.findall(r'-?\d+(?:\.\d+)?', m.group(9))]
+    xs, ys = nums[0::2], nums[1::2]
+    return 'cross', (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
+
+
+def _lower_mark(line, kind, dy):
+    """`line`, its mark moved down by `dy`."""
+    if kind == 'circle':
+        return re.sub(r'(\scy=")(-?[\d.]+)"', lambda m: '%s%s"' % (m.group(1), _num(float(m.group(2)) + dy)), line, count=1)
+    if kind == 'rect':
+        return re.sub(r'(\sy=")(-?[\d.]+)"', lambda m: '%s%s"' % (m.group(1), _num(float(m.group(2)) + dy)), line, count=1)
+    return re.sub(r'(\sd=")([^"]*)"', lambda m: m.group(1) + re.sub(
+        r'(-?[\d.]+),(-?[\d.]+)', lambda p: '%s,%s' % (p.group(1), _num(float(p.group(2)) + dy)), m.group(2)) + '"', line, count=1)
+
+
 def fit_labels(text, where='', sizes=SIZE):
     lines = text.split('\n')
     spans, cur = [], None
@@ -155,8 +185,11 @@ def fit_labels(text, where='', sizes=SIZE):
                 if w < vw * 0.98:
                     rects.append((x, y, x + w, y + h))
 
-        rect_lines, path_lines = [], []
+        rect_lines, path_lines, marks = [], [], []
         for i in range(a, b + 1):
+            m = MARK.search(lines[i])
+            if m:
+                marks.append((i,) + _mark_middle(m))
             m = RECT.search(lines[i])
             if m:
                 x, y, w, h = map(float, m.groups()[1:])
@@ -261,15 +294,33 @@ def fit_labels(text, where='', sizes=SIZE):
                 return e['x'] - vx - EDGE
             return vx + vw - e['x'] - EDGE
 
-        def flow(gs, bx, bottom):
+        def lower_marks(bx, lowered):
+            """The edits that move each mark at the head of a label that moved
+            --- a lamp, its halo, a button's or a switch's square, a cross on
+            an absent one --- down with its label's first line: a mark in the
+            box, left of the label, whose middle is on that line."""
+            new = {}
+            for e, dy in lowered:
+                for i, kind, mx, my in marks:
+                    if i in new or not (bx[0] < mx < bx[2] and bx[1] < my < bx[3]):
+                        continue
+                    if mx < e['x'] and e['y'] - e['size'] <= my <= e['y'] + 0.25 * e['size']:
+                        new[i] = [_lower_mark(lines[i], kind, dy)]
+            return new
+
+        def flow(gs, bx, bottom, lowered=None):
             """The edits that set the groups of one box, or of one column, in
-            order, or None when one cannot be set."""
+            order, or None when one cannot be set.  Where `lowered` is a
+            list, (the group's first line, how far it moved) is put in it for
+            every group that moved."""
             shift, out, failed, prev, moved_cls = 0.0, {}, [], None, None
             for g in gs:
                 e = g[0]
                 if bx is None and prev is not None and shift and e['y'] - prev > COLUMN_GAP:
                     shift = 0.0
                 prev = g[-1]['y']
+                if shift and lowered is not None:
+                    lowered.append((e, shift))
                 cap = int(room(e, bx) // (ADVANCE * e['size']) + 1e-9)
                 texts = [H.unescape(x['txt']) for x in g]
                 over = any(len(t) > cap for t in texts)
@@ -310,10 +361,12 @@ def fit_labels(text, where='', sizes=SIZE):
             return out, failed, shift
 
         for bx, gs in boxed.items():
-            out, failed, _ = flow(gs, bx, bx[3])
+            lowered = []
+            out, failed, _ = flow(gs, bx, bx[3], lowered)
             grown = {}
             if failed:
-                out2, failed2, _ = flow(gs, bx, 1e9)
+                lowered = []
+                out2, failed2, _ = flow(gs, bx, 1e9, lowered)
                 if not failed2:
                     ys = [float(re.search(r' y="(-?[\d.]+)"', s).group(1)) for ss in out2.values() for s in ss]
                     ys += [x['y'] for g in gs for x in g]
@@ -327,6 +380,7 @@ def fit_labels(text, where='', sizes=SIZE):
             else:
                 edits.update(out)
                 edits.update(dict((i, [s]) for i, s in grown.items()))
+                edits.update(lower_marks(bx, lowered))
         for key, gs in column.items():
             out, failed, shift = flow(sorted(gs, key=lambda g: g[0]['y']), None, 1e9)
             if failed:
