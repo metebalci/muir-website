@@ -63,7 +63,7 @@ def sub(text, old, new, count=1):
 # and written in the drawing's own shape for this measurement --- the name,
 # then the signed number with a space before its unit, as "BRAM 207 KB of
 # 630 KB" writes its own.
-def slack_block(ns):
+def slack_block(ns, y=140):
     """The comment and the one label, to stand under a drawing's last bar.
     No leading or trailing newline: the caller joins it to the line above."""
     return ('          <!-- The worst setup slack of that build, and only the worst\n'
@@ -72,7 +72,7 @@ def slack_block(ns):
             '               on the same row pitch the two bars keep and carries no\n'
             '               bar of its own, because a slack has no total to be a\n'
             '               fraction of. -->\n'
-            '          <text class="d-s" x="-164" y="140">worst setup %s ns</text>' % ns)
+            '          <text class="d-s" x="-164" y="%d">worst setup %s ns</text>' % (y, ns))
 
 # THE MEMORY BOXES under the chip.  The CADR reserves 16 MB of main memory,
 # 1 MB for the display and 128 KB for the disk pack program's records (the
@@ -81,8 +81,13 @@ def slack_block(ns):
 # measures after that change, 493,976 kB on the Arty Z7-20 and the Cora Z7-07S,
 # 938,276 kB on the DE25-Nano and 3,990,556 kB on the Kria KR260.  QUUX to
 # revision 12 used the CADR's areas (docs/linux.md, "Each machine's
-# reservation"); revision 13, the one every board's QUUX drawing shows, has
-# its own region, and its boxes say so.
+# reservation"); revision 13 has its own region, and revision 15, the one
+# every board's QUUX drawing shows, keeps it: main memory at the revision-13
+# base, 32M words of packed storage up to the display, which the board's
+# revision-13 device tree reserves (the headers of muir-fpga's
+# boards/arty-z7-20/quux15_arty.sv, boards/kria-kr260/quux15_kr260.sv and
+# boards/de25-nano/quux15_de25.sv at bbd7f1a).  So its boxes give revision
+# 13's areas and Linux's share under revision 15's name.
 MEM_OLD = """          <text class="d-s" x="87" y="762" text-anchor="middle">64 MB reserved for main memory,</text>
           <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
           <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
@@ -91,14 +96,16 @@ MEMTOTAL = {'arty': '493,976', 'cora': '493,976', 'kria': '3,990,556', 'de25': '
 # Linux's share with revision 13's region reserved: the Kria KR260's MemTotal
 # as measured (work/runs/kr260-k6/RESULT.txt of muir-fpga), the Arty Z7-20's
 # and the DE25-Nano's as docs/linux.md's table of the regions gives it.
+# Revision 15 runs on the same reservation, so the share is the same.
 MEMTOTAL13 = {'kria': '3,843,388 kB', 'arty': '350.875 MB', 'de25': '670.875 MB'}
-def mem_block(board, quux=False, rev13=False):
-    if rev13:
-        # QUUX revision 13's own region: 32MW of main memory, packed, directly
-        # below the display (docs/linux.md, "Each machine's reservation");
-        # Linux's MemTotal is the one measured with that region reserved
+def mem_block(board, quux=False, own=False):
+    if own:
+        # QUUX's own region since revision 13: 32MW of main memory, packed,
+        # directly below the display (docs/linux.md, "Each machine's
+        # reservation"), where revision 15 keeps it; Linux's MemTotal is the
+        # one measured with that region reserved
         # (work/runs/kr260-k6/RESULT.txt of muir-fpga).
-        l1, l2 = 'QUUX revision 13&rsquo;s areas:', '32MW main memory, 1 MB display, 128 KB packs'
+        l1, l2 = 'QUUX revision 15&rsquo;s areas:', '32MW main memory, 1 MB display, 128 KB packs'
         l3 = '&mdash; and Linux has the rest, %s' % MEMTOTAL13[board]
     elif quux:
         l1, l2 = 'the CADR&rsquo;s areas, which QUUX shares:', '16 MB main memory, 1 MB display, 128 KB packs'
@@ -410,10 +417,15 @@ BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves
 
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
-# runs, in that part's own terms, from docs/fits.md of muir-fpga at 0fb5b3d,
-# its first table under "From a clean tree": the fits built from 94a7771, the
-# release commit, the CADR's and QUUX revision 13's on each board that runs
-# them, the Arty Z7-20's QUUX at five ticks.  Each QUUX cell names the
+# runs, in that part's own terms, from docs/fits.md of muir-fpga.  The CADR's
+# are from docs/fits.md at 0fb5b3d, its first table under "From a clean
+# tree": the fits built from 94a7771, the release commit.  QUUX's are
+# revision 15's, from docs/fits.md at bbd7f1a: the Arty Z7-20's at 48 ns and
+# the DE25-Nano's at 22.5 ns from its first table under "From a clean tree"
+# (built from aa4a6ad and b1b4bcb), and the Kria KR260's at 19 ns from the
+# first table under "From a modified tree" (built from the working tree on
+# 23ee875), whose block memory is block RAM tiles and UltraRAM both, so its
+# cell has a third bar.  Each QUUX cell names the
 # revision under its bars (xc7z020clg400-1, xc7z007sclg400-1, xck26-sfvc784-2LV-c, A5EB013BB23BE4SCS).  A bar is the percentage of the
 # part used, and the percentage is the figure that compares across the rows:
 # lookup tables and block RAM tiles on the Zynq boards, ALMs and M20K blocks on
@@ -432,11 +444,11 @@ BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves
 # is this project's work and built and checked, not that it has run.
 BOARD_ROWS = [
     # (file, name, product, part, maker, maker's page, machines, cpu,
-    #  [(machine, logic used, logic total, logic unit, memory used, memory total, memory unit)],
+    #  [(machine, logic used, logic total, logic unit, memory used, memory total, memory unit[, (more used, more total, more unit)])],
     #  display, USB input) -- each cell is (word, title, footnote)
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
      [('CADR', 15106, 53200, 'LUTs', 46, 140, 'block RAM tiles'),
-      ('QUUX', 22608, 53200, 'LUTs', 84, 140, 'block RAM tiles')],
+      ('QUUX', 28766, 53200, 'LUTs', 96, 140, 'block RAM tiles')],
      [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
     ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
      [('CADR', 13949, 14400, 'LUTs', 43, 50, 'block RAM tiles')],
@@ -444,12 +456,12 @@ BOARD_ROWS = [
       ('no', 'The board has no USB host port, so the image leaves the program out.', 'No USB<br>input')]),
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR, QUUX', '4 x Arm Cortex-A53, Linux',
      [('CADR', 15331, 117120, 'LUTs', 41, 144, 'block RAM tiles'),
-      ('QUUX', 22891, 117120, 'LUTs', 76, 144, 'block RAM tiles')],
+      ('QUUX', 30967, 117120, 'LUTs', 43.5, 144, 'block RAM tiles', (14, 64, 'UltraRAM blocks'))],
      [('text', '', 'DisplayPort|1920&times;1080'),
       ('text', '', 'Keyboard<br>Mouse')]),
     ('de25-nano.html', 'DE25-Nano', 'Altera Agilex 5 E-series', 'A5EB013B', 'Terasic', TERASIC_DE25, 'CADR, QUUX', '2 x Arm Cortex-A76 and 2 x Cortex-A55, Linux',
      [('CADR', 16495, 46800, 'ALMs', 135, 358, 'M20K blocks'),
-      ('QUUX', 29779, 46800, 'ALMs', 205, 358, 'M20K blocks')],
+      ('QUUX', 37690, 46800, 'ALMs', 162, 358, 'M20K blocks')],
      [('text', '', 'HDMI|1280&times;1024'), ('text', '', 'Keyboard<br>Mouse')]),
 ]
 
@@ -466,9 +478,9 @@ def resource_bars(rows):
                 % (machine, num(pct), place, pct, format(used, ','), format(total, ','), unit))
     return out
 
-# The revision of QUUX a board's QUUX bars are the fit of: revision 13 on
-# every board, the rows of docs/fits.md built from 94a7771.
-QUUX_REVISION = {'arty-z7-20.html': 13, 'de25-nano.html': 13, 'kria-kr260.html': 13}
+# The revision of QUUX a board's QUUX bars are the fit of: revision 15 on
+# every board, the rows of docs/fits.md at bbd7f1a named above.
+QUUX_REVISION = {'arty-z7-20.html': 15, 'de25-nano.html': 15, 'kria-kr260.html': 15}
 
 def board_table():
     head = ('<thead>\n          <tr>\n            <th scope="col" class="board">Board</th>\n'
@@ -483,9 +495,10 @@ def board_table():
         for machine in ('CADR', 'QUUX'):
             mine = [f for f in fits if f[0] == machine]
             if mine:
-                _, lu, lt, lun, mu, mt, mun = mine[0]
+                _, lu, lt, lun, mu, mt, mun = mine[0][:7]
                 bars = resource_bars([(lun, lu, lt, lun),
-                                      ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)])
+                                      ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)]
+                                     + [('URAM', xu, xt, xun) for xu, xt, xun in mine[0][7:]])
                 if machine == 'QUUX':
                     bars += '<span class="pc">revision %d</span>' % QUUX_REVISION[fname]
                 body += '            <td class="num rbs">%s</td>\n' % bars
@@ -717,7 +730,7 @@ def build_index():
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
                   'What runs on each of four small boards.',
-                  body='<p class="hero-description">Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines, tick for tick. The CADR runs within about 5% of MIT&rsquo;s speed, and QUUX at a 40&nbsp;ns microcycle, 50&nbsp;ns on the Arty Z7-20.</p>\n',
+                  body='<p class="hero-description">Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines, tick for tick. The CADR runs within about 5% of MIT&rsquo;s speed. QUUX runs at revision 15, a clock a pipeline stage, at the period each board&rsquo;s fit closes at: 19&nbsp;ns on the Kria KR260, 22.5&nbsp;ns on the DE25-Nano and 48&nbsp;ns on the Arty Z7-20. Revision 15 is not released yet: QUUX&rsquo;s zips below are revision 13&rsquo;s, with System 2001, at a 40&nbsp;ns microcycle, 50&nbsp;ns on the Arty Z7-20.</p>\n',
                   keys=keys(('#boards', 'The boards'), ('#using', 'Using it'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
                             ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;'))
                        + HERALD, cls='has-herald'))
@@ -1594,8 +1607,9 @@ def kria_border(svg):
     svg = sub(svg, 'd="M-170,450 L-150,450', 'd="M-230,450 L-150,450')
     def out(m):
         x, y = float(m.group(1)), float(m.group(2))
-        if -170 < x < -100 and (y <= 200 or y == 520.4):
-            return 'x="%s" y="%s"' % (num(round(x - 60, 1)) if y <= 200 else '-183', m.group(2))
+        # to 240: QUUX's drawing has a third bar, which moves its notes down
+        if -170 < x < -100 and (y <= 240 or y == 520.4):
+            return 'x="%s" y="%s"' % (num(round(x - 60, 1)) if y <= 240 else '-183', m.group(2))
         return m.group(0)
     svg = re.sub(r'x="(-?[\d.]+)" y="([\d.]+)"', out, svg)
     return svg
@@ -1678,7 +1692,7 @@ KR260_BODY = '''<div class="hero-description">
 <p>The CADR boots System 1003 from its disk pack, as LISPM-1, at Chaosnet address 177201, with ozd on the board as its file and time host. A USB keyboard and mouse at the board reach the machine, and Ctrl-Alt-Del from that keyboard cold-boots it.</p>
 <p>A monitor on the board&rsquo;s DisplayPort, J6, shows the machine at 1920&times;1080, 60&nbsp;Hz: the CADR&rsquo;s main screen and its color TV side by side at 1:1, with equal margins. The color TV is on by default on this board. After an idle time the monitor sleeps, and a key at the board wakes it; that key is swallowed. The boot chord works with the monitor asleep. The link is brought up by <code>cadr-displayport</code>, a small program of this project&rsquo;s, and two of its tables are AMD&rsquo;s, under the MIT License.</p>
 <p>The CADR&rsquo;s release is one file, cadr-kria-kr260.zip.</p>
-<p>QUUX runs here too, at revision 13: the 40-bit word, at 40&nbsp;ns a microcycle, with 32MW of main memory. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2001, whose herald reads Machine Type QUUX on Kria KR260. Its screen, 1920 by 1080, fills the monitor. QUUX&rsquo;s release is one file, quux-kria-kr260.zip.</p>
+<p>QUUX runs here too, at revision 15: the 40-bit word in a pipeline of four stages, one clock each, at a period of 19&nbsp;ns, with 32MW of main memory and a cache of 64K words. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2002 from PROM 2002. Its screen, 1920 by 1080, fills the monitor. Revision 15 is not released yet; QUUX&rsquo;s release, revision 13 with System 2001, is one file, quux-kria-kr260.zip.</p>
 </div>
 '''
 
@@ -1697,49 +1711,70 @@ def build_kr260():
 # They are in the CADR's style and conventions --- green is this project's work
 # and built and checked, orange another project's program, gray the board's own
 # parts --- on the same frame, the same ports and the same foot, and what they
-# draw is what muir-fpga builds for QUUX (`MACHINE=quux`) at the revision every
-# board runs, 13: the 40-bit word.  Read from `rtl/machine/quux_*.sv`,
-# `rtl/plumbing/quux_*.sv`, the boards' tops and their docs:
-#   - the processor: the word is 40 bits, the control store 16K words of 48,
-#     the PDL buffer 16K words, MUL and DIV one instruction each, the map two
-#     levels with 4,096 entries in the second (`quux_feature_page.sv`'s words 1
-#     to 7 at revision 13); the microcycle is K = 4 ticks of 10 ns on the
-#     DE25-Nano and the Kria KR260 and 5 on the Arty Z7-20 (docs/timing.md,
-#     docs/fits.md);
-#   - the memory port and the cache (`quux_mem_port.sv`, `quux_cache.sv`): a
-#     cycle going to the memory bus, to a device register or nowhere, and at
-#     revision 13 a second, uncached requester, block-disk's transfers, so the
-#     box does not count requesters; 4,096 words, two ways, write-through,
-#     lines of eight words; `quux_axi_master.sv` is the master of main memory
-#     on the memory port, which fills a line of eight words in five 64-bit
-#     beats;
-#   - the register page, the last page of the 28-bit physical space,
-#     `1777777400` up (`quux_feature_page.sv`): the feature words, the
-#     interrupt status, the three interval timers (`quux_clocks.sv`) and the
-#     real-time clock (`quux_rtc.sv`); keyboard and mouse (`quux_input.sv`);
-#     block-disk (`quux_block_disk.sv`); the file device
-#     (`quux_file_device.sv`); and the video controller (`quux_video.sv`),
-#     whose frame buffer is on the memory bus, in DDR at the display's base,
-#     and whose raster the display output scans out of DDR;
+# draw is what muir-fpga builds for QUUX at the revision every board runs, 15:
+# the 40-bit word in a pipeline of four stages, one clock each.  Read from
+# muir-fpga at bbd7f1a: `rtl/machine/quux15_*.sv`, `rtl/plumbing/quux15_*.sv`,
+# the boards' revision 15 tops (`boards/arty-z7-20/quux15_arty.sv`,
+# `boards/kria-kr260/quux15_kr260.sv`, `boards/de25-nano/quux15_de25.sv`) and
+# docs/fits.md, docs/board.md and docs/timing.md:
+#   - the clock: a stage is a clock and the microcycle is the clock
+#     (`quux15_core.sv`'s header), and each board runs at the period its fit
+#     closes at, 19 ns on the Kria KR260, 22.5 ns on the DE25-Nano and 48 ns
+#     on the Arty Z7-20 (docs/timing.md, "QUUX's synchronous microcycle"), set
+#     in the board's top: the Arty Z7-20's 125 MHz through an MMCM, the Kria
+#     KR260's 25 MHz through an MMCM, the DE25-Nano's 50 MHz through an I/O
+#     PLL;
+#   - the processor: the word is 40 bits, the control store 16K words
+#     (`quux15_store.sv`), the PDL buffer 16K words (`quux15_core.sv`'s
+#     `pdl`), MUL and DIV one instruction each (`quux_muldiv`); the map is
+#     revision 14's, a TLB of 4,096 entries with a walk on a miss
+#     (`quux15_mmu.sv`);
+#   - the memory port and the cache (`quux15_port.sv`): a start goes to
+#     memory, to the register page or nowhere (`quux15_core.sv`'s start
+#     decode); block-disk's transfer is a second requester below the
+#     processor, so the box does not count requesters; the cache two ways,
+#     write-through, in lines of eight words, of the board's size, 4,096 words
+#     on the Arty Z7-20, 16,384 on the DE25-Nano and 65,536 on the Kria KR260
+#     (docs/timing.md, "Revision 15's cache"); `quux15_axi_master.sv` is the
+#     master of main memory inside the core's port, 64 bits, which fills a
+#     line of eight words in five beats;
+#   - the register page, the device window's last page, `1777777400` up
+#     (`quux15_core.sv`'s `REGISTER_PAGE_BUS`): the feature words, the
+#     interrupt status, the three interval timers and the real-time clock
+#     (`quux15_devices.sv`); keyboard and mouse (`quux15_input.sv`);
+#     block-disk, its registers in `quux15_devices.sv` and its walk in
+#     `quux15_block_walk.sv`; the file device's registers and the video
+#     controller's mode (`quux15_devices.sv`), whose frame buffer is on the
+#     memory bus, in DDR at the display's base, and whose raster the display
+#     output scans out of DDR;
 #   - what is not there: no bus interface and no Xbus or Unibus, no I/O board,
-#     no serial line, no Chaosnet, no color board and no debug cable (QUUX has
-#     no Unibus: S86cadr-serial and the debug-cable refusal in S80cadr-disk-
-#     packs say so), and no ozd, which a QUUX card does not start (S84ozd);
+#     no serial line, no Chaosnet cable (the interface is built and its cable
+#     tied off), no color board and no debug cable, and no ozd;
 #   - on the processing system's side, the programs QUUX needs: the terminal
 #     (its screen is the video controller, 1280 by 1024 on the Arty Z7-20 and
-#     the DE25-Nano and 1920 by 1080 on the Kria KR260), quux-file-device
-#     (S81), the disk packs, the console and the USB input; and the files
-#     docs/file-device.md names for the host's face, the fifth page of the
-#     faces' port;
+#     the DE25-Nano and 1920 by 1080 on the Kria KR260), quux-file-device,
+#     the disk packs, the console and the USB input;
+#   - the buttons, switch and lamps keep the CADR's meanings where revision 15
+#     has the signal (docs/board.md, "On QUUX revision 15 BTN0 does nothing",
+#     "On QUUX revision 15 SW0 does nothing", "QUUX revision 15 keeps each
+#     lamp's meaning where it has the signal");
 #   - the memory is revision 13's own region, 32MW of main memory below the
-#     CADR's display and records (docs/linux.md, "Each machine's
-#     reservation"), so the foot says so.
-QUUX_K = {'arty-z7-20': 5, 'de25-nano': 4, 'kria-kr260': 4}
-QUUX_FITS = {   # docs/fits.md at 0fb5b3d, first table: QUUX revision 13, built from 94a7771 (its figures are those of 774f360's fits);
-    # a block RAM tile is 4.5 KB on the Zynq boards and an M20K 2.5 KB
-    'arty-z7-20': (('LUTs 22,608 of 53,200', 22608 / 53200), ('BRAM 378 KB of 630 KB', 84 / 140), '+0.183'),
-    'de25-nano': (('ALM 29,779 of 46,800', 29779 / 46800), ('M20K 512.5 KB of 895 KB', 205 / 358), '+1.613'),
-    'kria-kr260': (('LUTs 22,891 of 117,120', 22891 / 117120), ('BRAM 342 KB of 648 KB', 76 / 144), '+1.473'),
+#     CADR's display and records, which revision 15 keeps, so the foot says so.
+# A board's period, the clock it is made from, and the top that decides it.
+QUUX_PERIOD = {'arty-z7-20': '48', 'de25-nano': '22.5', 'kria-kr260': '19'}
+QUUX_CLOCK = {'arty-z7-20': ('125 MHz in,', 'MMCM,', 'quux15_arty'),
+              'de25-nano': ('50 MHz in,', 'I/O PLL,', 'quux15_de25'),
+              'kria-kr260': ('25 MHz in,', 'MMCM,', 'quux15_kr260')}
+# The cache's words, the board's (docs/timing.md, "Revision 15's cache").
+QUUX_CACHE = {'arty-z7-20': '4,096', 'de25-nano': '16,384', 'kria-kr260': '65,536'}
+QUUX_FITS = {   # docs/fits.md at bbd7f1a: QUUX revision 15, the Arty Z7-20's and the DE25-Nano's built from
+    # aa4a6ad and b1b4bcb ("From a clean tree", first table), the Kria KR260's from the working tree on 23ee875
+    # ("From a modified tree", first table); a block RAM tile is 4.5 KB on the Zynq boards and an M20K 2.5 KB,
+    # and the Kria KR260's UltraRAM is given as the count the fit reports
+    'arty-z7-20': (('LUTs 28,766 of 53,200', 28766 / 53200), ('BRAM 432 KB of 630 KB', 96 / 140), '+0.493'),
+    'de25-nano': (('ALM 37,690 of 46,800', 37690 / 46800), ('M20K 405 KB of 895 KB', 162 / 358), '+0.002'),
+    'kria-kr260': (('LUTs 30,967 of 117,120', 30967 / 117120), ('BRAM 195.75 KB of 648 KB', 43.5 / 144), '+0.244',
+                   ('URAM 14 of 64', 14 / 64)),
 }
 # The register ports of the processing system or hard processor system that
 # the faces (the file device's page) and the console are on.
@@ -1747,48 +1782,57 @@ QUUX_PORTS = {'arty-z7-20': ('GP0', 'GP1'), 'de25-nano': ('H2F', 'LWH2F'), 'kria
 
 def quux_fit_words(board, unit):
     """The fit under the fabric's label, as the aria-label says it."""
-    (l1, p1), (l2, p2), slack = QUUX_FITS[board]
-    return ('Under the fabric&rsquo;s label, %s %s are in use, %.1f per cent, and %s of block %s, %.1f per cent; '
-            'under those two figures, the worst setup slack of this build, plus %s nanoseconds. '
+    (l1, p1), (l2, p2), slack = QUUX_FITS[board][:3]
+    more = ''.join(', and %s UltraRAM blocks, %.1f per cent' % (l.split(' ', 1)[1].replace(' of ', ' of the '), 100 * p)
+                   for l, p in QUUX_FITS[board][3:])
+    return ('Under the fabric&rsquo;s label, %s %s are in use, %.1f per cent, and %s of block %s, %.1f per cent%s; '
+            'under those figures, the worst setup slack of this build, plus %s nanoseconds. '
             % (l1.split(' ', 1)[1].replace(' of ', ' of the '), unit, 100 * p1,
                l2.split(' ', 1)[1].replace(' of ', ' of the '), 'RAM' if unit == 'lookup tables' else 'memory',
-               100 * p2, slack.lstrip('+')))
+               100 * p2, more, slack.lstrip('+')))
+
+def quux_machine_words(board, where):
+    """The blocks in the fabric, as the aria-label says them."""
+    clk_in, pll, _ = QUUX_CLOCK[board]
+    return ('In the %s: the clock, the board&rsquo;s %s through an %s, at a period of %s nanoseconds, one clock a stage of the four-stage pipeline; '
+            'the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, a TLB of 4,096 entries with a walk on a miss; '
+            'the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, %s words in two ways, write-through, in lines of eight words; '
+            'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
+            'Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. '
+            % (where, clk_in.rstrip(','), pll.rstrip(','), QUUX_PERIOD[board], QUUX_CACHE[board]))
 
 def quux_aria(board):
     arty = board == 'arty-z7-20'
     kria = board == 'kria-kr260'
     if kria:
-        return ('QUUX revision 13 mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
-                'In the programmable logic: the clock, a microcycle of 4 ticks of ten nanoseconds; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels, 4,096 in the second; '
-                'the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; '
-                'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
-                'Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. '
+        return ('QUUX revision 15 mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
+                + quux_machine_words(board, 'programmable logic') +
                 'The memory master&rsquo;s 64-bit bursts reach the processing system&rsquo;s 128-bit port as narrow bursts. '
                 'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
                 + quux_fit_words(board, 'lookup tables') +
-                'Under the chip the memory box says the areas are QUUX revision 13&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
+                'Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
                 'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. '
                 'The boot loader is the board&rsquo;s own, in its flash, and is left alone. '
                 'The two lamps, UF1 and UF2, are green; there is no button and no switch; the fan is driven on. '
                 'Every block this project builds that is done on this board is drawn green; the parts drawn gray are components of the board. ')
-    return ('QUUX revision 13 mapped onto %s: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
+    btn, lamp = ('BTN', 'LD') if arty else ('KEY', 'LEDR')
+    return ('QUUX revision 15 mapped onto %s: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
             % ('one AMD Zynq 7020, part XC7Z020-1CLG400C' if arty else 'one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS')
-            + 'In the %s: the clock, a microcycle of %s ticks of ten nanoseconds; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels, 4,096 in the second; '
-              'the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; '
-              'the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. '
-              'Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. '
-              'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
-              % ('programmable logic' if arty else 'FPGA fabric', QUUX_K[board])
+            + quux_machine_words(board, 'programmable logic' if arty else 'FPGA fabric')
+            + 'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
             + quux_fit_words(board, 'lookup tables' if arty else 'adaptive logic modules')
-            + 'Under the chip the memory box says the areas are QUUX revision 13&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
-              'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ')
+            + 'Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
+              '%s0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and %s1 resets the machine; '
+              '%s0 shows the machine running, not halted, and %s5 is dark, since revision 15 has no PROM select. '
+              'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
+              % (btn, btn, lamp, lamp))
 
 def quux_svg(board):
     arty = board == 'arty-z7-20'
     kria = board == 'kria-kr260'
     zynq = arty or kria
     gp0, gp1 = QUUX_PORTS[board]
-    K = QUUX_K[board]
+    clk_in, pll, top = QUUX_CLOCK[board]
     base = board_svg('arty-z7-20.html')
     base, n = re.subn(r'\n[ \t]*<!--.*?-->[ \t]*(?=\n)', '', base, flags=re.S)
     assert '<!--' not in base
@@ -1816,20 +1860,23 @@ def quux_svg(board):
 ''')
     head = sub(head, '          <path class="d-line" d="M470,274 L470,256 L-70,256 L-70,274"/>\n', '')
     # (2) the fabric
-    fit_label, fit_label2, slack = QUUX_FITS[board][0], QUUX_FITS[board][1], QUUX_FITS[board][2]
+    # the bars, a third for the Kria KR260's UltraRAM, and the slack under the last
+    bars = [QUUX_FITS[board][0], QUUX_FITS[board][1]] + list(QUUX_FITS[board][3:])
+    slack, down = QUUX_FITS[board][2], 36 * (len(bars) - 2)
     fabric = ('          <text class="d-s" x="-164" y="48">%s</text>\n' % ('Programmable Logic' if zynq else 'FPGA fabric logic')
-              + fit_bars([fit_label, fit_label2]) + slack_block(slack) + '\n')
+              + fit_bars(bars) + slack_block(slack, 140 + down) + '\n')
     if kria:
-        fabric += '''          <text class="d-s" x="-164" y="170">adapters in the fabric</text>
-          <text class="d-s" x="-164" y="184">meet every port at</text>
-          <text class="d-s" x="-164" y="198">128 bits</text>
-'''
+        fabric += '''          <text class="d-s" x="-164" y="%d">adapters in the fabric</text>
+          <text class="d-s" x="-164" y="%d">meet every port at</text>
+          <text class="d-s" x="-164" y="%d">128 bits</text>
+''' % (170 + down, 184 + down, 198 + down)
     fabric += '''          <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
           <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
-          <text class="d-n" x="996" y="120" text-anchor="middle">quux_phase_gen</text>
-          <text class="d-s" x="996" y="142" text-anchor="middle">100 MHz,</text>
-          <text class="d-s" x="996" y="156" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="996" y="176" text-anchor="middle">%d ticks=%d ns</text>
+          <text class="d-n" x="996" y="120" text-anchor="middle">%s</text>
+          <text class="d-s" x="996" y="138" text-anchor="middle">%s</text>
+          <text class="d-s" x="996" y="152" text-anchor="middle">%s</text>
+          <text class="d-s" x="996" y="166" text-anchor="middle">period %s ns,</text>
+          <text class="d-s" x="996" y="180" text-anchor="middle">a stage a clock</text>
 
           <rect class="d-box d-done" x="40" y="62" width="224" height="84"/>
           <text class="d-t" x="152" y="84" text-anchor="middle">processor</text>
@@ -1915,7 +1962,7 @@ def quux_svg(board):
 
           <path class="d-line" d="M118,386 L118,428 M310,386 L310,428 M657,386 L657,428 M885,386 L885,428"/>
 
-''' % (K, K * 10, gp1, gp0)
+''' % (top, clk_in, pll, QUUX_PERIOD[board], gp1, gp0)
     # (3) the tail: the programs, the memory, no Pmod
     tail = sub(tail, '''          <path class="d-line" d="M845,466 L845,494 M305,494 L1040,494 M305,494 L305,542 M452,494 L452,542 M599,494 L599,542 M746,494 L746,542 M893,494 L893,542 M1040,494 L1040,542"/>''',
                '''          <path class="d-line" d="M845,466 L845,494 M452,494 L1040,494 M452,494 L452,542 M599,494 L599,542 M746,494 L746,542 M893,494 L893,542 M1040,494 L1040,542"/>''')
@@ -1953,15 +2000,22 @@ def quux_svg(board):
 ''', '''          <text class="d-s" x="453" y="768" text-anchor="middle">the terminal is a VNC client</text>
 ''')
     svg = head + fabric + tail
-    # revision 13, on every board
+    # revision 15, on every board: revision 13's word, control store, PDL
+    # buffer, register page and lines, revision 14's map, revision 15's
+    # modules and the board's cache
     svg = sub(svg, '>32-bit word, MUL and DIV,<', '>40-bit word, MUL and DIV,<')
     svg = sub(svg, '>control store 16K &times; 48,<', '>control store 16K words,<')
-    svg = sub(svg, '>two levels, 2,048 in the second<', '>two levels, 4,096 in the second<')
+    svg = sub(svg, '>two levels, 2,048 in the second<', '>a TLB of 4,096, a walk on a miss<')
+    svg = sub(svg, '>4,096 words,<', '>%s words,<' % QUUX_CACHE[board])
     svg = sub(svg, '>lines of 4 words<', '>lines of 8 words<')
+    for old, new in (('quux_axi_master', 'quux15_axi_master'), ('quux_block_disk', 'quux15_block_walk'),
+                     ('quux_video', 'quux15_devices'), ('quux_file_device', 'quux15_devices'),
+                     ('quux_input', 'quux15_input')):
+        svg = sub(svg, '>%s<' % old, '>%s<' % new)
     svg = sub(svg, '>17777400 to 17777777<', '>1777777400 to 1777777777<')
     svg = sub(svg, '>lines of 4 words in<', '>lines of 8 words in<')
     svg = sub(svg, '>two 64-bit beats<', '>five 64-bit beats<')
-    # revision 13's memory port has a second, uncached requester (quux_mem_port.sv), so the box does not count them
+    # block-disk's transfer is a second requester of the port, below the processor (quux15_port.sv's D), so the box does not count them
     svg = sub(svg, '''          <text class="d-s" x="365" y="104" text-anchor="middle">one requester;</text>
           <text class="d-s" x="365" y="118" text-anchor="middle">a cycle goes to</text>
           <text class="d-s" x="365" y="132" text-anchor="middle">the memory bus,</text>
@@ -1976,30 +2030,33 @@ def quux_svg(board):
         svg = quux_de25(svg)
     elif kria:
         svg = quux_kria(svg)
+    if not kria:
+        # the buttons, the switch and the lamps, where revision 15 has the
+        # signal (docs/board.md at bbd7f1a, "The buttons", "The switches",
+        # "What the LEDs say"): no second boot, no no-auto-boot, no MACHRUN
+        # and no PROM select
+        btn, lamp = ('BTN', 'LD') if board == 'arty-z7-20' else ('KEY', 'LEDR')
+        svg = sub(svg, '>%s0 &mdash; BOOT<' % btn, '>%s0 &mdash; unused<' % btn)
+        svg = sub(svg, '>SW0 &mdash; NO AUTO BOOT<', '>SW0 &mdash; unused<')
+        svg = sub(svg, '>%s0 &mdash; MACHRUN<' % lamp, '>%s0 &mdash; running<' % lamp)
+        svg = sub(svg, '>%s5 &mdash; PROMENABLE<' % lamp, '>%s5 &mdash; dark<' % lamp)
+        # the dark lamp is drawn unlit
+        dark = re.findall(r'<circle cx="1380" cy="466" r="4.5" fill="#[0-9a-f]{6}" fill-opacity="1"', svg)
+        assert len(dark) == 1, dark
+        svg = sub(svg, dark[0], '<circle cx="1380" cy="466" r="4.5" fill="none" fill-opacity="1"')
     return svg
 
 def quux_kria(svg):
-    """The Arty-based QUUX drawing, for the Kria KR260 at revision 13: the
+    """The Arty-based QUUX drawing, for the Kria KR260 at revision 15: the
     changes kr260_svg() makes to the CADR's, to the blocks the two drawings
-    share (the kria_* functions), and revision 13's own: the 40-bit word, the
-    map's 4,096 entries in its second level, lines of eight words in five
-    64-bit beats, the register page at the 28-bit space's last page, and the
-    master's bursts narrowed onto the 128-bit port; quux_svg() makes
-    the changes every board's revision 13 shares.  Read from muir-fpga's
-    boards/kria-kr260/cadr_kr260.sv, rtl/machine/quux_cache.sv,
-    quux_feature_page.sv, quux_mem_port.sv, cadr_xbus_decode.sv,
-    rtl/plumbing/quux_axi_narrow128.sv and docs/linux.md."""
+    share (the kria_* functions), and the Kria KR260's own: its part, and
+    the master's bursts narrowed onto the 128-bit port; quux_svg() makes
+    the changes every board's revision 15 shares, the clock and the cache
+    the board's.  Read from muir-fpga's boards/kria-kr260/quux15_kr260.sv at
+    bbd7f1a, rtl/plumbing/quux_axi_narrow128.sv and docs/linux.md."""
     svg = kria_loader(svg)
     svg = sub(svg, '<text class="d-s" x="-164" y="24">AMD Zynq 7020 &middot; XC7Z020-1CLG400C</text>',
               '<text class="d-s" x="-164" y="24">%s &middot; %s</text>' % (KR260_PART[1], KR260_PART[0]))
-    svg = sub(svg, '''          <text class="d-s" x="996" y="142" text-anchor="middle">100 MHz,</text>
-          <text class="d-s" x="996" y="156" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="996" y="176" text-anchor="middle">4 ticks=40 ns</text>
-''', '''          <text class="d-s" x="996" y="138" text-anchor="middle">25 MHz in,</text>
-          <text class="d-s" x="996" y="152" text-anchor="middle">MMCM, 100 MHz,</text>
-          <text class="d-s" x="996" y="166" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="996" y="180" text-anchor="middle">4 ticks=40 ns</text>
-''')
     svg = kria_display(svg)
     svg = kria_ports(svg)
     svg = sub(svg, '>an AXI4 master<', '>on the 128-bit port<')

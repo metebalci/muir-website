@@ -810,7 +810,7 @@
 <article class="card"><h3>D, the fused dispatch</h3><p>A main-loop return can fetch the next macroinstruction and dispatch on it. Its effects wait for the fetched word and start the handler in CS one clock later (L&nbsp;=&nbsp;1). Revision 15&rsquo;s microcode turns it on, and it saves about 8% of the clocks.</p></article>
 <article class="card"><h3>Memory</h3><p>Two different caches sit on the way: the TLB holds address translations (a virtual page to a physical frame), and the data cache holds memory words (64K on the Kria, 16K on the DE25, 4K on the Arty). Writes are posted: WB hands them to the queue and goes on. A word written is fixed when its start&rsquo;s microcycle ends. A read waits only when its line has a write still on its way.</p></article>
 <article class="card"><h3>Halt and checkpoint</h3><p>A halt completes the instructions in EX and WB, squashes CS and RD, and waits for the port to empty. The machine then stands between two microcycles, as the single-edge simulator would.</p></article>
-<article class="card"><h3>The clock today</h3><p>The Kria runs revision 15 at 18&nbsp;ns: the whole Kria top with the fused dispatch D, routed and met. 17&nbsp;ns misses; its path runs from EX&rsquo;s fused return into CS&rsquo;s PDL read. Timing work comes later.</p></article>
+<article class="card"><h3>The clock today</h3><p>Revision 15 runs on all three boards, each at the period its fit closes at, routed and met: 19&nbsp;ns on the Kria, 22.5&nbsp;ns on the DE25 and 48&nbsp;ns on the Arty. Timing work comes later.</p></article>
 </div>
 </section>
 
@@ -853,14 +853,14 @@
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
 <div class="section-heading"><div><p class="eyebrow">08 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
-<p class="lead">The drawings are read from muir-sim&rsquo;s description of QUUX and from muir-fpga&rsquo;s fabric; section names are the manual&rsquo;s headings. Addresses are octal. The pipeline and its notes are read from muir-sim&rsquo;s description of revision 15 and from muir-fpga&rsquo;s fit on the Kria, as of 11 Oct 2026.</p>
+<p class="lead">The drawings are read from muir-sim&rsquo;s description of QUUX and from muir-fpga&rsquo;s fabric; section names are the manual&rsquo;s headings. Addresses are octal. The pipeline and its notes are read from muir-sim&rsquo;s description of revision 15 and from muir-fpga&rsquo;s fits on the three boards, as of 15 Oct 2026.</p>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Where each drawing came from">
 <table>
 <thead><tr><th>Figure</th><th>Read from</th></tr></thead>
 <tbody>
 <tr><td>the processor</td><td>the CADR&rsquo;s processor, above, and muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>: &ldquo;The map&rdquo;, &ldquo;How software tells the two apart&rdquo;, &ldquo;The PDL buffer&rdquo;, &ldquo;Multiply and divide&rdquo;, &ldquo;The clocks&rdquo;, &ldquo;QUUX drops the delay lines&rdquo;, &ldquo;The memory port and the device registers&rdquo;, &ldquo;The memory cache&rdquo;, &ldquo;Its boot PROM, in its own addresses&rdquo;, &ldquo;The register page&rdquo; and &ldquo;Revision 13: the 40-bit word&rdquo;; muir-sim&rsquo;s <code>src/machine.rs</code> and <code>src/rtl.rs</code>; the headers of muir-fpga&rsquo;s <code>rtl/machine/quux_phase_gen.sv</code>, <code>quux_muldiv.sv</code>, <code>quux_mem_port.sv</code> and <code>quux_cache.sv</code></td></tr>
 <tr><td>the whole machine</td><td>muir-sim&rsquo;s <code>docs/quux.md</code>, from &ldquo;The memory port and the device registers&rdquo; to &ldquo;The network&rdquo;, and &ldquo;Revision 13: the 40-bit word&rdquo;, and <code>docs/manual.md</code> for <code>--main-memory-size</code>; muir-fpga&rsquo;s <code>quux_mem_port.sv</code>, <code>quux_input.sv</code> and <code>quux_feature_page.sv</code> headers, <code>rtl/plumbing/cadr_display_out.sv</code>, and its <code>docs/fpgarc.md</code>, <code>docs/file-device.md</code>, <code>docs/terminal.md</code>, <code>docs/chaosnet.md</code>, <code>docs/console.md</code> and <code>docs/linux.md</code></td></tr>
-<tr><td>the pipeline</td><td>muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>, &ldquo;<code>rtl</code> is the pipeline&rdquo;, and contract G3 revision 15 with its rulings</td></tr>
+<tr><td>the pipeline</td><td>muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/quux.md"><code>docs/quux.md</code></a>, &ldquo;<code>rtl</code> is the pipeline&rdquo;, and contract G3 revision 15 with its rulings; the boards&rsquo; periods, muir-fpga&rsquo;s <code>docs/fits.md</code> and <code>docs/timing.md</code></td></tr>
 </tbody>
 </table>
 </div>

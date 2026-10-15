@@ -375,7 +375,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; DE25-NANO, QUUX</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: DE25-Nano, QUUX">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 13 mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, a microcycle of 4 ticks of ten nanoseconds; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels, 4,096 in the second; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 29,779 of the 46,800 adaptive logic modules are in use, 63.6 per cent, and 512.5 KB of the 895 KB of block memory, 57.3 per cent; under those two figures, the worst setup slack of this build, plus 1.613 nanoseconds. Under the chip the memory box says the areas are QUUX revision 13&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 15 mapped onto one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the FPGA fabric: the clock, the board&rsquo;s 50 MHz in through an I/O PLL, at a period of 22.5 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, a TLB of 4,096 entries with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 16,384 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 37,690 of the 46,800 adaptive logic modules are in use, 80.5 per cent, and 405 KB of the 895 KB of block memory, 45.3 per cent; under those figures, the worst setup slack of this build, plus 0.002 nanoseconds. Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. KEY0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and KEY1 resets the machine; LEDR0 shows the machine running, not halted, and LEDR5 is dark, since revision 15 has no PROM select. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
 
           <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
           <text class="d-s" x="753.9" y="861">this project</text>
@@ -408,27 +408,28 @@
           <text class="d-s" x="-233" y="368" text-anchor="middle">at 60 Hz</text>
 
           <text class="d-s" x="-164" y="48">FPGA fabric logic</text>
-          <text class="d-s" x="-164" y="68">ALM 29,779 of 46,800</text>
+          <text class="d-s" x="-164" y="68">ALM 37,690 of 46,800</text>
           <rect class="d-box" x="-164" y="74" width="136" height="13"/>
-          <rect x="-164" y="74" width="86.5" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-158" y="84">63.6%</text>
-          <text class="d-s" x="-164" y="104">M20K 512.5 KB of 895 KB</text>
+          <rect x="-164" y="74" width="109.5" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-158" y="84">80.5%</text>
+          <text class="d-s" x="-164" y="104">M20K 405 KB of 895 KB</text>
           <rect class="d-box" x="-164" y="110" width="136" height="13"/>
-          <rect x="-164" y="110" width="77.9" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-158" y="120">57.3%</text>
+          <rect x="-164" y="110" width="61.5" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-158" y="120">45.3%</text>
           <!-- The worst setup slack of that build, and only the worst
                value: the rest of what the fit reported about timing is
                in the comment above the bars and is not drawn.  It sits
                on the same row pitch the two bars keep and carries no
                bar of its own, because a slack has no total to be a
                fraction of. -->
-          <text class="d-s" x="-164" y="140">worst setup +1.613 ns</text>
+          <text class="d-s" x="-164" y="140">worst setup +0.002 ns</text>
           <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
           <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
-          <text class="d-n" x="996" y="120" text-anchor="middle">quux_phase_gen</text>
-          <text class="d-s" x="996" y="142" text-anchor="middle">100 MHz,</text>
-          <text class="d-s" x="996" y="156" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="996" y="176" text-anchor="middle">4 ticks=40 ns</text>
+          <text class="d-n" x="996" y="120" text-anchor="middle">quux15_de25</text>
+          <text class="d-s" x="996" y="138" text-anchor="middle">50 MHz in,</text>
+          <text class="d-s" x="996" y="152" text-anchor="middle">I/O PLL,</text>
+          <text class="d-s" x="996" y="166" text-anchor="middle">period 22.5 ns,</text>
+          <text class="d-s" x="996" y="180" text-anchor="middle">a stage a clock</text>
 
           <rect class="d-box d-done" x="40" y="62" width="224" height="84"/>
           <text class="d-t" x="152" y="84" text-anchor="middle">processor</text>
@@ -437,7 +438,7 @@
           <text class="d-s" x="152" y="130" text-anchor="middle">PDL buffer 16K words</text>
           <rect class="d-box d-done" x="40" y="146" width="224" height="44"/>
           <text class="d-t" x="152" y="164" text-anchor="middle">the map</text>
-          <text class="d-s" x="152" y="178" text-anchor="middle">two levels, 4,096 in the second</text>
+          <text class="d-s" x="152" y="178" text-anchor="middle">a TLB of 4,096, a walk on a miss</text>
 
           <rect class="d-box d-done" x="290" y="62" width="150" height="128"/>
           <text class="d-t" x="365" y="84" text-anchor="middle">memory port</text>
@@ -447,7 +448,7 @@
           <text class="d-s" x="365" y="146" text-anchor="middle">or nowhere</text>
           <rect class="d-box d-done" x="470" y="62" width="150" height="128"/>
           <text class="d-t" x="545" y="84" text-anchor="middle">cache</text>
-          <text class="d-s" x="545" y="104" text-anchor="middle">4,096 words,</text>
+          <text class="d-s" x="545" y="104" text-anchor="middle">16,384 words,</text>
           <text class="d-s" x="545" y="118" text-anchor="middle">two ways,</text>
           <text class="d-s" x="545" y="132" text-anchor="middle">write-through,</text>
           <text class="d-s" x="545" y="146" text-anchor="middle">lines of 8 words</text>
@@ -480,35 +481,35 @@
           <text class="d-t" x="118" y="300" text-anchor="middle">memory master</text>
           <text class="d-s" x="118" y="320" text-anchor="middle">lines of 8 words in</text>
           <text class="d-s" x="118" y="334" text-anchor="middle">five 64-bit beats</text>
-          <text class="d-n" x="118" y="356" text-anchor="middle">quux_axi_master</text>
+          <text class="d-n" x="118" y="356" text-anchor="middle">quux15_axi_master</text>
           <text class="d-s" x="118" y="376" text-anchor="middle">an AXI4 master</text>
 
           <rect class="d-box d-done" x="210" y="274" width="200" height="112"/>
           <text class="d-t" x="310" y="300" text-anchor="middle">block-disk</text>
           <text class="d-s" x="310" y="320" text-anchor="middle">four registers, 200 to 203;</text>
           <text class="d-s" x="310" y="334" text-anchor="middle">blocks to and from a pack</text>
-          <text class="d-n" x="310" y="356" text-anchor="middle">quux_block_disk</text>
+          <text class="d-n" x="310" y="356" text-anchor="middle">quux15_block_walk</text>
           <text class="d-s" x="310" y="376" text-anchor="middle">the pack side, a master</text>
 
           <rect class="d-box d-done" x="424" y="274" width="146" height="112"/>
           <text class="d-t" x="497" y="300" text-anchor="middle">video controller</text>
           <text class="d-s" x="497" y="320" text-anchor="middle">one-bit frame buffer,</text>
           <text class="d-s" x="497" y="334" text-anchor="middle">1280 &times; 1024, a mode</text>
-          <text class="d-n" x="497" y="356" text-anchor="middle">quux_video</text>
+          <text class="d-n" x="497" y="356" text-anchor="middle">quux15_devices</text>
           <text class="d-s" x="497" y="376" text-anchor="middle">the buffer is in DDR</text>
 
           <rect class="d-box d-done" x="584" y="274" width="146" height="112"/>
           <text class="d-t" x="657" y="300" text-anchor="middle">file device</text>
           <text class="d-s" x="657" y="320" text-anchor="middle">two rings in main</text>
           <text class="d-s" x="657" y="334" text-anchor="middle">memory; registers</text>
-          <text class="d-n" x="657" y="356" text-anchor="middle">quux_file_device</text>
+          <text class="d-n" x="657" y="356" text-anchor="middle">quux15_devices</text>
           <text class="d-s" x="657" y="376" text-anchor="middle">its host face on H2F</text>
 
           <rect class="d-box d-done" x="780" y="274" width="210" height="112"/>
           <text class="d-t" x="885" y="300" text-anchor="middle">keyboard and mouse</text>
           <text class="d-s" x="885" y="320" text-anchor="middle">a FIFO of 64 key words,</text>
           <text class="d-s" x="885" y="334" text-anchor="middle">the mouse&rsquo;s counts, buttons</text>
-          <text class="d-n" x="885" y="356" text-anchor="middle">quux_input</text>
+          <text class="d-n" x="885" y="356" text-anchor="middle">quux15_input</text>
           <text class="d-s" x="885" y="376" text-anchor="middle">the cable, not the protocol</text>
 
           <path class="d-line" d="M118,386 L118,428 M310,386 L310,428 M657,386 L657,428 M885,386 L885,428"/>
@@ -595,18 +596,18 @@
 
           <rect class="d-box d-ext" x="-79" y="712" width="332" height="84"/>
           <text class="d-t" x="87" y="738" text-anchor="middle">1 GB LPDDR4</text>
-          <text class="d-s" x="87" y="762" text-anchor="middle">QUUX revision 13&rsquo;s areas:</text>
+          <text class="d-s" x="87" y="762" text-anchor="middle">QUUX revision 15&rsquo;s areas:</text>
           <text class="d-s" x="87" y="776" text-anchor="middle">32MW main memory, 1 MB display, 128 KB packs</text>
           <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and Linux has the rest, 670.875 MB</text>
           <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>
           <rect x="1376" y="275" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="283">KEY0 &mdash; BOOT</text>
+          <text class="d-s" x="1394" y="283">KEY0 &mdash; unused</text>
           <rect x="1376" y="307" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="315">KEY1 &mdash; RESET</text>
           <path class="d-line" d="M1351,297 L1366,297"/>
           <rect class="d-box d-ext" x="1366" y="336" width="150" height="180"/>
           <circle cx="1380" cy="356" r="4.5" fill="#2da44e" fill-opacity="0.45" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="360">LEDR0 &mdash; MACHRUN</text>
+          <text class="d-s" x="1394" y="360">LEDR0 &mdash; running</text>
           <circle cx="1380" cy="378" r="8" fill="none" stroke="#2da44e" stroke-width="1" stroke-opacity="0.5"/>
           <circle class="d-lamp-slow" cx="1380" cy="378" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="382">LEDR1 &mdash; fabric</text>
@@ -620,13 +621,13 @@
           <text class="d-s" x="1394" y="468">activity</text>
           <circle cx="1380" cy="444" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
           <text class="d-s" x="1394" y="490">LEDR4 &mdash; ERRHALT</text>
-          <circle cx="1380" cy="466" r="4.5" fill="#2da44e" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
-          <text class="d-s" x="1394" y="512">LEDR5 &mdash; PROMENABLE</text>
+          <circle cx="1380" cy="466" r="4.5" fill="none" fill-opacity="1" stroke="currentColor" stroke-width="1"/>
+          <text class="d-s" x="1394" y="512">LEDR5 &mdash; dark</text>
           <path class="d-line" d="M1351,412 L1366,412"/>
           <rect class="d-box d-ext" x="1366" y="228" width="150" height="30"/>
           <rect x="1375" y="239" width="10" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
           <rect x="1376" y="240" width="4" height="6" fill="currentColor" fill-opacity="0.45" stroke="none"/>
-          <text class="d-s" x="1394" y="247">SW0 &mdash; NO AUTO BOOT</text>
+          <text class="d-s" x="1394" y="247">SW0 &mdash; unused</text>
           <path class="d-line" d="M1351,243 L1366,243"/>
 
           <rect class="d-box d-ext" x="970" y="652" width="140" height="40"/>

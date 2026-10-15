@@ -25,7 +25,7 @@
 <p>The CADR boots System 1003 from its disk pack, as LISPM-1, at Chaosnet address 177201, with ozd on the board as its file and time host. A USB keyboard and mouse at the board reach the machine, and Ctrl-Alt-Del from that keyboard cold-boots it.</p>
 <p>A monitor on the board&rsquo;s DisplayPort, J6, shows the machine at 1920&times;1080, 60&nbsp;Hz: the CADR&rsquo;s main screen and its color TV side by side at 1:1, with equal margins. The color TV is on by default on this board. After an idle time the monitor sleeps, and a key at the board wakes it; that key is swallowed. The boot chord works with the monitor asleep. The link is brought up by <code>cadr-displayport</code>, a small program of this project&rsquo;s, and two of its tables are AMD&rsquo;s, under the MIT License.</p>
 <p>The CADR&rsquo;s release is one file, cadr-kria-kr260.zip.</p>
-<p>QUUX runs here too, at revision 13: the 40-bit word, at 40&nbsp;ns a microcycle, with 32MW of main memory. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2001, whose herald reads Machine Type QUUX on Kria KR260. Its screen, 1920 by 1080, fills the monitor. QUUX&rsquo;s release is one file, quux-kria-kr260.zip.</p>
+<p>QUUX runs here too, at revision 15: the 40-bit word in a pipeline of four stages, one clock each, at a period of 19&nbsp;ns, with 32MW of main memory and a cache of 64K words. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2002 from PROM 2002. Its screen, 1920 by 1080, fills the monitor. Revision 15 is not released yet; QUUX&rsquo;s release, revision 13 with System 2001, is one file, quux-kria-kr260.zip.</p>
 </div>
 <div class="actions"><a class="text-link" href="#cadr">The CADR&rsquo;s drawing</a><a class="text-link" href="#quux">QUUX&rsquo;s drawing</a><a class="text-link" href="#cable">The cable&rsquo;s connector</a><a class="text-link" href="booting.html">How it boots</a><a class="text-link" href="debugging.html">The debug cable</a><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="de25-nano.html">DE25-Nano</a><a class="text-link" href="https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit.html">The maker&rsquo;s page &#8599;</a></div>
 </div>
@@ -367,7 +367,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; KRIA KR260, QUUX</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: Kria KR260, QUUX">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 13 mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the programmable logic: the clock, a microcycle of 4 ticks of ten nanoseconds; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, two levels, 4,096 in the second; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. The memory master&rsquo;s 64-bit bursts reach the processing system&rsquo;s 128-bit port as narrow bursts. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 22,891 of the 117,120 lookup tables are in use, 19.5 per cent, and 342 KB of the 648 KB of block RAM, 52.8 per cent; under those two figures, the worst setup slack of this build, plus 1.473 nanoseconds. Under the chip the memory box says the areas are QUUX revision 13&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. The boot loader is the board&rsquo;s own, in its flash, and is left alone. The two lamps, UF1 and UF2, are green; there is no button and no switch; the fan is driven on. Every block this project builds that is done on this board is drawn green; the parts drawn gray are components of the board. ">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX revision 15 mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the programmable logic: the clock, the board&rsquo;s 25 MHz in through an MMCM, at a period of 19 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the map, a TLB of 4,096 entries with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 65,536 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. The memory master&rsquo;s 64-bit bursts reach the processing system&rsquo;s 128-bit port as narrow bursts. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 30,967 of the 117,120 lookup tables are in use, 26.4 per cent, and 195.75 KB of the 648 KB of block RAM, 30.2 per cent, and 14 of the 64 UltraRAM blocks, 21.9 per cent; under those figures, the worst setup slack of this build, plus 0.244 nanoseconds. Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. The boot loader is the board&rsquo;s own, in its flash, and is left alone. The two lamps, UF1 and UF2, are green; there is no button and no switch; the fan is driven on. Every block this project builds that is done on this board is drawn green; the parts drawn gray are components of the board. ">
 
           <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
           <text class="d-s" x="753.9" y="861">this project</text>
@@ -404,31 +404,35 @@
           <text class="d-s" x="-137" y="776" text-anchor="middle">1920 &times; 1080</text>
 
           <text class="d-s" x="-224" y="48">Programmable Logic</text>
-          <text class="d-s" x="-224" y="68">LUTs 22,891 of 117,120</text>
+          <text class="d-s" x="-224" y="68">LUTs 30,967 of 117,120</text>
           <rect class="d-box" x="-224" y="74" width="136" height="13"/>
-          <rect x="-224" y="74" width="26.6" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-191.4" y="84">19.5%</text>
-          <text class="d-s" x="-224" y="104">BRAM 342 KB of 648 KB</text>
+          <rect x="-224" y="74" width="36" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-182" y="84">26.4%</text>
+          <text class="d-s" x="-224" y="104">BRAM 195.75 KB of 648 KB</text>
           <rect class="d-box" x="-224" y="110" width="136" height="13"/>
-          <rect x="-224" y="110" width="71.8" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-218" y="120">52.8%</text>
+          <rect x="-224" y="110" width="41.1" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-218" y="120">30.2%</text>
+          <text class="d-s" x="-224" y="140">URAM 14 of 64</text>
+          <rect class="d-box" x="-224" y="146" width="136" height="13"/>
+          <rect x="-224" y="146" width="29.8" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-188.2" y="156">21.9%</text>
           <!-- The worst setup slack of that build, and only the worst
                value: the rest of what the fit reported about timing is
                in the comment above the bars and is not drawn.  It sits
                on the same row pitch the two bars keep and carries no
                bar of its own, because a slack has no total to be a
                fraction of. -->
-          <text class="d-s" x="-224" y="140">worst setup +1.473 ns</text>
-          <text class="d-s" x="-224" y="170">adapters in the fabric</text>
-          <text class="d-s" x="-224" y="184">meet every port at</text>
-          <text class="d-s" x="-224" y="198">128 bits</text>
+          <text class="d-s" x="-224" y="176">worst setup +0.244 ns</text>
+          <text class="d-s" x="-224" y="206">adapters in the fabric</text>
+          <text class="d-s" x="-224" y="220">meet every port at</text>
+          <text class="d-s" x="-224" y="234">128 bits</text>
           <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
           <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
-          <text class="d-n" x="996" y="120" text-anchor="middle">quux_phase_gen</text>
+          <text class="d-n" x="996" y="120" text-anchor="middle">quux15_kr260</text>
           <text class="d-s" x="996" y="138" text-anchor="middle">25 MHz in,</text>
-          <text class="d-s" x="996" y="152" text-anchor="middle">MMCM, 100 MHz,</text>
-          <text class="d-s" x="996" y="166" text-anchor="middle">10 ns a tick</text>
-          <text class="d-s" x="996" y="180" text-anchor="middle">4 ticks=40 ns</text>
+          <text class="d-s" x="996" y="152" text-anchor="middle">MMCM,</text>
+          <text class="d-s" x="996" y="166" text-anchor="middle">period 19 ns,</text>
+          <text class="d-s" x="996" y="180" text-anchor="middle">a stage a clock</text>
 
           <rect class="d-box d-done" x="40" y="62" width="224" height="84"/>
           <text class="d-t" x="152" y="84" text-anchor="middle">processor</text>
@@ -437,7 +441,7 @@
           <text class="d-s" x="152" y="130" text-anchor="middle">PDL buffer 16K words</text>
           <rect class="d-box d-done" x="40" y="146" width="224" height="44"/>
           <text class="d-t" x="152" y="164" text-anchor="middle">the map</text>
-          <text class="d-s" x="152" y="178" text-anchor="middle">two levels, 4,096 in the second</text>
+          <text class="d-s" x="152" y="178" text-anchor="middle">a TLB of 4,096, a walk on a miss</text>
 
           <rect class="d-box d-done" x="290" y="62" width="150" height="128"/>
           <text class="d-t" x="365" y="84" text-anchor="middle">memory port</text>
@@ -447,7 +451,7 @@
           <text class="d-s" x="365" y="146" text-anchor="middle">or nowhere</text>
           <rect class="d-box d-done" x="470" y="62" width="150" height="128"/>
           <text class="d-t" x="545" y="84" text-anchor="middle">cache</text>
-          <text class="d-s" x="545" y="104" text-anchor="middle">4,096 words,</text>
+          <text class="d-s" x="545" y="104" text-anchor="middle">65,536 words,</text>
           <text class="d-s" x="545" y="118" text-anchor="middle">two ways,</text>
           <text class="d-s" x="545" y="132" text-anchor="middle">write-through,</text>
           <text class="d-s" x="545" y="146" text-anchor="middle">lines of 8 words</text>
@@ -480,35 +484,35 @@
           <text class="d-t" x="118" y="300" text-anchor="middle">memory master</text>
           <text class="d-s" x="118" y="320" text-anchor="middle">lines of 8 words in</text>
           <text class="d-s" x="118" y="334" text-anchor="middle">five 64-bit beats</text>
-          <text class="d-n" x="118" y="356" text-anchor="middle">quux_axi_master</text>
+          <text class="d-n" x="118" y="356" text-anchor="middle">quux15_axi_master</text>
           <text class="d-s" x="118" y="376" text-anchor="middle">on the 128-bit port</text>
 
           <rect class="d-box d-done" x="210" y="274" width="200" height="112"/>
           <text class="d-t" x="310" y="300" text-anchor="middle">block-disk</text>
           <text class="d-s" x="310" y="320" text-anchor="middle">four registers, 200 to 203;</text>
           <text class="d-s" x="310" y="334" text-anchor="middle">blocks to and from a pack</text>
-          <text class="d-n" x="310" y="356" text-anchor="middle">quux_block_disk</text>
+          <text class="d-n" x="310" y="356" text-anchor="middle">quux15_block_walk</text>
           <text class="d-s" x="310" y="376" text-anchor="middle">the pack side, a master</text>
 
           <rect class="d-box d-done" x="424" y="274" width="146" height="112"/>
           <text class="d-t" x="497" y="300" text-anchor="middle">video controller</text>
           <text class="d-s" x="497" y="320" text-anchor="middle">one-bit frame buffer,</text>
           <text class="d-s" x="497" y="334" text-anchor="middle">a mode</text>
-          <text class="d-n" x="497" y="356" text-anchor="middle">quux_video</text>
+          <text class="d-n" x="497" y="356" text-anchor="middle">quux15_devices</text>
           <text class="d-s" x="497" y="376" text-anchor="middle">the buffer is in DDR</text>
 
           <rect class="d-box d-done" x="584" y="274" width="146" height="112"/>
           <text class="d-t" x="657" y="300" text-anchor="middle">file device</text>
           <text class="d-s" x="657" y="320" text-anchor="middle">two rings in main</text>
           <text class="d-s" x="657" y="334" text-anchor="middle">memory; registers</text>
-          <text class="d-n" x="657" y="356" text-anchor="middle">quux_file_device</text>
+          <text class="d-n" x="657" y="356" text-anchor="middle">quux15_devices</text>
           <text class="d-s" x="657" y="376" text-anchor="middle">its host face on HPM0</text>
 
           <rect class="d-box d-done" x="780" y="274" width="210" height="112"/>
           <text class="d-t" x="885" y="300" text-anchor="middle">keyboard and mouse</text>
           <text class="d-s" x="885" y="320" text-anchor="middle">a FIFO of 64 key words,</text>
           <text class="d-s" x="885" y="334" text-anchor="middle">the mouse&rsquo;s counts, buttons</text>
-          <text class="d-n" x="885" y="356" text-anchor="middle">quux_input</text>
+          <text class="d-n" x="885" y="356" text-anchor="middle">quux15_input</text>
           <text class="d-s" x="885" y="376" text-anchor="middle">the cable, not the protocol</text>
 
           <path class="d-line" d="M118,386 L118,428 M310,386 L310,428 M657,386 L657,428 M885,386 L885,428"/>
@@ -603,7 +607,7 @@
 
           <rect class="d-box d-ext" x="-79" y="712" width="332" height="84"/>
           <text class="d-t" x="87" y="738" text-anchor="middle">4 GB DDR4</text>
-          <text class="d-s" x="87" y="762" text-anchor="middle">QUUX revision 13&rsquo;s areas:</text>
+          <text class="d-s" x="87" y="762" text-anchor="middle">QUUX revision 15&rsquo;s areas:</text>
           <text class="d-s" x="87" y="776" text-anchor="middle">32MW main memory, 1 MB display, 128 KB packs</text>
           <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and Linux has the rest, 3,843,388 kB</text>
           <rect class="d-box d-ext" x="1366" y="264" width="150" height="66"/>
