@@ -17,7 +17,7 @@ import argparse, os, shutil, socket, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-import fonts, generated, links, public, sitelinks  # noqa: E402
+import facts, fonts, generated, links, public, sitelinks  # noqa: E402
 
 COPY = ('pages', 'src', 'gen', 'checks', '.github', 'README.md')
 
@@ -76,6 +76,7 @@ def main():
             'links': lambda: links.check(root, a.repos, a.ref),
             'public': lambda: public.check(root),
             'generated': lambda: generated.check(root),
+            'facts': lambda: facts.check(root),
             'fonts': lambda: safely(lambda: fonts.check(root)),
         }
         if a.repos:
@@ -116,8 +117,16 @@ def main():
              P('README.md'), '# muir-website', '# muir-website\n\nWrite to someone' + '@' + 'example.org.'),
             ('public', 'this machine\'s name in a page',
              P('pages', 'index.html'), '<main id="main">', '<main id="main"><!-- built on %s -->' % socket.gethostname().split('.')[0]),
-            ('generated', 'a fit figure changed in the generator and not built',
-             P('gen', 'fpga', 'gen.py'), "('CADR', 15106, 53200, 'LUTs', 46, 140", "('CADR', 15107, 53200, 'LUTs', 46, 140"),
+            ('generated', 'a fit figure changed in the facts and not built',
+             P('gen', 'facts.py'), "Fit(15187, 53200, 'LUTs'", "Fit(15188, 53200, 'LUTs'"),
+            ('facts', 'a board\'s period written by hand in a page',
+             P('src', 'quux', 'index.html'), 'and a <em>cache.</em></h2>', 'and a <em>cache.</em></h2><p>48&nbsp;ns on the Arty Z7-20.</p>'),
+            ('facts', 'a board\'s cache written by hand in a page',
+             P('src', 'quux', 'index.html'), '{{quux.cache.least}}&ndash;{{quux.cache.most}}', '4K&ndash;64K'),
+            ('facts', 'a board\'s display written by hand in a page',
+             P('src', 'index.html'), 'Video controller, up to 1920 by 1080', 'Video controller, 1920 by 1080 on the Kria'),
+            ('facts', 'a fit\'s slack written by hand in the generator',
+             P('gen', 'fpga', 'gen.py'), "fit_bars(F.fit_rows(f)) + slack_block(F.setup(f)) + '\\n'", "fit_bars(F.fit_rows(f)) + slack_block('+0.275') + '\\n'"),
             ('generated', 'a page edited by hand',
              P('pages', 'system', 'index.html'), '<h3>It evolves the system</h3>', '<h3>It evolved the system</h3>'),
             ('generated', 'a page nothing builds',

@@ -18,7 +18,7 @@ body: dm
 <div class="steps">
 <article><div class="step-heading"><span class="step-number">03</span><h3>MIT&rsquo;s last release.</h3><button class="copy" data-copy="fetch">Copy</button></div><pre id="fetch"><code>tools/fetch-system-100-for-cadr.sh</code></pre><p>System&nbsp;100, the CADR&rsquo;s: a <b>disk pack</b>, a file that stands in for the machine&rsquo;s disk and holds its microcode and a <b>band</b>, the saved Lisp world it boots into; and the system&rsquo;s sources. Neither is part of muir-sim: the script fetches them and checks every file against its SHA-256 sum. muir-sys also evolves a system for the CADR, on the CADR&rsquo;s own line of releases: <code>tools/fetch-system-for-cadr.sh</code> fetches its release, and its release notes give the <a href="../ozd/">ozd</a> and <code>cadr</code> commands.</p></article>
 <article><div class="step-heading"><span class="step-number">04</span><h3>Run it.</h3><button class="copy" data-copy="run">Copy</button></div><pre id="run"><code>target/release/cadr --disk-pack vendor/run/disk-sys-100-0.img \
-    --chaos-address 3050 --chaos-udp 42043 --chaos-udp-peer 3060@127.0.0.1:42042</code></pre><p><code>cadr</code> on the everyday engine, <code>rtl</code>, booting System&nbsp;100 off the pack. The <b>Chaosnet</b> is the machine&rsquo;s network, and this band expects to be machine 3050 on it and to ask host 3060 for the date and for its files. It prints where its screen is: point any VNC viewer there.</p><p>The file and time host at 3060 is not the CADR. A CADR had no such server in it, so it is a program of its own on the network &mdash; <a href="../ozd/">ozd</a>. A band that reaches no host boots all the same, but stops to ask for the date: <b>Super-B</b> at the debugger, then the date and time it asks for and <b>y</b>, finish it.</p></article>
+    --chaos-address 3050 --chaos-udp 42043 --chaos-udp-peer 3060@127.0.0.1:42042</code></pre><p><code>cadr</code> on the everyday engine, <code>rtl</code>, booting System&nbsp;100 off the pack. The <b>Chaosnet</b> is the machine&rsquo;s network, and this band expects to be machine 3050 on it and to ask host 3060 for the date and for its files. It prints where its screen is: point any VNC viewer there.</p><p>The host at 3060 is <a href="../ozd/">ozd</a>, the CADR&rsquo;s associated machine. A band that reaches no host boots all the same, but stops to ask for the date: <b>Super-B</b> at the debugger, then the date and time it asks for and <b>y</b>, finish it.</p></article>
 <span id="copy-status" role="status" class="sr-only"></span>
 </div></section>
 
@@ -29,13 +29,12 @@ target/release/diskpack mine.img load MCR1
 target/release/diskpack mine.img load-from LOD1 vendor/run/disk-sys-100-0.img LOD2</code></pre></div></div>
 </section>
 
-<section id="machine" class="section wrap" aria-label="The machine in muir-sim"><div class="section-heading"><div><p class="eyebrow">03 / THE MACHINE IN MUIR-SIM</p><h2>A model<br>of every <em>board.</em></h2></div><p>Every box is a board of the CADR, simulated from MIT&rsquo;s schematics on <code>chip</code> and as a model of the board on the other two engines; this is how muir-sim puts them together: 2,016 parts in a whole machine, counting one memory board of up to thirty-two and both TV boards. The boards, the buses and the seven netlists are on <a href="../cadr/">the CADR&rsquo;s page</a>.</p></div>
+<section id="machine" class="section wrap" aria-label="The machine in muir-sim"><div class="section-heading"><div><p class="eyebrow">03 / THE MACHINE IN MUIR-SIM</p><h2>A model<br>of every <em>board.</em></h2></div><p>Every box is a board of the CADR, simulated from MIT&rsquo;s schematics on <code>chip</code> and as a model of the board on the other two engines; this is how muir-sim puts them together. The boards, the buses and the seven netlists are on <a href="../cadr/">the CADR&rsquo;s page</a>.</p></div>
 <figure class="fig"><div class="fig-top"><span>FIG. 02 &mdash; THE MACHINE, AS MUIR-SIM PUTS IT TOGETHER</span><span>MUIR-SIM</span></div><div class="scroll" tabindex="0" role="region" aria-label="Figure 2: The machine, as muir-sim puts it together">
 <svg viewBox="16 18 1277 444" role="img" aria-label="The processor board connects over five flat cables carrying two buses to the bus interface, which fans out to the Xbus carrying main memory, the disk controller and the TV, and to the Unibus carrying the I/O board, which also has the serial port and the Chaosnet. The disk controller's cable goes down to a Trident drive, and a second path from it goes right to the disk multiplexor and down to another drive; a box drawn round those two says that path belongs to the netlist controller alone. The color TV is a second display board on the Xbus with a terminal of its own below it, and a box drawn round the two says they are fitted only when asked for; that terminal carries pixels and nothing else. The serial port's far end and the Chaosnet's route off the machine are drawn as dashed boxes below the I/O board. A debug cable of 21 wires leaves the bus interface for a second machine's, the two-machine lashup. The TV is either display board, the SIMPLE TV or the LISPM TV; its video and the I/O board's keyboard, mouse and beep meet the terminal, which serves them over RFB to any VNC client. Each of the models reaches something outside: the drive a disk image file, the terminal a VNC client, the Chaosnet hosts anywhere over UDP.">
           <rect class="d-box" x="24" y="26" width="250" height="76"/>
           <text class="d-t" x="149" y="53" text-anchor="middle">processor and control store</text>
           <text class="d-n" x="149" y="71" text-anchor="middle">CADR.netlist</text>
-          <text class="d-n" x="149" y="87" text-anchor="middle">985 parts</text>
           <line class="d-line" x1="278" y1="64" x2="372" y2="64"/>
           <text class="d-s" x="325" y="46" text-anchor="middle">5 flat cables</text>
           <text class="d-s" x="325" y="84" text-anchor="middle">two buses</text>
@@ -43,7 +42,6 @@ target/release/diskpack mine.img load-from LOD1 vendor/run/disk-sys-100-0.img LO
           <rect class="d-box" x="376" y="26" width="228" height="76"/>
           <text class="d-t" x="490" y="53" text-anchor="middle">bus interface</text>
           <text class="d-n" x="490" y="71" text-anchor="middle">BUSINT.netlist</text>
-          <text class="d-n" x="490" y="87" text-anchor="middle">176 parts</text>
           <line class="d-line" x1="608" y1="64" x2="1121" y2="64"/>
           <text class="d-s" x="865" y="46" text-anchor="middle">debug cable</text>
           <text class="d-s" x="865" y="84" text-anchor="middle">DBGOUT to DBGIN</text>
@@ -61,22 +59,19 @@ target/release/diskpack mine.img load-from LOD1 vendor/run/disk-sys-100-0.img LO
           <path class="d-line" d="M110,164 L110,200 M250,164 L250,200 M622,164 L622,200 M810,164 L810,200 M1030,164 L1030,200"/>
           <rect class="d-box" x="45" y="200" width="130" height="100"/>
           <text class="d-t" x="110" y="223" text-anchor="middle">main memory</text>
-          <text class="d-s" x="110" y="240" text-anchor="middle">32 boards,</text>
+          <text class="d-s" x="110" y="240" text-anchor="middle">1 to 60 boards,</text>
           <text class="d-s" x="110" y="254" text-anchor="middle">64K words each</text>
           <text class="d-n" x="110" y="274" text-anchor="middle">CADRM.netlist</text>
-          <text class="d-n" x="110" y="289" text-anchor="middle">168 parts</text>
           <rect class="d-box" x="185" y="200" width="130" height="100"/>
           <text class="d-t" x="250" y="223" text-anchor="middle">disk controller</text>
           <text class="d-s" x="250" y="240" text-anchor="middle">runs its own</text>
           <text class="d-s" x="250" y="254" text-anchor="middle">microcode</text>
           <text class="d-n" x="250" y="274" text-anchor="middle">CADRDC.netlist</text>
-          <text class="d-n" x="250" y="289" text-anchor="middle">171 parts</text>
           <rect class="d-box" x="542" y="200" width="160" height="100"/>
           <text class="d-t" x="622" y="223" text-anchor="middle">color TV</text>
           <text class="d-s" x="622" y="240" text-anchor="middle">a LISPM TV strapped</text>
           <text class="d-s" x="622" y="254" text-anchor="middle">to the color address</text>
           <text class="d-n" x="622" y="274" text-anchor="middle">LISPMTV.netlist</text>
-          <text class="d-n" x="622" y="289" text-anchor="middle">172 parts</text>
           <rect class="d-box" x="738" y="200" width="144" height="100"/>
           <text class="d-t" x="810" y="223" text-anchor="middle">TV</text>
           <text class="d-s" x="810" y="240" text-anchor="middle">SIMPLE TV, or the</text>
@@ -89,7 +84,6 @@ target/release/diskpack mine.img load-from LOD1 vendor/run/disk-sys-100-0.img LO
           <text class="d-s" x="1030" y="250" text-anchor="middle">clocks, serial,</text>
           <text class="d-s" x="1030" y="264" text-anchor="middle">and Chaosnet</text>
           <text class="d-n" x="1030" y="280" text-anchor="middle">CADRIO.netlist</text>
-          <text class="d-n" x="1030" y="294" text-anchor="middle">173 parts</text>
           <path class="d-line" d="M250,300 L250,330 M622,300 L622,330 M810,300 L810,330 M1030,300 L1030,330"/>
           <text class="d-s" x="258" y="319">cable</text>
           <text class="d-s" x="630" y="319">video</text>
@@ -114,7 +108,6 @@ target/release/diskpack mine.img load-from LOD1 vendor/run/disk-sys-100-0.img LO
           <text class="d-t" x="420" y="238" text-anchor="middle">multiplexor</text>
           <text class="d-s" x="420" y="256" text-anchor="middle">eight drive ports</text>
           <text class="d-n" x="420" y="274" text-anchor="middle">DM.netlist</text>
-          <text class="d-n" x="420" y="289" text-anchor="middle">62 parts</text>
           <path class="d-line" d="M360,300 L360,365 L315,365"/>
           <text class="d-s" x="337" y="358" text-anchor="middle">0 to 7</text>
           <rect class="d-ring" x="525" y="186" width="194" height="228"/>

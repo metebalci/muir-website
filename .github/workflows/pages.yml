@@ -39,7 +39,7 @@ jobs:
           for r in muir-sim muir-sys muir-fpga ozd; do
             git clone --quiet --no-checkout "https://github.com/metebalci/$r.git" "$RUNNER_TEMP/repos/$r"
           done
-      - name: pages/ is what gen/build.py writes
+      - name: pages/ is what gen/build.py writes, every board's figures from gen/facts.py
         run: python3 checks/generated.py
       - name: Every link and anchor resolves
         run: python3 checks/links.py --repos "$RUNNER_TEMP/repos"

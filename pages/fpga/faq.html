@@ -46,7 +46,7 @@
 </div>
 <div class="qa">
 <h3>Does the machine&rsquo;s own clock agree with the wall?</h3>
-<p>Yes, while the grid and the tick are the same number: the microsecond clock counts 100 ticks, one real microsecond, and the vertical interrupt arrives at the display board&rsquo;s own 64.70 Hz.</p>
+<p>Yes, while the grid and the tick are the same number: the microsecond clock counts 100 ticks, one real microsecond, and the vertical interrupt arrives at the rate of the sync program the board runs: 64.70 Hz from MIT&rsquo;s PROM program until the band loads its own, and 60.503 Hz from <code>CPT-SYNC2</code>, which every boot loads.</p>
 <p class="src">Rests on <code>docs/io-board.md</code>, <code>docs/tv.md</code>, <code>docs/board.md</code>.</p>
 </div>
 <div class="qa">

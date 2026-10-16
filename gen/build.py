@@ -6,7 +6,9 @@ The pages written by hand are in src/: each is what goes inside <main>,
 after a comment of `key: value` lines that give its title, its description
 and what else it loads (a forwarding page also gives `refresh`, where it
 sends the browser, and `canonical`, the page that took its place).
-muir-fpga's pages are written by gen/fpga/gen.py.
+muir-fpga's pages are written by gen/fpga/gen.py.  A {{name}} in a src/
+page, its comment included, is the figure gen/facts.py gives that name: the
+figures that differ from board to board are written there and nowhere else.
 Both are wrapped in gen/chrome.py's head, header and footer.  The two
 full-size image pages, simulator/lashup.html and simulator/system-100.html,
 are not built: they are pages/ files of their own.
@@ -24,11 +26,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import chrome  # noqa: E402
+import facts  # noqa: E402
 
 SRC = os.path.join(ROOT, 'src')
 
 
+def with_facts(text):
+    """The page with each {{name}} replaced by its figure from gen/facts.py."""
+    return re.sub(r'\{\{([a-z0-9.-]+)\}\}', lambda m: facts.token(m.group(1)), text)
+
+
 def meta_and_main(text):
+    text = with_facts(text)
+    assert '{{' not in text, 'a {{ that is not a figure\'s name'
     m = re.match(r'<!--\n(.*?)\n-->\n', text, re.S)
     assert m, 'a src page starts with its comment of key: value lines'
     meta = {}

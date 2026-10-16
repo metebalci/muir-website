@@ -198,7 +198,7 @@ BUILT      about 30</pre>
           <text class="d-t" x="1240" y="332" text-anchor="middle">the screen</text>
           <text class="d-s" x="1240" y="350" text-anchor="middle">768 by 963,</text>
           <text class="d-s" x="1240" y="364" text-anchor="middle">one bit a pixel,</text>
-          <text class="d-s" x="1240" y="378" text-anchor="middle">64.7 frames a second</text>
+          <text class="d-s" x="1240" y="378" text-anchor="middle">60.5 frames a second</text>
 
           <path class="d-line" d="M1110,595 H1150"/>
           <rect class="d-box" x="1150" y="560" width="180" height="70"/>
@@ -1043,7 +1043,7 @@ BUILT      about 30</pre>
 <figure class="fig">
 <div class="fig-top"><span>FIG. 10 &mdash; THE DISPLAY</span><span>THE CADR</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 10: The display">
-        <svg viewBox="0 0 1060 390" role="img" aria-label="The display. On the left the screen, 768 pixels across and 963 lines down at one bit a pixel, with the top line drawn as the 24 words of 32 bits it is. On the right the frame buffer, 32,768 words at octal 17000000, of which the picture uses 23,112; the eight control words at octal 17377760, of which register 0 is the mode register, registers 1 to 3 are the data, pointer and enable of the sync program RAM, and registers 4 to 7 answer the bus and do nothing; and the vertical interrupt, which is bit 4 of the mode register set at the start of a frame and is the machine's roughly-sixty-cycle clock at 64.7 hertz.">
+        <svg viewBox="0 0 1060 390" role="img" aria-label="The display. On the left the screen, 768 pixels across and 963 lines down at one bit a pixel, with the top line drawn as the 24 words of 32 bits it is. On the right the frame buffer, 32,768 words at octal 17000000, of which the picture uses 23,112; the eight control words at octal 17377760, of which register 0 is the mode register, registers 1 to 3 are the data, pointer and enable of the sync program RAM, and registers 4 to 7 answer the bus and do nothing; and the vertical interrupt, which is bit 4 of the mode register set at the start of a frame and is the machine's roughly-sixty-cycle clock: 64.7 hertz under the PROM's sync program, and 60.5 hertz once the band loads CPT-SYNC2.">
           <text class="d-t" x="10" y="18">the display</text>
 
           <text class="d-s" x="70" y="48">the screen, 768 by 963</text>
@@ -1077,8 +1077,9 @@ BUILT      about 30</pre>
           <text class="d-t" x="320" y="290">the vertical interrupt</text>
           <text class="d-s" x="320" y="312">Bit 4 of the mode register is a flip-flop of its own, set at the start of a frame.</text>
           <text class="d-s" x="320" y="326">With the interrupt enable it drives the Xbus interrupt line, and that is the</text>
-          <text class="d-s" x="320" y="340">machine&rsquo;s roughly-sixty-cycle clock: 966 lines of 16.000 us is 15,456,000 ns,</text>
-          <text class="d-s" x="320" y="354">or 64.7 hertz. The microcode hangs mouse tracking and its scheduler on it.</text>
+          <text class="d-s" x="320" y="340">machine&rsquo;s roughly-sixty-cycle clock: 64.7 hertz, 966 lines of 16.000 us, under</text>
+          <text class="d-s" x="320" y="354">the PROM&rsquo;s sync program, and 60.5 hertz under CPT-SYNC2, which every boot loads.</text>
+          <text class="d-s" x="320" y="368">The microcode hangs mouse tracking and its scheduler on it.</text>
         </svg>
 </div>
 <figcaption>The frame is the machine's only regular interrupt, and the microcode counts time by it.</figcaption>
@@ -1320,7 +1321,7 @@ BUILT      about 30</pre>
 </section>
 <section id="running" class="section wrap" aria-label="Running it">
 <div class="section-heading"><div><p class="eyebrow">15 / RUNNING IT</p><h2>In software,<br>and in <em>fabric.</em></h2></div></div>
-<div class="prose"><p><a href="../simulator/">muir-sim</a> runs the CADR as <code>cadr</code>, on three engines down to every chip, and boots MIT&rsquo;s System&nbsp;100 on it: <a href="../simulator/cadr.html#run">build and boot</a>. <a href="../fpga/">muir-fpga</a> puts it in the fabric of the Arty Z7-20, the Cora Z7-07S, the Kria KR260 and the DE25-Nano. Either one gets its files and the time from <a href="../ozd/">ozd</a>, its associated machine, over the Chaosnet.</p></div>
+<div class="prose"><p><a href="../simulator/">muir-sim</a> runs the CADR as <code>cadr</code>, on three engines down to every chip, and boots MIT&rsquo;s System&nbsp;100 on it: <a href="../simulator/cadr.html#run">build and boot</a>. <a href="../fpga/">muir-fpga</a> puts it in the fabric of <a href="../fpga/#boards">FPGA boards</a>. Either one gets its files and the time from <a href="../ozd/">ozd</a>, its associated machine, over the Chaosnet.</p></div>
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
 <div class="section-heading"><div><p class="eyebrow">16 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>

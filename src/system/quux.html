@@ -1,12 +1,12 @@
 <!--
 title: muir-sys &mdash; QUUX&rsquo;s system
-description: What QUUX&rsquo;s releases of the Lisp Machine system, Systems 2xxx from muir-sys&rsquo;s main branch, removed, added and changed from MIT&rsquo;s System 100, its microcode among them, each with the release that brought it.
+description: What QUUX&rsquo;s releases of the Lisp Machine system, Systems 2xxx, removed, added and changed from MIT&rsquo;s System 100, its microcode among them, each with the release that brought it.
 -->
 <section class="page-hero wrap solo">
 <div>
 <p class="eyebrow"><span class="dot"></span>MUIR-SYS &middot; QUUX&rsquo;S SYSTEM</p>
 <h1>QUUX&rsquo;s<br><em>system.</em></h1>
-<p class="intro">MIT&rsquo;s system, carried on for <a href="../quux/">QUUX</a>: Systems 2xxx, from the repository&rsquo;s <code>main</code> branch.</p>
+<p class="intro">MIT&rsquo;s system, carried on for <a href="../quux/">QUUX</a>: Systems 2xxx.</p>
 <div class="actions"><a class="button" href="#changes">What they changed <span>&#8595;</span></a><a class="text-link" href="cadr.html">CADR&rsquo;s system</a><a class="text-link" href="releases.html">Release notes</a></div>
 </div>
 </section>
@@ -15,7 +15,7 @@ description: What QUUX&rsquo;s releases of the Lisp Machine system, Systems 2xxx
 <p class="lead">System 2000 starts from System 1001, so what Systems 1000 and 1001 changed from MIT&rsquo;s System 100 is in QUUX&rsquo;s system too: it is on <a href="cadr.html">CADR&rsquo;s system</a>. These are the features QUUX&rsquo;s releases changed beyond it, as <code>main</code> has them now; the number after each is the release that brought it. An item whose release is not yet published is on <code>main</code> and in the system in development.</p>
 <div class="qa"><h3>Removed</h3><div class="prose"><ul>
 <li>The CADR. The system runs only on QUUX: a band halts on any other machine, as the microcode does. (2000)</li>
-<li>The Unibus. The microcode and the cold load make no Unibus access; the keyboard, the mouse, the clocks and the Chaosnet interface are on the register page. (2000)</li>
+<li>The Unibus. The microcode and the cold load make no Unibus access; the keyboard, the mouse and the clocks are on the register page. (2000)</li>
 <li>The disk&rsquo;s geometry: no cylinders, heads or sectors, and with them the boot PROM&rsquo;s and the microcode&rsquo;s retries, recalibrates, read-compare and error correction. (2000)</li>
 <li>The TV board&rsquo;s sync program and most of its registers, and the speed bits. (2000)</li>
 <li>The page hash table, and the two map levels the microcode loaded from it: the hardware walks a page table. (2002)</li></ul></div></div>
@@ -39,11 +39,11 @@ description: What QUUX&rsquo;s releases of the Lisp Machine system, Systems 2xxx
 <li>The word is 40 bits, a tag over a 32-bit field, so a fixnum is 32 bits and is no longer sign-extended; the micro-assembler assembles for it, and the cold load is made for it. (2001)</li>
 <li>A page is 1024 words. (2001)</li>
 <li>Paging goes through a two-level page table in main memory behind a TLB, over a 32-bit virtual address space, and addresses are unsigned. (2002)</li>
-<li>The microinstruction is 64 bits. The microcode is assembled for it, and a word that reads an OA register names it through its OA select, where the CADR&rsquo;s IMOD ors the register into whatever word runs next. (2002)</li>
+<li>The microinstruction is 64 bits. The microcode is assembled for it, and a microinstruction that reads an OA register names it through its OA select, where the CADR&rsquo;s IMOD ors the register into whatever microinstruction runs next. (2002)</li>
 <li>Floats print their exact digits: every single prints as text that reads back as it, FORMAT&rsquo;s <code>~E</code>, <code>~F</code>, <code>~G</code> and <code>~$</code> give exact digits, and a float halfway between two shortest decimals prints the even one. (2002)</li></ul></div></div>
 <div class="qa"><h3>Built and released</h3><div class="prose"><ul>
 <li>A band is built on QUUX: the previous band compiles the changed files and makes the cold load, which boots, loads and is saved. (2000)</li>
 <li>The first 40-bit band was cross-built: System 2000&rsquo;s band compiled the system for the 40-bit machine and wrote its cold load. (2001)</li>
-<li>Each release is a disk ready to boot, the sources and <code>SHA256SUMS</code>, every byte scanned for anything private before it is published (2000); the system in development is published as a rolling release, rebuilt as it changes.</li></ul></div></div>
+<li>Every byte of a release is scanned for anything private before it is published. (2000)</li></ul></div></div>
 <div class="actions"><a class="text-link" href="releases.html">The release notes, for the details of each release</a></div>
 </section>

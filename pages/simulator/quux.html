@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>muir-sim &mdash; QUUX</title>
-<meta name="description" content="QUUX, the MIT CADR Lisp Machine evolved, in muir-sim: running it on muir-sys&rsquo;s Systems 2xxx, its own flags, its disk, its file device and its Ethernet link through a tap on the host.">
+<meta name="description" content="QUUX, the MIT CADR Lisp Machine evolved, in muir-sim: running it on muir-sys&rsquo;s Systems 2xxx, and the flags that are its own.">
 <link rel="stylesheet" href="../style.css">
 <script src="../script.js" defer></script>
 </head>
@@ -25,9 +25,9 @@
 
 <section id="run" class="section wrap install" aria-label="Running QUUX"><div><p class="eyebrow">01 / RUNNING IT</p><h2>Its system,<br>and <em>a run.</em></h2><p>Steps 01 and 02 on <a href="./#install">the simulator&rsquo;s page</a> build it.</p></div>
 <div class="steps">
-<article id="quux-setup"><div class="step-heading"><span class="step-number">03</span><h3>QUUX&rsquo;s system.</h3><button class="copy" data-copy="fetch-quux">Copy</button></div><pre id="fetch-quux"><code>tools/fetch-system-for-quux.sh</code></pre><p>QUUX is the CADR evolved, and <code>quux</code> runs it, with its own boot PROM, the video controller and block-disk. It needs muir-sys&rsquo;s updated microcode and system on a raw image or a VHD with a GPT partition table: MIT&rsquo;s own will not run on it. The script fetches the QUUX release <a href="../system/releases.html#system-2001">System 2001</a>, and checks every file against its SHA-256 sum. It puts the machine&rsquo;s disk in <code>vendor/run/</code> and makes the machine&rsquo;s host folder beside it: QUUX reads its files from there through a device of its own, so it needs no file server.</p></article>
+<article id="quux-setup"><div class="step-heading"><span class="step-number">03</span><h3>QUUX&rsquo;s system.</h3><button class="copy" data-copy="fetch-quux">Copy</button></div><pre id="fetch-quux"><code>tools/fetch-system-for-quux.sh</code></pre><p>QUUX is the CADR evolved, and <code>quux</code> runs it, with its own boot PROM, the video controller and block-disk. It needs muir-sys&rsquo;s updated microcode and system on a raw image or a VHD with a GPT partition table: MIT&rsquo;s own will not run on it. The script fetches QUUX&rsquo;s current release (<a href="../system/releases.html">the release notes</a>), and checks every file against its SHA-256 sum. It puts the machine&rsquo;s disk in <code>vendor/run/</code> and makes the machine&rsquo;s host folder beside it: QUUX reads its files from there through a device of its own, so it needs no file server.</p></article>
 <article><div class="step-heading"><span class="step-number">04</span><h3>Run it.</h3><button class="copy" data-copy="quux-boot">Copy</button></div><pre id="quux-boot"><code>target/release/quux --micro --disk-pack vendor/run/release-2001-disk.vhd \
-    --file-root vendor/run/release-2001-root</code></pre><p><code>quux</code> on the fast engine, <code>micro</code>; without <code>--micro</code> it runs <code>rtl</code>, at the machine&rsquo;s own speed. On the <code>rtl</code> engine its cache and main memory are timed as an FPGA board&rsquo;s. It prints where its screen is: point any VNC viewer there. It boots to a Lisp Listener, System&nbsp;2001; <code>(login "LISPM" "HOST" t)</code> logs in.</p><a class="text-link" href="../quux/">What QUUX changes</a></article>
+    --file-root vendor/run/release-2001-root</code></pre><p><code>quux</code> on the fast engine, <code>micro</code>; without <code>--micro</code> it runs <code>rtl</code>, at the machine&rsquo;s own speed. On the <code>rtl</code> engine its cache and main memory are timed as an FPGA board&rsquo;s. It prints where its screen is: point any VNC viewer there. It boots to a Lisp Listener; <code>(login "LISPM" "HOST" t)</code> logs in.</p><a class="text-link" href="../quux/">What QUUX changes</a></article>
 <span id="copy-status" role="status" class="sr-only"></span>
 </div></section>
 
@@ -37,21 +37,13 @@
 <tr><td><code>--file-root [&lt;name&gt;=]&lt;folder&gt;[,ro]</code></td><td>The host folders its file device serves under the pathname host <code>HOST</code>.</td></tr>
 <tr><td><code>--main-memory-size &lt;n&gt;MW</code></td><td>Main memory, in whole megawords, 1MW to 64MW; 32MW by default.</td></tr>
 <tr><td><code>--cache &lt;words&gt;</code></td><td>The memory cache&rsquo;s size, a power of two, on <code>rtl</code>.</td></tr>
-<tr><td><code>--memory-timing &lt;read&gt;,&lt;write&gt;</code></td><td>Main memory&rsquo;s timing on the memory port, in ns, or a board&rsquo;s own figures.</td></tr>
-<tr><td><code>--tlb &lt;entries&gt;</code></td><td>The TLB&rsquo;s entries, a power of two from 1,024 to 32,768.</td></tr>
+<tr><td><code>--memory-timing &lt;read&gt;,&lt;write&gt;</code></td><td>Main memory&rsquo;s timing on the memory port, in ns, or <code>arty</code> or <code>de25</code> for a board&rsquo;s own figures, on <code>rtl</code>.</td></tr>
 <tr><td><code>--video-size &lt;width&gt;x&lt;height&gt;</code></td><td>The screen&rsquo;s size, at most 1920 by 1080.</td></tr>
 <tr><td><code>--rtc &lt;unix-seconds&gt;|host</code></td><td>The real-time clock: the host&rsquo;s clock, or a start that counts the machine&rsquo;s own time.</td></tr>
 <tr><td><code>--prom &lt;file&gt;</code></td><td>The boot PROM to run.</td></tr>
-<tr><td><code>--ethernet-socket &lt;path&gt;[,clocked]</code></td><td>What sits behind the Ethernet device: a UNIX stream socket muir connects to, one Ethernet frame a record.</td></tr>
-<tr><td><code>--ethernet-mac, --ip-address, --ip-gateway</code></td><td>The Ethernet device&rsquo;s MAC address, and the machine&rsquo;s IPv4 address and gateway, which the system reads when its network starts.</td></tr>
-<tr><td><code>--ethernet-trace</code></td><td>Every Ethernet frame the device sends and receives, to stderr.</td></tr>
 </tbody></table></div>
 </section>
 
-<section id="network" class="section wrap" aria-label="Its Ethernet link"><div class="section-heading"><div><p class="eyebrow">03 / ITS NETWORK</p><h2>A tap<br>on the <em>host.</em></h2></div></div>
-<div class="prose"><p>QUUX&rsquo;s Ethernet link runs over a tap, the host&rsquo;s end of a machine&rsquo;s link. <code>tools/quux-taps</code>, run once as root, installs a pool of them, <code>quux0</code> up, each with its own address and owned by one user, and makes them again at every boot; after that the user opens a tap with no privilege at all.</p>
-<p><code>tools/ethernet-frame-mover</code> puts a machine behind a tap: it takes a free tap of the pool and listens at a UNIX stream socket, which <code>--ethernet-socket</code> connects to, and prints the tap and the two flags to give <code>quux</code> for it. For <code>quux0</code> they are muir&rsquo;s defaults, so the first machine needs no flags at all.</p></div>
-</section>
 </main>
 <footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>

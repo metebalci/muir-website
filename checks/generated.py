@@ -8,8 +8,14 @@ Builds the whole site from src/ and gen/ into a scratch directory and
 compares every page it writes with the one in pages/.  A page edited by
 hand, or a change to the generator or to src/ that was not built, fails;
 so does a built page that pages/ lacks, and a page in pages/ that is
-neither built nor one of the two full-size image pages.  It exits 1 on any difference."""
+neither built nor one of the two full-size image pages.  It exits 1 on any difference.
+
+It runs checks/facts.py too, so the workflow's step for it holds both: a
+figure that differs from board to board and is written by hand fails."""
 import argparse, os, subprocess, sys, tempfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import facts  # noqa: E402
 
 # The two pages that are pages/ files of their own and not built.
 STANDALONE = {'simulator/lashup.html', 'simulator/system-100.html'}
@@ -46,7 +52,11 @@ def main():
     for p in problems:
         print(p)
     print('generated: %d page%s differ%s' % (len(problems), '' if len(problems) == 1 else 's', 's' if len(problems) == 1 else ''))
-    sys.exit(1 if problems else 0)
+    by_hand = facts.check(a.root)
+    for p in by_hand:
+        print(p)
+    print('facts: %d figure%s written by hand' % (len(by_hand), '' if len(by_hand) == 1 else 's'))
+    sys.exit(1 if problems or by_hand else 0)
 
 
 if __name__ == '__main__':

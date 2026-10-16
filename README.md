@@ -28,6 +28,12 @@ its path:
                   comment of key: value lines giving the title, description
                   and what else the page loads
     gen/build.py  builds every page into pages/
+    gen/facts.py  the figures that differ from board to board, each once:
+                  a board's display, QUUX's period, cache and main
+                  memory, a released card's memory, each fit's figures
+                  with its commit, Linux's share of the memory; a src/
+                  page names one as {{name}}, and gen/fpga/gen.py
+                  imports it
     gen/chrome.py the head, the header with the machines and three of the
                   four projects (ozd is in neither), a section's
                   page list and the footer, shared by every page
@@ -54,7 +60,12 @@ To look at it, serve `pages/`:
 Each runs locally and in `pages.yml`, and each has been shown to fail on a
 fault planted for it.
 
-    python3 checks/generated.py      pages/ is what gen/build.py writes
+    python3 checks/generated.py      pages/ is what gen/build.py writes,
+                                     and runs checks/facts.py
+    python3 checks/facts.py          no page states by hand a figure
+                                     gen/facts.py holds: the site built
+                                     with every figure moved still shows
+                                     none of the real ones
     python3 checks/links.py --repos DIR
                                      every internal link and #anchor
                                      resolves; with --repos, a directory of

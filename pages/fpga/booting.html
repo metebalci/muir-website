@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>muir-fpga &mdash; booting</title>
-<meta name="description" content="How each board here comes up, in four sequences: a Zynq board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.">
+<meta name="description" content="How each board here comes up, in four sequences: a Zynq-7000 board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../drawings.css">
 </head>
@@ -23,16 +23,17 @@
 <div>
 <p class="eyebrow"><span class="dot"></span>muir-fpga &middot; booting</p>
 <h1>How a board<br>comes <em>up.</em></h1>
-<p class="intro">Four sequences, two for the Zynq boards and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
+<p class="intro">Four sequences, two for the Arty Z7-20 and the Cora Z7-07S and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
 <div class="hero-description">
-<p>The two Zynq boards come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>
+<p>The Arty Z7-20 and the Cora Z7-07S, the two Zynq-7000 boards, come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>
 <p>The DE25-Nano has a pair of its own, because it boots differently enough to need one. Its boot crosses two storage devices rather than one, and its fabric is configured in the middle of the sequence rather than by the loader&rsquo;s first stage.</p>
 <p>On either board the two paths differ only in where the files come from. The loader itself is read the same way on both, and the same last step ends both.</p>
+<p>The Kria KR260 boots by its own loader, in its flash, which this project leaves alone: it reads the card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there (<a href="kria-kr260.html">its page</a>).</p>
 </div>
 </div>
 </section>
-<section id="card" class="section wrap" aria-label="A Zynq board on its own.">
-<div class="section-heading"><div><p class="eyebrow">01 / A ZYNQ BOARD, FROM ITS CARD</p><h2>A Zynq board<br>on <em>its own.</em></h2></div></div>
+<section id="card" class="section wrap" aria-label="A Zynq-7000 board on its own.">
+<div class="section-heading"><div><p class="eyebrow">01 / A ZYNQ-7000 BOARD, FROM ITS CARD</p><h2>A Zynq-7000 board<br>on <em>its own.</em></h2></div></div>
 <p class="lead">This is how a board boots for anybody who is not this project: the loader, the CADR&rsquo;s bitstream, Linux with its root filesystem, and the disk packs are all on the microSD card.</p>
 <div class="cols">
 <div>
@@ -45,8 +46,8 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <p class="callout">Everything the board needs is on its card. No network is used and none is needed.</p>
 </div>
 <figure class="fig dense">
-<div class="fig-top"><span>FIG. 01 &mdash; A ZYNQ BOARD, FROM ITS CARD</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 1: A Zynq board, from its card">
+<div class="fig-top"><span>FIG. 01 &mdash; A ZYNQ-7000 BOARD, FROM ITS CARD</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 1: A Zynq-7000 board, from its card">
         <svg viewBox="0 0 1170 672" role="img" aria-label="How a Zynq board boots on its own, as a sequence. Three lifelines: the microSD card, the processing system and the fabric. A reset starts the boot ROM, which reads the boot-mode jumper and loads BOOT.BIN from the root of the card's boot partition: U-Boot's own first stage, which runs the start-up routine, brings up the DDR3 and loads U-Boot proper, also from the root. U-Boot imports uEnv.txt if the card has one; with no server named on it the board takes the card path, and loads the CADR's bitstream out of a folder named for the board and programs it into the fabric, from which moment the CADR is running its own boot PROM out of DDR3. The loader then reads the device tree, the kernel and the root filesystem image out of the same folder and boots Linux beside the CADR, with the CADR's 17.125 MB kept from it. Linux mounts the card read-write; if the card's file of flags asks for it, the disk pack program leaves the machine held with RUN clear and takes the debug cable's connector; and then it presents the drive, after which the CADR's boot PROM reads the band off the pack and runs the microcode it finds there. Four more programs follow it: the screen over RFB, the serial line, Chaosnet, and a keyboard and mouse on the USB port, which a board with no USB host port leaves out. Linux reaches a login on the serial console. On failure the loader says so and tries again ten seconds later, for ever.">
           <defs>
             <marker id="arr-card" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
@@ -117,8 +118,8 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
           <text class="d-s" x="782" y="476" text-anchor="middle">S80: --debug-cable-connect, if fpgarc asks &mdash; this board takes Pmod JA</text>
           <line class="d-line" x1="570" y1="508" x2="995" y2="508" marker-end="url(#arr-card)"/>
           <text class="d-s" x="782" y="504" text-anchor="middle">S80: the drive comes present &mdash; a pack in the bay is the CADR&rsquo;s disk</text>
-          <text class="d-s" x="578" y="536">S85 the screen over RFB, S86 the serial line, S87 Chaosnet,</text>
-          <text class="d-s" x="578" y="552">S88 a USB keyboard and mouse &mdash; a board with no USB host leaves it out</text>
+          <text class="d-s" x="578" y="536">S84 ozd, S85 the screen over RFB, S86 the serial line,</text>
+          <text class="d-s" x="578" y="552">S87 Chaosnet, S88 a USB keyboard and mouse where there is a USB host</text>
 
           <text class="d-s" x="578" y="580">login on the serial console</text>
           <text class="d-s" x="578" y="596">Linux 493,976 kB &mdash; 0x1B000000 to 0x1C11FFFF is the CADR&rsquo;s</text>
@@ -128,16 +129,16 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <figcaption>The card holds everything, the CADR is in the fabric before the kernel is fetched, and the machine&rsquo;s own boot PROM waits in its no-drive loop until Linux presents it a disk. The Arty Z7-20 has booted this way with no network at all.</figcaption>
 </figure>
 </section>
-<section id="server" class="section wrap" aria-label="A Zynq board with TFTP.">
-<div class="section-heading"><div><p class="eyebrow">02 / A ZYNQ BOARD, FOR DEVELOPMENT</p><h2>A Zynq board<br>with <em>TFTP.</em></h2></div></div>
+<section id="server" class="section wrap" aria-label="A Zynq-7000 board with TFTP.">
+<div class="section-heading"><div><p class="eyebrow">02 / A ZYNQ-7000 BOARD, FOR DEVELOPMENT</p><h2>A Zynq-7000 board<br>with <em>TFTP.</em></h2></div></div>
 <p class="lead">This project&rsquo;s own boards take the same five files from a TFTP server instead.</p>
 <div class="cols">
 <p class="callout">A change to any of the board&rsquo;s five files is a copy on the server and a reset. Its card is never rewritten.</p>
 <div class="prose"><p>The card&rsquo;s <code>uEnv.txt</code> decides between the two paths, by whether it names a server, and one U-Boot environment carries both. Each board&rsquo;s five files sit in a directory named for the board, and the network path never falls back to the card&rsquo;s own copies.</p></div>
 </div>
 <figure class="fig dense">
-<div class="fig-top"><span>FIG. 02 &mdash; A ZYNQ BOARD, WITH TFTP</span><span>MUIR-FPGA</span></div>
-<div class="scroll" tabindex="0" role="region" aria-label="Figure 2: A Zynq board, with TFTP">
+<div class="fig-top"><span>FIG. 02 &mdash; A ZYNQ-7000 BOARD, WITH TFTP</span><span>MUIR-FPGA</span></div>
+<div class="scroll" tabindex="0" role="region" aria-label="Figure 2: A Zynq-7000 board, with TFTP">
         <svg viewBox="0 0 1170 766" role="img" aria-label="How a Zynq board boots with TFTP, as a sequence. Five lifelines: the microSD card, the processing system, the DHCP server, the TFTP server and the fabric. The reset and the two U-Boot stages come off the card as they do in the ordinary boot. U-Boot imports uEnv.txt from the card, which names a TFTP server, so it asks the DHCP server for an address, and then fetches the boot command from the TFTP server out of a directory named for the board. It fetches the CADR's bitstream from the same directory and programs it into the fabric, from which moment the CADR is running its own boot PROM out of DDR3, and then the device tree, the kernel and the root filesystem image, and boots Linux beside the CADR. Linux asks DHCP for an address of its own, mounts the card read-write, holds the machine and takes the debug cable's connector if the card's file of flags asks for either, and presents the drive, after which the CADR reads the band off the pack. Four more programs follow it: the screen over RFB, the serial line, Chaosnet, and a keyboard and mouse on the USB port, which a board with no USB host port leaves out. From the reset to the login prompt took sixteen seconds, measured on the Arty Z7-20 on 10 September 2026. On any failure the loader says so and tries again ten seconds later, for ever, and it never falls back to the card's own copies.">
           <defs>
             <marker id="arr-net" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
@@ -218,8 +219,8 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
           <text class="d-s" x="740" y="586" text-anchor="middle">S80: --debug-cable-connect, if fpgarc asks &mdash; this board takes Pmod JA</text>
           <line class="d-line" x1="405" y1="618" x2="1075" y2="618" marker-end="url(#arr-net)"/>
           <text class="d-s" x="740" y="614" text-anchor="middle">S80: the drive comes present &mdash; a pack in the bay is the CADR&rsquo;s disk</text>
-          <text class="d-s" x="413" y="646">S85 the screen over RFB, S86 the serial line, S87 Chaosnet,</text>
-          <text class="d-s" x="413" y="662">S88 a USB keyboard and mouse &mdash; a board with no USB host leaves it out</text>
+          <text class="d-s" x="413" y="646">S84 ozd, S85 the screen over RFB, S86 the serial line,</text>
+          <text class="d-s" x="413" y="662">S87 Chaosnet, S88 a USB keyboard and mouse where there is a USB host</text>
 
           <text class="d-s" x="413" y="690">login on the serial console</text>
           <text class="d-s" x="413" y="706">Linux 493,976 kB; the CADR&rsquo;s from 0x1B000000</text>
