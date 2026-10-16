@@ -126,7 +126,6 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
         </svg>
 </div>
 <figcaption>The card holds everything, the CADR is in the fabric before the kernel is fetched, and the machine&rsquo;s own boot PROM waits in its no-drive loop until Linux presents it a disk. The Arty Z7-20 has booted this way with no network at all.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#the-card-and-the-two-ways-it-boots">the card, and the two ways it boots</a>.</p>
 </figure>
 </section>
 <section id="server" class="section wrap" aria-label="A Zynq board with TFTP.">
@@ -235,7 +234,6 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
         </svg>
 </div>
 <figcaption>The two paths differ only in where the bytes come from: both put the CADR in the fabric before the kernel, and both end in the same <code>bootz</code>.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#one-server-more-than-one-board">one server, more than one board</a>.</p>
 </figure>
 </section>
 <section id="de25" class="section wrap" aria-label="The DE25-Nano on its own.">
@@ -344,7 +342,6 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
         </svg>
 </div>
 <figcaption>The four steps of the fabric&rsquo;s turn are in the order the boot environment runs them: the image is read, the gate is shut, the CADR is configured, the bridges are released, and only then is the gate opened. The kernel is fetched after all four, so the machine&rsquo;s first memory cycle cannot meet a bridge still in reset.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#the-card-and-the-two-ways-it-boots">the card, and the two ways it boots</a>.</p>
 </figure>
 </section>
 <section id="de25-server" class="section wrap" aria-label="The DE25-Nano with TFTP, used for development">
@@ -468,10 +465,9 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
         </svg>
 </div>
 <figcaption>The same board, the same flash and the same card, with a server in the middle. What the network changes is where the five files come from, and nothing else: the loader is still read off the card, and the boot ends in the same <code>booti</code>.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/boot.md#one-server-more-than-one-board">one server, more than one board</a>.</p>
 </figure>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

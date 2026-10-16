@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The CADR &mdash; MIT&rsquo;s Lisp Machine</title>
+<title>CADR &mdash; MIT&rsquo;s Lisp Machine</title>
 <meta name="description" content="The MIT CADR Lisp Machine, built at the MIT AI Lab around 1978: the whole machine and its two buses, the processor's control and data paths, one microcycle, the microinstruction and the macroinstruction, the map, the address space, the disk, the display, the I/O board, the light panel, the debug cable, and its seven netlists.">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="../drawings.css">
@@ -15,10 +15,10 @@
 <main id="main">
 <section class="page-hero wrap">
 <div>
-<p class="eyebrow"><span class="dot"></span>THE MACHINES &middot; THE CADR, MIT&rsquo;S LISP MACHINE</p>
+<p class="eyebrow"><span class="dot"></span>THE MACHINES &middot; CADR, MIT&rsquo;S LISP MACHINE</p>
 <h1>CADR</h1>
 <p class="intro">The CADR is a 32-bit microcoded processor built at the MIT Artificial Intelligence Laboratory around 1978, and published as AI Memo 528 in 1980.</p>
-<p class="hero-description">It is the machine the Lisp Machine system was written for. The drawings below are read from MIT&rsquo;s own files; what each one shows, and every source, is in muir-fpga&rsquo;s <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md">docs/cadr.md</a>.</p>
+<p class="hero-description">It is the machine the Lisp Machine system was written for. The drawings below are read from MIT&rsquo;s own files.</p>
 <div class="actions"><a class="button" href="#processor">The processor <span>&#8595;</span></a><a class="text-link" href="../quux/">QUUX, the CADR evolved</a><a class="text-link" href="#running">Running it</a></div>
 </div>
 <div class="side">
@@ -229,7 +229,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The processor is two boards of its own; everything else in the machine plugs into one of the two buses the bus interface arbitrates.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-machine-this-project-reproduces">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="processor" class="section wrap" aria-label="The processor.">
@@ -520,7 +519,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The control store, its boot PROM and the OPCs are on the ICMEM board, and everything else drawn here is on the CADR board. Every result goes out on the output bus and is written back one microcycle later. Left out: parity, the statistics counter, the SPC&rsquo;s write-pass, the carry lookahead and the boot trap; the diagnostic registers are on the whole machine above, and the clock is the next drawing.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-processor">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="microcycle" class="section wrap" aria-label="The clock.">
@@ -553,7 +551,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The read phase is set by a tap of a delay line, so the machine has four speeds and the instruction can ask for a long one.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-processor">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="word" class="section wrap" aria-label="The microinstruction.">
@@ -736,7 +733,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>A JUMP with both its R and P bits set is not a jump at all: it is how the microcode writes the control store.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-microinstruction">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="macro" class="section wrap" aria-label="The macroinstruction.">
@@ -798,7 +794,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The microcode dispatches on bits 13 to 9 whatever the class, so an opcode whose bit 13 is a sub-opcode bit takes two entries of that table.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-macroinstruction">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="map" class="section wrap" aria-label="The map.">
@@ -863,7 +858,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The refusal is what a page fault is, and a JUMP can test for it.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-map">docs/cadr.md</a>, and the long form in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/map.md">docs/map.md</a>.</p>
 </figure>
 </section>
 <section id="where" class="section wrap" aria-label="What is where.">
@@ -929,7 +923,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>A Unibus master reaches Xbus memory through the window at the foot, because the Unibus address space is not big enough to name it.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#what-is-where">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="disk" class="section wrap" aria-label="The disk.">
@@ -1043,7 +1036,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>A block is one Lisp Machine page, and the drive carries three words of its own beside it: a header, a checkword over the header, and a checkword over the data.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-disk">docs/cadr.md</a>, and the long form in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/disk-controller.md">docs/disk-controller.md</a>.</p>
 </figure>
 </section>
 <section id="display" class="section wrap" aria-label="The display.">
@@ -1090,7 +1082,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The frame is the machine's only regular interrupt, and the microcode counts time by it.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-display">docs/cadr.md</a>, and the long form in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/tv.md">docs/tv.md</a>.</p>
 </figure>
 </section>
 <section id="io" class="section wrap" aria-label="The I/O board.">
@@ -1171,7 +1162,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The microsecond clock starts when the power comes on, and no Unibus reset stops it.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-io-board">docs/cadr.md</a>, and the long form in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/io-board.md">docs/io-board.md</a>.</p>
 </figure>
 </section>
 <section id="panel" class="section wrap" aria-label="The light panel.">
@@ -1259,7 +1249,6 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>The button is one wire grounded by a push button, and it is one of the three ways a CADR can be told to boot.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-light-panel">docs/cadr.md</a>.</p>
 </figure>
 </section>
 <section id="cable" class="section wrap" aria-label="The debug cable.">
@@ -1315,11 +1304,10 @@ BUILT      about 30</pre>
         </svg>
 </div>
 <figcaption>Once a cycle can run on the debuggee's Unibus, everything on that bus is reachable, main memory included, through the debuggee's own Unibus map.</figcaption>
-<p class="more">More, in muir-fpga: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#the-debug-cable">docs/cadr.md</a>, and the long form in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md">docs/debug-cable.md</a>.</p>
 </figure>
 </section>
 <section id="netlists" class="section wrap boards" aria-label="Seven netlists"><div class="section-heading"><div><p class="eyebrow">14 / FROM MIT&rsquo;S CAD FILES</p><h2>Seven <em>netlists.</em></h2></div><p>Each board as a <b>netlist</b>: every chip on it and every wire between them, read out of MIT&rsquo;s own CAD files. They are what <a href="../simulator/#engines">muir-sim</a>&rsquo;s <code>chip</code> engine simulates.</p></div>
-<div class="board-layout"><div class="parts-note"><strong id="whole-machine">2,016<span>parts.</span></strong><p><b>Parts in a whole machine</b> &mdash; one memory board on the Xbus and both TV boards, the SIMPLE TV and the color TV, and 7,224 with all thirty-two memory boards.</p><p>Not drawn by hand. Pulled out of MIT&rsquo;s own CAD files, then held pin for pin to MIT&rsquo;s wire list for the same board.</p><a class="text-link" href="https://github.com/metebalci/muir-sim/blob/main/docs/netlists.md">Where the netlists come from &#8599;</a></div>
+<div class="board-layout"><div class="parts-note"><strong id="whole-machine">2,016<span>parts.</span></strong><p><b>Parts in a whole machine</b> &mdash; one memory board on the Xbus and both TV boards, the SIMPLE TV and the color TV, and 7,224 with all thirty-two memory boards.</p><p>Not drawn by hand. Pulled out of MIT&rsquo;s own CAD files, then held pin for pin to MIT&rsquo;s wire list for the same board.</p></div>
 <div class="table-scroll" tabindex="0" role="region" aria-label="The seven netlists"><table class="numeric"><thead><tr><th>NETLIST</th><th>BOARD</th><th>PARTS</th></tr></thead><tbody>
 <tr><td>CADR.netlist</td><td>Processor and control store, two boards in the one file</td><td>985</td></tr>
 <tr><td>BUSINT.netlist</td><td>Bus interface</td><td>176</td></tr>
@@ -1328,11 +1316,11 @@ BUILT      about 30</pre>
 <tr><td>CADRDC.netlist</td><td>Disk controller</td><td>171</td></tr>
 <tr><td>SIMPLETV.netlist</td><td>The standard black-and-white TV, which is MIT&rsquo;s word for the screen</td><td>171</td></tr>
 <tr><td>LISPMTV.netlist</td><td>The LISPM TV in its four-bit build, which replaced the SIMPLE TV in December 1980; strapped to the color address it is the color TV as well. The eight-bit build is not built</td><td>172</td></tr>
-</tbody></table><p class="small-print">And the eighth, the disk multiplexor&rsquo;s, which is fitted only when a run asks for it: <a href="https://github.com/metebalci/muir-sim/blob/main/docs/netlists.md">the netlists</a>.</p></div></div>
+</tbody></table><p class="small-print">And the eighth, the disk multiplexor&rsquo;s, which is fitted only when a run asks for it.</p></div></div>
 </section>
 <section id="running" class="section wrap" aria-label="Running it">
 <div class="section-heading"><div><p class="eyebrow">15 / RUNNING IT</p><h2>In software,<br>and in <em>fabric.</em></h2></div></div>
-<div class="prose"><p><a href="../simulator/">muir-sim</a> runs the CADR as <code>cadr</code>, on three engines down to every chip, and boots MIT&rsquo;s System&nbsp;100 on it: <a href="../simulator/#install">build and boot</a>. <a href="../fpga/">muir-fpga</a> puts it in the fabric of the Arty Z7-20, the Cora Z7-07S, the Kria KR260 and the DE25-Nano. Either one gets its files and the time from <a href="../ozd/">ozd</a>, its associated machine, over the Chaosnet.</p></div>
+<div class="prose"><p><a href="../simulator/">muir-sim</a> runs the CADR as <code>cadr</code>, on three engines down to every chip, and boots MIT&rsquo;s System&nbsp;100 on it: <a href="../simulator/cadr.html#run">build and boot</a>. <a href="../fpga/">muir-fpga</a> puts it in the fabric of the Arty Z7-20, the Cora Z7-07S, the Kria KR260 and the DE25-Nano. Either one gets its files and the time from <a href="../ozd/">ozd</a>, its associated machine, over the Chaosnet.</p></div>
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
 <div class="section-heading"><div><p class="eyebrow">16 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
@@ -1356,9 +1344,9 @@ BUILT      about 30</pre>
 </tbody>
 </table>
 </div>
-<p class="small-print">The sources themselves, file by file, are listed in muir-fpga&rsquo;s <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">docs/cadr.md</a> and muir-sim&rsquo;s <a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">docs/sources.md</a>.</p>
+<p class="small-print">The sources themselves, file by file, are listed in muir-fpga&rsquo;s <code>docs/cadr.md</code> and muir-sim&rsquo;s <code>docs/sources.md</code>.</p>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

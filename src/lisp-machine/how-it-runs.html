@@ -29,7 +29,7 @@ body: dm
 <article class="step"><div class="step-heading"><span class="step-number">07</span><h3>The system initializes itself.</h3></div><p><code>LISP-REINITIALIZE</code> resets the system&rsquo;s state and runs its lists of initializations. Among them the process system makes the scheduler and the initial process and turns on the clock&rsquo;s sequence breaks, and the window system leaves the first Lisp Listener on the screen and selected.</p></article>
 <article class="step"><div class="step-heading"><span class="step-number">08</span><h3>The herald, and the listener.</h3></div><p>It prints the <b>herald</b>: the site, which band is running, the physical and virtual memory, and the version of each system loaded. Then the initial process runs the Lisp Listener&rsquo;s loop: it reads a Lisp form, evaluates it and prints the value, and waits for the next.</p></article>
 </div>
-<p class="small-print">A warm boot takes the same path from the microcode&rsquo;s start and enters the same function, which is why it keeps the world and loses what was on the stack; the process that was running is reset, or stopped so that it can be examined. MIT&rsquo;s own comment on it: &ldquo;WARM BOOTING IS STRONGLY DISCOURAGED.&rdquo; muir-sys&rsquo;s <a href="https://github.com/metebalci/muir-sys/blob/main/docs/booting.md">How a machine boots</a> follows the PROM, the microcode and the band line by line.</p>
+<p class="small-print">A warm boot takes the same path from the microcode&rsquo;s start and enters the same function, which is why it keeps the world and loses what was on the stack; the process that was running is reset, or stopped so that it can be examined. MIT&rsquo;s own comment on it: &ldquo;WARM BOOTING IS STRONGLY DISCOURAGED.&rdquo;</p>
 </section>
 
 <section id="memory" class="section wrap" aria-label="Memory and paging"><div class="section-heading"><div><p class="eyebrow">02 / MEMORY</p><h2>One address space,<br>larger than <em>memory.</em></h2></div><p>Every Lisp object, the system&rsquo;s and the user&rsquo;s, is in one virtual address space, shared by every process. Main memory holds the part of it in use; the disk holds the rest.</p></div>
@@ -145,13 +145,4 @@ body: dm
 <p>A Lisp Machine usually reads and writes files on a <b>file server</b>, a computer that serves a whole community of machines, reached over the Chaosnet. A file is opened as a stream and read or written like any other stream. The CADR gets its files and the time from such a host; in this project that host is <a href="../ozd/">ozd</a>.</p>
 <p>QUUX reads and writes files on its host instead: a <b>file device</b> of its own serves folders of the host under one pathname host, <code>HOST</code>, and its system&rsquo;s own files come from there. <a href="../quux/#changes">What QUUX changes</a> has the rest.</p>
 </div></div>
-</section>
-
-<section id="more" class="section wrap" aria-label="Read more"><div class="section-heading"><div><p class="eyebrow">07 / READ MORE</p><h2><em>References.</em></h2></div></div>
-<div class="prose"><ul>
-<li><a href="https://github.com/metebalci/muir-sys/blob/main/sys/man/proces.text">Processes</a> and <a href="https://github.com/metebalci/muir-sys/blob/main/sys/man/fd-sg.text">Stack Groups</a>, chapters of the Lisp Machine Manual, in muir-sys.</li>
-<li><a href="https://github.com/metebalci/muir-sys/blob/main/sys/sys2/proces.lisp">The scheduler</a>, <code>sys2/proces.lisp</code>, and <a href="https://github.com/metebalci/muir-sys/blob/main/sys/ucadr/uc-interrupt.lisp">the interrupt handler</a>, <code>ucadr/uc-interrupt.lisp</code>, as muir-sys has them.</li>
-<li><a href="https://github.com/metebalci/muir-sys/blob/main/docs/booting.md">How a machine boots</a>, in muir-sys.</li>
-<li><a href="https://github.com/metebalci/muir-fpga/blob/main/docs/map.md">The map</a>, in muir-fpga: the CADR&rsquo;s two levels of it, as the fabric has them.</li>
-</ul></div>
 </section>

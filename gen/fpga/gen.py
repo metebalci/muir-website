@@ -14,7 +14,6 @@ sys.path.insert(0, os.path.dirname(HERE))
 import chrome  # noqa: E402
 import fit  # noqa: E402
 OUT = None     # set by main()
-GH = 'https://github.com/metebalci/muir-fpga/blob/main/docs/'
 
 # THE MAKERS' OWN PAGES FOR THE BOARDS.  Each was opened in a browser and read to
 # be that board's product page before it was written here: Digilent's "Arty Z7:
@@ -31,11 +30,6 @@ TERASIC_DE25 = 'https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=Engl
 def svgs(page):
     t = open(os.path.join(BASE, page)).read()
     return re.findall(r'<svg\b.*?</svg>', t, re.S)
-
-def slug(h):
-    h = h.lower()
-    h = ''.join(c for c in h if c.isalnum() or c in ' -_')
-    return h.replace(' ', '-')
 
 def sub(text, old, new, count=1):
     """Replace a figure, asserting it appears exactly as often as expected, so
@@ -105,7 +99,7 @@ def mem_block(board, quux=False, own=False):
         # reservation"), where revision 15 keeps it; Linux's MemTotal is the
         # one measured with that region reserved
         # (work/runs/kr260-k6/RESULT.txt of muir-fpga).
-        l1, l2 = 'QUUX revision 15&rsquo;s areas:', '32MW main memory, 1 MB display, 128 KB packs'
+        l1, l2 = 'QUUX&rsquo;s areas:', '32MW main memory, 1 MB display, 128 KB packs'
         l3 = '&mdash; and Linux has the rest, %s' % MEMTOTAL13[board]
     elif quux:
         l1, l2 = 'the CADR&rsquo;s areas, which QUUX shares:', '16 MB main memory, 1 MB display, 128 KB packs'
@@ -421,7 +415,7 @@ ARTY_FIT += DISPLAY_2026_09_21
 # them apart.  What a cell still cannot carry goes in this note, in sentences,
 # rather than into a fourth word or a mark nobody follows.
 BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves them out. '
-               'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses; QUUX&rsquo;s is the revision named under it.')
+               'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses.')
 
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
@@ -486,9 +480,8 @@ def resource_bars(rows):
                 % (machine, num(pct), place, pct, format(used, ','), format(total, ','), unit))
     return out
 
-# The revision of QUUX a board's QUUX bars are the fit of: revision 15 on
-# every board, the rows of docs/fits.md at bbd7f1a named above.
-QUUX_REVISION = {'arty-z7-20.html': 15, 'de25-nano.html': 15, 'kria-kr260.html': 15}
+# A board's QUUX bars are the fit of QUUX's pipeline on every board, the
+# rows of docs/fits.md at bbd7f1a named above.
 
 def board_table():
     head = ('<thead>\n          <tr>\n            <th scope="col" class="board">Board</th>\n'
@@ -507,8 +500,6 @@ def board_table():
                 bars = resource_bars([(lun, lu, lt, lun),
                                       ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)]
                                      + [('URAM', xu, xt, xun) for xu, xt, xun in mine[0][7:]])
-                if machine == 'QUUX':
-                    bars += '<span class="pc">revision %d</span>' % QUUX_REVISION[fname]
                 body += '            <td class="num rbs">%s</td>\n' % bars
                 continue
             body += ('            <td class="st no"%s>not supported</td>\n'
@@ -715,11 +706,6 @@ def figure(svg, caption, cls='fig', more='', label='', name=''):
             '<div class="scroll" tabindex="0" role="region" aria-label="Figure %d: %s">\n        %s\n</div>\n<figcaption>%s</figcaption>\n%s</figure>\n'
             % (cls, label, n, name, svg, caption, more))
 
-def more_line(text):
-    return '<p class="more">%s</p>\n' % text
-
-def docs_link(text, path, anchor=''):
-    return '<a href="%s%s%s">%s</a>' % (GH, path, '#' + anchor if anchor else '', text)
 
 
 # ================================================================ front page
@@ -737,28 +723,26 @@ def build_index():
     table = board_table()
     P = []
     P.append(hero('muir-fpga &middot; QUUX and the CADR in FPGA fabric', 'QUUX and the CADR,<br>in <em>FPGA fabric.</em>',
-                  'What runs on each of four small boards.',
-                  body='<p class="hero-description">Every part of it is held to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>, a simulator of the same machines, tick for tick. The CADR runs within about 5% of MIT&rsquo;s speed. QUUX runs at revision 15, a clock a pipeline stage, at the period each board&rsquo;s fit closes at: 19&nbsp;ns on the Kria KR260, 22.5&nbsp;ns on the DE25-Nano and 48&nbsp;ns on the Arty Z7-20. Revision 15 is not released yet: QUUX&rsquo;s zips below are revision 13&rsquo;s, with System 2001, at a 40&nbsp;ns microcycle, 50&nbsp;ns on the Arty Z7-20.</p>\n',
-                  keys=keys(('#boards', 'The boards'), ('#using', 'Using it'), ('../cadr/', 'The CADR'), ('../quux/', 'QUUX'),
-                            ('https://github.com/metebalci/muir-fpga', 'GitHub &#8599;'))
+                  'What runs on each of the boards.',
+                  body='<p class="hero-description">Every part of it is held to <a href="../simulator/">muir-sim</a>, a simulator of the same machines, tick for tick. The CADR runs within about 5% of MIT&rsquo;s speed. QUUX runs as a pipeline of four stages, a clock a stage, at the period each board&rsquo;s fit closes at: 19&nbsp;ns on the Kria KR260, 22.5&nbsp;ns on the DE25-Nano and 48&nbsp;ns on the Arty Z7-20. QUUX&rsquo;s zips below hold its released system.</p>\n',
+                  keys=keys(('#boards', 'The boards'), ('#using', 'Using it'), ('../cadr/', 'CADR'), ('../quux/', 'QUUX'))
                        + HERALD, cls='has-herald'))
 
     # The two speech bubbles this section had are plain sentences now, in
     # the same words.
     P.append(section('what', '01 / WHAT IT IS', 'QUUX and the CADR<br>in the <em>fabric.</em>', '', '''<div class="cols">
 <div class="prose">
-<p>muir-fpga puts QUUX and the CADR in the fabric of an FPGA. The CADR is the Lisp Machine MIT designed around 1978, and muir-fpga&rsquo;s CADR is <a href="https://github.com/metebalci/muir-sim">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
+<p>muir-fpga puts QUUX and the CADR in the fabric of an FPGA. The CADR is the Lisp Machine MIT designed around 1978, and muir-fpga&rsquo;s CADR is <a href="../simulator/">muir-sim</a>&rsquo;s RTL model of it, synthesized into the fabric of an FPGA &mdash; the two processor boards, the bus interface, the disk controller, the display and the I/O board.</p>
 </div>
 <div class="prose">
-<p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later. <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/timing.md">The timing, instant by instant</a>.</p>
+<p>Its clock edges are close to the CADR&rsquo;s but not identical. The CADR placed them with delay lines, and the FPGA can place them only on the ticks of one 10&nbsp;ns clock, so some fall up to 7&nbsp;ns later.</p>
 <p>The same fabric is built as QUUX too, the CADR evolved. QUUX runs on the Arty Z7-20, the Kria KR260 and the DE25-Nano, and the Cora Z7-07S runs the CADR only. The CADR boots MIT&rsquo;s own system software; QUUX&rsquo;s system is muir-sys&rsquo;s updated one. The CADR gets its files and the time from <a href="../ozd/">ozd</a>, the CADR&rsquo;s file and time host. QUUX does not need ozd, having a file device and a real-time clock of its own.</p>
-<p class="callout">QUUX is still being developed: its hardware revisions, microcode and system change, and a later QUUX need not run today&rsquo;s bands or microcode.</p>
 <div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
 </div>
 '''))
 
-    P.append(section('boards', '02 / THE BOARDS', 'Four boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
+    P.append(section('boards', '02 / THE BOARDS', 'The boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
     # USING IT: the files and the card, from the release notes of muir-fpga's
     # `latest` release and muir-sys's `latest-cadr` and `latest-quux`.
@@ -779,14 +763,14 @@ def build_index():
             '<tbody>\n%s</tbody>\n</table></div>\n' % zrows)
     systems = '''<div class="cols">
 <div class="prose">
-<p><b>The CADR</b>, System 1003, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-cadr">muir-sys&rsquo;s latest-cadr</a>:</p>
+<p><b>The CADR</b>, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-cadr">muir-sys&rsquo;s latest-cadr</a>:</p>
 <ul>
 <li><a href="%(s)slatest-cadr/cadr-pack.img.gz"><code>cadr-pack.img.gz</code></a>, uncompressed and copied to the card as <code>packs/disk-pack-0.img</code>.</li>
 <li><a href="%(s)slatest-cadr/cadr-sys.tar.gz"><code>cadr-sys.tar.gz</code></a>, unpacked; its <code>sys</code> and <code>site</code> folders go onto the card&rsquo;s <code>sys/</code> and <code>site/</code>.</li>
 </ul>
 </div>
 <div class="prose">
-<p><b>QUUX</b>, System 2001, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-quux">muir-sys&rsquo;s latest-quux</a>:</p>
+<p><b>QUUX</b>, from <a href="https://github.com/metebalci/muir-sys/releases/tag/latest-quux">muir-sys&rsquo;s latest-quux</a>:</p>
 <ul>
 <li><a href="%(s)slatest-quux/quux-disk.vhd.gz"><code>quux-disk.vhd.gz</code></a>, uncompressed and copied to the card as <code>packs/disk-pack-0.img</code>.</li>
 <li><a href="%(s)slatest-quux/quux-sys.tar.gz"><code>quux-sys.tar.gz</code></a>, unpacked; its <code>sys</code> and <code>site</code> folders go onto the card&rsquo;s <code>sys/</code> and <code>site/</code>.</li>
@@ -797,7 +781,7 @@ def build_index():
     steps = [
         ('Format a microSD card.', 'One FAT32 partition with an MBR partition table, not exFAT, which cards over 32&nbsp;GB get by default. Any volume name will do.'),
         ('Unzip the zip onto it.', 'Your board&rsquo;s zip, onto the root of the card. A zip works only on the board it is named for.'),
-        ('Add the system.', 'The disk as <code>packs/disk-pack-0.img</code>, and the <code>sys</code> and <code>site</code> folders as <code>sys/</code> and <code>site/</code>, from the downloads above. The <code>README.TXT</code> in each zip names the System its card is for: System 1003 for the CADR&rsquo;s zips and System 2001 for QUUX&rsquo;s, with the muir-sys release and the files. Both boot with an empty <code>sys/</code>, on the band&rsquo;s own error table; loading or compiling a file of the system needs its <code>sys</code> and <code>site</code> folders on the card. The machine reads and writes <code>sys/</code> and <code>site/</code>, so a file it compiles is written beside its source, and a tree it damages is put back from the system&rsquo;s sources tarball.'),
+        ('Add the system.', 'The disk as <code>packs/disk-pack-0.img</code>, and the <code>sys</code> and <code>site</code> folders as <code>sys/</code> and <code>site/</code>, from the downloads above. The <code>README.TXT</code> in each zip names the System its card is for, with the muir-sys release and the files. Both boot with an empty <code>sys/</code>, on the band&rsquo;s own error table; loading or compiling a file of the system needs its <code>sys</code> and <code>site</code> folders on the card. The machine reads and writes <code>sys/</code> and <code>site/</code>, so a file it compiles is written beside its source, and a tree it damages is put back from the system&rsquo;s sources tarball.'),
         ('Set the date.', 'The boards keep no time while switched off. With a network, a board sets its clock by NTP at boot, from <code>pool.ntp.org</code>, before the machine starts; <code>--ntp-server</code> in <code>fpgarc</code> names another server and <code>--no-ntp</code> turns it off. Without a network, open <code>fpgarc</code> on the card and replace the two lines <code>#--date yyyyMMdd</code> and <code>#--time HHmm</code> with today&rsquo;s date and the time in UTC, for example <code>--date 20261002</code> and <code>--time 1430</code>. With neither, the machine starts in 1970.'),
         ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano, DisplayPort, J6, on the Kria KR260), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. The Cora Z7-07S has no display output, so there the VNC viewer is the only screen; on the Kria KR260 the network port is J10C, and its USB ports are for the keyboard and the mouse, with no other USB storage plugged in. On the Arty Z7-20, the Cora Z7-07S and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
         ('Switch the board on.', 'Linux starts, and the machine boots from its disk by itself in about two minutes. The first time the machine reads a file it asks you to log in: log in as <code>lispm</code>, the name whose home directory the card provides.'),
@@ -806,18 +790,13 @@ def build_index():
         '<article class="step"><div class="step-heading"><span class="step-number">%02d</span><h3>%s</h3></div><p>%s</p></article>\n' % (i + 1, h, t)
         for i, (h, t) in enumerate(steps)) + '</div>\n'
     P.append(section('using', '03 / USING IT', 'From a card<br>to a <em>prompt.</em>',
-                     'Ready-made files for a microSD card, seven zips: one for each board and machine. Nothing has to be built.',
+                     'Ready-made files for a microSD card, a zip for each board and machine. Nothing has to be built.',
                      zips + systems + stepsh +
                      '<p class="small-print">The machine is Chaosnet address 177201, LISPM-1; a second board on the same network takes 177202, LISPM-2, and so on to 177207. '
                      'The CADR has 32 memory boards by default; <code>--main-memory-boards</code> in <code>fpgarc</code> says another count from 1 to 60, and System 1003 and later use more; an older system halts at its cold boot with more than 32. QUUX has 32MW of main memory by default; <code>--main-memory-size</code> in <code>fpgarc</code> says another amount in MW, from 1MW to the board&rsquo;s most, 32MW on the Arty Z7-20 and the Kria KR260 and 64MW on the DE25-Nano. '
                      'The <a href="https://github.com/metebalci/muir-fpga/releases/tag/latest">release page</a> lists the digests of the zips, and each of muir-sys&rsquo;s releases has a <code>SHA256SUMS</code> beside its files.</p>\n',
                      label='Using it'))
 
-    P.append(section('machine', '04 / THE MACHINES THEMSELVES', 'The real<br><em>machines.</em>', '', '''<div class="prose">
-<p>What the two machines are, their processors, buses and devices, is on their own pages: QUUX, the CADR evolved, and the CADR, MIT&rsquo;s machine as it was built, board by board. It is worth knowing what a machine is before looking at a drawing of it inside a chip.</p>
-<div class="actions"><a class="text-link" href="../cadr/">The CADR</a><a class="button" href="../quux/">QUUX</a></div>
-</div>
-'''))
 
     # THE LICENSE TABLE FOLLOWS docs/license.md, which is its long form and
     # its source: the work in the repository no longer includes pages, and
@@ -825,14 +804,14 @@ def build_index():
     rows = [
         ('The work in this repository: the fabric, the checks and their reference traces, the programs beside the machine and the documents',
          'This project&rsquo;s. <b>GNU Affero General Public License, version 3 or later</b>',
-         '<a href="https://github.com/metebalci/muir-fpga/blob/main/LICENSE"><code>LICENSE</code></a>, and the SPDX identifier <code>AGPL-3.0-or-later</code> in almost every file&rsquo;s header'),
+         '<code>LICENSE</code>, and the SPDX identifier <code>AGPL-3.0-or-later</code> in almost every file&rsquo;s header'),
         ('Eight files, four for each Zynq board: <code>ps7_init_gpl.c</code>, U-Boot&rsquo;s default environment, the board&rsquo;s device tree and the <code>-u-boot.dtsi</code> beside it',
          'This project&rsquo;s, under the <b>GNU General Public License, version 2 or later</b>, because each is compiled into U-Boot',
          'each file&rsquo;s own header'),
         ('Digilent&rsquo;s pin files',
          'Digilent&rsquo;s, under the <b>MIT License</b>',
          '<code>Digilent-License.txt</code> beside the Cora Z7-07S&rsquo;s master file; the Arty Z7-20&rsquo;s constraint file cites the commit and digest of its pins'),
-        ('<a href="https://github.com/metebalci/muir-sim">muir-sim</a>',
+        ('<a href="../simulator/">muir-sim</a>',
          'Its own repository, under the <b>AGPL, version 3 or later</b>',
          'not carried; pinned by commit in <code>muir.commit</code>'),
         ('Buildroot 2026.02.3, U-Boot 2026.01, Linux 6.19.14',
@@ -843,8 +822,8 @@ def build_index():
          'not in the repository; muir-sim carries them, recovered from the ITS backup tapes and unmodified'),
     ]
     trs = ''.join('<tr><th scope="row">%s</th><td>%s</td><td>%s</td></tr>\n' % r for r in rows)
-    P.append(section('license', '05 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
-                     'The long form is %s.' % docs_link('docs/license.md', 'license.md'),
+    P.append(section('license', '04 / WHOSE WORK, UNDER WHAT TERMS', 'License and<br>third-party <em>material.</em>',
+                     '',
                      '''<div class="table-scroll" tabindex="0" role="region" aria-label="License and third-party material"><table class="terms">
 <thead><tr><th scope="col">What</th><th scope="col">Whose, and the terms</th><th scope="col">Where the terms are recorded</th></tr></thead>
 <tbody>
@@ -852,12 +831,11 @@ def build_index():
 </table></div>
 ''' % trs, label='License and third-party material'))
 
-    P.append(section('colophon', '06 / ABOUT', 'MIT&rsquo;s machine, and<br>what muir-fpga <em>adds.</em>', '', '''<div class="prose">
-<p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="https://github.com/metebalci/muir-sim">muir-sim</a>; <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">the documents list every source</a> the drawings were read from and what each one is. The fabric, its checks and their reference traces, the programs beside the machine on the board and the documents are this project&rsquo;s.</p>
+    P.append(section('colophon', '05 / ABOUT', 'MIT&rsquo;s machine, and<br>what muir-fpga <em>adds.</em>', '', '''<div class="prose">
+<p>The CADR, the schematics, the wire lists and the microcode are MIT&rsquo;s, recovered by other people&rsquo;s work over decades, and the machine in the fabric is held tick for tick to <a href="../simulator/">muir-sim</a>; the documents list every source the drawings were read from and what each one is. The fabric, its checks and their reference traces, the programs beside the machine on the board and the documents are this project&rsquo;s.</p>
 <p>muir-fpga is written with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, Claude Fable and Claude Sonnet. The machine is written in SystemVerilog, its testbenches in C++ for Verilator, the programs beside it on the board in C, and the generators of its reference traces in Rust.</p>
 <p>muir-fpga is muir-sim&rsquo;s RTL model of the CADR and of QUUX, synthesized into the fabric of an FPGA and held to muir-sim tick for tick.</p>
 <p><b>&copy; 2026 Mete Balci.</b> muir-fpga is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>. MIT&rsquo;s own files are not in this repository: muir-sim carries them, unmodified.</p>
-<div class="actions"><a class="text-link" href="https://github.com/metebalci/muir-fpga/tree/main/docs">Read the documents &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga/blob/main/docs/cadr.md#sources">The sources &#8599;</a><a class="text-link" href="https://github.com/metebalci/muir-fpga">Repository &#8599;</a></div>
 </div>
 ''', label='About'))
     page('index.html', 'muir-fpga &mdash; the MIT CADR and QUUX in fabric',
@@ -1013,7 +991,7 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     P = [hero(BOARD_EYEBROW[fname], name, lede, body=body,
               keys=keys(*(own + tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
          '<section id="cadr" class="section wrap tight" aria-label="%s, the CADR&rsquo;s drawing">\n' % name,
-         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', THE CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
+         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
          '</section>\n']
     if quux:
         P += ['<section id="quux" class="section wrap tight" aria-label="%s, QUUX&rsquo;s drawing">\n' % name,
@@ -1700,7 +1678,7 @@ KR260_BODY = '''<div class="hero-description">
 <p>The CADR boots System 1003 from its disk pack, as LISPM-1, at Chaosnet address 177201, with ozd on the board as its file and time host. A USB keyboard and mouse at the board reach the machine, and Ctrl-Alt-Del from that keyboard cold-boots it.</p>
 <p>A monitor on the board&rsquo;s DisplayPort, J6, shows the machine at 1920&times;1080, 60&nbsp;Hz: the CADR&rsquo;s main screen and its color TV side by side at 1:1, with equal margins. The color TV is on by default on this board. After an idle time the monitor sleeps, and a key at the board wakes it; that key is swallowed. The boot chord works with the monitor asleep. The link is brought up by <code>cadr-displayport</code>, a small program of this project&rsquo;s, and two of its tables are AMD&rsquo;s, under the MIT License.</p>
 <p>The CADR&rsquo;s release is one file, cadr-kria-kr260.zip.</p>
-<p>QUUX runs here too, at revision 15: the 40-bit word in a pipeline of four stages, one clock each, at a period of 19&nbsp;ns, with 32MW of main memory and a cache of 64K words. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots System 2002 from PROM 2002. Its screen, 1920 by 1080, fills the monitor. Revision 15 is not released yet; QUUX&rsquo;s release, revision 13 with System 2001, is one file, quux-kria-kr260.zip.</p>
+<p>QUUX runs here too: the 40-bit word in a pipeline of four stages, one clock each, at a period of 19&nbsp;ns, with 32MW of main memory and a cache of 64K words. Its memory master is 64 bits wide and reaches the 128-bit port as narrow bursts. It boots muir-sys&rsquo;s system from its own boot PROM. Its screen, 1920 by 1080, fills the monitor. QUUX&rsquo;s release is one file, quux-kria-kr260.zip.</p>
 </div>
 '''
 
@@ -1813,25 +1791,25 @@ def quux_aria(board):
     arty = board == 'arty-z7-20'
     kria = board == 'kria-kr260'
     if kria:
-        return ('QUUX revision 15 mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
+        return ('QUUX mapped onto one Zynq UltraScale+ XCK26, part XCK26-SFVC784-2LV-C, on a Kria KR260: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
                 + quux_machine_words(board, 'programmable logic') +
                 'The memory master&rsquo;s 64-bit bursts reach the processing system&rsquo;s 128-bit port as narrow bursts. '
                 'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
                 + quux_fit_words(board, 'lookup tables') +
-                'Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
+                'Under the chip the memory box says the areas are QUUX&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
                 'The board has no HDMI: its video connector, J6, is the processing system&rsquo;s DisplayPort, wired to the DisplayPort controller drawn gray in the processing system. The display output in the fabric sends that controller its pixels by a line, through the fourth high-performance port. '
                 'The boot loader is the board&rsquo;s own, in its flash, and is left alone. '
                 'The two lamps, UF1 and UF2, are green; there is no button and no switch; the fan is driven on. '
                 'Every block this project builds that is done on this board is drawn green; the parts drawn gray are components of the board. ')
     btn, lamp = ('BTN', 'LD') if arty else ('KEY', 'LEDR')
-    return ('QUUX revision 15 mapped onto %s: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
+    return ('QUUX mapped onto %s: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. '
             % ('one AMD Zynq 7020, part XC7Z020-1CLG400C' if arty else 'one Altera Agilex 5 E-series, part A5EB013BB23BE4SCS')
             + quux_machine_words(board, 'programmable logic' if arty else 'FPGA fabric')
             + 'There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. '
             + quux_fit_words(board, 'lookup tables' if arty else 'adaptive logic modules')
-            + 'Under the chip the memory box says the areas are QUUX revision 15&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
-              '%s0 and SW0 are unused, since revision 15 has no second boot and no no-auto-boot, and %s1 resets the machine; '
-              '%s0 shows the machine running, not halted, and %s5 is dark, since revision 15 has no PROM select%s. '
+            + 'Under the chip the memory box says the areas are QUUX&rsquo;s: 32 megawords of main memory, 1 MB of display and 128 KB of disk packs. '
+              '%s0 and SW0 are unused, since QUUX has no second boot and no no-auto-boot, and %s1 resets the machine; '
+              '%s0 shows the machine running, not halted, and %s5 is dark, since QUUX has no PROM select%s. '
               'Every block this project builds is done and drawn green; the parts drawn gray are components of the board. '
               % (btn, btn, lamp, lamp, '' if arty else '; LEDR6, under them, is lit while the memory port is open'))
 
@@ -2189,8 +2167,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <p class="callout">Everything the board needs is on its card. No network is used and none is needed.</p>
 </div>
 ''' + figure(s1, 'The card holds everything, the CADR is in the fabric before the kernel is fetched, and the machine&rsquo;s own boot PROM waits in its no-drive loop until Linux presents it a disk. The Arty Z7-20 has booted this way with no network at all.',
-             cls='fig dense', label='FIG. 01 &mdash; A ZYNQ BOARD, FROM ITS CARD', name='A Zynq board, from its card',
-             more=more_line('The long form: %s.' % docs_link('the card, and the two ways it boots', 'boot.md', 'the-card-and-the-two-ways-it-boots')))))
+             cls='fig dense', label='FIG. 01 &mdash; A ZYNQ BOARD, FROM ITS CARD', name='A Zynq board, from its card')))
 
     # THE DEVELOPMENT PATH IS NAMED FOR WHAT IT USES, on both boards and in the
     # same words: "with TFTP", and the parenthetical says what it is for.  The
@@ -2203,8 +2180,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 <div class="prose"><p>The card&rsquo;s <code>uEnv.txt</code> decides between the two paths, by whether it names a server, and one U-Boot environment carries both. Each board&rsquo;s five files sit in a directory named for the board, and the network path never falls back to the card&rsquo;s own copies.</p></div>
 </div>
 ''' + figure(s2, 'The two paths differ only in where the bytes come from: both put the CADR in the fabric before the kernel, and both end in the same <code>bootz</code>.',
-             cls='fig dense', label='FIG. 02 &mdash; A ZYNQ BOARD, WITH TFTP', name='A Zynq board, with TFTP',
-             more=more_line('The long form: %s.' % docs_link('one server, more than one board', 'boot.md', 'one-server-more-than-one-board')))))
+             cls='fig dense', label='FIG. 02 &mdash; A ZYNQ BOARD, WITH TFTP', name='A Zynq board, with TFTP')))
 
     # THE DE25-NANO, a third sequence rather than a variant of either above.
     # Two things separate it and the drawing is here to show both: the boot
@@ -2227,8 +2203,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 <p class="callout">The board&rsquo;s first phase is in the flash and everything after it is on the card. Its fabric is filled by the loader, not before it.</p>
 </div>
 ''' + figure(s3, 'The four steps of the fabric&rsquo;s turn are in the order the boot environment runs them: the image is read, the gate is shut, the CADR is configured, the bridges are released, and only then is the gate opened. The kernel is fetched after all four, so the machine&rsquo;s first memory cycle cannot meet a bridge still in reset.',
-             cls='fig dense', label='FIG. 03 &mdash; THE DE25-NANO, FROM ITS CARD', name='The DE25-Nano, from its card',
-             more=more_line('The long form: %s.' % docs_link('the card, and the two ways it boots', 'boot.md', 'the-card-and-the-two-ways-it-boots')))))
+             cls='fig dense', label='FIG. 03 &mdash; THE DE25-NANO, FROM ITS CARD', name='The DE25-Nano, from its card')))
 
     # THE DE25-NANO WITH TFTP, the fourth sequence.  What it is here to show is
     # how little the network changes on this board: the QSPI flash holds the
@@ -2251,8 +2226,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 <div class="prose"><p>The first-stage loader is in the QSPI flash, and it asks for <code>u-boot.itb</code> by that name at the root of the card, so neither of them comes from the server: the first stage reads the card, and it is U-Boot that speaks TFTP here. <code>uEnv.txt</code> is read off the card on this path too, and it is the file that chose the path. The four steps of the fabric&rsquo;s turn are the card path&rsquo;s own, and only the fetch before them changes.</p></div>
 </div>
 ''' + figure(s4, 'The same board, the same flash and the same card, with a server in the middle. What the network changes is where the five files come from, and nothing else: the loader is still read off the card, and the boot ends in the same <code>booti</code>.',
-             cls='fig dense', label='FIG. 04 &mdash; THE DE25-NANO, WITH TFTP', name='The DE25-Nano, with TFTP',
-             more=more_line('The long form: %s.' % docs_link('one server, more than one board', 'boot.md', 'one-server-more-than-one-board'))),
+             cls='fig dense', label='FIG. 04 &mdash; THE DE25-NANO, WITH TFTP', name='The DE25-Nano, with TFTP'),
         label='The DE25-Nano with TFTP, used for development'))
     page('booting.html', 'muir-fpga &mdash; booting',
          'How each board here comes up, in four sequences: a Zynq board and the DE25-Nano, each from its own microSD card, and each with TFTP while it is being worked on.',
@@ -2367,7 +2341,6 @@ def build_debugging():
     # of it keep pointing at the drawings they always did.
     f1, f2, f3, fde, f4, f5 = svgs('debugging.html')
     src_rows = open(os.path.join(HERE, 'dbg-src-rows.txt')).read()
-    DC = 'debug-cable.md'
     P = [comment, '\n']
     P.append(hero('muir-fpga &middot; debugging', 'Debugging a<br>Lisp <em>Machine.</em>',
                   'A CADR is debugged by another CADR. This page is how MIT did that, and how a board here does it.',
@@ -2375,8 +2348,7 @@ def build_debugging():
                        '<p>The debugger is not a program on a host. It is a second Lisp Machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>\n'
                        '<p>The program that drives the cable is CC, and it is Lisp software on the debugging machine.</p>\n'
                        '<p>Every board here is a debuggee the moment it is powered, which is what a CADR is with nothing set, and one of them can be told to be the debugger instead.</p>\n'
-                       '<p>The long form of every figure on this page is %s.</p>\n'
-                       '</div>\n' % docs_link('docs/debug-cable.md', DC)))
+                       '</div>\n'))
 
     nfig = [0]
     def fig(svg, caption, title, more=''):
@@ -2388,29 +2360,23 @@ def build_debugging():
     def plain(title):
         return re.sub(r'<[^>]+>', '', title.replace('<br>', ' '))
 
-    def fig_section(n, sid, eyebrow, title, lead, svg, caption, links):
-        more = more_line('The long form: %s.' % ', '.join(docs_link(t, p, a) for t, p, a in links))
-        return section(sid, '%02d / %s' % (n - 1, upper(eyebrow)), title, lead, fig(svg, caption, plain(title).rstrip('.'), more))
+    def fig_section(n, sid, eyebrow, title, lead, svg, caption):
+        return section(sid, '%02d / %s' % (n - 1, upper(eyebrow)), title, lead, fig(svg, caption, plain(title).rstrip('.')))
 
     P.append(fig_section(2, 'mit', 'MIT&rsquo;s way', 'How MIT debugged<br>a <em>CADR.</em>',
         'The debugger&rsquo;s DBGOUT connector goes to the debuggee&rsquo;s DBGIN connector on its bus interface board, and a debugger works the cable by writing four registers of its own.',
         f1,
-        'Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="../cadr/#cable">page on the real machine</a> has the four strobes and the connector they arrive on.',
-        [('what crosses the cable', DC, 'what-crosses-the-cable')]))
+        'Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="../cadr/#cable">page on the real machine</a> has the four strobes and the connector they arrive on.'))
 
     P.append(fig_section(3, 'fabric', 'On the boards', 'How the fabric<br><em>does it.</em>',
         'MIT&rsquo;s DBGIN logic is in the machine here, and so are the four DBGOUT registers CC writes, so a board can be either end of the cable.',
         f2,
-        'Only the connector changes hands. A board&rsquo;s own DBGIN page is never switched off, so a debugger board stays debuggable through its window.',
-        [('the window', DC, 'the-window'),
-         ('every board is a debuggee', DC, 'every-board-is-a-debuggee-and-one-is-told-to-be-the-debugger')]))
+        'Only the connector changes hands. A board&rsquo;s own DBGIN page is never switched off, so a debugger board stays debuggable through its window.'))
 
     P.append(fig_section(4, 'cable', 'Between two boards', 'The <em>cable.</em>',
         'A cable for this link joins the eight signals and the two grounds, and leaves the 3.3 V supply pins open at both ends.',
         f3,
-        'The connector is Pmod JA on both boards. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.',
-        [('the cable on one connector of eight pins', DC, 'the-cable-on-one-connector-of-eight-pins'),
-         ('the ribbon made the wrong way round', DC, 'the-ribbon-can-be-made-the-wrong-way-round-and-one-was')]))
+        'The connector is Pmod JA on both boards. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.'))
 
     # THE THREE PMOD BOARDS: the Arty Z7-20 and the Cora Z7-07S on JA, the
     # Kria KR260 on PMOD1.  One drawing carries the twelve pins, each board's
@@ -2418,12 +2384,12 @@ def build_debugging():
     # what has run (the Arty and the Cora, on a ribbon between their JAs) and
     # the Kria's caveat (AMD's pin order, not checked on a wire, not run).
     P.append(section('pmod', '04 / THE THREE PMOD BOARDS', 'The cable on<br>the <em>Pmod boards.</em>',
-        'The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On all three the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
+        'The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On each the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
         '''<div class="cols">
 <div class="prose">
 <p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s and the Cora&rsquo;s package pins are the same ones, from Digilent&rsquo;s files; the Kria&rsquo;s are AMD&rsquo;s.</p>
 <p>A mirrored ribbon is one pressed on the other way up, which joins each row to the other, and the debugger finds it under <code>auto</code>.</p>
-<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of the three boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of these boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
 </div>
 <div>
 <p class="callout">The Arty and the Cora have run this cable.</p>
@@ -2432,11 +2398,8 @@ def build_debugging():
 <div class="prose"><p>The Kria&rsquo;s package pins and the order of its eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
 </div>
 </div>
-''' + fig(pmod_cable_svg(), 'Each pin with what it carries, its package pin on the three boards, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.',
-          'The cable on the Pmod boards',
-          more=more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
-              ('the pins, per board', 'which-four-pins-are-this-boards'),
-              ('the Kria KR260&rsquo;s connector is PMOD1', 'the-kria-kr260s-connector-is-pmod1')))))))
+''' + fig(pmod_cable_svg(), 'Each pin with what it carries, its package pin on each Pmod board, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.',
+          'The cable on the Pmod boards')))
 
     # THE DE25-NANO'S END, which is not a Pmod.  This section is where the
     # warning about the supply pins belongs: the front page carries it as a
@@ -2458,18 +2421,12 @@ def build_debugging():
 </div>
 ''' + fig(fde,
           'The drawing answers the three questions somebody holding wire has: which of the board&rsquo;s two headers, which end of it, and which pins must never be joined. Pin 11 is 5 V and pin 29 is 3.3 V, and a cable joins neither &mdash; only the ground on pin 30. Neither supply pin is a fabric pin, so nothing in the design can drive one either.',
-          'The cable on the DE25-Nano',
-          more=more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
-              ('the DE25-Nano has no Pmod', 'the-de25-nano-has-no-pmod-so-its-connector-is-eight-of-jp1s-pins'),
-              ('why each signal has a guard', 'the-pins-of-a-row-are-coupled-pairs-so-each-pair-carries-one-signal')))))))
+          'The cable on the DE25-Nano')))
 
-    more = more_line('The long form: %s.' % ', '.join(docs_link(t, DC, a) for t, a in (
-        ('twenty-four beats each way', 'twenty-four-beats-each-way'),
-        ('what actually crosses', 'what-actually-crosses-counted-off-the-netlist'))))
     P.append(section('wire', '06 / FRAMES ON EIGHT PINS', 'The protocol<br>on the <em>wire.</em>',
         'Twenty-one wires do not fit on eight pins, so the levels cross as frames: four pins each way, and neither group is ever driven from both ends.',
         fig(f4, 'One signal to a pair of pins, the partner driven low as a guard: twenty-four beats, 162 ticks, a fraction of the 11.05 microseconds a debug cycle is allowed.', 'One frame, on the wire') +
-        fig(f5, 'Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.', 'What crosses, each way', more=more)))
+        fig(f5, 'Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.', 'What crosses, each way')))
 
 
     rows = [
@@ -2498,9 +2455,8 @@ def build_debugging():
 <tbody>
 %s</tbody>
 </table></div>
-<p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board. Every reading, with its numbers, is in %s and %s.</p>
-''' % (trs, docs_link('what two boards have shown', DC, 'what-two-boards-have-shown'),
-       docs_link('the debugger over the cable', 'board.md', 'the-debugger-over-the-cable'))))
+<p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board.</p>
+''' % trs))
 
     P.append(section('sources', '08 / SOURCES', 'Where each drawing<br><em>came from.</em>',
         'Each figure above was read from the sources listed here. A number with a leading <code>0o</code> is octal, which is how MIT writes an address.',
@@ -2518,10 +2474,10 @@ def build_cadr():
     """What the CADR is, board by board, is the machine's own page, /cadr/;
     this page says so, and keeps every anchor it had, each a line that
     leads to the same drawing there."""
-    P = [hero('muir-fpga &middot; the CADR', 'The CADR',
+    P = [hero('muir-fpga &middot; CADR', 'CADR',
               'What the CADR is, board by board, is on its own page among the machines.',
-              body='<p class="hero-description">muir-fpga puts it in the fabric of <a href="index.html#boards">four boards</a>; the drawings of the machine itself, read from MIT&rsquo;s own files, are on the CADR&rsquo;s page.</p>\n',
-              keys=keys(('../cadr/', 'The CADR'), ('index.html', 'The boards')))]
+              body='<p class="hero-description">muir-fpga puts it in the fabric of <a href="index.html#boards">FPGA boards</a>; the drawings of the machine itself, read from MIT&rsquo;s own files, are on the CADR&rsquo;s page.</p>\n',
+              keys=keys(('../cadr/', 'CADR'), ('index.html', 'The boards')))]
     items = [('whole', 'The whole machine'), ('processor', 'The processor'), ('word', 'The microinstruction'),
              ('macro', 'The macroinstruction'), ('map', 'The map'), ('where', 'What is where'),
              ('disk', 'The disk'), ('display', 'The display'), ('io', 'The I/O board'),
@@ -2582,29 +2538,26 @@ FAQ_EYEBROW = tuple('%s QUESTIONS' % NUMBER[len(qs)].upper() for _, qs in FAQ)
 FAQ_TITLE = ('The <em>machine.</em>', 'The boards, and the way<br>they are <em>checked.</em>')
 
 def build_faq():
-    import html as H
     base = open(os.path.join(BASE, 'faq.html')).read()
     comment = re.search(r'<!-- EVERY ANSWER HERE RESTS ON A FILE.*?-->', base, re.S).group(0)
     P = [comment, '\n']
     P.append(hero('muir-fpga &middot; questions', 'Questions',
                   'Questions this project is asked, each answered from the file that settles it.',
-                  body='<p class="hero-description">Each answer here is a sentence or two; the whole of each is in %s. MIT&rsquo;s own files are cited at the path <a href="https://github.com/metebalci/muir-sim">muir-sim</a> gives them, and the rest are files here.</p>\n' % docs_link('docs/faq.md', 'faq.md')))
-    # THE QUESTIONS ARE docs/faq.md's HEADINGS, word for word, because each
-    # one's anchor there is made from its words; so a question keeps the
-    # document's wording even where the site's would differ.  site_terms()
-    # still renames a bare muir to muir-sim in the visible text of the other
-    # questions, after the anchor is made from the document's own words.
+                  body='<p class="hero-description">Each answer here is a sentence or two. MIT&rsquo;s own files are cited at the path <a href="../simulator/">muir-sim</a> gives them, and the rest are files here.</p>\n'))
+    # THE QUESTIONS ARE docs/faq.md's HEADINGS, word for word, so a question
+    # keeps the document's wording even where the site's would differ.
+    # site_terms() still renames a bare muir to muir-sim in the visible text
+    # of the other questions.
     n = 1
     for group, qs in FAQ:
         cells = ''
         for q, a, src in qs:
-            anchor = slug(H.unescape(q).replace('’', "'").replace('"', ''))
             cells += '''<div class="qa">
 <h3>%s</h3>
 <p>%s</p>
-<p class="src">Rests on %s. %s.</p>
+<p class="src">Rests on %s.</p>
 </div>
-''' % (q.replace('"', '&ldquo;', 1).replace('"', '&rdquo;', 1), a, src, docs_link('The whole answer', 'faq.md', anchor))
+''' % (q.replace('"', '&ldquo;', 1).replace('"', '&rdquo;', 1), a, src)
         P.append(section(None, '%02d / %s' % (n, FAQ_EYEBROW[n - 1]), FAQ_TITLE[n - 1], '', cells, label=group))
         n += 1
     page('faq.html', 'muir-fpga &mdash; questions',
@@ -2622,7 +2575,7 @@ def main(out):
     build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one AMD Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
                 ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY, quux=quux_svg('arty-z7-20'))
     build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one AMD Zynq 7007S, the XC7Z007S. This board runs the CADR only: the CADR takes 96.9% of its lookup tables, and QUUX does not fit.', "muir-fpga's board, waving",
-                ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA, figlabel='CORA Z7-07S, THE CADR ONLY')
+                ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA, figlabel='CORA Z7-07S, CADR ONLY')
     build_kr260()
     build_de25()
     build_booting()

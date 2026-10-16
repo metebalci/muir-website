@@ -1,0 +1,49 @@
+<!--
+title: muir-sys &mdash; QUUX&rsquo;s system
+description: What QUUX&rsquo;s releases of the Lisp Machine system, Systems 2xxx from muir-sys&rsquo;s main branch, removed, added and changed from MIT&rsquo;s System 100, its microcode among them, each with the release that brought it.
+-->
+<section class="page-hero wrap solo">
+<div>
+<p class="eyebrow"><span class="dot"></span>MUIR-SYS &middot; QUUX&rsquo;S SYSTEM</p>
+<h1>QUUX&rsquo;s<br><em>system.</em></h1>
+<p class="intro">MIT&rsquo;s system, carried on for <a href="../quux/">QUUX</a>: Systems 2xxx, from the repository&rsquo;s <code>main</code> branch.</p>
+<div class="actions"><a class="button" href="#changes">What they changed <span>&#8595;</span></a><a class="text-link" href="cadr.html">CADR&rsquo;s system</a><a class="text-link" href="releases.html">Release notes</a></div>
+</div>
+</section>
+
+<section id="changes" class="section wrap" aria-label="What QUUX&rsquo;s releases changed"><div class="section-heading"><div><p class="eyebrow">01 / QUUX&rsquo;S RELEASES</p><h2>What they<br><em>changed.</em></h2></div></div>
+<p class="lead">System 2000 starts from System 1001, so what Systems 1000 and 1001 changed from MIT&rsquo;s System 100 is in QUUX&rsquo;s system too: it is on <a href="cadr.html">CADR&rsquo;s system</a>. These are the features QUUX&rsquo;s releases changed beyond it, as <code>main</code> has them now; the number after each is the release that brought it. An item whose release is not yet published is on <code>main</code> and in the system in development.</p>
+<div class="qa"><h3>Removed</h3><div class="prose"><ul>
+<li>The CADR. The system runs only on QUUX: a band halts on any other machine, as the microcode does. (2000)</li>
+<li>The Unibus. The microcode and the cold load make no Unibus access; the keyboard, the mouse, the clocks and the Chaosnet interface are on the register page. (2000)</li>
+<li>The disk&rsquo;s geometry: no cylinders, heads or sectors, and with them the boot PROM&rsquo;s and the microcode&rsquo;s retries, recalibrates, read-compare and error correction. (2000)</li>
+<li>The TV board&rsquo;s sync program and most of its registers, and the speed bits. (2000)</li>
+<li>The page hash table, and the two map levels the microcode loaded from it: the hardware walks a page table. (2002)</li></ul></div></div>
+<div class="qa"><h3>Added</h3><div class="prose"><ul>
+<li>The machine read at boot: <code>MACHINE-ID</code> and the feature page give the PDL buffer&rsquo;s length, the screen&rsquo;s size, and whether the file device and the real-time clock are there (2000), and the board&rsquo;s name (2001).</li>
+<li><code>HOST</code>, a pathname host for folders of QUUX&rsquo;s host, through the file device. <code>SYS:</code> is on it, and the cold load reads its files through it too. (2000)</li>
+<li>The time from QUUX&rsquo;s real-time clock at boot, not from the network. (2000)</li>
+<li>One band at any screen size up to 1920 by 1080: at every boot the screens and their windows take the size the video controller gives. (2000)</li>
+<li>The tick, QUUX&rsquo;s own 60-cycle clock, in place of the display&rsquo;s vertical interrupt. (2000)</li>
+<li>Multiply and divide in one instruction each, in the microcode&rsquo;s fixnum multiply and divide and its bignum division. (2000)</li>
+<li>A PDL buffer of 16K words, where the CADR&rsquo;s is 1K. (2000)</li>
+<li>The fused return: the microcode fills the macro dispatch memory, so that a return to the main loop runs the next macroinstruction&rsquo;s handler at once; and handlers of their own for the most frequent macroinstructions. (2000)</li>
+<li>A herald that names the site and the machine type (2000), and the board QUUX runs on (2001).</li>
+<li>A paging partition of 128M words on QUUX&rsquo;s disk. (2001)</li>
+<li>The generational collector: MIT&rsquo;s incremental copying collector, extended with generations. New objects are made in eden, a quarter of main memory by default; a young collection copies the survivors on, through two survivor spaces, to the tenured generation. It is on at every boot. (2002)</li></ul></div></div>
+<div class="qa"><h3>Changed</h3><div class="prose"><ul>
+<li>System, microcode and boot PROM numbers are in the 2000s; the CADR&rsquo;s are the 1000s. (2000)</li>
+<li>The disk is block-disk, read and written by block number. It is a raw image or a VHD with a GPT, and the boot PROM, the microcode and the system find their partitions through the GPT. (2000)</li>
+<li>The site&rsquo;s <code>:TIMEZONE</code> takes a tzdata zone name, a number in it is a fixed offset with no summer time, and FILE dates on the wire are UTC. (2000)</li>
+<li>The site defines seven Lisp Machines, LISPM-1 to LISPM-7. (2000)</li>
+<li>The word is 40 bits, a tag over a 32-bit field, so a fixnum is 32 bits and is no longer sign-extended; the micro-assembler assembles for it, and the cold load is made for it. (2001)</li>
+<li>A page is 1024 words. (2001)</li>
+<li>Paging goes through a two-level page table in main memory behind a TLB, over a 32-bit virtual address space, and addresses are unsigned. (2002)</li>
+<li>The microinstruction is 64 bits. The microcode is assembled for it, and a word that reads an OA register names it through its OA select, where the CADR&rsquo;s IMOD ors the register into whatever word runs next. (2002)</li>
+<li>Floats print their exact digits: every single prints as text that reads back as it, FORMAT&rsquo;s <code>~E</code>, <code>~F</code>, <code>~G</code> and <code>~$</code> give exact digits, and a float halfway between two shortest decimals prints the even one. (2002)</li></ul></div></div>
+<div class="qa"><h3>Built and released</h3><div class="prose"><ul>
+<li>A band is built on QUUX: the previous band compiles the changed files and makes the cold load, which boots, loads and is saved. (2000)</li>
+<li>The first 40-bit band was cross-built: System 2000&rsquo;s band compiled the system for the 40-bit machine and wrote its cold load. (2001)</li>
+<li>Each release is a disk ready to boot, the sources and <code>SHA256SUMS</code>, every byte scanned for anything private before it is published (2000); the system in development is published as a rolling release, rebuilt as it changes.</li></ul></div></div>
+<div class="actions"><a class="text-link" href="releases.html">The release notes, for the details of each release</a></div>
+</section>

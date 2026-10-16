@@ -10,14 +10,14 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/">Machines</a><a href="../simulator/">Simulator</a><a href="../fpga/">FPGA</a><a href="../system/" aria-current="page">System</a><a class="github" href="https://github.com/metebalci/muir-sys">GitHub <span>&#8599;</span></a></nav></header>
-<nav class="subnav wrap" aria-label="muir-sys&rsquo; pages"><b>muir-sys</b><a href="./">The system</a><span aria-current="page">Release notes</span></nav>
+<nav class="subnav wrap" aria-label="muir-sys&rsquo; pages"><b>muir-sys</b><a href="./">The system</a><a href="cadr.html">CADR&rsquo;s system</a><a href="quux.html">QUUX&rsquo;s system</a><span aria-current="page">Release notes</span></nav>
 <main id="main">
 <section class="page-hero wrap solo">
 <div>
 <p class="eyebrow"><span class="dot"></span>MUIR-SYS &middot; RELEASE NOTES</p>
 <h1>Releases</h1>
 <p class="intro">Every release is a whole band, built from the sources by a clean compile, a new cold load, QLD and a save. There are no patches: a release is replaced by the next one.</p>
-<p class="hero-description">QUUX&rsquo;s releases are numbered from 2000 and made from the repository&rsquo;s <code>main</code> branch; the CADR&rsquo;s are the 1000s, made from its <code>cadr</code> branch. A band runs only on the machine it is for.</p>
+<p class="hero-description">QUUX&rsquo;s releases are numbered from 2000 and made from the repository&rsquo;s <code>main</code> branch; the CADR&rsquo;s are the 1000s, made from its <code>cadr</code> branch. A band runs only on the machine it is for. What each line changed from MIT&rsquo;s System 100, feature by feature, is on <a href="cadr.html">CADR&rsquo;s system</a> and <a href="quux.html">QUUX&rsquo;s system</a>.</p>
 <div class="actions"><a class="text-link" href="#system-2001">System 2001</a><a class="text-link" href="#system-2000">System 2000</a><a class="text-link" href="#in-development">In development</a><a class="text-link" href="#system-1003">System 1003</a><a class="text-link" href="#system-1002">System 1002</a><a class="text-link" href="#system-1001">System 1001</a><a class="text-link" href="#system-1000">System 1000</a><a class="text-link" href="#running">Running a release</a><a class="text-link" href="https://github.com/metebalci/muir-sys/releases">GitHub &#8599;</a></div>
 </div>
 </section>
@@ -51,7 +51,7 @@
             <tr><td><code>SHA256SUMS</code></td><td>358</td><td><code>b3b2d9c9a2d1151f8f643fc5a6b098c99076cf29babead0c75f3fc2966dab9b5</code></td></tr>
           </tbody>
         </table></div>
-        <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2001 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>. The tarball unpacks to <code>release-2001/</code>: the repository at the tag, with microcode 2001 and boot PROM 2001 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-2001/docs/release-2001.md"><code>docs/release-2001.md</code></a>.</p></div></div>
+        <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2001 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>. The tarball unpacks to <code>release-2001/</code>: the repository at the tag, with microcode 2001 and boot PROM 2001 assembled in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-2001.md</code>.</p></div></div>
 </section>
 
 <section id="system-2000" class="section wrap" aria-label="System 2000"><div class="release-head"><p class="eyebrow">02 / RELEASE &middot; QUUX</p></div>
@@ -77,7 +77,7 @@
             <tr><td><code>SHA256SUMS</code></td><td>358</td><td><code>99e8f34aeeba038f9072fdd9db517ae231aecca25e84027d35b46dd25e1514fa</code></td></tr>
           </tbody>
         </table></div>
-        <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2000 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>; it is muir-sim&rsquo;s built-in QUUX PROM byte for byte. The tarball unpacks to <code>release-2000/</code>: the repository at the tag, with microcode 2000 and boot PROM 2000 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-2000/docs/release-2000.md"><code>docs/release-2000.md</code></a>, its known faults at the end.</p></div></div>
+        <p>The disk is a GPT disk as a dynamic VHD, holding microcode 2000 and the band; <code>SHA256SUMS</code> covers the files and the disk uncompressed. The boot PROM is the one part not on the disk, for <code>quux --prom</code>; it is muir-sim&rsquo;s built-in QUUX PROM byte for byte. The tarball unpacks to <code>release-2000/</code>: the repository at the tag, with microcode 2000 and boot PROM 2000 assembled in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-2000.md</code>, its known faults at the end.</p></div></div>
 </section>
 
 <section id="in-development" class="section wrap" aria-label="QUUX&rsquo;s system in development"><div class="release-head"><p class="eyebrow">03 / IN DEVELOPMENT &middot; QUUX</p></div>
@@ -85,7 +85,7 @@
 <p class="lead">The latest build of the repository&rsquo;s <code>main</code> branch, published as a pre-release. It is never a fixed release: each new build replaces its files, its <code>README</code> asset names the build and its commit, and its <code>SHA256SUMS</code> covers every file, the <code>README</code> included. For a fixed release, take QUUX&rsquo;s newest.</p>
 </section>
 
-<section id="system-1003" class="section wrap" aria-label="System 1003"><div class="release-head"><p class="eyebrow">04 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1003" class="section wrap" aria-label="System 1003"><div class="release-head"><p class="eyebrow">04 / RELEASE &middot; CADR</p></div>
 <div class="release-head"><h2>System 1003</h2><span class="date">2026-10-05 &middot; tag <code>release-1003</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1003">get it</a></span></div>
 <p class="lead">The CADR&rsquo;s system after System 1002: microcode 1001, more of MIT&rsquo;s faults fixed, and main memory up to 60 boards. It runs on the <a href="../cadr/">CADR</a>, not on QUUX.</p>
 <div class="release-part"><p class="eyebrow">MICROCODE 1001</p>
@@ -119,10 +119,10 @@
             <tr><td><code>release-1003-sys.tar.gz</code></td><td>4,507,547</td><td><code>83fc38c0236fdb372099641ea2d93e2dd3a9ef905420d8ff1307b3369266b85e</code></td></tr>
           </tbody>
         </table></div>
-        <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1003/</code>: the repository at the tag, with microcode 1001 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-1003/docs/release-1003.md"><code>docs/release-1003.md</code></a>.</p></div></div>
+        <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1003/</code>: the repository at the tag, with microcode 1001 assembled in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-1003.md</code>.</p></div></div>
 </section>
 
-<section id="system-1002" class="section wrap" aria-label="System 1002"><div class="release-head"><p class="eyebrow">05 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1002" class="section wrap" aria-label="System 1002"><div class="release-head"><p class="eyebrow">05 / RELEASE &middot; CADR</p></div>
 <div class="release-head"><h2>System 1002</h2><span class="date">2026-09-29 &middot; tag <code>release-1002</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1002">get it</a></span></div>
 <p class="lead">The CADR&rsquo;s system after System 1001: MIT&rsquo;s time code made right, FILE dates in UTC on the wire, the CADR&rsquo;s first changed microcode, 1000, and the faults found on the way. It runs on the <a href="../cadr/">CADR</a>, not on QUUX.</p>
 <div class="release-part"><p class="eyebrow">TIME AND DATES</p>
@@ -157,10 +157,10 @@
             <tr><td><code>release-1002-sys.tar.gz</code></td><td>4,426,163</td><td><code>38fad7231a3876cddda654070273f5b4eabb67a7733860182a09d375898edd4d</code></td></tr>
           </tbody>
         </table></div>
-        <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1002/</code>: the repository at the tag, with microcode 1000 assembled in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/release-1002/docs/release-1002.md"><code>docs/release-1002.md</code></a>.</p></div></div>
+        <p><code>SHA256SUMS</code>, beside them, covers both and the pack uncompressed. The tarball unpacks to <code>release-1002/</code>: the repository at the tag, with microcode 1000 assembled in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-1002.md</code>.</p></div></div>
 </section>
 
-<section id="system-1001" class="section wrap" aria-label="System 1001"><div class="release-head"><p class="eyebrow">06 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1001" class="section wrap" aria-label="System 1001"><div class="release-head"><p class="eyebrow">06 / RELEASE &middot; CADR</p></div>
 <div class="release-head"><h2>System 1001</h2><span class="date">2026-09-23 &middot; tag <code>release-1001</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1001">get it</a></span></div>
 <p class="lead">A deep cleanup of System 1000, and the faults found while making it. What will never be used is gone, not commented out, and git keeps the history.</p>
 <div class="release-part"><p class="eyebrow">REMOVED</p>
@@ -197,17 +197,17 @@
           </tbody>
         </table></div>
         <p>The sources asset was replaced on 27 Sep 2026 with the same files owned by root; the file it replaced had SHA-256 <code class="hash">507d1fe89e8a8890a42c4a8630ef5eddb058fbebebc4c66df7e33ea708a42269</code>.</p>
-        <p>The tarball unpacks to <code>release-1001/</code>: the whole repository at the tag, with the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1001.md"><code>docs/release-1001.md</code></a>.</p></div></div>
+        <p>The tarball unpacks to <code>release-1001/</code>: the whole repository at the tag, with the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-1001.md</code>.</p></div></div>
 </section>
 
-<section id="system-1000" class="section wrap" aria-label="System 1000"><div class="release-head"><p class="eyebrow">07 / RELEASE &middot; THE CADR</p></div>
+<section id="system-1000" class="section wrap" aria-label="System 1000"><div class="release-head"><p class="eyebrow">07 / RELEASE &middot; CADR</p></div>
 <div class="release-head"><h2>System 1000</h2><span class="date">2026-09-23 &middot; tag <code>release-1000</code> &middot; <a href="https://github.com/metebalci/muir-sys/releases/tag/release-1000">get it</a></span></div>
 <p class="lead">System 100 fixed and cleaned up: the same sources and microcode 323, the faults that stopped it rebuilding itself repaired, the material that is not MIT&rsquo;s left out. It continues where System 100 left off.</p>
 <div class="release-part"><p class="eyebrow">WHAT CHANGED</p>
 <div class="prose"><ul>
           <li><b>It rebuilds itself.</b> The fault that stopped a cold load in silence and MINI&rsquo;s two stream faults are fixed. The band is compiled by the system itself, and the microcode is assembled from its sources.</li>
           <li><b>The network:</b> the routing table covers every subnet, and MINI finds its file server by itself.</li>
-          <li><b>Fixes from LM-3&rsquo;s later work.</b> LM-3 went on from System 100 to releases 300 through 304. Those are not taken whole, because much of them is LMI and System 130 material; instead 36 of LM-3&rsquo;s bug fixes are taken one at a time, each read against this tree before it was applied: in the cold-load builder, the compiler, pathnames and the file client, Chaosnet, the window system and ZWEI. <a href="https://github.com/metebalci/muir-sys/blob/main/docs/upstream-changes.md"><code>docs/upstream-changes.md</code></a> records every ruling.</li>
+          <li><b>Fixes from LM-3&rsquo;s later work.</b> LM-3 went on from System 100 to releases 300 through 304. Those are not taken whole, because much of them is LMI and System 130 material; instead 36 of LM-3&rsquo;s bug fixes are taken one at a time, each read against this tree before it was applied: in the cold-load builder, the compiler, pathnames and the file client, Chaosnet, the window system and ZWEI. <code>docs/upstream-changes.md</code> records every ruling.</li>
           <li><b>About forty faults</b> are fixed across the tree.</li>
           <li><b>Gone:</b> the tape, LMFILE and Xerox printing systems. Only System is patchable, and what is not MIT&rsquo;s, or not wanted, was never imported.</li>
           <li><b>The site is named MIT,</b> as System 100 has it, so the herald says "MIT System". Only the name is taken: the hosts are this site&rsquo;s own, numbered from the subnet&rsquo;s first address, OZ at 177200 and LISPM-1 at 177201 on subnet 376.</li>
@@ -221,11 +221,11 @@
           </tbody>
         </table></div>
         <p>The sources asset was replaced on 27 Sep 2026 with the same files owned by root; the file it replaced had SHA-256 <code class="hash">939193ba71cb2b9e59616ee232f918cf727e5480f414c904ecb777baf498a823</code>.</p>
-        <p>The tarball unpacks to <code>release-1000/</code>: <code>sys/</code> and <code>site/</code> with <code>LICENSE</code> and <code>NOTICE</code>, and the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <a href="https://github.com/metebalci/muir-sys/blob/main/docs/release-1000.md"><code>docs/release-1000.md</code></a>.</p></div></div>
+        <p>The tarball unpacks to <code>release-1000/</code>: <code>sys/</code> and <code>site/</code> with <code>LICENSE</code> and <code>NOTICE</code>, and the assembled microcode in <code>sys/ubin/</code>. Every change is recorded in <code>docs/release-1000.md</code>.</p></div></div>
 </section>
 
 <section id="running" class="section wrap" aria-label="Running a release"><div class="section-heading"><div><p class="eyebrow">08 / RUNNING A RELEASE</p><h2>Running a <em>release.</em></h2></div></div>
-<div class="prose"><p><a href="https://github.com/metebalci/muir-sim/blob/main/tools/README.md">muir-sim&rsquo;s fetch scripts</a> do the first steps for you: <code>tools/fetch-system-for-quux.sh</code> fetches QUUX&rsquo;s current release, <code>tools/fetch-dev-system-for-quux.sh</code> the system in development, and <code>tools/fetch-system-for-cadr.sh</code> the CADR&rsquo;s current release, each checked against its SHA-256 sums. By hand, QUUX&rsquo;s release N with muir-sim&rsquo;s <code>quux</code> needs no file server: its <code>SYS:</code> is on the machine&rsquo;s file device, so its host folder holds <code>sys/</code> and <code>site/</code> from the sources and a home for the login.</p></div>
+<div class="prose"><p>muir-sim&rsquo;s fetch scripts do the first steps for you: <code>tools/fetch-system-for-quux.sh</code> fetches QUUX&rsquo;s current release, <code>tools/fetch-dev-system-for-quux.sh</code> the system in development, and <code>tools/fetch-system-for-cadr.sh</code> the CADR&rsquo;s current release, each checked against its SHA-256 sums. By hand, QUUX&rsquo;s release N with muir-sim&rsquo;s <code>quux</code> needs no file server: its <code>SYS:</code> is on the machine&rsquo;s file device, so its host folder holds <code>sys/</code> and <code>site/</code> from the sources and a home for the login.</p></div>
 <pre><code>gunzip release-N-disk.vhd.gz
 tar -xzf release-N-sys.tar.gz
 mkdir -p root/home/lispm
@@ -249,6 +249,6 @@ cadr --micro --disk-pack release-N-pack.img \
 <div class="prose after-grid"><p>The machine boots to "MIT System, band 1 of LISPM-1". muir-sim serves the screen, keyboard and mouse over RFB, for any VNC viewer, and <code>telnet 127.0.0.1 2323</code> reaches its Lisp Listener through ozd. Log in with <code>(login "LISPM" "OZ" t)</code> before touching files.</p><p>ozd serves a file&rsquo;s dates in UTC by default, as System 1002 and later read them. Systems 1000 and 1001 write a file&rsquo;s dates in their site&rsquo;s zone, one hour east of Greenwich, with MIT&rsquo;s daylight saving on top: for them, add <code>--file-dates mit --timezone -1</code> to ozd&rsquo;s command.</p></div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

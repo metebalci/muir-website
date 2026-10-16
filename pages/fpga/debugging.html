@@ -27,7 +27,6 @@
 <p>The debugger is not a program on a host. It is a second Lisp Machine, running bus cycles on the first over a cable of twenty-one wires, as though it were that machine&rsquo;s own processor.</p>
 <p>The program that drives the cable is CC, and it is Lisp software on the debugging machine.</p>
 <p>Every board here is a debuggee the moment it is powered, which is what a CADR is with nothing set, and one of them can be told to be the debugger instead.</p>
-<p>The long form of every figure on this page is <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md">docs/debug-cable.md</a>.</p>
 </div>
 </div>
 </section>
@@ -119,7 +118,6 @@
         </svg>
 </div>
 <figcaption>Every wire is held for the whole of a request, and the latches take the data at the trailing edge of their strobe. The <a href="../cadr/#cable">page on the real machine</a> has the four strobes and the connector they arrive on.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-crosses-the-cable">what crosses the cable</a>.</p>
 </figure>
 </section>
 <section id="fabric" class="section wrap" aria-label="How the fabric does it.">
@@ -219,7 +217,6 @@
         </svg>
 </div>
 <figcaption>Only the connector changes hands. A board&rsquo;s own DBGIN page is never switched off, so a debugger board stays debuggable through its window.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-window">the window</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#every-board-is-a-debuggee-and-one-is-told-to-be-the-debugger">every board is a debuggee</a>.</p>
 </figure>
 </section>
 <section id="cable" class="section wrap" aria-label="The cable.">
@@ -337,17 +334,16 @@
         </svg>
 </div>
 <figcaption>The connector is Pmod JA on both boards. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-cable-on-one-connector-of-eight-pins">the cable on one connector of eight pins</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-ribbon-can-be-made-the-wrong-way-round-and-one-was">the ribbon made the wrong way round</a>.</p>
 </figure>
 </section>
 <section id="pmod" class="section wrap" aria-label="The cable on the Pmod boards.">
 <div class="section-heading"><div><p class="eyebrow">04 / THE THREE PMOD BOARDS</p><h2>The cable on<br>the <em>Pmod boards.</em></h2></div></div>
-<p class="lead">The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On all three the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.</p>
+<p class="lead">The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On each the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.</p>
 <div class="cols">
 <div class="prose">
 <p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s and the Cora&rsquo;s package pins are the same ones, from Digilent&rsquo;s files; the Kria&rsquo;s are AMD&rsquo;s.</p>
 <p>A mirrored ribbon is one pressed on the other way up, which joins each row to the other, and the debugger finds it under <code>auto</code>.</p>
-<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of the three boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of these boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
 </div>
 <div>
 <p class="callout">The Arty and the Cora have run this cable.</p>
@@ -504,8 +500,7 @@
           <text class="d-s" x="50" y="492">pins 6 and 12 are each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends.</text>
         </svg>
 </div>
-<figcaption>Each pin with what it carries, its package pin on the three boards, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#which-four-pins-are-this-boards">the pins, per board</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-kria-kr260s-connector-is-pmod1">the Kria KR260&rsquo;s connector is PMOD1</a>.</p>
+<figcaption>Each pin with what it carries, its package pin on each Pmod board, and the pin of the far Pmod it meets on a straight ribbon and on a mirrored one.</figcaption>
 </figure>
 </section>
 <section id="de25" class="section wrap" aria-label="The cable on the DE25-Nano.">
@@ -672,7 +667,6 @@
         </svg>
 </div>
 <figcaption>The drawing answers the three questions somebody holding wire has: which of the board&rsquo;s two headers, which end of it, and which pins must never be joined. Pin 11 is 5 V and pin 29 is 3.3 V, and a cable joins neither &mdash; only the ground on pin 30. Neither supply pin is a fabric pin, so nothing in the design can drive one either.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-de25-nano-has-no-pmod-so-its-connector-is-eight-of-jp1s-pins">the DE25-Nano has no Pmod</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#the-pins-of-a-row-are-coupled-pairs-so-each-pair-carries-one-signal">why each signal has a guard</a>.</p>
 </figure>
 </section>
 <section id="wire" class="section wrap" aria-label="The protocol on the wire.">
@@ -827,7 +821,6 @@
         </svg>
 </div>
 <figcaption>Twenty of MIT&rsquo;s signals cross one way and nineteen the other. The twenty-first bit each way is the carrier&rsquo;s own, and it is how two debuggees know neither is a debugger.</figcaption>
-<p class="more">The long form: <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#twenty-four-beats-each-way">twenty-four beats each way</a>, <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-actually-crosses-counted-off-the-netlist">what actually crosses</a>.</p>
 </figure>
 </section>
 <section id="shown" class="section wrap" aria-label="What has run on a board.">
@@ -853,7 +846,7 @@
 <tr><th scope="row">The DE25-Nano&rsquo;s connector</th><td>Nothing. No cable from a 2x20 header to a Pmod has been made, so those eight pins have crossed nothing; what reads them is lint and a check on the pin map</td><td class="st no">not yet</td></tr>
 </tbody>
 </table></div>
-<p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board. Every reading, with its numbers, is in <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/debug-cable.md#what-two-boards-have-shown">what two boards have shown</a> and <a href="https://github.com/metebalci/muir-fpga/blob/main/docs/board.md#the-debugger-over-the-cable">the debugger over the cable</a>.</p>
+<p class="small-print"><code>yes</code> means a board itself has shown it, which is not the claim a board drawing&rsquo;s green makes: since the key was cut to three colors, green says a block is this project&rsquo;s work and done, which is built and checked rather than run on that board.</p>
 </section>
 <section id="sources" class="section wrap" aria-label="Where each drawing came from.">
 <div class="section-heading"><div><p class="eyebrow">08 / SOURCES</p><h2>Where each drawing<br><em>came from.</em></h2></div></div>
@@ -872,6 +865,6 @@
 </table></div>
 </section>
 </main>
-<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
+<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p><p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. Its source is <a href="https://github.com/metebalci/muir-website">muir-website</a>.</p></div><div><a href="../simulator/">muir-sim &middot; Simulator</a><a href="../fpga/">muir-fpga &middot; FPGA</a><a href="../system/">muir-sys &middot; System</a><a href="https://github.com/metebalci/muir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div><div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span><a href="#main">BACK TO TOP &#8593;</a></div></footer>
 </body>
 </html>

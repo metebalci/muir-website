@@ -10,7 +10,7 @@ script: yes
 <p class="eyebrow"><span class="dot"></span>OZD &middot; THE ASSOCIATED MACHINE FOR A SITE OF MIT CADR LISP MACHINES</p>
 <h1>ozd</h1>
 <p class="intro">ozd gives a site&rsquo;s Lisp Machines their files, the time and their host table.</p>
-<div class="actions"><a class="button" href="#run">Build and run <span>&#8595;</span></a><a class="text-link" href="https://github.com/metebalci/ozd#readme">The README &#8599;</a><a class="text-link" href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">Every protocol &#8599;</a></div>
+<div class="actions"><a class="button" href="#run">Build and run <span>&#8595;</span></a></div>
 </div>
 <div class="side">
 <p>ozd is for the CADR: it serves its releases. QUUX does not use it, having a file device and a real-time clock of its own.</p>
@@ -46,7 +46,6 @@ script: yes
 <div class="prose">
 <p class="card-num">1/60&nbsp;s</p>
 <p><b>The unit of UPTIME&rsquo;s answer</b>, as the band&rsquo;s own server sends it and its own user end divides it. The manual says seconds. The band&rsquo;s code says sixtieths, and the band is what reads the answer.</p>
-<p>Every protocol a Lisp Machine speaks, and where each fact about it was read, is in <a href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">docs/protocols.md</a>.</p>
 <p>Cold-loaded, a band has a reader, an evaluator and a fasloader, and no FILE yet. <code>(si:qld)</code> reads the rest of it through MINI: one file at a time, on one connection that is never closed. Each file goes whole, and then an EOF.</p>
 <p>A cold load sends to the address that its <code>cold/mini.lisp</code> was compiled with. System 100&rsquo;s names 3060, OZ, so an ozd at 3060 serves it as it is. System 1000 and later take the host that <code>SYS:</code> translated to when it was compiled.</p>
 </div>
@@ -212,7 +211,7 @@ FILE    / holds 2 directories and 1 file</pre><p>It asks for STATUS, TIME and UP
 
 <section id="service" class="section wrap" aria-label="As a service"><div class="section-heading"><div><p class="eyebrow">07 / AS A SERVICE</p><h2>As a <em>service.</em></h2></div><p><code>contrib/</code> has a systemd unit and a launchd daemon. Both run ozd as a user of its own, which owns the writable roots and nothing else. The systemd unit is in use; the launchd daemon has not been tried yet.</p></div>
 <div class="cols">
-<div class="step"><div class="step-heading"><h3>Linux, with systemd.</h3><button class="copy" data-copy="ozd-systemd">Copy</button></div><pre id="ozd-systemd">sudo contrib/install-systemd.sh</pre><p>Build ozd first, and run the script from the source directory. It creates the <code>ozd</code> user and the base root <code>/srv/lispm</code>, installs the binary and the unit, writes <code>/etc/ozdrc</code> unless one exists, checks the flags and the roots as that user, and starts the service. With <code>--dry-run</code> it prints what it would do and changes nothing, which is all it has been checked with so far.</p><p>Edit <code>/etc/ozdrc</code> to suit your site, then <code>sudo systemctl restart ozd</code>. The log goes to the journal: <code>journalctl -u ozd</code>.</p></div>
+<div class="step"><div class="step-heading"><h3>Linux, with systemd.</h3><button class="copy" data-copy="ozd-systemd">Copy</button></div><pre id="ozd-systemd">sudo contrib/install-systemd.sh</pre><p>Build ozd first, and run the script from the source directory. It creates the <code>ozd</code> user and the base root <code>/srv/lispm</code>, installs the binary and the unit, writes <code>/etc/ozdrc</code> unless one exists, checks the flags and the roots as that user, and starts the service. With <code>--dry-run</code> it prints what it would do and changes nothing, which is all it has been checked with.</p><p>Edit <code>/etc/ozdrc</code> to suit your site, then <code>sudo systemctl restart ozd</code>. The log goes to the journal: <code>journalctl -u ozd</code>.</p></div>
 <div class="step"><div class="step-heading"><h3>macOS, with launchd.</h3><button class="copy" data-copy="ozd-launchd">Copy</button></div><pre id="ozd-launchd">sudo cp contrib/com.metebalci.ozd.plist /Library/LaunchDaemons/</pre><p>Create a hidden system user named <code>_ozd</code> that owns the writable roots, for example with <code>dscl</code>. Install the binary as <code>/usr/local/bin/ozd</code> and the file of flags as <code>/usr/local/etc/ozdrc</code>, and copy the plist into place.</p></div>
 </div>
 <span id="copy-status" role="status" class="sr-only"></span>
@@ -220,10 +219,10 @@ FILE    / holds 2 directories and 1 file</pre><p>It asks for STATUS, TIME and UP
 
 <section id="colophon" class="section wrap" aria-label="About"><div class="section-heading"><div><p class="eyebrow">08 / ABOUT</p><h2>Read from<br>the <em>sources.</em></h2></div></div>
 <div class="prose">
-<p>Every fact about a protocol is read from the Lisp Machine&rsquo;s own manual and sources: AIM-628, <code>sys/man/chaos.text</code>, <code>sys/doc/chfile.text</code> and the machine&rsquo;s network and cold-load code. <a href="https://github.com/metebalci/ozd/blob/main/docs/protocols.md">docs/protocols.md</a> says where each one was read.</p>
+<p>Every fact about a protocol is read from the Lisp Machine&rsquo;s own manual and sources: AIM-628, <code>sys/man/chaos.text</code>, <code>sys/doc/chfile.text</code> and the machine&rsquo;s network and cold-load code. <code>docs/protocols.md</code> says where each one was read.</p>
 <p>The name is OZ daemon. OZ was the host that did the same job for the Lisp Machines at the MIT AI Lab in the 1980s.</p>
 <p>ozd is written in Rust with <a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus, and has no crate dependencies.</p>
 <p><b>&copy; 2026 Mete Balci.</b> ozd is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0-or-later</a>.</p>
-<div class="actions"><a class="text-link" href="https://github.com/metebalci/ozd#readme">Read the README &#8599;</a><a class="text-link" href="https://github.com/metebalci/ozd">Repository &#8599;</a></div>
+
 </div>
 </section>

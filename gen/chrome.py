@@ -33,13 +33,15 @@ GUIDE = ('lisp-machine', 'Machines', 'Machines')
 SUBNAV = {
     'machines': [('lisp-machine/index.html', 'Lisp Machine'), ('lisp-machine/how-it-runs.html', 'How it runs'),
                  ('cadr/index.html', 'CADR'), ('quux/index.html', 'QUUX')],
-    'simulator': [('simulator/index.html', 'The simulator')],
+    'simulator': [('simulator/index.html', 'The simulator'), ('simulator/cadr.html', 'CADR'),
+                  ('simulator/quux.html', 'QUUX')],
     'fpga': [('fpga/index.html', 'The boards'), ('fpga/arty-z7-20.html', 'Arty Z7-20'),
              ('fpga/cora-z7-07s.html', 'Cora Z7-07S'), ('fpga/kria-kr260.html', 'Kria KR260'),
              ('fpga/de25-nano.html', 'DE25-Nano'),
              ('fpga/booting.html', 'Booting'), ('fpga/debugging.html', 'Debugging'),
              ('fpga/faq.html', 'Questions')],
-    'system': [('system/index.html', 'The system'), ('system/releases.html', 'Release notes')],
+    'system': [('system/index.html', 'The system'), ('system/cadr.html', 'CADR&rsquo;s system'),
+               ('system/quux.html', 'QUUX&rsquo;s system'), ('system/releases.html', 'Release notes')],
 }
 
 
@@ -102,8 +104,7 @@ def footer(root):
                     for sid, label, name, _ in SECTIONS if sid not in NOT_IN_HEADER_OR_FOOTER)
     return ('<footer class="wrap footer"><div class="footer-top"><a class="wordmark" href="%s" aria-label="muir, the front page">muir<span>&#8599;</span></a>'
             '<div class="footer-copy"><p>CADR preserved.<br>QUUX evolved.</p>'
-            '<p class="credit">The site is designed with Codex, using OpenAI&rsquo;s GPT Astra, and with '
-            '<a href="https://claude.com/claude-code">Claude Code</a>, using Anthropic&rsquo;s Claude Opus. '
+            '<p class="credit">The site is written using OpenAI&rsquo;s and Anthropic&rsquo;s models. '
             'Its source is <a href="%s">muir-website</a>.</p></div>'
             '<div>%s<a href="%smuir-sim/blob/main/docs/sources.md">Sources and attribution &#8599;</a></div></div>'
             '<div class="footer-bottom mono"><span>&copy; 2026 METE BALCI / AGPL-3.0-OR-LATER</span>'
