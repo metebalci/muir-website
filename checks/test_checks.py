@@ -101,7 +101,7 @@ def main():
             ('links', 'a link to a page that does not exist',
              P('pages', 'index.html'), 'href="quux/"', 'href="quux-gone/"'),
             ('links', '#no-such on a page that exists',
-             P('pages', 'index.html'), 'href="simulator/#install"', 'href="simulator/#no-such"'),
+             P('pages', 'index.html'), 'href="quux/#everything"', 'href="quux/#no-such"'),
             ('links', 'an image that is not there',
              P('pages', 'simulator', 'index.html'), 'src="lashup-small.gif"', 'src="lashup-tiny.gif"'),
             ('links', 'a font the stylesheet names and pages/ lacks',
