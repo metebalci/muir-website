@@ -68,15 +68,17 @@ class Fit:
 
 
 # The fits the site shows: the CADR's are the ones its released cards are
-# built from; QUUX's are its design's, from clean trees.
+# built from; QUUX's are its design's, from clean trees.  The DE25-Nano's
+# logic is Quartus's ALMs used in final placement.  The Kria KR260's CADR
+# uses no UltraRAM, which its row shows as 0 of 64.
 FITS = {
     ('arty-z7-20', 'cadr'): Fit(15187, 53200, 'LUTs', 46, 140, 'BRAM', 4.5, 0.275, 'c3b8fd2'),
     ('cora-z7-07s', 'cadr'): Fit(14033, 14400, 'LUTs', 43, 50, 'BRAM', 4.5, 0.280, 'c3b8fd2'),
-    ('kria-kr260', 'cadr'): Fit(15309, 117120, 'LUTs', 41, 144, 'BRAM', 4.5, 1.987, 'c3b8fd2'),
-    ('de25-nano', 'cadr'): Fit(16504, 46800, 'ALMs', 135, 358, 'M20K', 2.5, 2.353, 'c3b8fd2'),
+    ('kria-kr260', 'cadr'): Fit(15309, 117120, 'LUTs', 41, 144, 'BRAM', 4.5, 1.987, 'c3b8fd2', uram=(0, 64)),
+    ('de25-nano', 'cadr'): Fit(18108, 46800, 'ALMs', 135, 358, 'M20K', 2.5, 2.353, 'c3b8fd2'),
     ('arty-z7-20', 'quux'): Fit(28766, 53200, 'LUTs', 96, 140, 'BRAM', 4.5, 0.493, 'aa4a6ad'),
     ('kria-kr260', 'quux'): Fit(31622, 117120, 'LUTs', 43.5, 144, 'BRAM', 4.5, 0.013, 'f4df742', uram=(14, 64)),
-    ('de25-nano', 'quux'): Fit(37690, 46800, 'ALMs', 162, 358, 'M20K', 2.5, 0.002, 'b1b4bcb'),
+    ('de25-nano', 'quux'): Fit(35063, 46800, 'ALMs', 162, 358, 'M20K', 2.5, 0.002, 'b1b4bcb'),
 }
 
 # Linux's share of the board's memory: with the CADR's areas reserved (kB),
@@ -133,10 +135,8 @@ def fit(board, machine):
 
 
 def logic_label(f):
-    """'LUTs 15,187 of 53,200', as the drawings label the fabric's first bar;
-    an ALM figure carries the asterisk of gen/fpga/gen.py's ALM_NOTE."""
-    alm = f.logic_unit == 'ALMs'
-    return '%s %s of %s%s' % ('ALM' if alm else f.logic_unit, num(f.logic), num(f.logic_total), '*' if alm else '')
+    """'LUTs 15,187 of 53,200', as the drawings label the fabric's first bar."""
+    return '%s %s of %s' % ('ALM' if f.logic_unit == 'ALMs' else f.logic_unit, num(f.logic), num(f.logic_total))
 
 
 def memory_label(f):

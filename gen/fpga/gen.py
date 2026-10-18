@@ -117,11 +117,13 @@ def fit_span(svg):
 def cadr_fit_words(board, unit='lookup tables', memory='block RAM'):
     """The fit, as a CADR drawing's aria-label says it."""
     f = F.fit(board, 'cadr')
-    return ('%s of the %s %s in use, %s per cent; and %s KB of the %s KB of %s, %s per cent. '
-            'Under those two figures, the worst setup slack of this build, plus %s nanoseconds.'
+    more = ('; and %s of the %s UltraRAM blocks in use, %s per cent' % (F.num(f.uram[0]), F.num(f.uram[1]), F.percent(*f.uram))
+            if f.uram else '')
+    return ('%s of the %s %s in use, %s per cent; and %s KB of the %s KB of %s, %s per cent%s. '
+            'Under those %s figures, the worst setup slack of this build, plus %s nanoseconds.'
             % (F.num(f.logic), F.num(f.logic_total), unit, F.percent(f.logic, f.logic_total),
                F.num(f.memory * f.block_kb), F.num(f.memory_total * f.block_kb), memory,
-               F.percent(f.memory, f.memory_total), F.setup(f).lstrip('+')))
+               F.percent(f.memory, f.memory_total), more, 'three' if f.uram else 'two', F.setup(f).lstrip('+')))
 
 # What a drawing's aria-label says of ozd, which runs on every board's own
 # Linux (each board's Buildroot carries it, and the released fpgarc points
@@ -282,11 +284,6 @@ ARTY_FIT += DISPLAY_2026_09_21
 BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves them out. '
                'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses; under QUUX&rsquo;s, the period of its clock and its cache on that board.')
 
-# THE ALM NOTE, under the boards' table and under each DE25-Nano drawing, for
-# the asterisk that follows an ALM figure.
-ALM_NOTE = ('* ALMs needed, Quartus&rsquo;s logic utilization, which counts ALMs that packing leaves unusable. '
-            'An ALM holds up to two LUT functions, so ALM and LUT figures do not compare one to one.')
-
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
 # runs, in that part's own terms, and they are gen/facts.py's: the CADR's
@@ -316,7 +313,7 @@ def _fit_row(board, machine):
         ((f.uram + ('UltraRAM blocks',),) if f.uram else ())
 
 def _display_cell(board):
-    return ('text', '', '%s|%s' % (F.DISPLAY[board][0], F.display(board, '&times;')))
+    return ('text', '', '%s|%s|60 Hz' % (F.DISPLAY[board][0], F.display(board, '&times;')))
 
 BOARD_ROWS = [
     # (file, name, product, part, maker, maker's page, machines, cpu,
@@ -365,7 +362,7 @@ def board_table():
             mine = [f for f in fits if f[0] == machine]
             if mine:
                 _, lu, lt, lun, mu, mt, mun = mine[0][:7]
-                bars = resource_bars([(lun + ('*' if lun == 'ALMs' else ''), lu, lt, lun),
+                bars = resource_bars([(lun, lu, lt, lun),
                                       ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)]
                                      + [('URAM', xu, xt, xun) for xu, xt, xun in mine[0][7:]])
                 if machine == 'QUUX':
@@ -378,9 +375,9 @@ def board_table():
                      % (' title="QUUX does not fit this part."' if fname == 'cora-z7-07s.html' else ''))
         for word, title, foot in cells:
             if word == 'text':      # a connector's name, and not a yes or a no
-                label, _, size = foot.partition('|')
+                label, *lines = foot.split('|')
                 body += ('            <td class="st plain"%s>%s%s</td>\n'
-                         % (' title="%s"' % title if title else '', label, '<span class="pc">%s</span>' % size if size else ''))
+                         % (' title="%s"' % title if title else '', label, ''.join('<span class="pc">%s</span>' % l for l in lines)))
                 continue
             if word == 'no':        # a no, in the words that say what is missing
                 body += ('            <td class="st no"%s>%s</td>\n'
@@ -618,7 +615,7 @@ def build_index():
 </div>
 '''))
 
-    P.append(section('boards', '02 / THE BOARDS', 'The boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table + '<p class="small-print">%s</p>\n' % ALM_NOTE))
+    P.append(section('boards', '02 / THE BOARDS', 'The boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
 
     # USING IT: the files and the card, from the release notes of muir-fpga's
     # `latest` release and muir-sys's `latest-cadr` and `latest-quux`.
@@ -856,7 +853,7 @@ def build_board(fname, name, lede, corner_label, other, maker, body='', figlabel
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS[fname],
                maker, svg, body=body, figlabel=figlabel, quux=quux)
 
-def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None, after='', own_keys=(), caption=''):
+def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None, after='', own_keys=()):
     # The board's name, the one line naming its FPGA, the keys to the other
     # pages with the maker's own page last, and the drawing, which is the
     # whole point of the page.  A board that runs QUUX has a second drawing
@@ -871,11 +868,11 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     P = [hero(BOARD_EYEBROW[fname], name, lede, body=body,
               keys=keys(*(own + tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
          '<section id="cadr" class="section wrap tight" aria-label="%s, the CADR&rsquo;s drawing">\n' % name,
-         figure(svg, caption, cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
+         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
          '</section>\n']
     if quux:
         P += ['<section id="quux" class="section wrap tight" aria-label="%s, QUUX&rsquo;s drawing">\n' % name,
-              figure(quux, caption, cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
+              figure(quux, '', cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
               '</section>\n']
     P.append(after)
     page(fname, title, desc, P)
@@ -1287,7 +1284,7 @@ def build_de25():
                'QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
                "muir-fpga's board, waving",
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS['de25-nano.html'],
-               TERASIC_DE25, de25_svg(), quux=quux_svg('de25-nano'), caption=ALM_NOTE)
+               TERASIC_DE25, de25_svg(), quux=quux_svg('de25-nano'))
 
 # ============================================================ THE KRIA KR260
 
@@ -1474,11 +1471,13 @@ def kr260_svg():
     # (1) the fit figures come off, and the machine's own text takes their place
     i, j = fit_span(svg)
     f = F.fit('kria-kr260', 'cadr')
-    svg = (svg[:i] + fit_bars(F.fit_rows(f)) + slack_block(F.setup(f)) + '''
-          <text class="d-s" x="-164" y="170">adapters in the fabric</text>
-          <text class="d-s" x="-164" y="184">meet every port at</text>
-          <text class="d-s" x="-164" y="198">128 bits</text>
-''' + svg[j:])
+    bars = F.fit_rows(f)
+    down = 36 * (len(bars) - 2)
+    svg = (svg[:i] + fit_bars(bars) + slack_block(F.setup(f), 140 + down) + '''
+          <text class="d-s" x="-164" y="%d">adapters in the fabric</text>
+          <text class="d-s" x="-164" y="%d">meet every port at</text>
+          <text class="d-s" x="-164" y="%d">128 bits</text>
+''' % (170 + down, 184 + down, 198 + down) + svg[j:])
     svg = kria_loader(svg)
     # (3) colors from KR260_STATUS
     stripped = []
@@ -1622,7 +1621,7 @@ def quux_fit_words(board, unit):
                    for l, p in rows[2:])
     return ('Under the fabric&rsquo;s label, %s %s are in use, %.1f per cent, and %s of block %s, %.1f per cent%s; '
             'under those figures, the worst setup slack of this build, plus %s nanoseconds. '
-            % (l1.split(' ', 1)[1].rstrip('*').replace(' of ', ' of the '), unit, 100 * p1,
+            % (l1.split(' ', 1)[1].replace(' of ', ' of the '), unit, 100 * p1,
                l2.split(' ', 1)[1].replace(' of ', ' of the '), 'RAM' if unit == 'lookup tables' else 'memory',
                100 * p2, more, F.setup(f).lstrip('+')))
 
