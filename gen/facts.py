@@ -105,6 +105,11 @@ def period(board):
     return num(QUUX[board]['period'])
 
 
+def mhz(board):
+    """'52.6': QUUX's clock frequency on the board, in MHz, from its period."""
+    return num(round(1000 / QUUX[board]['period'], 1))
+
+
 def cache_k(board):
     """'64K': QUUX's cache on the board, in K words where it is a whole K."""
     w = QUUX[board]['cache']

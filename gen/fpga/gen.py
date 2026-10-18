@@ -367,8 +367,9 @@ def board_table():
                                      + [('URAM', xu, xt, xun) for xu, xt, xun in mine[0][7:]])
                 if machine == 'QUUX':
                     b = fname[:-len('.html')]
-                    bars += ('<span class="pc">%s&nbsp;ns a clock, a cache of %s words</span>'
-                             % (F.period(b), F.cache_k(b)))
+                    bars += ('<span class="pc">%s&nbsp;MHz (%s&nbsp;ns clock)</span>'
+                             '<span class="pc">%s words cache</span>'
+                             % (F.mhz(b), F.period(b), F.cache_k(b)))
                 body += '            <td class="num rbs">%s</td>\n' % bars
                 continue
             body += ('            <td class="st no"%s>not supported</td>\n'
