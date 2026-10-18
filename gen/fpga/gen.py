@@ -282,6 +282,11 @@ ARTY_FIT += DISPLAY_2026_09_21
 BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves them out. '
                'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses; under QUUX&rsquo;s, the period of its clock and its cache on that board.')
 
+# THE ALM NOTE, under the boards' table and under each DE25-Nano drawing, for
+# the asterisk that follows an ALM figure.
+ALM_NOTE = ('* ALMs needed, Quartus&rsquo;s logic utilization, which counts ALMs that packing leaves unusable. '
+            'An ALM holds up to two LUT functions, so ALM and LUT figures do not compare one to one.')
+
 # THE BOARDS' TABLE, one row a board, written here from data and not lifted.
 # THE FIGURES are each board's own place and route report for the fabric it
 # runs, in that part's own terms, and they are gen/facts.py's: the CADR's
@@ -360,7 +365,7 @@ def board_table():
             mine = [f for f in fits if f[0] == machine]
             if mine:
                 _, lu, lt, lun, mu, mt, mun = mine[0][:7]
-                bars = resource_bars([(lun, lu, lt, lun),
+                bars = resource_bars([(lun + ('*' if lun == 'ALMs' else ''), lu, lt, lun),
                                       ('BRAM' if 'RAM' in mun else mun.split()[0], mu, mt, mun)]
                                      + [('URAM', xu, xt, xun) for xu, xt, xun in mine[0][7:]])
                 if machine == 'QUUX':
@@ -613,7 +618,7 @@ def build_index():
 </div>
 '''))
 
-    P.append(section('boards', '02 / THE BOARDS', 'The boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table))
+    P.append(section('boards', '02 / THE BOARDS', 'The boards,<br>and what <em>each runs.</em>', BOARDS_NOTE, table + '<p class="small-print">%s</p>\n' % ALM_NOTE))
 
     # USING IT: the files and the card, from the release notes of muir-fpga's
     # `latest` release and muir-sys's `latest-cadr` and `latest-quux`.
@@ -851,7 +856,7 @@ def build_board(fname, name, lede, corner_label, other, maker, body='', figlabel
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS[fname],
                maker, svg, body=body, figlabel=figlabel, quux=quux)
 
-def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None, after='', own_keys=()):
+def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, svg, body='', figlabel=None, quux=None, after='', own_keys=(), caption=''):
     # The board's name, the one line naming its FPGA, the keys to the other
     # pages with the maker's own page last, and the drawing, which is the
     # whole point of the page.  A board that runs QUUX has a second drawing
@@ -866,11 +871,11 @@ def board_page(fname, name, title, desc, lede, corner_label, key_list, maker, sv
     P = [hero(BOARD_EYEBROW[fname], name, lede, body=body,
               keys=keys(*(own + tuple(key_list) + ((maker, 'The maker&rsquo;s page &#8599;'),)), first='key lm')),
          '<section id="cadr" class="section wrap tight" aria-label="%s, the CADR&rsquo;s drawing">\n' % name,
-         figure(svg, '', cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
+         figure(svg, caption, cls='fig dense wide', label='FIG. 01 &mdash; %s' % (figlabel or ((name.upper() + ', CADR') if quux else name.upper())), name=name).replace('<figcaption></figcaption>\n', ''),
          '</section>\n']
     if quux:
         P += ['<section id="quux" class="section wrap tight" aria-label="%s, QUUX&rsquo;s drawing">\n' % name,
-              figure(quux, '', cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
+              figure(quux, caption, cls='fig dense wide', label='FIG. 02 &mdash; %s, QUUX' % name.upper(), name=name + ', QUUX').replace('<figcaption></figcaption>\n', ''),
               '</section>\n']
     P.append(after)
     page(fname, title, desc, P)
@@ -1282,7 +1287,7 @@ def build_de25():
                'QUUX and the CADR mapped onto one Altera Agilex 5 E-series, the A5EB013B.',
                "muir-fpga's board, waving",
                (('booting.html', 'How it boots'), ('debugging.html', 'The debug cable')) + BOARD_KEYS['de25-nano.html'],
-               TERASIC_DE25, de25_svg(), quux=quux_svg('de25-nano'))
+               TERASIC_DE25, de25_svg(), quux=quux_svg('de25-nano'), caption=ALM_NOTE)
 
 # ============================================================ THE KRIA KR260
 
@@ -1617,7 +1622,7 @@ def quux_fit_words(board, unit):
                    for l, p in rows[2:])
     return ('Under the fabric&rsquo;s label, %s %s are in use, %.1f per cent, and %s of block %s, %.1f per cent%s; '
             'under those figures, the worst setup slack of this build, plus %s nanoseconds. '
-            % (l1.split(' ', 1)[1].replace(' of ', ' of the '), unit, 100 * p1,
+            % (l1.split(' ', 1)[1].rstrip('*').replace(' of ', ' of the '), unit, 100 * p1,
                l2.split(' ', 1)[1].replace(' of ', ' of the '), 'RAM' if unit == 'lookup tables' else 'memory',
                100 * p2, more, F.setup(f).lstrip('+')))
 

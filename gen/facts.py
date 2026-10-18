@@ -133,8 +133,10 @@ def fit(board, machine):
 
 
 def logic_label(f):
-    """'LUTs 15,187 of 53,200', as the drawings label the fabric's first bar."""
-    return '%s %s of %s' % ('ALM' if f.logic_unit == 'ALMs' else f.logic_unit, num(f.logic), num(f.logic_total))
+    """'LUTs 15,187 of 53,200', as the drawings label the fabric's first bar;
+    an ALM figure carries the asterisk of gen/fpga/gen.py's ALM_NOTE."""
+    alm = f.logic_unit == 'ALMs'
+    return '%s %s of %s%s' % ('ALM' if alm else f.logic_unit, num(f.logic), num(f.logic_total), '*' if alm else '')
 
 
 def memory_label(f):
