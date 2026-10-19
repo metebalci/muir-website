@@ -27,7 +27,7 @@ import argparse, html, os, re, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 PERTURB = 'MUIR_SITE_FACTS_PERTURB'
 NEAR = 100          # how far, in characters, a figure's context may be
-BOARD_NAMES = r'Arty|Cora|Kria|KR260|DE25'
+BOARD_NAMES = r'Arty|Kria|KR260|DE25'
 
 
 def load_facts(root):

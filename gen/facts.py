@@ -28,12 +28,12 @@ def _n(v):
 
 
 # The boards, in the site's order.  `short` is the name a token starts with.
-BOARDS = ('arty-z7-20', 'cora-z7-07s', 'kria-kr260', 'de25-nano')
-SHORT = {'arty-z7-20': 'arty', 'cora-z7-07s': 'cora', 'kria-kr260': 'kria', 'de25-nano': 'de25'}
-NAME = {'arty-z7-20': 'Arty Z7-20', 'cora-z7-07s': 'Cora Z7-07S', 'kria-kr260': 'Kria KR260', 'de25-nano': 'DE25-Nano'}
+BOARDS = ('arty-z7-20', 'kria-kr260', 'de25-nano')
+SHORT = {'arty-z7-20': 'arty', 'kria-kr260': 'kria', 'de25-nano': 'de25'}
+NAME = {'arty-z7-20': 'Arty Z7-20', 'kria-kr260': 'Kria KR260', 'de25-nano': 'DE25-Nano'}
 
 # Each board's display: the connector and the size of the picture, which both
-# machines show at 60 Hz.  The Cora Z7-07S has no display output.
+# machines show at 60 Hz.
 DISPLAY = {
     'arty-z7-20': ('HDMI', _n(1280), _n(1024)),
     'kria-kr260': ('DisplayPort', _n(1920), _n(1080)),
@@ -73,7 +73,6 @@ class Fit:
 # uses no UltraRAM, which its row shows as 0 of 64.
 FITS = {
     ('arty-z7-20', 'cadr'): Fit(15187, 53200, 'LUTs', 46, 140, 'BRAM', 4.5, 0.275, 'c3b8fd2'),
-    ('cora-z7-07s', 'cadr'): Fit(14033, 14400, 'LUTs', 43, 50, 'BRAM', 4.5, 0.280, 'c3b8fd2'),
     ('kria-kr260', 'cadr'): Fit(15309, 117120, 'LUTs', 41, 144, 'BRAM', 4.5, 1.987, 'c3b8fd2', uram=(0, 64)),
     ('de25-nano', 'cadr'): Fit(18108, 46800, 'ALMs', 135, 358, 'M20K', 2.5, 2.353, 'c3b8fd2'),
     ('arty-z7-20', 'quux'): Fit(28766, 53200, 'LUTs', 96, 140, 'BRAM', 4.5, 0.493, 'aa4a6ad'),
@@ -83,7 +82,7 @@ FITS = {
 
 # Linux's share of the board's memory: with the CADR's areas reserved (kB),
 # and with QUUX's region reserved (the figure and its unit).
-LINUX_CADR_KB = {'arty-z7-20': _n(493976), 'cora-z7-07s': _n(493976), 'kria-kr260': _n(3990556),
+LINUX_CADR_KB = {'arty-z7-20': _n(493976), 'kria-kr260': _n(3990556),
                  'de25-nano': _n(938276)}
 LINUX_QUUX = {'arty-z7-20': (_n(350.875), 'MB'), 'kria-kr260': (_n(3843388), 'kB'),
               'de25-nano': (_n(670.875), 'MB')}

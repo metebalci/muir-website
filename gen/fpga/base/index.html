@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>muir-fpga — the MIT CADR in fabric</title>
-<meta name="description" content="The MIT CADR Lisp Machine in the fabric of small FPGA boards, held tick for tick to the muir emulator: what runs on the Arty Z7-20 and the Cora Z7-07S, and what the real machine was.">
+<meta name="description" content="The MIT CADR Lisp Machine in the fabric of small FPGA boards, held tick for tick to the muir emulator: what runs on the Arty Z7-20, and what the real machine was.">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="front.css">
 </head>
@@ -15,7 +15,6 @@
     <a class="home" href="index.html"><b>muir-fpga</b></a>
     <nav>
       <a href="arty-z7-20.html">Arty Z7-20</a>
-      <a href="cora-z7-07s.html">Cora Z7-07S</a>
       <a href="booting.html">Booting</a>
       <a href="debugging.html">Debugging</a>
       <a href="faq.html">FAQ</a>
@@ -67,23 +66,12 @@
             <td class="st">yes</td>
             <td class="st">yes</td>
           </tr>
-          <tr>
-            <th scope="row" class="board"><a href="cora-z7-07s.html">Cora Z7-07S</a><span class="pc">XC7Z007S</span></th>
-            <td class="cpu">1 x Arm Cortex-A9, Linux</td>
-            <td class="num">4,228 of 4,400<span class="pc">96.1%</span></td>
-            <td class="num">42.5 of 50<span class="pc">85.0%</span></td>
-            <td class="st">yes</td>
-            <td class="st" title="The board's own card slot.">yes</td>
-            <td class="st no" title="The board has no HDMI connector.">no</td>
-            <td class="st no" title="The board has no USB host port, so the image leaves the program out.">no</td>
-          </tr>
         </tbody>
       </table>
     </div>
 
     <div class="prose tnote">
       <p>The Arty Z7-20 is the recommended board, and the one tested the most. It is the board the project was built on, and every block on its drawing has now run on it.</p>
-      <p>The Cora Z7-07S carries a smaller part of the same kind and a smaller board, with no HDMI output and no USB host for a keyboard and mouse, and the machine fits it and closes timing with nothing in the machine itself changed.</p>
     </div>
   </div>
 </section>
@@ -112,7 +100,7 @@
     <div class="prose">
       <h2>License</h2>
       <p>The work in this repository is free software under the <b>GNU Affero General Public License, version 3 or later</b>. That is the fabric, the checks and their reference traces, the programs that run beside the machine, the documents and these pages alike. The full text is <a href="https://github.com/metebalci/muir-fpga/blob/main/LICENSE"><code>LICENSE</code> at the root of the repository</a>. Almost every file in it repeats that in its own header as the SPDX identifier <code>AGPL-3.0-or-later</code>, so a file taken out of the repository still says what it is.</p>
-      <p>Eight files are under the <b>GNU General Public License, version 2 or later</b> instead, four for each of the two Zynq boards. They are the Zynq start-up routine <code>ps7_init_gpl.c</code>, U-Boot's default environment, the board's device tree and the <code>-u-boot.dtsi</code> beside it. Each of the eight is compiled into U-Boot, which is itself under that license, and the start-up routine's register tables are Digilent's board configuration as Xilinx's tool writes it out, whose own <code>ps7_init_gpl.c</code> carries the same terms. Every one of them says so in its own header.</p>
+      <p>Four files are under the <b>GNU General Public License, version 2 or later</b> instead, those of the Arty Z7-20. They are the Zynq start-up routine <code>ps7_init_gpl.c</code>, U-Boot's default environment, the board's device tree and the <code>-u-boot.dtsi</code> beside it. Each of the four is compiled into U-Boot, which is itself under that license, and the start-up routine's register tables are Digilent's board configuration as Xilinx's tool writes it out, whose own <code>ps7_init_gpl.c</code> carries the same terms. Every one of them says so in its own header.</p>
     </div>
   </div>
 </section>
@@ -126,7 +114,7 @@
       <dl class="credits">
         <div>
           <dt>Digilent's pin files</dt>
-          <dd>Pins come from Digilent's published master constraint files and never from memory, because a wrong pin is a light that does not come on. Digilent publishes them under the <b>MIT License</b>. The Cora Z7-07S's master file is in its board directory byte for byte as published, beside a copy of that license as <code>Digilent-License.txt</code>. The Arty Z7-20's own constraint file copies out the handful of pins that design uses rather than carrying the master file, and cites the commit and digest it read them from.</dd>
+          <dd>Pins come from Digilent's published master constraint files and never from memory, because a wrong pin is a light that does not come on. Digilent publishes them under the <b>MIT License</b>. The Arty Z7-20's own constraint file copies out the handful of pins that design uses rather than carrying the master file, and cites the commit and digest it read them from.</dd>
         </div>
         <div>
           <dt>muir</dt>

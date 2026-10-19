@@ -19,12 +19,10 @@ OUT = None     # set by main()
 # THE MAKERS' OWN PAGES FOR THE BOARDS.  Each was opened in a browser and read to
 # be that board's product page before it was written here: Digilent's "Arty Z7:
 # Zynq-7000 SoC Development Board", whose options are the Arty Z7-20 and the
-# Arty Z7-10; Digilent's "Cora Z7: Zynq-7000 Single Core for ARM/FPGA SoC
-# Development", which sells the Cora Z7-07S; and Terasic's "DE25-Nano
+# Arty Z7-10; and Terasic's "DE25-Nano
 # Development and Education Board", whose specifications give the FPGA as
 # A5EB013BB23BE4SCS.  The ampersands are written as HTML wants them.
 DIGILENT_ARTY = 'https://digilent.com/shop/arty-z7-zynq-7000-soc-development-board/'
-DIGILENT_CORA = 'https://digilent.com/shop/cora-z7-zynq-7000-single-core-for-arm-fpga-soc-development/'
 AMD_KR260 = 'https://www.amd.com/en/products/system-on-modules/kria/k26/kr260-robotics-starter-kit.html'
 TERASIC_DE25 = 'https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&amp;CategoryNo=115&amp;No=1384'
 
@@ -40,7 +38,7 @@ def sub(text, old, new, count=1):
     return text.replace(old, new)
 
 # THE FIT FIGURES ON THE DRAWINGS, from each board's own place and route
-# report.  Both boards were built from a clean tree at 9d1cf26, whose
+# report.  The Arty Z7-20 was built from a clean tree at 9d1cf26, whose
 # bitstreams' stamps read 9d1cf260.  The lifted drawings carry the figures of
 # older builds, and these replacements move the labels, the bars that draw the
 # same per cent, the aria-labels and the comments beside the labels, and
@@ -78,7 +76,7 @@ MEM_OLD = """          <text class="d-s" x="87" y="762" text-anchor="middle">64 
           <text class="d-s" x="87" y="776" text-anchor="middle">8 MB for the display, 56 MB spare</text>
           <text class="d-s" x="87" y="790" text-anchor="middle">&mdash; and 384 MB left to Linux</text>
 """
-LONG = {'arty': 'arty-z7-20', 'cora': 'cora-z7-07s', 'kria': 'kria-kr260', 'de25': 'de25-nano'}
+LONG = {'arty': 'arty-z7-20', 'kria': 'kria-kr260', 'de25': 'de25-nano'}
 def mem_block(board, quux=False, own=False):
     b = LONG[board]
     if own:
@@ -130,8 +128,8 @@ def cadr_fit_words(board, unit='lookup tables', memory='block RAM'):
 # the Chaosnet at it on the loopback).
 OZD_ON_BOARD = 'ozd runs on this board&rsquo;s own Linux, so a card by itself is a whole site.'
 
-# The Arty Z7-20's and the Cora Z7-07S's drawings as the base pages have
-# them, changed: the chip's label, the memory box, the aria-label's words for
+# The Arty Z7-20's drawing as the base page has
+# it, changed: the chip's label, the memory box, the aria-label's words for
 # the fit (cadr_fit_words) and for ozd, and the fit itself, which
 # board_svg() replaces whole (cadr_fit_block).
 OZD_BASE = ("ozd runs on a host of its own today, and running it on this board's own processing system, so that a card by itself is a whole site, "
@@ -145,32 +143,6 @@ ARTY_FIT = [
      "the associated machine the band calls being ozd on the board, from which"),
     (MEM_OLD, mem_block('arty')),
 ]
-CORA_LUT_PERCENT = F.percent(F.fit('cora-z7-07s', 'cadr').logic, F.fit('cora-z7-07s', 'cadr').logic_total)
-CORA_FIT = [
-    ('The CADR mapped onto one XC7Z007S, the small Zynq on a Cora Z7-07S.',
-     'The CADR mapped onto one AMD Zynq 7007S, part XC7Z007S-1CLG400C. This board runs the CADR only: the CADR takes %s per cent of its lookup tables, and QUUX does not fit.' % CORA_LUT_PERCENT),
-    ("MIT's own CC, running in the Lisp world of the CADR in the larger board's fabric,",
-     "MIT's own CC, running in the Lisp world of the CADR in the Arty Z7-20's fabric,"),
-    ('two lamps cannot carry what six carry on the larger board:', 'two lamps cannot carry what six carry on the Arty Z7-20:'),
-    ("the part's own single Cortex-A9 core at 650 megahertz, this part having one where the Arty Z7-20 has two, drawn gray",
-     "the part's own single Cortex-A9 core at 650 megahertz, drawn gray"),
-    ('''because the drawing is the larger
-               board's and what a reader wants''',
-     '''because the drawing is the Arty
-               Z7-20's and what a reader wants'''),
-    ('This is the same design the larger board carries,', 'This is the same design the Arty Z7-20 carries,'),
-    ("CC, in the Lisp world of the CADR in the larger board's fabric,", "CC, in the Lisp world of the CADR in the Arty Z7-20's fabric,"),
-    ("board's own CC did the same to the larger board.  Every word", "board's own CC did the same to the Arty Z7-20.  Every word"),
-    ('''The block is the larger board's, at its own place and
-               its own size, and its six rows are the larger board's six.''',
-     '''The block is the Arty Z7-20's, at its own place and
-               its own size, and its six rows are the Arty Z7-20's six.'''),
-    ('3,999 of the 4,400 slices occupied, 90.9 per cent; and 187 KB of the 225 KB of block RAM, 83.0 per cent. The machine spends the same 41.5 block RAM tiles here as it does on the larger part, so what changes between the two boards is the denominator.',
-     cadr_fit_words('cora-z7-07s')),
-    (MEM_OLD, mem_block('cora')),
-    ('The timing of this build is met: the fabric runs at 100 megahertz with a tick of 10 nanoseconds, worst slack plus 0.494 nanoseconds against that, and none of its 47,909 endpoints failing. ', ''),
-    (OZD_BASE, OZD_ON_BOARD),
-]
 # MIT'S GRID MOVED FROM 5 ns TO 10 ns at 9d1cf26, and the drawings' clock
 # label and aria-labels were moved with it on the pages themselves.  These
 # follow them, so the generator regenerates what is committed.
@@ -181,7 +153,7 @@ GRID_10 = [
      'runs at 100 MHz, 15 ticks to the microcycle, 150 nanoseconds of real time'),
     ('for the 145 the drawings name', 'for the 145 the schematics name'),
 ]
-# THE FABRIC'S LABEL on both Zynq drawings names the programmable logic in
+# THE FABRIC'S LABEL on the Zynq drawing names the programmable logic in
 # words, where the drawings had "PL &mdash; fabric".  The DE25-Nano's drawing is
 # generated from the Arty Z7-20's, so it starts from this label and replaces it
 # with its own (de25_svg).
@@ -192,15 +164,6 @@ FABRIC_LABEL = [
 ARTY_FIT += GRID_10 + FABRIC_LABEL + [
     ("muir's simpletv tick for tick over 77 million ticks", "muir's simpletv tick for tick over 39 million ticks"),
 ]
-CORA_FIT += GRID_10 + FABRIC_LABEL
-# THE CROSSES ON THE TWO ABSENT LAMPS SIT ON THE LAMPS.  The base drawing has
-# them 61 units to the left of their circles, outside the lamps' box, over the
-# dashed boundary line; each goes onto the corners of the square around its
-# circle (cx 1380, r 4.5), as every other cross sits on its box's corners
-# (checks/check_cross_marks.py).
-CORA_FIT += [('<path class="d-absent-x" d="M1314.5,%s L1323.5,%s M1323.5,%s L1314.5,%s"/>' % (y, y + 9, y, y + 9),
-              '<path class="d-absent-x" d="M1375.5,%s L1384.5,%s M1384.5,%s L1375.5,%s"/>' % (y, y + 9, y, y + 9))
-             for y in (439.5, 461.5)]
 
 # THE TWO SCREENS MOVED TO THE RASTER'S TWO EDGES, AND THREE VIDEO MODES
 # BECAME ONE.  Both landed at ad86f45 and the base drawing still describes the
@@ -270,17 +233,8 @@ ARTY_FIT += DISPLAY_2026_09_21
 # THE NOTE BESIDE THE BOARD TABLE.  `front.css` asks for it in as many words:
 # why a cell says what it says is on the cell as a title AND in the note
 # beside the table, because a title alone is a fact only a pointer can read.
-# The table has two words, yes and no, and one qualification on a yes.  The
-# site already tried a wider vocabulary here --- a thing a board has, or has
-# built but not shown, or is planned to have, or cannot have --- and it was cut
-# to two, and that cut stands: the qualification is not a third grade but a
-# footnote in the cell, and there is one of them.  IT IS THERE BECAUSE TWO
-# UNLIKE FACTS WERE BOTH READING AS NO.  The Cora Z7-07S has no HDMI connector
-# on it at all, and the DE25-Nano's debug cable is in every bitstream that
-# board builds with no ribbon yet made for its header: one is an absence of
-# hardware and the other an absence of testing, and a reader could not tell
-# them apart.  What a cell still cannot carry goes in this note, in sentences,
-# rather than into a fourth word or a mark nobody follows.
+# What a cell cannot carry goes in this note, in sentences, rather than into a
+# mark nobody follows.
 BOARDS_NOTE = ('Every board has Ethernet and a microSD card, so the table leaves them out. '
                'A bar is the share of the chip&rsquo;s logic and block memory that a machine uses; under QUUX&rsquo;s, the period of its clock and its cache on that board.')
 
@@ -322,10 +276,6 @@ BOARD_ROWS = [
     ('arty-z7-20.html', 'Arty Z7-20', 'AMD Zynq 7020', 'XC7Z020', 'Digilent', DIGILENT_ARTY, 'CADR, QUUX', '2 x Arm Cortex-A9, Linux',
      [_fit_row('arty-z7-20', 'cadr'), _fit_row('arty-z7-20', 'quux')],
      [_display_cell('arty-z7-20'), ('text', '', 'Keyboard<br>Mouse')]),
-    ('cora-z7-07s.html', 'Cora Z7-07S', 'AMD Zynq 7007S', 'XC7Z007S', 'Digilent', DIGILENT_CORA, 'CADR', '1 x Arm Cortex-A9, Linux',
-     [_fit_row('cora-z7-07s', 'cadr')],
-     [('no', 'The board has no display connector.', 'No display<br>output'),
-      ('no', 'The board has no USB host port, so the image leaves the program out.', 'No USB<br>input')]),
     ('kria-kr260.html', 'Kria KR260', 'AMD Zynq UltraScale+ K26', 'XCK26', 'AMD', AMD_KR260, 'CADR, QUUX', '4 x Arm Cortex-A53, Linux',
      [_fit_row('kria-kr260', 'cadr'), _fit_row('kria-kr260', 'quux')],
      [_display_cell('kria-kr260'), ('text', '', 'Keyboard<br>Mouse')]),
@@ -372,20 +322,15 @@ def board_table():
                              % (F.mhz(b), F.period(b), F.cache_k(b)))
                 body += '            <td class="num rbs">%s</td>\n' % bars
                 continue
-            body += ('            <td class="st no"%s>not supported</td>\n'
-                     % (' title="QUUX does not fit this part."' if fname == 'cora-z7-07s.html' else ''))
+            body += '            <td class="st no">not supported</td>\n'
         for word, title, foot in cells:
             if word == 'text':      # a connector's name, and not a yes or a no
                 label, *lines = foot.split('|')
                 body += ('            <td class="st plain"%s>%s%s</td>\n'
                          % (' title="%s"' % title if title else '', label, ''.join('<span class="pc">%s</span>' % l for l in lines)))
                 continue
-            if word == 'no':        # a no, in the words that say what is missing
-                body += ('            <td class="st no"%s>%s</td>\n'
-                         % (' title="%s"' % title if title else '', foot or 'no'))
-                continue
             body += ('            <td class="st%s"%s>%s%s</td>\n'
-                     % (' no' if word == 'no' else '', ' title="%s"' % title if title else '', word,
+                     % ('', ' title="%s"' % title if title else '', word,
                         '<span class="pc">%s</span>' % foot if foot else ''))
         body += '          </tr>\n'
     return ('    <div class="table-scroll" tabindex="0" role="region" aria-label="What each board is and what it runs">\n'
@@ -418,35 +363,35 @@ def site_terms(html):
 # taken out of the words it said and nothing added.  A label is written as
 # the page has it after site_terms(), a page is named by the boards that carry
 # the label, and a label that is not there stops the run.
-A, C, D = 'arty-z7-20.html', 'cora-z7-07s.html', 'de25-nano.html'
+A, D = 'arty-z7-20.html', 'de25-nano.html'
 K = 'kria-kr260.html'
 def _t(cls, x, y, anchor, words):
     return '<text class="%s" x="%s" y="%s"%s>%s</text>' % (cls, x, y, ' text-anchor="middle"' if anchor else '', words)
 LABELS = [
-    ((A, C, D, K), '>for the other machines<', '>for other machines<'),
-    ((A, C, D, K), '>the console and JTAG<', '>console and JTAG<'),
-    ((A, C, K), '>one micro-USB socket,<', '>micro-USB socket,<'),
-    ((A, C), '>PL masters, 64 bits, AXI3<', '>FPGA masters, 64-bit<'),
-    ((A, C), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'Arm masters, 32-bit')),
-    ((A, C), '>PS masters, 32 bits, AXI3<', '>Arm masters, 32 bits, AXI3<'),
-    ((A, C, K), '>on the PS,<', '>on Linux,<'),
-    ((A, C, D, K), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
-    ((A, C, D, K), '>the debugger<', '>debugger<'),
-    ((A, C, D, K), '>Vcc open at both sides<', '>Vcc open both sides<'),
-    ((A, C, D), '>U-Boot, the CADR&rsquo;s bitstream,<', '>U-Boot, CADR bitstream,<'),
-    ((A, C, D, K), '>Linux and its root filesystem,<', '>Linux, root filesystem,<'),
-    ((A, C, D, K), '>and the disk packs, a file a drive<', '>disk packs, a file each<'),
+    ((A, D, K), '>for the other machines<', '>for other machines<'),
+    ((A, D, K), '>the console and JTAG<', '>console and JTAG<'),
+    ((A, K), '>one micro-USB socket,<', '>micro-USB socket,<'),
+    ((A,), '>PL masters, 64 bits, AXI3<', '>FPGA masters, 64-bit<'),
+    ((A,), _t('d-s', 1162, 460, 1, 'PS masters, 32 bits, AXI3'), _t('d-s', 1162, 460, 1, 'Arm masters, 32-bit')),
+    ((A,), '>PS masters, 32 bits, AXI3<', '>Arm masters, 32 bits, AXI3<'),
+    ((A, K), '>on the PS,<', '>on Linux,<'),
+    ((A, D, K), '>the control store: 16K &times; 48, 768 Kb<', '>control store: 16K &times; 48, 768 Kb<'),
+    ((A, D, K), '>the debugger<', '>debugger<'),
+    ((A, D, K), '>Vcc open at both sides<', '>Vcc open both sides<'),
+    ((A, D), '>U-Boot, the CADR&rsquo;s bitstream,<', '>U-Boot, CADR bitstream,<'),
+    ((A, D, K), '>Linux and its root filesystem,<', '>Linux, root filesystem,<'),
+    ((A, D, K), '>and the disk packs, a file a drive<', '>disk packs, a file each<'),
     # the boxes of the lower row take three lines of a body and one of a name,
     # so a body that ran to four lines is written in three
-    ((A, C, D, K), _t('d-s', 599, 586, 1, 'the CADR&rsquo;s serial line') + '\n          ' + _t('d-s', 599, 600, 1, 'on a TCP socket,') + '\n          '
+    ((A, D, K), _t('d-s', 599, 586, 1, 'the CADR&rsquo;s serial line') + '\n          ' + _t('d-s', 599, 600, 1, 'on a TCP socket,') + '\n          '
      + _t('d-s', 599, 622, 1, 'as muir-sim offers it'),
      _t('d-s', 599, 586, 1, 'serial line on a') + '\n          ' + _t('d-s', 599, 600, 1, 'TCP socket, as') + '\n          '
      + _t('d-s', 599, 614, 1, 'muir-sim does')),
-    ((A, C, D, K), _t('d-s', 746, 586, 1, 'a drive&rsquo;s blocks as a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'one file a drive') + '\n          '
+    ((A, D, K), _t('d-s', 746, 586, 1, 'a drive&rsquo;s blocks as a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'one file a drive') + '\n          '
      + _t('d-s', 746, 622, 1, 'staged into DDR'),
      _t('d-s', 746, 586, 1, 'a drive is a file,') + '\n          ' + _t('d-s', 746, 600, 1, 'its blocks staged') + '\n          '
      + _t('d-s', 746, 614, 1, 'into DDR')),
-    ((A, C), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over M_AXI_GP1') + '\n          '
+    ((A,), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over M_AXI_GP1') + '\n          '
      + _t('d-s', 893, 622, 1, 'a Unibus master'),
      _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
      + _t('d-s', 893, 614, 1, 'M_AXI_GP1') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
@@ -454,20 +399,16 @@ LABELS = [
      + _t('d-s', 893, 622, 1, 'a Unibus master'),
      _t('d-s', 893, 586, 1, 'halt, step and') + '\n          ' + _t('d-s', 893, 600, 1, 'inspect over') + '\n          '
      + _t('d-s', 893, 614, 1, 'LWH2F') + '\n          ' + _t('d-s', 893, 628, 1, 'a Unibus master')),
-    ((A, C, D, K), '>four registers, and the channel<', '>four registers, the channel<'),
-    ((A, C, D, K), '>a second display board,<', '>second display board:<'),
-    ((A, C, D, K), '>576 &times; 454, 4 bits a pixel<', '>576 &times; 454 &times; 4 bits<'),
+    ((A, D, K), '>four registers, and the channel<', '>four registers, the channel<'),
+    ((A, D, K), '>a second display board,<', '>second display board:<'),
+    ((A, D, K), '>576 &times; 454, 4 bits a pixel<', '>576 &times; 454 &times; 4 bits<'),
     ((A, D, K), _t('d-s', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s', 1040, 600, 1, 'onto the I/O board') + '\n          '
      + _t('d-s', 1040, 622, 1, 'through the terminal'),
      _t('d-s', 1040, 586, 1, 'the keyboard and') + '\n          ' + _t('d-s', 1040, 600, 1, 'mouse, onto the') + '\n          '
      + _t('d-s', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s', 1040, 628, 1, 'via the terminal')),
-    ((C,), _t('d-s d-absent-t', 1040, 586, 1, 'the keyboard and mouse,') + '\n          ' + _t('d-s d-absent-t', 1040, 600, 1, 'onto the I/O board') + '\n          '
-     + _t('d-s d-absent-t', 1040, 622, 1, 'through the terminal'),
-     _t('d-s d-absent-t', 1040, 586, 1, 'the keyboard and') + '\n          ' + _t('d-s d-absent-t', 1040, 600, 1, 'mouse, onto the') + '\n          '
-     + _t('d-s d-absent-t', 1040, 614, 1, 'I/O board') + '\n          ' + _t('d-s d-absent-t', 1040, 628, 1, 'via the terminal')),
     ((D,), '>2 &times; Cortex-A76<', '>2&times;Cortex-A76<'),
     ((D,), '>2 &times; Cortex-A55<', '>2&times;Cortex-A55<'),
-    ((A, C, D, K), '<text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>',
+    ((A, D, K), '<text class="d-s" x="1066" y="228" text-anchor="end">Unibus, 16 bits, open collector</text>',
      '<text class="d-s" x="1066" y="214" text-anchor="end">Unibus, 16 bits,</text>\n          <text class="d-s" x="1066" y="228" text-anchor="end">open collector</text>'),
     ((K,), '>boot.scr, the CADR&rsquo;s bitstream,<', '>boot.scr, bitstream,<'),
     ((K,), _t('d-s', 893, 586, 1, 'halt, step and inspect') + '\n          ' + _t('d-s', 893, 600, 1, 'over HPM1') + '\n          '
@@ -611,7 +552,7 @@ def build_index():
 </div>
 <div class="prose">
 <p>The same fabric is built as QUUX too, the CADR evolved; <a href="#boards">the boards&rsquo; table</a> says which board runs which. Each machine boots its own <a href="../system/">muir-sys</a> system, and the CADR gets its files and the time from <a href="../ozd/">ozd</a>.</p>
-<div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="cora-z7-07s.html">Cora Z7-07S</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
+<div class="actions"><a class="text-link" href="arty-z7-20.html">Arty Z7-20</a><a class="text-link" href="kria-kr260.html">Kria KR260</a><a class="text-link" href="de25-nano.html">DE25-Nano</a></div>
 </div>
 </div>
 '''))
@@ -626,12 +567,9 @@ def build_index():
         name = '%s-%s.zip' % (machine, board)
         return '<td><a href="%s%s"><code>%s</code></a></td>' % (FZ, name, name)
     zrows = ''
-    for board, slug, quux in (('Arty Z7-20', 'arty-z7-20', True), ('DE25-Nano', 'de25-nano', True),
-                              ('Kria KR260', 'kria-kr260', True), ('Cora Z7-07S', 'cora-z7-07s', False)):
-        # the Cora Z7-07S does not run QUUX
-        none = '<td class="st no">not supported</td>'
+    for board, slug in (('Arty Z7-20', 'arty-z7-20'), ('DE25-Nano', 'de25-nano'), ('Kria KR260', 'kria-kr260')):
         zrows += '<tr><th scope="row" class="board">%s</th>%s%s</tr>\n' % (
-            board, zip_cell('cadr', slug), zip_cell('quux', slug) if quux else none)
+            board, zip_cell('cadr', slug), zip_cell('quux', slug))
     zips = ('<div class="table-scroll" tabindex="0" role="region" aria-label="The zip for each board and machine"><table>\n'
             '<thead><tr><th scope="col" class="board">Board</th><th scope="col">CADR</th><th scope="col">QUUX</th></tr></thead>\n'
             '<tbody>\n%s</tbody>\n</table></div>\n' % zrows)
@@ -657,7 +595,7 @@ def build_index():
         ('Unzip the zip onto it.', 'Your board&rsquo;s zip, onto the root of the card. A zip works only on the board it is named for.'),
         ('Add the system.', 'The disk as <code>packs/disk-pack-0.img</code>, and the <code>sys</code> and <code>site</code> folders as <code>sys/</code> and <code>site/</code>, from the downloads above. The <code>README.TXT</code> in each zip names the System its card is for, with the muir-sys release and the files. Both boot with an empty <code>sys/</code>, on the band&rsquo;s own error table; loading or compiling a file of the system needs its <code>sys</code> and <code>site</code> folders on the card. The machine reads and writes <code>sys/</code> and <code>site/</code>, so a file it compiles is written beside its source, and a tree it damages is put back from the system&rsquo;s sources tarball.'),
         ('Set the date.', 'The boards keep no time while switched off. With a network, a board sets its clock by NTP at boot, from <code>pool.ntp.org</code>, before the machine starts; <code>--ntp-server</code> in <code>fpgarc</code> names another server and <code>--no-ntp</code> turns it off. Without a network, open <code>fpgarc</code> on the card and replace the two lines <code>#--date yyyyMMdd</code> and <code>#--time HHmm</code> with today&rsquo;s date and the time in UTC, for example <code>--date 20261002</code> and <code>--time 1430</code>. With neither, the machine starts in 1970.'),
-        ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano, DisplayPort, J6, on the Kria KR260), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. The Cora Z7-07S has no display output, so there the VNC viewer is the only screen; on the Kria KR260 the network port is J10C, and its USB ports are for the keyboard and the mouse, with no other USB storage plugged in. On the Arty Z7-20, the Cora Z7-07S and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
+        ('Connect a screen and input.', 'A monitor and a USB keyboard and mouse (HDMI on the Arty Z7-20 and the DE25-Nano, DisplayPort, J6, on the Kria KR260), or Ethernet to a network with DHCP and a VNC viewer on port 5900 of the board&rsquo;s address. On the Kria KR260 the network port is J10C, and its USB ports are for the keyboard and the mouse, with no other USB storage plugged in. On the Arty Z7-20 and the DE25-Nano the address can change from one boot to the next, so look for it in your router&rsquo;s list.'),
         ('Switch the board on.', 'Linux starts, and the machine boots from its disk by itself in about two minutes. The first time the machine reads a file it asks you to log in: log in as <code>lispm</code>, the name whose home directory the card provides.'),
     ]
     stepsh = '<div class="steps-list">\n' + ''.join(
@@ -681,12 +619,12 @@ def build_index():
         ('The work in this repository: the fabric, the checks and their reference traces, the programs beside the machine and the documents',
          'This project&rsquo;s. <b>GNU Affero General Public License, version 3 or later</b>',
          '<code>LICENSE</code>, and the SPDX identifier <code>AGPL-3.0-or-later</code> in almost every file&rsquo;s header'),
-        ('Eight files, four for each Zynq board: <code>ps7_init_gpl.c</code>, U-Boot&rsquo;s default environment, the board&rsquo;s device tree and the <code>-u-boot.dtsi</code> beside it',
+        ('Four files, for the Arty Z7-20: <code>ps7_init_gpl.c</code>, U-Boot&rsquo;s default environment, the board&rsquo;s device tree and the <code>-u-boot.dtsi</code> beside it',
          'This project&rsquo;s, under the <b>GNU General Public License, version 2 or later</b>, because each is compiled into U-Boot',
          'each file&rsquo;s own header'),
         ('Digilent&rsquo;s pin files',
          'Digilent&rsquo;s, under the <b>MIT License</b>',
-         '<code>Digilent-License.txt</code> beside the Cora Z7-07S&rsquo;s master file; the Arty Z7-20&rsquo;s constraint file cites the commit and digest of its pins'),
+         'the Arty Z7-20&rsquo;s constraint file cites the commit and digest of its pins'),
         ('<a href="../simulator/">muir-sim</a>',
          'Its own repository, under the <b>AGPL, version 3 or later</b>',
          'not carried; pinned by commit in <code>muir.commit</code>'),
@@ -715,7 +653,7 @@ def build_index():
 </div>
 ''', label='About'))
     page('index.html', 'muir-fpga &mdash; the MIT CADR and QUUX in fabric',
-         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Cora Z7-07S, the Kria KR260 and the DE25-Nano.',
+         'The MIT CADR Lisp Machine and QUUX, the CADR evolved, in the fabric of small FPGA boards, held tick for tick to the muir-sim simulator: what runs on the Arty Z7-20, the Kria KR260 and the DE25-Nano.',
          P)
 
 # ================================================================ board pages
@@ -749,7 +687,7 @@ KEY_GAP = 24              # from a word's end to the next swatch
 # 7,200 and `not available on this board` 16,200 at 1,000 pixels.
 PLEX_ADVANCE = 0.6
 KEY_FONT_SIZE = 11
-KEY_WORDS = ('this project', 'another project', 'board component', 'not available on this board')
+KEY_WORDS = ('this project', 'another project', 'board component')
 KEY_WIDTH = dict((w, round(len(w) * PLEX_ADVANCE * KEY_FONT_SIZE, 2)) for w in KEY_WORDS)
 
 # WHOSE WORK EACH BLOCK IS, which is the whole of what the colors say.  Green
@@ -765,13 +703,12 @@ KEY_WIDTH = dict((w, round(len(w) * PLEX_ADVANCE * KEY_FONT_SIZE, 2)) for w in K
 # `d-ext` the gray.  `d-built` and `d-wip` are now unused.
 KEY_ITEMS = [('d-done', 'this project'), ('d-part', 'another project'),
              ('d-ext', 'board component')]
-KEY_ABSENT = ('d-absent-key', 'not available on this board')
 
 def num(v):
     return ('%.2f' % v).rstrip('0').rstrip('.')
 
 def frame(svg, fname, part, product):
-    items = KEY_ITEMS + ([KEY_ABSENT] if fname == 'cora-z7-07s.html' else [])
+    items = KEY_ITEMS
     total = sum(13 + KEY_TO_WORD + KEY_WIDTH[w] for _, w in items) + KEY_GAP * (len(items) - 1)
     x = FRAME_CENTER - total / 2
     key = ['''          <!-- Whose work each block is: green this project's and done,
@@ -787,19 +724,8 @@ def frame(svg, fname, part, product):
                width. -->
 ''']
     for cls, word in items:
-        if cls == 'd-absent-key':
-            key.append('''          <!-- The one mark on the drawing that is not about whose work a
-               block is: a block this board does not have, kept in its place
-               and crossed off.  The
-               swatch is the drawing's own ink with the cross on it, because
-               what the legend has to show here is the mark and not a color. -->
-''')
         key.append('          <rect class="d-box%s d-key" x="%s" y="%d" width="13" height="13"/>\n'
                    % (' ' + cls if cls else '', num(x), KEY_SWATCH_Y))
-        if cls == 'd-absent-key':
-            key.append('          <path class="d-absent-x" d="M%s,%d L%s,%d M%s,%d L%s,%d"/>\n'
-                       % (num(x), KEY_SWATCH_Y, num(x + 13), KEY_SWATCH_Y + 13,
-                          num(x + 13), KEY_SWATCH_Y, num(x), KEY_SWATCH_Y + 13))
         key.append('          <text class="d-s" x="%s" y="%d">%s</text>\n' % (num(x + 13 + KEY_TO_WORD), KEY_BASELINE, word))
         x += 13 + KEY_TO_WORD + KEY_WIDTH[word] + KEY_GAP
     key.append('''          <!-- No outline around the board: the chip's outline below is the
@@ -818,16 +744,15 @@ def frame(svg, fname, part, product):
 
 def board_svg(fname):
     svg = svgs(fname)[0]
-    for o, n in {'arty-z7-20.html': ARTY_FIT, 'cora-z7-07s.html': CORA_FIT}[fname]:
+    for o, n in {'arty-z7-20.html': ARTY_FIT}[fname]:
         svg = sub(svg, o, n)
     i, j = svg.index(FIT_FROM), svg.index(FIT_TO) + len(FIT_TO)
     svg = svg[:i] + cadr_fit_block(fname[:-len('.html')]) + svg[j:]
-    return frame(svg, fname, *{'arty-z7-20.html': ('XC7Z020-1CLG400C', 'AMD Zynq 7020'),
-                               'cora-z7-07s.html': ('XC7Z007S-1CLG400C', 'AMD Zynq 7007S')}[fname])
+    return frame(svg, fname, *{'arty-z7-20.html': ('XC7Z020-1CLG400C', 'AMD Zynq 7020')}[fname])
 
 # Every board page lists the other boards among its keys, in the site's order:
-# the Arty Z7-20, the Cora Z7-07S, the Kria KR260, the DE25-Nano.
-BOARD_NAV = [('arty-z7-20.html', 'Arty Z7-20'), ('cora-z7-07s.html', 'Cora Z7-07S'),
+# the Arty Z7-20, the Kria KR260, the DE25-Nano.
+BOARD_NAV = [('arty-z7-20.html', 'Arty Z7-20'),
              ('kria-kr260.html', 'Kria KR260'), ('de25-nano.html', 'DE25-Nano')]
 BOARD_KEYS = dict((f, tuple(b for b in BOARD_NAV if b[0] != f)) for f, _ in BOARD_NAV)
 
@@ -842,7 +767,6 @@ BOARD_KEYS = dict((f, tuple(b for b in BOARD_NAV if b[0] != f)) for f, _ in BOAR
 # pages open on the same words.
 BOARD_EYEBROW = {
     'arty-z7-20.html': 'muir-fpga &middot; Digilent &middot; Zynq 7020',
-    'cora-z7-07s.html': 'muir-fpga &middot; Digilent &middot; Zynq 7007S',
     'kria-kr260.html': 'muir-fpga &middot; AMD &middot; Zynq UltraScale+',
     'de25-nano.html': 'muir-fpga &middot; Terasic &middot; Agilex 5 E-series',
 }
@@ -1097,8 +1021,8 @@ DE25_FIT_NOTE = '''          <!-- From the Quartus fit of the CADR with the face
 def fit_bars(rows, y=68):
     out = ''
     for label, used in rows:
-        # The percentage keeps one decimal always, as the Arty Z7-20's and the
-        # Cora Z7-07S's own hand-written figures do (85.0%); num() would strip
+        # The percentage keeps one decimal always, as the Arty Z7-20's own
+        # hand-written figures do; num() would strip
         # a trailing zero, which reads as a different number of significant
         # figures than the same board's other row.
         out += ('          <text class="d-s" x="-164" y="%d">%s</text>\n'
@@ -1982,11 +1906,9 @@ def quux_de25(svg):
 
 
 DESC = {}
-for _f in ('arty-z7-20.html', 'cora-z7-07s.html'):
+for _f in ('arty-z7-20.html',):
     DESC[_f] = re.search(r'<meta name="description" content="([^"]*)">', open(os.path.join(BASE, _f)).read()).group(1)
-DESC['cora-z7-07s.html'] = sub(DESC['cora-z7-07s.html'], 'where the two meet on the smaller part.', 'where the two meet. It runs the CADR only.')
-# The board runs the design, so it is not "proposed"; the words are the Cora
-# Z7-07S's.
+# The board runs the design, so it is not "proposed".
 DESC['arty-z7-20.html'] = sub(DESC['arty-z7-20.html'], 'The proposed architecture for running the MIT CADR Lisp Machine in fabric',
                               'The MIT CADR Lisp Machine in fabric')
 
@@ -2000,9 +1922,9 @@ def build_booting():
     # sentences, in the third person.
     P = [comment, '\n']
     P.append(hero('muir-fpga &middot; booting', 'How a board<br>comes <em>up.</em>',
-                  'Four sequences, two for the Arty Z7-20 and the Cora Z7-07S and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.',
+                  'Four sequences, two for the Arty Z7-20 and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.',
                   body='<div class="hero-description">\n'
-                       '<p>The Arty Z7-20 and the Cora Z7-07S, the two Zynq-7000 boards, come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>\n'
+                       '<p>The Arty Z7-20 is a Zynq-7000 board, and its two sequences are the first two below.</p>\n'
                        '<p>The DE25-Nano has a pair of its own, because it boots differently enough to need one. Its boot crosses two storage devices rather than one, and its fabric is configured in the middle of the sequence rather than by the loader&rsquo;s first stage.</p>\n'
                        '<p>On either board the two paths differ only in where the files come from. The loader itself is read the same way on both, and the same last step ends both.</p>\n'
                        '<p>The Kria KR260 boots by its own loader, in its flash, which this project leaves alone: it reads the card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there (<a href="kria-kr260.html">its page</a>).</p>\n'
@@ -2046,7 +1968,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
     # matters and it is the environment's own: the bridges are released
     # BEFORE the gate is raised, and the kernel is fetched only after both.
     P.append(section('de25', '03 / THE DE25-NANO, FROM ITS CARD', 'The DE25-Nano<br>on <em>its own.</em>',
-        'This board takes the same two paths as the Zynq boards, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.',
+        'This board takes the same two paths as the Arty Z7-20, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.',
         '''<div class="cols">
 <div>
 <p class="lead">The card&rsquo;s one partition. Two names are not this project&rsquo;s to move, and the rest sit in a folder named for the board:</p>
@@ -2070,7 +1992,7 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
     # of the card's uEnv.txt (so a lease cannot displace the server the card
     # named), and the served uEnv.net.  IT HAS RUN ON THE BOARD, on 22 September
     # 2026, and the section lede, the drawing's byte counts and the times down
-    # its left are that one run's, as the two Zynq drawings' and the DE25 card
+    # its left are that one run's, as the Zynq drawing's and the DE25 card
     # drawing's are of theirs.  The session is docs/board.md, "The DE25-Nano
     # over TFTP".
     P.append(section('de25-server', '04 / THE DE25-NANO, FOR DEVELOPMENT', 'The DE25-Nano<br>with <em>TFTP.</em>',
@@ -2089,26 +2011,25 @@ de25-nano/    cadr.core.rbf, the tree, Image, rootfs.cpio.uboot</pre>
 # ============================================== the debug cable on the Pmod boards
 
 # The twelve pins of a Pmod, what each carries, and each board's package pin,
-# from the Arty Z7-20's and the Cora Z7-07S's .xdc (Digilent's files; the two
-# boards use the same package pins) and the Kria KR260's PMOD1 section of
+# from the Arty Z7-20's .xdc (Digilent's file) and the Kria KR260's PMOD1 section of
 # muir-fpga's docs/debug-cable.md and boards/kria-kr260/cadr_kr260.xdc (AMD's
 # board files).  A ribbon between any two of these Pmods joins pin n to pin n
 # (straight) or to the other row's pin (mirrored).
-PMOD_BOARDS = (('arty', 'Arty JA'), ('cora', 'Cora JA'), ('kria', 'Kria PMOD1'))
+PMOD_BOARDS = (('arty', 'Arty JA'), ('kria', 'Kria PMOD1'))
 PMOD_PINS = {
-    1: ('debugger strobe', {'arty': 'Y18', 'cora': 'Y18', 'kria': 'H12'}),
-    2: ('guard, driven low', {'arty': 'Y19', 'cora': 'Y19', 'kria': 'E10'}),
-    3: ('debugger data', {'arty': 'Y16', 'cora': 'Y16', 'kria': 'D10'}),
-    4: ('guard, driven low', {'arty': 'Y17', 'cora': 'Y17', 'kria': 'C11'}),
+    1: ('debugger strobe', {'arty': 'Y18', 'kria': 'H12'}),
+    2: ('guard, driven low', {'arty': 'Y19', 'kria': 'E10'}),
+    3: ('debugger data', {'arty': 'Y16', 'kria': 'D10'}),
+    4: ('guard, driven low', {'arty': 'Y17', 'kria': 'C11'}),
     5: ('ground', None), 6: ('3.3 V', None),
-    7: ('debuggee strobe', {'arty': 'U18', 'cora': 'U18', 'kria': 'B10'}),
-    8: ('guard, driven low', {'arty': 'U19', 'cora': 'U19', 'kria': 'E12'}),
-    9: ('debuggee data', {'arty': 'W18', 'cora': 'W18', 'kria': 'D11'}),
-    10: ('guard, driven low', {'arty': 'W19', 'cora': 'W19', 'kria': 'B11'}),
+    7: ('debuggee strobe', {'arty': 'U18', 'kria': 'B10'}),
+    8: ('guard, driven low', {'arty': 'U19', 'kria': 'E12'}),
+    9: ('debuggee data', {'arty': 'W18', 'kria': 'D11'}),
+    10: ('guard, driven low', {'arty': 'W19', 'kria': 'B11'}),
     11: ('ground', None), 12: ('3.3 V', None),
 }
 
-def pmod_cable_svg(boards=('arty', 'cora', 'kria')):
+def pmod_cable_svg(boards=('arty', 'kria')):
     """The Pmod's twelve pins: for each, what it carries, the package pin on
     each board in `boards`, and the pin it meets at the far Pmod on a straight
     ribbon and on a mirrored one."""
@@ -2119,7 +2040,7 @@ def pmod_cable_svg(boards=('arty', 'cora', 'kria')):
     ch = sig_h
     ys = (84, 84 + ch + 24)
     out = []
-    onboards = ' and '.join(names[b] for b in boards) if nb < 3 else 'the Arty Z7-20&rsquo;s JA, the Cora Z7-07S&rsquo;s JA and the Kria KR260&rsquo;s PMOD1'
+    onboards = ' and '.join(names[b] for b in boards) if nb < 2 else 'the Arty Z7-20&rsquo;s JA and the Kria KR260&rsquo;s PMOD1'
     aria = ('The debug cable on a Pmod, drawn as its twelve pins in two rows, pins 1 to 6 above and 7 to 12 below. '
             'For each pin, what it carries, its package pin on %s, and the pin of the far Pmod that it meets on a straight ribbon and on a mirrored one. ') % (
             'the Kria KR260&rsquo;s PMOD1' if boards == ('kria',) else onboards)
@@ -2164,7 +2085,7 @@ def pmod_cable_svg(boards=('arty', 'cora', 'kria')):
     ty = ys[1] + ch + 36
     h = ty + 40
     title = 'the debug cable on a Pmod' if nb > 1 else 'the debug cable on the Kria KR260'
-    sub_ = ('JA on the Arty Z7-20 and the Cora Z7-07S, PMOD1 on the Kria KR260; the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one'
+    sub_ = ('JA on the Arty Z7-20, PMOD1 on the Kria KR260; the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one'
             if nb > 1 else 'PMOD1, with the pin each meets at the far Pmod, on a straight ribbon and on a mirrored one')
     return ('<svg viewBox="0 0 1060 %d" role="img" aria-label="%s">\n'
             '          <text class="d-t" x="10" y="18">%s</text>\n'
@@ -2241,24 +2162,24 @@ def build_debugging():
     P.append(fig_section(4, 'cable', 'Between two boards', 'The <em>cable.</em>',
         'A cable for this link joins the eight signals and the two grounds, and leaves the 3.3 V supply pins open at both ends.',
         f3,
-        'The connector is Pmod JA on both boards. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.'))
+        'The connector is Pmod JA on the Arty Z7-20. A board told to be the debugger listens on both groups of pins first, so a ribbon made the wrong way up is found rather than trusted.'))
 
-    # THE THREE PMOD BOARDS: the Arty Z7-20 and the Cora Z7-07S on JA, the
+    # THE TWO PMOD BOARDS: the Arty Z7-20 on JA, the
     # Kria KR260 on PMOD1.  One drawing carries the twelve pins, each board's
     # package pin and the pin each meets at the far Pmod; the section carries
-    # what has run (the Arty and the Cora, on a ribbon between their JAs) and
+    # what has run (the Arty, on a ribbon between its JA and another board's) and
     # the Kria's caveat (AMD's pin order, not checked on a wire, not run).
-    P.append(section('pmod', '04 / THE THREE PMOD BOARDS', 'The cable on<br>the <em>Pmod boards.</em>',
-        'The Arty Z7-20 and the Cora Z7-07S carry the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On each the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
+    P.append(section('pmod', '04 / THE TWO PMOD BOARDS', 'The cable on<br>the <em>Pmod boards.</em>',
+        'The Arty Z7-20 carries the cable on Pmod JA and the Kria KR260 on PMOD1, the first of its four Pmod headers. On each the eight signal pins are 3.3 V, each with a pull-down, so an unplugged connector reads zero.',
         '''<div class="cols">
 <div class="prose">
-<p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s and the Cora&rsquo;s package pins are the same ones, from Digilent&rsquo;s files; the Kria&rsquo;s are AMD&rsquo;s.</p>
+<p>The eight signals are on pins 1 to 4 and 7 to 10 of each connector, in the same order, so a straight ribbon between any two of them joins each signal to its counterpart. The Arty&rsquo;s package pins are from Digilent&rsquo;s file; the Kria&rsquo;s are AMD&rsquo;s.</p>
 <p>A mirrored ribbon is one pressed on the other way up, which joins each row to the other, and the debugger finds it under <code>auto</code>.</p>
-<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. None of these boards&rsquo; <code>.xdc</code> files names a supply pin, so nothing in the design can drive one.</p>
+<p><b>The grounds are joined and the supplies are not.</b> Pins 5 and 11 are ground and the cable joins them. Pins 6 and 12 carry each board&rsquo;s own 3.3 V, and the cable leaves them open at both ends. Neither board&rsquo;s <code>.xdc</code> file names a supply pin, so nothing in the design can drive one.</p>
 </div>
 <div>
-<p class="callout">The Arty and the Cora have run this cable.</p>
-<div class="prose"><p>A ribbon between their two JA connectors has carried the link, each board running Lisp throughout; the table below says what it carried.</p></div>
+<p class="callout">The Arty has run this cable.</p>
+<div class="prose"><p>A ribbon between its JA connector and another board&rsquo;s has carried the link, each board running Lisp throughout; the table below says what it carried.</p></div>
 <p class="callout">The Kria&rsquo;s pin order is AMD&rsquo;s, and it has not been checked on a wire.</p>
 <div class="prose"><p>The Kria&rsquo;s package pins and the order of its eight signals come from AMD&rsquo;s board files for the KR260. That the first eight pins in those files are header pins 1 to 4 and 7 to 10 is the order every Pmod pin file uses, and no schematic of the carrier is published to check it against. The Kria&rsquo;s cable has not been run on the boards: the connector is built into this board&rsquo;s CADR, the console reads a debuggee on it with nothing attached, and it has crossed nothing.</p></div>
 </div>
@@ -2383,7 +2304,7 @@ FAQ = [
      'The free BASIC tier refuses <code>create_debug_core</code>, so the probe is a <code>BSCANE2</code> and a shift register, which fills from reset and freezes with nobody at the board.',
      'the header of <code>rtl/plumbing/cadr_probe.sv</code>; <code>docs/toolchain.md</code>'),
     ('What license is this under, and what in it is not this project&rsquo;s work?',
-     'The GNU Affero General Public License, version 3 or later, apart from eight files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on <a href="index.html#license">the boards page</a>.',
+     'The GNU Affero General Public License, version 3 or later, apart from four files compiled into U-Boot under the GPL, version 2 or later. The third-party material is on <a href="index.html#license">the boards page</a>.',
      '<code>docs/license.md</code>'),
   ]),
 ]
@@ -2428,9 +2349,7 @@ def main(out):
     del WRITTEN[:]
     build_index()
     build_board('arty-z7-20.html', 'Arty Z7-20', 'QUUX and the CADR mapped onto one AMD Zynq 7020, the XC7Z020.', "muir-fpga's board, waving",
-                ('cora-z7-07s.html', 'Cora Z7-07S'), DIGILENT_ARTY, quux=quux_svg('arty-z7-20'))
-    build_board('cora-z7-07s.html', 'Cora Z7-07S', 'The CADR mapped onto one AMD Zynq 7007S, the XC7Z007S. This board runs the CADR only: the CADR takes %s%% of its lookup tables, and QUUX does not fit.' % CORA_LUT_PERCENT, "muir-fpga's board, waving",
-                ('arty-z7-20.html', 'Arty Z7-20'), DIGILENT_CORA, figlabel='CORA Z7-07S, CADR ONLY')
+                ('kria-kr260.html', 'Kria KR260'), DIGILENT_ARTY, quux=quux_svg('arty-z7-20'))
     build_kr260()
     build_de25()
     build_booting()

@@ -19,7 +19,7 @@ def pts(d, f):
         c[(float(m.group(3)), float(m.group(4)))] += 1
     return c
 bad = 0
-for f in ('arty-z7-20', 'cora-z7-07s'):
+for f in ('arty-z7-20',):
     a, b = pts(A, f), pts(B, f)
     new = set(b) - set(a); gone = set(a) - set(b)
     extra = {k: b[k]-a[k] for k in b if b[k] > a.get(k, 0)}

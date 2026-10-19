@@ -17,14 +17,12 @@ COLOR = {'#2da44e': 'green', '#d1495b': 'red', '#0969da': 'blue', 'none': 'dark'
 G, R, B, DARK, ABSENT = 'green', 'red', 'blue', 'dark', 'absent'
 # muir-fpga: boards/arty-z7-20/cadr_arty.sv (LD4 red at an error halt, LD5
 # blue for PROMENABLE) and quux15_arty.sv (LD4 red, LD5 dark);
-# boards/cora-z7-07s/cadr_cora.sv (LD1 red over blue over green; no lamp for
-# the fabric clock or the disk); boards/kria-kr260/ (UF1, UF2);
+# boards/kria-kr260/ (UF1, UF2);
 # boards/de25-nano/ (every LEDR green; quux15_de25.sv: LEDR5 dark, LEDR6
 # the memory port open).  cadr_de25.sv's LEDR6 is not drawn on the CADR's.
 EXPECT = {
     'arty-z7-20': [('LD0', G), ('LD1', G), ('LD2', G), ('LD3', G), ('LD4', R), ('LD5', B)],
     'arty-z7-20 quux': [('LD0', G), ('LD1', G), ('LD2', G), ('LD3', G), ('LD4', R), ('LD5', DARK)],
-    'cora-z7-07s': [('LD0', G), ('LD1', R), ('LD1', B), ('LD1', G), (None, ABSENT), (None, ABSENT)],
     'kria-kr260': [('UF1', G), ('UF2', G)],
     'kria-kr260 quux': [('UF1', G), ('UF2', G)],
     'de25-nano': [('LEDR%d' % n, G) for n in range(6)],

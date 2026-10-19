@@ -36,7 +36,7 @@ SUBNAV = {
     'simulator': [('simulator/index.html', 'The simulator'), ('simulator/cadr.html', 'CADR'),
                   ('simulator/quux.html', 'QUUX')],
     'fpga': [('fpga/index.html', 'The boards'), ('fpga/arty-z7-20.html', 'Arty Z7-20'),
-             ('fpga/cora-z7-07s.html', 'Cora Z7-07S'), ('fpga/kria-kr260.html', 'Kria KR260'),
+             ('fpga/kria-kr260.html', 'Kria KR260'),
              ('fpga/de25-nano.html', 'DE25-Nano'),
              ('fpga/booting.html', 'Booting'), ('fpga/debugging.html', 'Debugging'),
              ('fpga/faq.html', 'Questions')],

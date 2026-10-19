@@ -11,7 +11,7 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a class="wordmark" href="../" aria-label="muir, the front page">muir<span>&#8599;</span></a><span class="header-note">CADR PRESERVED.<br>QUUX EVOLVED.</span><nav aria-label="The site&rsquo;s sections"><a href="../lisp-machine/">Machines</a><a href="../simulator/">Simulator</a><a href="../fpga/" aria-current="page">FPGA</a><a href="../system/">System</a><a class="github" href="https://github.com/metebalci/muir-fpga">GitHub <span>&#8599;</span></a></nav></header>
-<nav class="subnav wrap" aria-label="muir-fpga&rsquo;s pages"><b>muir-fpga</b><a href="./">The boards</a><a href="arty-z7-20.html">Arty Z7-20</a><a href="cora-z7-07s.html">Cora Z7-07S</a><a href="kria-kr260.html">Kria KR260</a><a href="de25-nano.html">DE25-Nano</a><span aria-current="page">Booting</span><a href="debugging.html">Debugging</a><a href="faq.html">Questions</a></nav>
+<nav class="subnav wrap" aria-label="muir-fpga&rsquo;s pages"><b>muir-fpga</b><a href="./">The boards</a><a href="arty-z7-20.html">Arty Z7-20</a><a href="kria-kr260.html">Kria KR260</a><a href="de25-nano.html">DE25-Nano</a><span aria-current="page">Booting</span><a href="debugging.html">Debugging</a><a href="faq.html">Questions</a></nav>
 <main id="main">
 <!-- THE SEQUENCES CARRY NO COLOR OF THE BOARD DRAWINGS' KEY, and that is the
      same rule `cadr.css` states for the drawings of the real machine.  A board
@@ -23,9 +23,9 @@
 <div>
 <p class="eyebrow"><span class="dot"></span>muir-fpga &middot; booting</p>
 <h1>How a board<br>comes <em>up.</em></h1>
-<p class="intro">Four sequences, two for the Arty Z7-20 and the Cora Z7-07S and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
+<p class="intro">Four sequences, two for the Arty Z7-20 and two for the DE25-Nano: from the board&rsquo;s own card, which is how anybody else&rsquo;s board boots, and with TFTP, which is how this project&rsquo;s own boards boot while they are being worked on.</p>
 <div class="hero-description">
-<p>The Arty Z7-20 and the Cora Z7-07S, the two Zynq-7000 boards, come up the same way as each other, so one drawing serves both. Where they differ, the drawing says so in a label.</p>
+<p>The Arty Z7-20 is a Zynq-7000 board, and its two sequences are the first two below.</p>
 <p>The DE25-Nano has a pair of its own, because it boots differently enough to need one. Its boot crosses two storage devices rather than one, and its fabric is configured in the middle of the sequence rather than by the loader&rsquo;s first stage.</p>
 <p>On either board the two paths differ only in where the files come from. The loader itself is read the same way on both, and the same last step ends both.</p>
 <p>The Kria KR260 boots by its own loader, in its flash, which this project leaves alone: it reads the card, which it sees as a USB disk, or a server on the network, and loads Linux and then the bitstream from there (<a href="kria-kr260.html">its page</a>).</p>
@@ -239,7 +239,7 @@ uEnv.txt      <b>fixed name</b>  imported before any board name is known
 </section>
 <section id="de25" class="section wrap" aria-label="The DE25-Nano on its own.">
 <div class="section-heading"><div><p class="eyebrow">03 / THE DE25-NANO, FROM ITS CARD</p><h2>The DE25-Nano<br>on <em>its own.</em></h2></div></div>
-<p class="lead">This board takes the same two paths as the Zynq boards, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.</p>
+<p class="lead">This board takes the same two paths as the Arty Z7-20, and reaches them differently. There is no <code>BOOT.BIN</code>, because the first-stage loader is in the QSPI flash; and the fabric is empty until U-Boot fills it.</p>
 <div class="cols">
 <div>
 <p class="lead">The card&rsquo;s one partition. Two names are not this project&rsquo;s to move, and the rest sit in a folder named for the board:</p>

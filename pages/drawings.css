@@ -69,11 +69,8 @@
 .d-ext  { fill: var(--st-ext);  stroke: var(--st-ext); }
 .d-absent   { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 4 3; }
 .d-absent-x { fill: none; stroke: var(--st-absent); stroke-width: 1.25; }
-.d-absent-t { fill-opacity: 0.5; }
-.d-absent-l { stroke-opacity: 0.35; }
 .d-line.d-done, .d-line.d-part, .d-line.d-ext { fill: none; }
 .d-key { fill-opacity: 1; }
-.d-absent-key { fill: var(--ink); fill-opacity: 1; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: none; }
 .d-hair { fill: none; stroke: currentColor; stroke-width: 1; }
 .d-tint { fill: currentColor; fill-opacity: 0.14; stroke: none; }
 

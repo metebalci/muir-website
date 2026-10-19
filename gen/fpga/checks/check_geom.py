@@ -18,7 +18,6 @@ def arch(t, n=0):
 # Every architecture drawing: (name, page, which on the page).  The CADR's on
 # each board, and QUUX's on the three boards that run it.
 DRAWINGS = (('arty-z7-20', 'arty-z7-20', 0), ('arty-z7-20 quux', 'arty-z7-20', 1),
-            ('cora-z7-07s', 'cora-z7-07s', 0),
             ('kria-kr260', 'kria-kr260', 0), ('kria-kr260 quux', 'kria-kr260', 1),
             ('de25-nano', 'de25-nano', 0), ('de25-nano quux', 'de25-nano', 1))
 

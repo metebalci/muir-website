@@ -50,7 +50,7 @@ def report(d, f):
 base = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'base')
 new  = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'pages', 'fpga')
 bad = 0
-for f in ('arty-z7-20', 'cora-z7-07s'):
+for f in ('arty-z7-20',):
     bx, bt = report(base, f)
     nx, nt = report(new, f)
     print('%-13s crossings %d -> %d, lines through a box %d -> %d' % (f, len(bx), len(nx), len(bt), len(nt)))
