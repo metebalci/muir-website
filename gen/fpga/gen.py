@@ -567,7 +567,7 @@ def build_index():
         name = '%s-%s.zip' % (machine, board)
         return '<td><a href="%s%s"><code>%s</code></a></td>' % (FZ, name, name)
     zrows = ''
-    for board, slug in (('Arty Z7-20', 'arty-z7-20'), ('DE25-Nano', 'de25-nano'), ('Kria KR260', 'kria-kr260')):
+    for board, slug in (('Arty Z7-20', 'arty-z7-20'), ('Kria KR260', 'kria-kr260'), ('DE25-Nano', 'de25-nano')):
         zrows += '<tr><th scope="row" class="board">%s</th>%s%s</tr>\n' % (
             board, zip_cell('cadr', slug), zip_cell('quux', slug))
     zips = ('<div class="table-scroll" tabindex="0" role="region" aria-label="The zip for each board and machine"><table>\n'
