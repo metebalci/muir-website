@@ -120,7 +120,7 @@ def main():
             ('generated', 'a fit figure changed in the facts and not built',
              P('gen', 'facts.py'), "Fit(15187, 53200, 'LUTs'", "Fit(15188, 53200, 'LUTs'"),
             ('facts', 'a board\'s period written by hand in a page',
-             P('src', 'quux', 'index.html'), 'and a <em>cache.</em></h2>', 'and a <em>cache.</em></h2><p>48&nbsp;ns on the Arty Z7-20.</p>'),
+             P('src', 'quux', 'index.html'), 'and a <em>cache.</em></h2>', 'and a <em>cache.</em></h2><p>50&nbsp;ns on the Arty Z7-20.</p>'),
             ('facts', 'a board\'s cache written by hand in a page',
              P('src', 'quux', 'index.html'), '{{quux.cache.least}}&ndash;{{quux.cache.most}}', '4K&ndash;64K'),
             ('facts', 'a board\'s display written by hand in a page',

@@ -43,9 +43,9 @@ DISPLAY = {
 # QUUX on each board that runs it, as its bitstream is built: the clock's
 # period in ns, the cache in words, main memory in megawords.
 QUUX = {
-    'arty-z7-20': dict(period=_n(48), cache=_n(4096), memory=_n(32)),
-    'kria-kr260': dict(period=_n(19), cache=_n(65536), memory=_n(32)),
-    'de25-nano': dict(period=_n(22.5), cache=_n(16384), memory=_n(32)),
+    'arty-z7-20': dict(period=_n(50), cache=_n(4096), memory=_n(32)),
+    'kria-kr260': dict(period=_n(20), cache=_n(65536), memory=_n(32)),
+    'de25-nano': dict(period=_n(25), cache=_n(16384), memory=_n(32)),
 }
 
 # The most main memory `--main-memory-size` gives QUUX on a released card,
@@ -75,9 +75,9 @@ FITS = {
     ('arty-z7-20', 'cadr'): Fit(15187, 53200, 'LUTs', 46, 140, 'BRAM', 4.5, 0.275, 'c3b8fd2'),
     ('kria-kr260', 'cadr'): Fit(15309, 117120, 'LUTs', 41, 144, 'BRAM', 4.5, 1.987, 'c3b8fd2', uram=(0, 64)),
     ('de25-nano', 'cadr'): Fit(18108, 46800, 'ALMs', 135, 358, 'M20K', 2.5, 2.353, 'c3b8fd2'),
-    ('arty-z7-20', 'quux'): Fit(28766, 53200, 'LUTs', 96, 140, 'BRAM', 4.5, 0.493, 'aa4a6ad'),
-    ('kria-kr260', 'quux'): Fit(31622, 117120, 'LUTs', 43.5, 144, 'BRAM', 4.5, 0.013, 'f4df742', uram=(14, 64)),
-    ('de25-nano', 'quux'): Fit(35063, 46800, 'ALMs', 162, 358, 'M20K', 2.5, 0.002, 'b1b4bcb'),
+    ('arty-z7-20', 'quux'): Fit(28848, 53200, 'LUTs', 96.5, 140, 'BRAM', 4.5, 0.477, '653e575'),
+    ('kria-kr260', 'quux'): Fit(31770, 117120, 'LUTs', 44, 144, 'BRAM', 4.5, 0.280, '653e575', uram=(14, 64)),
+    ('de25-nano', 'quux'): Fit(34941, 46800, 'ALMs', 163, 358, 'M20K', 2.5, 2.080, '653e575'),
 }
 
 # Linux's share of the board's memory: with the CADR's areas reserved (kB),
@@ -100,12 +100,12 @@ def num(v):
 
 
 def period(board):
-    """'19': QUUX's period on the board, in ns."""
+    """'20': QUUX's period on the board, in ns."""
     return num(QUUX[board]['period'])
 
 
 def mhz(board):
-    """'52.6': QUUX's clock frequency on the board, in MHz, from its period."""
+    """'40': QUUX's clock frequency on the board, in MHz, from its period."""
     return num(round(1000 / QUUX[board]['period'], 1))
 
 

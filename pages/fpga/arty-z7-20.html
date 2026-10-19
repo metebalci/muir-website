@@ -653,7 +653,7 @@
 <figure class="fig dense wide">
 <div class="fig-top"><span>FIG. 02 &mdash; ARTY Z7-20, QUUX</span><span>MUIR-FPGA</span></div>
 <div class="scroll" tabindex="0" role="region" aria-label="Figure 2: Arty Z7-20, QUUX">
-        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX mapped onto one AMD Zynq 7020, part XC7Z020-1CLG400C: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the programmable logic: the clock, the board&rsquo;s 125 MHz in through an MMCM, at a period of 48 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the TLB, of 4,096 entries, with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 28,766 of the 53,200 lookup tables are in use, 54.1 per cent, and 432 KB of the 630 KB of block RAM, 68.6 per cent; under those figures, the worst setup slack of this build, plus 0.493 nanoseconds. Under the chip the memory box says the areas are QUUX&rsquo;s: 32MW of main memory, 1 MB of display and 128 KB of disk packs. BTN0 and SW0 are unused, since QUUX has no second boot and no no-auto-boot, and BTN1 resets the machine; LD0 shows the machine running, not halted, and LD5 is dark, since QUUX has no PROM select. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
+        <svg viewBox="20 41 1813 829" role="img" aria-label="QUUX mapped onto one AMD Zynq 7020, part XC7Z020-1CLG400C: the same machine as the CADR&rsquo;s drawing before it, with QUUX&rsquo;s own blocks. In the programmable logic: the clock, the board&rsquo;s 125 MHz in through an MMCM, at a period of 50 nanoseconds, one clock a stage of the four-stage pipeline; the processor, with a 40-bit word, a control store of 16K words, a PDL buffer of 16K words and multiply and divide in one instruction each; the TLB, of 4,096 entries, with a walk on a miss; the memory port, whose cycles go to the memory bus, to a device register or nowhere; the cache, 4,096 words in two ways, write-through, in lines of eight words; the register page, with the feature words, the interrupt status, three interval timers and the real-time clock; and the console. Under the page: the memory master, whose lines of eight words arrive in five 64-bit beats, block-disk, the video controller, the file device and the keyboard and mouse. There is no bus interface, no I/O board, no serial line, no Chaosnet, no color board and no debug cable, and no ozd, because QUUX has a file device and a real-time clock of its own. Under the fabric&rsquo;s label, 28,848 of the 53,200 lookup tables are in use, 54.2 per cent, and 434.25 KB of the 630 KB of block RAM, 68.9 per cent; under those figures, the worst setup slack of this build, plus 0.477 nanoseconds. Under the chip the memory box says the areas are QUUX&rsquo;s: 32MW of main memory, 1 MB of display and 128 KB of disk packs. BTN0 and SW0 are unused, since QUUX has no second boot and no no-auto-boot, and BTN1 resets the machine; LD0 shows the machine running, not halted, and LD5 is dark, since QUUX has no PROM select. Every block this project builds is done and drawn green; the parts drawn gray are components of the board. ">
 
           <rect class="d-box d-done d-key" x="733.9" y="851" width="13" height="13"/>
           <text class="d-s" x="753.9" y="861">this project</text>
@@ -686,27 +686,27 @@
           <text class="d-s" x="-233" y="368" text-anchor="middle">at 60 Hz</text>
 
           <text class="d-s" x="-164" y="48">Programmable Logic</text>
-          <text class="d-s" x="-164" y="68">LUTs 28,766 of 53,200</text>
+          <text class="d-s" x="-164" y="68">LUTs 28,848 of 53,200</text>
           <rect class="d-box" x="-164" y="74" width="136" height="13"/>
-          <rect x="-164" y="74" width="73.5" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-158" y="84">54.1%</text>
-          <text class="d-s" x="-164" y="104">BRAM 432 KB of 630 KB</text>
+          <rect x="-164" y="74" width="73.7" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-158" y="84">54.2%</text>
+          <text class="d-s" x="-164" y="104">BRAM 434.25 KB of 630 KB</text>
           <rect class="d-box" x="-164" y="110" width="136" height="13"/>
-          <rect x="-164" y="110" width="93.3" height="13" fill="currentColor" fill-opacity="0.42"/>
-          <text class="d-n" x="-158" y="120">68.6%</text>
+          <rect x="-164" y="110" width="93.7" height="13" fill="currentColor" fill-opacity="0.42"/>
+          <text class="d-n" x="-158" y="120">68.9%</text>
           <!-- The worst setup slack of that build, and only the worst
                value: the rest of what the fit reported about timing is
                in docs/fits.md of muir-fpga and is not drawn.  It sits
                on the same row pitch the two bars keep and carries no
                bar of its own, because a slack has no total to be a
                fraction of. -->
-          <text class="d-s" x="-164" y="140">worst setup +0.493 ns</text>
+          <text class="d-s" x="-164" y="140">worst setup +0.477 ns</text>
           <rect class="d-box d-done" x="940" y="62" width="112" height="128"/>
           <text class="d-t" x="996" y="100" text-anchor="middle">clock</text>
           <text class="d-n" x="996" y="120" text-anchor="middle">quux15_arty</text>
           <text class="d-s" x="996" y="138" text-anchor="middle">125 MHz in,</text>
           <text class="d-s" x="996" y="152" text-anchor="middle">MMCM,</text>
-          <text class="d-s" x="996" y="166" text-anchor="middle">period 48 ns,</text>
+          <text class="d-s" x="996" y="166" text-anchor="middle">period 50 ns,</text>
           <text class="d-s" x="996" y="180" text-anchor="middle">a stage a clock</text>
 
           <rect class="d-box d-done" x="40" y="62" width="224" height="84"/>
