@@ -215,7 +215,7 @@ description: What each release of the Lisp Machine system changed, QUUX's and th
 </section>
 
 <section id="running" class="section wrap" aria-label="Running a release"><div class="section-heading"><div><p class="eyebrow">08 / RUNNING A RELEASE</p><h2>Running a <em>release.</em></h2></div></div>
-<div class="prose"><p>muir-sim&rsquo;s fetch scripts do the first steps for you: <code>tools/fetch-system-for-quux.sh</code> fetches QUUX&rsquo;s current release, <code>tools/fetch-dev-system-for-quux.sh</code> the system in development, and <code>tools/fetch-system-for-cadr.sh</code> the CADR&rsquo;s current release, each checked against its SHA-256 sums. By hand, QUUX&rsquo;s release N with muir-sim&rsquo;s <code>quux</code> needs no file server: its <code>SYS:</code> is on the machine&rsquo;s file device, so its host folder holds <code>sys/</code> and <code>site/</code> from the sources and a home for the login.</p></div>
+<div class="prose"><p>muir-sim&rsquo;s fetch scripts do the first steps for you: <code>tools/fetch-system-for-quux.sh</code>, on muir-sim&rsquo;s tag <code>quux-revisions-13-15</code>, fetches QUUX&rsquo;s current release, <code>tools/fetch-dev-system-for-quux.sh</code> the system in development, and <code>tools/fetch-system-for-cadr.sh</code> the CADR&rsquo;s current release, each checked against its SHA-256 sums. By hand, QUUX&rsquo;s release N with muir-sim&rsquo;s <code>quux</code> needs no file server: its <code>SYS:</code> is on the machine&rsquo;s file device, so its host folder holds <code>sys/</code> and <code>site/</code> from the sources and a home for the login.</p></div>
 <pre><code>gunzip release-N-disk.vhd.gz
 tar -xzf release-N-sys.tar.gz
 mkdir -p root/home/lispm
